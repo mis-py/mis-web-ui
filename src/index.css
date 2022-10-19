@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        -webkit-tap-highlight-color: transparent;
+    }
+    body {
+        @apply text-white text-base font-ubuntu bg-backGround
+    }
+}
+
+@layer components {
+    .h1 {
+        @apply text-5xl
+    }
+    .h2 {
+        @apply text-3xl
+    }
+    .h3 {
+        @apply text-2xl
+    }
+    .h4 {
+        @apply text-xl
+    }
+    .subtitle-1 {
+        @apply text-base font-medium
+    }
+    .subtitle-2 {
+        @apply text-sm font-medium
+    }
+    .body-1 {
+        @apply text-base
+    }
+    .body-2 {
+        @apply text-sm
+    }
+    .button-1 {
+        @apply text-base font-medium
+    }
+    .button-2 {
+        @apply text-sm font-medium
+    }
+    .link-1 {
+        @apply text-base
+    }
+    .link-2 {
+        @apply text-sm
+    }
+    .container {
+        @apply w-full px-5 overflow-x-hidden
+    }
+    .btn-primary {
+        @apply text-base font-medium text-white bg-primary py-[11px] px-5 rounded-lg text-center w-full flex justify-center duration-300 hover:bg-hover focus:bg-focused active:bg-active
+    }
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+::-webkit-scrollbar:vertical {
+    width: 0;
+}
+::-webkit-scrollbar:horizontal {
+    height: 0;
+}
