@@ -1,5 +1,11 @@
 import React from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  redirect,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Drawer, {
   DrawerContainer,
@@ -24,19 +30,23 @@ import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   React.useEffect(() => {
-    if (!localStorage.key("my-token")) {
+    if (
+      localStorage.getItem("my-token") === null &&
+      location.pathname !== "/singin"
+    ) {
       navigate("/singin");
     }
-  }, []);
-
+  }, [location]);
   return (
     <div className="relative">
       <ToastContainer theme="dark" />
-      <Routes>
-        <Route path="/singin" element={<Singin />} />
-      </Routes>
       <SidebarDesktop />
+      <Routes>
+        <Route path="singin" element={<Singin />} />
+      </Routes>
       <Drawer position="left" size={80}>
         {({
           position,
@@ -67,7 +77,7 @@ function App() {
               <div className="container">
                 <div className="lg:ml-[345px]">
                   <Routes>
-                    <Route index path="/" element={<Home />} />
+                    <Route index element={<Home />} />
                     <Route path="/users" element={<Users />} />
                     <Route path="/add-user" element={<AddUser />} />
                     <Route path="/users/:id" element={<EditUser />} />

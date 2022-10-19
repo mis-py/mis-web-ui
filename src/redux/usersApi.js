@@ -6,7 +6,13 @@ export const usersApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://65.21.238.213:8000" }),
   endpoints: (build) => ({
     getUsers: build.query({
-      query: () => `/users/`,
+      query: () => ({
+        url: `/users/`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
       providesTags: (result) =>
         result
           ? [
@@ -16,7 +22,13 @@ export const usersApi = createApi({
           : [{ type: "Users", id: "LIST" }],
     }),
     getUserId: build.query({
-      query: (id) => `/users/${id}`,
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
       providesTags: (result, error, id) => [{ type: "Users", id }],
     }),
     addUser: build.mutation({
@@ -25,6 +37,7 @@ export const usersApi = createApi({
         method: "POST",
         headers: {
           "content-type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
         body,
       }),
@@ -36,6 +49,7 @@ export const usersApi = createApi({
         method: "PUT",
         headers: {
           accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
         body: rest,
       }),
@@ -47,6 +61,7 @@ export const usersApi = createApi({
         method: "DELETE",
         headers: {
           accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],

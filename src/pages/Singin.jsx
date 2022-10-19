@@ -4,14 +4,19 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from "axios";
 import qs from "qs";
+import { AiOutlineEye } from "react-icons/ai";
 
 import LogoImg from "../assets/img/logo.png";
 import EllipseImg from "../assets/img/ellipse.png";
 
 const Singin = () => {
   const navigate = useNavigate();
-
-  const { register, handleSubmit } = useForm();
+  const [showPassword, setShowPassword] = React.useState("password");
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
   const onSubmit = (data) => {
     axios({
@@ -38,19 +43,27 @@ const Singin = () => {
                 navigate("/");
               }
             })
-            .catch(function (response) {
-              console.log(response);
-              if (response.status === 401) {
-                toast.error("okadnfmjanfaf");
-              }
-            });
+            .catch(function (response) {});
         }
       })
-      .catch(function (response) {});
+      .catch(function (response) {
+        toast.error("Incorrect login or password!");
+      });
+  };
+
+  const toggleShowPassword = (e) => {
+    e.preventDefault();
+    if (showPassword === "password") {
+      setShowPassword("text");
+    } else if (showPassword === "text") {
+      setShowPassword("password");
+    } else {
+      setShowPassword("password");
+    }
   };
 
   return (
-    <div className="flex flex-col relative z-20 justify-center h-screen py-7 px-5 overflow-hidden">
+    <div className="flex flex-col relative z-20 justify-center h-screen py-7 px-5 bg-backGround overflow-hidden lg:z-40">
       <img
         className="absolute bottom-0 left-0 h-[60%] w-full"
         src={EllipseImg}
@@ -61,30 +74,52 @@ const Singin = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="z-10 sm:w-[345px] sm:mx-auto"
       >
-        <label className="flex flex-col body-1 mb-6" htmlFor="email">
+        <label className="flex flex-col relative body-1 mb-8" htmlFor="email">
           Username
           <input
             className="bg-backGround px-3 py-2 rounded text-gray text-sm focus-visible:outline-none"
             type="text"
             id="username"
             placeholder="Enter your username"
-            {...register("username", { required: true, maxLength: 80 })}
+            {...register("username", {
+              required: "Username is required",
+            })}
           />
+          {errors.username && (
+            <p className="absolute -bottom-6 left-2 text-sm text-danger">
+              {errors.username?.message}
+            </p>
+          )}
         </label>
-        <label className="flex flex-col body-1 mb-6" htmlFor="password">
+        <label
+          className="flex flex-col relative body-1 mb-6"
+          htmlFor="password"
+        >
           Password
           <input
             className="bg-backGround px-3 py-2 rounded text-gray text-sm focus-visible:outline-none"
-            type="text"
+            type={showPassword}
             id="password"
             placeholder="Enter your password"
-            {...register("password", { required: true })}
+            {...register("password", { required: "Password is required" })}
           />
+          {errors.password && (
+            <p className="absolute -bottom-6 left-2 text-sm text-danger">
+              {errors.password?.message}
+            </p>
+          )}
+          <button
+            onClick={toggleShowPassword}
+            className="absolute right-4 top-1/2 mt-1"
+            type="button"
+          >
+            <AiOutlineEye />
+          </button>
         </label>
-        <label className="flex items-center" htmlFor="remember">
+        {/* <label className="flex items-center" htmlFor="remember">
           <input className="mr-2 w-5 h-5" type="checkbox" id="remember" />
           Remember me
-        </label>
+        </label> */}
         <button type="submit" className="btn-primary mt-14">
           Sign in
         </button>

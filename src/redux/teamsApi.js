@@ -6,7 +6,13 @@ export const teamsApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://65.21.238.213:8000" }),
   endpoints: (build) => ({
     getTeams: build.query({
-      query: () => `/teams/`,
+      query: () => ({
+        url: `/teams/`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
       providesTags: (result) =>
         result
           ? [
@@ -25,6 +31,7 @@ export const teamsApi = createApi({
         method: "POST",
         headers: {
           "content-type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
         body,
       }),
@@ -36,6 +43,7 @@ export const teamsApi = createApi({
         method: "PUT",
         headers: {
           accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
         body: rest,
       }),
@@ -47,6 +55,7 @@ export const teamsApi = createApi({
         method: "DELETE",
         headers: {
           accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
       }),
       invalidatesTags: [{ type: "Teams", id: "LIST" }],

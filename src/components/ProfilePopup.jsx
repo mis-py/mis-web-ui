@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FiUser, FiSettings, FiLogOut } from "react-icons/fi";
 import useOutsideClick from "../hooks/useOutsideClick";
 
-const ProfilePopup = ({ userPopup, setUserPopup }) => {
+const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
   const navigate = useNavigate();
   const handleClickOutside = () => {
     setUserPopup(false);
@@ -14,7 +14,10 @@ const ProfilePopup = ({ userPopup, setUserPopup }) => {
   const handleLogOut = (e) => {
     e.preventDefault();
     localStorage.removeItem("my-token");
-    navigate("/singin");
+    toggleDrawer();
+    setTimeout(() => {
+      navigate("/singin");
+    }, 300);
   };
 
   return (

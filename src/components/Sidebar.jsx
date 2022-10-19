@@ -35,7 +35,7 @@ const Sidebar = ({ toggleDrawer }) => {
       <div className="fixed h-full w-full bg-backGround text-gray py-6">
         <div className="flex flex-col">
           <div className="relatie flex mb-4 px-5">
-            <ProfilePopup userPopup={userPopup} setUserPopup={setUserPopup} />
+            <ProfilePopup userPopup={userPopup} setUserPopup={setUserPopup} toggleDrawer={toggleDrawer} />
             <div className="flex flex-auto gap-[10px]">
               <div className="flex flex-auto">
                 <button className="flex justify-center items-center w-[32px] h-[32px] rounded-l bg-blackSecond">
