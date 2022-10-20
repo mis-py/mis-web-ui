@@ -1,15 +1,19 @@
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useGetUserIdQuery } from "../../redux";
-
+import { toast } from "react-toastify";
+import { confirmAlert } from "react-confirm-alert";
+import { useDeleteUserMutation, useGetUserIdQuery } from "../../redux";
 import { IoIosArrowBack } from "react-icons/io";
 
 import UserImg from "../../assets/img/user.png";
+
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 const ProfileUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: getUserId, isLoading } = useGetUserIdQuery(id);
+  const [deleteUser] = useDeleteUserMutation();
 
   const [formValue, setFormValue] = React.useState({
     username: "",
@@ -29,6 +33,30 @@ const ProfileUser = () => {
       });
     }
   }, [isLoading]);
+
+  const handleDeleteUser = async (e) => {
+    e.preventDefault();
+    // if (window.confirm("Are you sure you want to delete this user?")) {
+    // }
+    confirmAlert({
+      title: "Delete user",
+      message: "Are you sure you want to delete this user?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            await deleteUser(id);
+            navigate("/users");
+            toast.success("User deleted");
+          },
+        },
+        {
+          label: "No",
+        },
+      ],
+      overlayClassName: "bg-blackSecond/70",
+    });
+  };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -78,9 +106,14 @@ const ProfileUser = () => {
           </label>
         </form>
       </div>
-      <button onClick={() => navigate("/users")} className="btn-primary">
-        Save
-      </button>
+      <div className="flex flex-col gap-4">
+        <button onClick={() => navigate("/users")} className="btn-primary">
+          Save
+        </button>
+        <button onClick={handleDeleteUser} className="btn-danger">
+          Delete user
+        </button>
+      </div>
     </div>
   );
 };

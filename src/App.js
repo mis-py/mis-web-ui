@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Routes,
-  Route,
-  redirect,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Drawer, {
   DrawerContainer,
@@ -24,6 +18,7 @@ import Teams from "./pages/teams/index";
 import AddTeam from "./pages/teams/AddTeam";
 import EditTeam from "./pages/teams/EditTeam";
 import Applications from "./pages/applications/index";
+import UsingApplications from "./pages/usingApplications/index";
 import Webcatalog from "./pages/webcatalog/index";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -86,6 +81,10 @@ function App() {
                     <Route path="/add-team" element={<AddTeam />} />
                     <Route path="/teams/:id" element={<EditTeam />} />
                     <Route path="/applications" element={<Applications />} />
+                    <Route
+                      path="/using-applications"
+                      element={<UsingApplications />}
+                    />
                     <Route path="/webcatalog" element={<Webcatalog />} />
                   </Routes>
                 </div>

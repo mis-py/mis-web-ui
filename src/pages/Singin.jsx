@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -11,12 +11,22 @@ import EllipseImg from "../assets/img/ellipse.png";
 
 const Singin = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showPassword, setShowPassword] = React.useState("password");
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
+
+  React.useEffect(() => {
+    if (
+      localStorage.getItem("my-token") !== null &&
+      location.pathname === "/singin"
+    ) {
+      navigate("/");
+    }
+  }, [location]);
 
   const onSubmit = (data) => {
     axios({
@@ -29,8 +39,11 @@ const Singin = () => {
     })
       .then(function (response) {
         if (response.status === 200) {
+          console.log(response.data);
           const token = response.data.access_token;
+          const user_id = response.data.user_id;
           localStorage.setItem("my-token", token);
+          localStorage.setItem("user_id", user_id);
           axios({
             method: "get",
             url: "http://65.21.238.213:8000/",

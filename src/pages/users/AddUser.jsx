@@ -47,7 +47,7 @@ const AddUser = () => {
   const [formValue, setFormValue] = React.useState({
     username: "",
     password: "",
-    team_id: 1,
+    team_id: null,
   });
 
   const options = dataGetTeams.map((item, index) => {

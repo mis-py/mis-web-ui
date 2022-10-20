@@ -56,6 +56,9 @@
     .btn-primary {
         @apply text-base font-medium text-white bg-primary py-[11px] px-5 rounded-lg text-center w-full flex justify-center duration-300 hover:bg-hover focus:bg-focused active:bg-active
     }
+    .btn-danger {
+        @apply text-base font-medium text-white bg-danger py-[11px] px-5 rounded-lg text-center w-full flex justify-center duration-300 hover:bg-dangerEasy focus:bg-dangerEasy active:bg-danger
+    }
 }
 
 ::-webkit-scrollbar {

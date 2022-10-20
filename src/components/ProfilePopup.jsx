@@ -14,6 +14,7 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
   const handleLogOut = (e) => {
     e.preventDefault();
     localStorage.removeItem("my-token");
+    localStorage.removeItem("user_id");
     toggleDrawer();
     setTimeout(() => {
       navigate("/singin");

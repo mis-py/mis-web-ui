@@ -25,7 +25,7 @@ const Users = () => {
 
   React.useEffect(() => {
     if (errorGetUsers) {
-      toast.error("🦄 Wow so easy!");
+      toast.error("No users found");
     }
   }, [errorGetUsers]);
 

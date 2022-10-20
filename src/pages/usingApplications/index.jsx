@@ -9,7 +9,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import UserImg from "../../assets/img/user.png";
 import StarImg from "../../assets/img/star.png";
 
-const Applications = () => {
+const UsingApplications = () => {
   const { data: getApps = [], error: errorGetApps } = useGetAppsQuery();
 
   const [showSearch, setShowSearch] = React.useState(false);
@@ -67,7 +67,7 @@ const Applications = () => {
           </div>
         </div>
 
-        <h3 className="h3 mb-5">Applications ({getApps.length})</h3>
+        <h3 className="h3 mb-5">Using applications ({getApps.length})</h3>
         <div className="flex flex-col gap-4">
           {getApps &&
             getApps.map((app, index) => (
@@ -148,4 +148,4 @@ const Applications = () => {
   );
 };
 
-export default Applications;
+export default UsingApplications;
