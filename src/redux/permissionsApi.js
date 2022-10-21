@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const permissionsApi = createApi({
   reducerPath: "permissionsApi",
-  tagTypes: ["Permmissions"],
+  tagTypes: ["Permissions"],
   baseQuery: fetchBaseQuery({ baseUrl: "http://65.21.238.213:8000" }),
   endpoints: (build) => ({
     getPermissions: build.query({
@@ -10,16 +10,11 @@ export const permissionsApi = createApi({
         url: `/permissions/`,
         method: "GET",
         headers: {
+          accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
       }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: "Permissions", id })),
-              { type: "Permissions", id: "LIST" },
-            ]
-          : [{ type: "Permissions", id: "LIST" }],
+      providesTags: ["Permissions"],
     }),
     getPermissionsUserId: build.query({
       query: (id) => ({

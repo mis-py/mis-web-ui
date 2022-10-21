@@ -6,7 +6,8 @@ import {
   useEditUserMutation,
   useGetUserIdQuery,
   useGetTeamsQuery,
-  useDeleteUserMutation,
+  useGetPermissionsQuery,
+  useGetPermissionsUserIdQuery,
 } from "../../redux";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -50,7 +51,15 @@ const EditUser = () => {
   const { data: dataGetTeams = [], isLoading: loadingDataGetTeams } =
     useGetTeamsQuery();
   const [editUser] = useEditUserMutation();
-  // const [deletUser] = useDeleteUserMutation();
+  const { data: getPermissions, isLoading: loadingPermissions } =
+    useGetPermissionsQuery();
+  const { data: getPermissionsUserId, isLoading: loadingPermissionsUserId } =
+    useGetPermissionsUserIdQuery(id);
+
+  console.log(!loadingPermissions ? getPermissions.core[0] : "");
+  console.log(
+    !loadingPermissionsUserId ? getPermissionsUserId[0].permission : ""
+  );
 
   const [formValue, setFormValue] = React.useState({
     username: "",
@@ -89,13 +98,6 @@ const EditUser = () => {
     navigate("/users");
     toast.success("User updating");
   };
-
-  // const handleDeletUser = async (e) => {
-  //   e.preventDefault();
-  //   await deletUser(id);
-  //   navigate("/");
-  //   toast.success("User DELETED");
-  // };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -150,6 +152,20 @@ const EditUser = () => {
               }}
             />
           </label>
+          <h2 className="mt-5 text-2xl">Core:</h2>
+          <div className="flex flex-wrap mt-3 gap-3">
+            <label
+              className="w-[calc(50%_-_6px)] flex items-center"
+              htmlFor="scope"
+            >
+              Core:sudo
+              <input
+                className="ml-1 w-[40px] h-[25px]"
+                id="scope"
+                type="checkbox"
+              />
+            </label>
+          </div>
         </form>
       </div>
       <button onClick={handleEditUser} className="btn-primary">

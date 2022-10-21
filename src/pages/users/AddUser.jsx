@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { useAddUserMutation } from "../../redux/usersApi";
 import { useGetTeamsQuery } from "../../redux/teamsApi";
+import { useGetPermissionsUserIdQuery } from "../../redux";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -43,6 +44,9 @@ const AddUser = () => {
   const navigate = useNavigate();
   const [addUser, { error: errorAddUser }] = useAddUserMutation();
   const { data: dataGetTeams = [] } = useGetTeamsQuery();
+  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
+    localStorage.getItem("user_id")
+  );
 
   const [formValue, setFormValue] = React.useState({
     username: "",
@@ -57,6 +61,12 @@ const AddUser = () => {
       id: index + 1,
     };
   });
+
+  React.useEffect(() => {
+    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
+      navigate("/users");
+    }
+  }, []);
 
   const handleAddUser = async (e) => {
     e.preventDefault();

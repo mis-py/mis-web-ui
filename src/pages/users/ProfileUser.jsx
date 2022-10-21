@@ -2,7 +2,11 @@ import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
-import { useDeleteUserMutation, useGetUserIdQuery } from "../../redux";
+import {
+  useDeleteUserMutation,
+  useGetUserIdQuery,
+  useGetPermissionsUserIdQuery,
+} from "../../redux";
 import { IoIosArrowBack } from "react-icons/io";
 
 import UserImg from "../../assets/img/user.png";
@@ -14,6 +18,9 @@ const ProfileUser = () => {
   const navigate = useNavigate();
   const { data: getUserId, isLoading } = useGetUserIdQuery(id);
   const [deleteUser] = useDeleteUserMutation();
+  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
+    localStorage.getItem("user_id")
+  );
 
   const [formValue, setFormValue] = React.useState({
     username: "",
@@ -106,14 +113,18 @@ const ProfileUser = () => {
           </label>
         </form>
       </div>
-      <div className="flex flex-col gap-4">
-        <button onClick={() => navigate("/users")} className="btn-primary">
-          Save
-        </button>
-        <button onClick={handleDeleteUser} className="btn-danger">
-          Delete user
-        </button>
-      </div>
+      {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
+        <div className="flex flex-col gap-4">
+          <button onClick={() => navigate("/users")} className="btn-primary">
+            Save
+          </button>
+          <button onClick={handleDeleteUser} className="btn-danger">
+            Delete user
+          </button>
+        </div>
+      ) : (
+        false
+      )}
     </div>
   );
 };

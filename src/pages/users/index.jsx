@@ -1,6 +1,6 @@
 import React from "react";
 import { toast } from "react-toastify";
-import { useGetUsersQuery } from "../../redux";
+import { useGetUsersQuery, useGetPermissionsUserIdQuery } from "../../redux";
 import { Link, useNavigate } from "react-router-dom";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { FiSearch, FiUserPlus } from "react-icons/fi";
@@ -12,6 +12,9 @@ import UserImg from "../../assets/img/user.png";
 const Users = () => {
   const navigate = useNavigate();
   const { data: dataGetUsers = [], error: errorGetUsers } = useGetUsersQuery();
+  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
+    localStorage.getItem("user_id")
+  );
 
   const [showSearch, setShowSearch] = React.useState(false);
   const [showUserInfo, setShowUserInfo] = React.useState(false);
@@ -64,12 +67,16 @@ const Users = () => {
               type="text"
             />
           </div>
-          <Link
-            to="/add-user"
-            className="px-5 flex items-center justify-center bg-blackSecond rounded-lg"
-          >
-            <FiUserPlus />
-          </Link>
+          {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
+            <Link
+              to="/add-user"
+              className="px-5 flex items-center justify-center bg-blackSecond rounded-lg"
+            >
+              <FiUserPlus />
+            </Link>
+          ) : (
+            false
+          )}
         </div>
 
         <h3 className="h3 mb-5">Users ({dataGetUsers.length})</h3>
@@ -94,12 +101,16 @@ const Users = () => {
                   >
                     Profile
                   </div>
-                  <div
-                    onClick={(e) => navigate(`/users/${user.id}`)}
-                    className="px-7 py-1 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
-                  >
-                    Editing
-                  </div>
+                  {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
+                    <div
+                      onClick={(e) => navigate(`/users/${user.id}`)}
+                      className="px-7 py-1 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                    >
+                      Editing
+                    </div>
+                  ) : (
+                    false
+                  )}
                 </div>
                 <div className="flex justify-between items-center pb-2 border-b border-backGround lg:border-none lg:pb-0">
                   <div className="lg:flex lg:items-center">
