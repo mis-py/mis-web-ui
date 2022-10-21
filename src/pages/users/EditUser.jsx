@@ -51,14 +51,8 @@ const EditUser = () => {
   const { data: dataGetTeams = [], isLoading: loadingDataGetTeams } =
     useGetTeamsQuery();
   const [editUser] = useEditUserMutation();
-  const { data: getPermissions, isLoading: loadingPermissions } =
-    useGetPermissionsQuery();
-  const { data: getPermissionsUserId, isLoading: loadingPermissionsUserId } =
-    useGetPermissionsUserIdQuery(id);
-
-  console.log(!loadingPermissions ? getPermissions.core[0] : "");
-  console.log(
-    !loadingPermissionsUserId ? getPermissionsUserId[0].permission : ""
+  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
+    localStorage.getItem("user_id")
   );
 
   const [formValue, setFormValue] = React.useState({
@@ -76,6 +70,10 @@ const EditUser = () => {
   });
 
   React.useEffect(() => {
+    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
+      navigate("/users");
+    }
+
     if (!isLoading && !loadingDataGetTeams) {
       setFormValue({
         username: getUserId.username,

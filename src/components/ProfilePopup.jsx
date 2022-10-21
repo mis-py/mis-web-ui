@@ -1,10 +1,16 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useGetPermissionsUserIdQuery } from "../redux";
 import { FiUser, FiSettings, FiLogOut } from "react-icons/fi";
 import useOutsideClick from "../hooks/useOutsideClick";
 
 const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
   const navigate = useNavigate();
+
+  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
+    localStorage.getItem("user_id")
+  );
+
   const handleClickOutside = () => {
     setUserPopup(false);
   };
@@ -30,17 +36,14 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
       } absolute duration-300 right-5 top-16`}
     >
       <ul>
-        <Link
-          className="flex bg-backGround drop-shadow-lg items-center px-5 gap-3 duration-300 group hover:bg-blackSecond"
-          to="/profile"
-        >
+        <div onClick={() => navigate(`/profile/${getPermissionsUserId && getPermissionsUserId[0].user.id}`)} className="flex bg-backGround drop-shadow-lg items-center px-5 gap-3 duration-300 group hover:bg-blackSecond">
           <div className="duration-300 group-hover:text-primary">
             <FiUser />
           </div>
           <h3 className="py-3 duration-300 group-hover:text-primary">
             Profile
           </h3>
-        </Link>
+        </div>
         <Link
           className="flex bg-backGround drop-shadow-lg items-center px-5 gap-3 duration-300 group hover:bg-blackSecond"
           to="/settings"

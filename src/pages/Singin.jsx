@@ -39,7 +39,6 @@ const Singin = () => {
     })
       .then(function (response) {
         if (response.status === 200) {
-          console.log(response.data);
           const token = response.data.access_token;
           const user_id = response.data.user_id;
           localStorage.setItem("my-token", token);

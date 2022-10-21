@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 // import Select from "react-select";
-import { useAddTeamMutation } from "../../redux";
+import { useAddTeamMutation, useGetPermissionsUserIdQuery } from "../../redux";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -44,6 +44,9 @@ import UserImg from "../../assets/img/user.png";
 const AddTeam = () => {
   const navigate = useNavigate();
   const [addTeam, { error: errorAddTeam }] = useAddTeamMutation();
+  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
+    localStorage.getItem("user_id")
+  );
 
   const [formValue, setFormValue] = React.useState({
     team_name: "",
@@ -57,6 +60,12 @@ const AddTeam = () => {
   //     id: index + 1,
   //   };
   // });
+
+  React.useEffect(() => {
+    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
+      navigate("/teams");
+    }
+  }, []);
 
   const handleAddUser = async (e) => {
     e.preventDefault();

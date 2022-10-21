@@ -1,6 +1,6 @@
 import React from "react";
 import { toast } from "react-toastify";
-import { useGetTeamsQuery } from "../../redux";
+import { useGetTeamsQuery, useGetPermissionsUserIdQuery } from "../../redux";
 import { Link, useNavigate } from "react-router-dom";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { FiSearch, FiUserPlus } from "react-icons/fi";
@@ -16,6 +16,9 @@ const Teams = () => {
     isLoading: loadingGetTeams,
     error: errorGetTeams,
   } = useGetTeamsQuery();
+  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
+    localStorage.getItem("user_id")
+  );
 
   const [showSearch, setShowSearch] = React.useState(false);
   const [showTeamInfo, setShowTeamInfo] = React.useState(false);
@@ -67,12 +70,16 @@ const Teams = () => {
               } bg-[#3F3F3F] duration-300 rounded-r w-full" type="text`}
             />
           </div>
-          <Link
-            to="/add-team"
-            className="px-5 flex items-center justify-center bg-blackSecond rounded-lg"
-          >
-            <FiUserPlus />
-          </Link>
+          {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
+            <Link
+              to="/add-team"
+              className="px-5 flex items-center justify-center bg-blackSecond rounded-lg"
+            >
+              <FiUserPlus />
+            </Link>
+          ) : (
+            false
+          )}
         </div>
 
         <h3 className="h3 mb-5">Teams ({dataGetTeams.length})</h3>
@@ -97,12 +104,16 @@ const Teams = () => {
                   >
                     Granting privileges
                   </Link>
-                  <div
-                    onClick={(e) => navigate(`/teams/${team.id}`)}
-                    className="px-5 py-1 block text-gray duration-300 hover:bg-blackSecond hover:text-primary"
-                  >
-                    Editing
-                  </div>
+                  {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
+                    <div
+                      onClick={(e) => navigate(`/teams/${team.id}`)}
+                      className="px-5 py-1 block text-gray duration-300 hover:bg-blackSecond hover:text-primary"
+                    >
+                      Editing
+                    </div>
+                  ) : (
+                    false
+                  )}
                 </div>
                 <div className="flex justify-between items-center pb-2 border-b border-backGround">
                   <div className="flex flex-col">

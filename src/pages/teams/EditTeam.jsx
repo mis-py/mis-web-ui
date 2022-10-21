@@ -2,7 +2,11 @@ import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 // import Select from "react-select";
 import { toast } from "react-toastify";
-import { useEditTeamMutation, useGetTeamIdQuery } from "../../redux";
+import {
+  useEditTeamMutation,
+  useGetTeamIdQuery,
+  useGetPermissionsUserIdQuery,
+} from "../../redux";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -46,6 +50,9 @@ const EditUser = () => {
   const navigate = useNavigate();
   const { data: getTeamId, isLoading } = useGetTeamIdQuery(id);
   const [editTeam] = useEditTeamMutation();
+  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
+    localStorage.getItem("user_id")
+  );
 
   const [formValue, setFormValue] = React.useState({
     name: "",
@@ -60,6 +67,10 @@ const EditUser = () => {
   // });
 
   React.useEffect(() => {
+    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
+      navigate("/teams");
+    }
+
     if (!isLoading) {
       setFormValue({
         name: getTeamId.name,
