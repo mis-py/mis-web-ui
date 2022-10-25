@@ -6,7 +6,7 @@ import {
   useEditUserMutation,
   useGetUserIdQuery,
   useGetTeamsQuery,
-  useGetPermissionsQuery,
+  useEditUserPermissionMutation,
   useGetPermissionsUserIdQuery,
 } from "../../redux";
 
@@ -51,10 +51,13 @@ const EditUser = () => {
   const { data: dataGetTeams = [], isLoading: loadingDataGetTeams } =
     useGetTeamsQuery();
   const [editUser] = useEditUserMutation();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
+  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(id);
+  const [editUserPermission] = useEditUserPermissionMutation(id);
 
+  console.log(getPermissionsUserId);
+
+  const [showPermissions, setShowPermissions] = React.useState(false);
+  const [core, setCore] = React.useState(false);
   const [formValue, setFormValue] = React.useState({
     username: "",
     password: "",
@@ -70,10 +73,6 @@ const EditUser = () => {
   });
 
   React.useEffect(() => {
-    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
-      navigate("/users");
-    }
-
     if (!isLoading && !loadingDataGetTeams) {
       setFormValue({
         username: getUserId.username,
@@ -84,6 +83,12 @@ const EditUser = () => {
         },
       });
     }
+
+    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
+      setCore(false);
+    } else {
+      setCore(true);
+    }
   }, [isLoading, loadingDataGetTeams]);
 
   const handleEditUser = async (e) => {
@@ -93,6 +98,11 @@ const EditUser = () => {
       team_id: formValue.team.id,
       new_password: formValue.password ? formValue.password : "",
     }).unwrap();
+    // if (core) {
+    //   await editUserPermission(id, ["core:sudo"]).unwrap();
+    // } else {
+    //   await editUserPermission(id, []).unwrap();
+    // }
     navigate("/users");
     toast.success("User updating");
   };
@@ -150,25 +160,39 @@ const EditUser = () => {
               }}
             />
           </label>
-          <h2 className="mt-5 text-2xl">Core:</h2>
-          <div className="flex flex-wrap mt-3 gap-3">
-            <label
-              className="w-[calc(50%_-_6px)] flex items-center"
-              htmlFor="scope"
-            >
-              Core:sudo
-              <input
-                className="ml-1 w-[40px] h-[25px]"
-                id="scope"
-                type="checkbox"
-              />
-            </label>
+          <div
+            className={`${
+              showPermissions ? "opacity-100 visible" : "opacity-0 invisible"
+            } flex flex-col duration-300`}
+          >
+            <h2 className="mt-5 text-2xl">Core:</h2>
+            <div className="flex flex-wrap mt-3 gap-3">
+              <label className="w-full flex items-center" htmlFor="scope">
+                Superuser permissions
+                <input
+                  className="ml-1 w-[40px] h-[25px]"
+                  id="scope"
+                  type="checkbox"
+                  checked={core}
+                  onChange={() => setCore(!core)}
+                />
+              </label>
+            </div>
           </div>
         </form>
       </div>
-      <button onClick={handleEditUser} className="btn-primary">
-        Save
-      </button>
+
+      <div className="flex flex-col gap-3">
+        <button
+          onClick={() => setShowPermissions(!showPermissions)}
+          className="btn-primary bg-transparent border-2 border-primary text-primary hover:!bg-transparent focus:!bg-transparent active:!bg-transparent"
+        >
+          Manage permissions {showPermissions ? "-" : "+"}
+        </button>
+        <button onClick={handleEditUser} className="btn-primary">
+          Save
+        </button>
+      </div>
     </div>
   );
 };

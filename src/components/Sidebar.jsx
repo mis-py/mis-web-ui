@@ -35,18 +35,18 @@ const Sidebar = ({ toggleDrawer }) => {
       <div className="fixed h-full w-full bg-backGround text-gray py-6">
         <div className="flex flex-col">
           <div className="relatie flex mb-4 px-5">
-            <ProfilePopup userPopup={userPopup} setUserPopup={setUserPopup} toggleDrawer={toggleDrawer} />
+            <ProfilePopup
+              userPopup={userPopup}
+              setUserPopup={setUserPopup}
+              toggleDrawer={toggleDrawer}
+            />
             <div className="flex flex-auto gap-[10px]">
               <div className="flex flex-auto">
-                <button className="flex justify-center items-center w-[32px] h-[32px] rounded-l bg-blackSecond">
-                  <FiSearch />
-                </button>
-                <input className="bg-[#3F3F3F] rounded-r w-full" type="text" />
+                <h2 className="text-white body-2">
+                  ECRM - {localStorage.getItem("user_name")}
+                </h2>
               </div>
               <div className="flex gap-[10px]">
-                <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond">
-                  <FiBell />
-                </button>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();

@@ -43,8 +43,6 @@ const ProfileUser = () => {
 
   const handleDeleteUser = async (e) => {
     e.preventDefault();
-    // if (window.confirm("Are you sure you want to delete this user?")) {
-    // }
     confirmAlert({
       title: "Delete user",
       message: "Are you sure you want to delete this user?",

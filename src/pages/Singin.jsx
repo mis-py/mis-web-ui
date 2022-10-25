@@ -37,13 +37,14 @@ const Singin = () => {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
       },
     })
-    .then(function (response) {
-        console.log(response);
+      .then(function (response) {
         if (response.status === 200) {
           const token = response.data.access_token;
           const user_id = response.data.user_id;
+          const user_name = response.data.username;
           localStorage.setItem("my-token", token);
           localStorage.setItem("user_id", user_id);
+          localStorage.setItem("user_name", user_name);
           axios({
             method: "get",
             url: "http://65.21.238.213:8000/",

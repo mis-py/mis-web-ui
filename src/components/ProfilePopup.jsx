@@ -20,11 +20,12 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
 
   const handleLogOut = async (e) => {
     e.preventDefault();
-    localStorage.removeItem("my-token");
-    localStorage.removeItem("user_id");
     await userLogout();
     toggleDrawer();
     setTimeout(() => {
+      localStorage.removeItem("my-token");
+      localStorage.removeItem("user_id");
+      localStorage.removeItem("user_name");
       navigate("/singin");
     }, 300);
   };
@@ -35,7 +36,7 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
       onClick={(e) => e.stopPropagation()}
       className={`${
         userPopup ? "opacity-100 visible" : "opacity-0 invisible"
-      } absolute duration-300 right-5 top-16`}
+      } absolute duration-300 right-5 w-[175px] top-16`}
     >
       <ul>
         <div
@@ -46,7 +47,7 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
               }`
             )
           }
-          className="flex bg-backGround drop-shadow-lg items-center px-5 gap-3 duration-300 group hover:bg-blackSecond"
+          className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
         >
           <div className="duration-300 group-hover:text-primary">
             <FiUser />
@@ -56,7 +57,7 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
           </h3>
         </div>
         <Link
-          className="flex bg-backGround drop-shadow-lg items-center px-5 gap-3 duration-300 group hover:bg-blackSecond"
+          className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
           to="/settings"
         >
           <div className="duration-300 group-hover:text-primary">
@@ -68,7 +69,7 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
         </Link>
         <button
           onClick={handleLogOut}
-          className="flex bg-backGround drop-shadow-lg items-center px-5 gap-3 duration-300 group hover:bg-blackSecond"
+          className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
           to="/profile"
         >
           <div className="duration-300 group-hover:text-primary">

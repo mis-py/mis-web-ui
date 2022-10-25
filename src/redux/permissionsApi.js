@@ -26,7 +26,6 @@ export const permissionsApi = createApi({
       }),
       providesTags: (result, error, id) => [{ type: "Permissions", id }],
     }),
-    // addUser: build.mutation({
     //   query: (body) => ({
     //     url: "/users/create",
     //     method: "POST",
@@ -38,18 +37,18 @@ export const permissionsApi = createApi({
     //   }),
     //   invalidatesTags: [{ type: "Users", id: "LIST" }],
     // }),
-    // editUser: build.mutation({
-    //   query: ({ id, ...rest }) => ({
-    //     url: `/users/${id}`,
-    //     method: "PUT",
-    //     headers: {
-    //       accept: "application/json",
-    //       Authorization: `Bearer ${localStorage.getItem("my-token")}`,
-    //     },
-    //     body: rest,
-    //   }),
-    //   invalidatesTags: (result, error, { id }) => [{ type: "Users", id }],
-    // }),
+    editUserPermission: build.mutation({
+      query: (id, rest) => ({
+        url: `/permissions/user/${id}`,
+        method: "PUT",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+        body: rest,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Permissions", id }],
+    }),
     // deleteUser: build.mutation({
     //   query: (id) => ({
     //     url: `/users/${id}`,
@@ -64,5 +63,8 @@ export const permissionsApi = createApi({
   }),
 });
 
-export const { useGetPermissionsQuery, useGetPermissionsUserIdQuery } =
-  permissionsApi;
+export const {
+  useGetPermissionsQuery,
+  useGetPermissionsUserIdQuery,
+  useEditUserPermissionMutation,
+} = permissionsApi;
