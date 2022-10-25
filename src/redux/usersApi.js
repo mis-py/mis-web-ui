@@ -66,6 +66,17 @@ export const usersApi = createApi({
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
     }),
+    userLogout: build.mutation({
+      query: () => ({
+        url: "/users/logout/",
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
+      invalidatesTags: [{ type: "Users", id: "LIST" }],
+    }),
   }),
 });
 
@@ -75,4 +86,5 @@ export const {
   useAddUserMutation,
   useEditUserMutation,
   useDeleteUserMutation,
+  useUserLogoutMutation,
 } = usersApi;

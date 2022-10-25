@@ -1,11 +1,12 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useGetPermissionsUserIdQuery } from "../redux";
+import { useGetPermissionsUserIdQuery, useUserLogoutMutation } from "../redux";
 import { FiUser, FiSettings, FiLogOut } from "react-icons/fi";
 import useOutsideClick from "../hooks/useOutsideClick";
 
 const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
   const navigate = useNavigate();
+  const [userLogout] = useUserLogoutMutation();
 
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
     localStorage.getItem("user_id")
@@ -17,10 +18,11 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
 
   const refPopup = useOutsideClick(handleClickOutside);
 
-  const handleLogOut = (e) => {
+  const handleLogOut = async (e) => {
     e.preventDefault();
     localStorage.removeItem("my-token");
     localStorage.removeItem("user_id");
+    await userLogout();
     toggleDrawer();
     setTimeout(() => {
       navigate("/singin");
@@ -36,7 +38,16 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
       } absolute duration-300 right-5 top-16`}
     >
       <ul>
-        <div onClick={() => navigate(`/profile/${getPermissionsUserId && getPermissionsUserId[0].user.id}`)} className="flex bg-backGround drop-shadow-lg items-center px-5 gap-3 duration-300 group hover:bg-blackSecond">
+        <div
+          onClick={() =>
+            navigate(
+              `/profile/${
+                getPermissionsUserId && getPermissionsUserId[0].user.id
+              }`
+            )
+          }
+          className="flex bg-backGround drop-shadow-lg items-center px-5 gap-3 duration-300 group hover:bg-blackSecond"
+        >
           <div className="duration-300 group-hover:text-primary">
             <FiUser />
           </div>

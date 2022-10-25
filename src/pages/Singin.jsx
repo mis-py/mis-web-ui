@@ -37,7 +37,8 @@ const Singin = () => {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
       },
     })
-      .then(function (response) {
+    .then(function (response) {
+        console.log(response);
         if (response.status === 200) {
           const token = response.data.access_token;
           const user_id = response.data.user_id;
