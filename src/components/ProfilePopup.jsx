@@ -40,9 +40,10 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
     >
       <ul>
         <div
-          onClick={() =>
-            navigate(`/profile/${localStorage.getItem("user_id")}`)
-          }
+          onClick={() => {
+            navigate(`/profile/${localStorage.getItem("user_id")}`);
+            toggleDrawer();
+          }}
           className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
         >
           <div className="duration-300 group-hover:text-primary">
@@ -53,9 +54,10 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
           </h3>
         </div>
         <button
-          onClick={() =>
-            navigate(`/settings/${localStorage.getItem("user_id")}`)
-          }
+          onClick={() => {
+            navigate(`/settings/${localStorage.getItem("user_id")}`);
+            toggleDrawer();
+          }}
           className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
         >
           <div className="duration-300 group-hover:text-primary">

@@ -59,21 +59,27 @@ const Teams = () => {
             <button
               onClick={() => setShowSearch(!showSearch)}
               className={`${
-                showSearch ? "rounded-l-lg" : "rounded-lg"
+                showSearch
+                  ? "rounded-l-lg text-primary"
+                  : "rounded-lg text-gray"
               } flex justify-center duration-300 items-center px-3 h-[32px] bg-blackSecond`}
             >
               <FiSearch />
             </button>
-            <input
-              className={`${
-                showSearch ? "w-full" : "w-0"
-              } bg-[#3F3F3F] duration-300 rounded-r w-full" type="text`}
-            />
+            <div className="relative h-[32px] w-full duration-300">
+              <input
+                className={`${
+                  showSearch ? "w-full px-3" : "w-0 px-0"
+                } bg-blackSecond h-full text-xs text-gray border-none placeholder:text-gray duration-300 rounded-r w-full focus:shadow-none focus:ring-0`}
+                type="search"
+                placeholder="Enter user name to search..."
+              />
+            </div>
           </div>
           {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
             <Link
               to="/add-team"
-              className="px-5 flex items-center justify-center bg-blackSecond rounded-lg"
+              className="px-5 flex items-center justify-center bg-blackSecond text-gray rounded-lg"
             >
               <FiUserPlus />
             </Link>
