@@ -68,7 +68,7 @@ export const usersApi = createApi({
     }),
     userLogout: build.mutation({
       query: () => ({
-        url: "/users/logout",
+        url: "/auth/logout",
         method: "POST",
         headers: {
           "content-type": "application/json",

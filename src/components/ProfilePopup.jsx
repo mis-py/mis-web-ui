@@ -70,7 +70,6 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
         <button
           onClick={handleLogOut}
           className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
-          to="/profile"
         >
           <div className="duration-300 group-hover:text-primary">
             <FiLogOut />
