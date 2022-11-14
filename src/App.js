@@ -13,6 +13,7 @@ import Singin from "./pages/Singin";
 import Home from "./pages/Home";
 import Users from "./pages/users/index";
 import AddUser from "./pages/users/AddUser";
+import AddUserPermissions from "./pages/users/AddUserPermissions";
 import EditUser from "./pages/users/EditUser";
 import ProfileUser from "./pages/users/ProfileUser";
 import SettingsUser from "./pages/users/SettingsUser";
@@ -72,6 +73,10 @@ function App() {
                   <Route index element={<Home />} />
                   <Route path="/users" element={<Users />} />
                   <Route path="/add-user" element={<AddUser />} />
+                  <Route
+                    path="/manage-permissions"
+                    element={<AddUserPermissions />}
+                  />
                   <Route path="/users/:id" element={<EditUser />} />
                   <Route path="/profile/:id" element={<ProfileUser />} />
                   <Route path="/settings/:id" element={<SettingsUser />} />

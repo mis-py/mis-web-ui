@@ -7,6 +7,7 @@ import { useGetPermissionsUserIdQuery } from "../../redux";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const customStyles = {
   option: (provided, state) => ({
@@ -37,6 +38,7 @@ const customStyles = {
   input: (provided) => ({
     ...provided,
     color: "#757575",
+    boxShadow: "none",
   }),
 };
 
@@ -100,10 +102,11 @@ const AddUser = () => {
           <label className="flex flex-col gap-1 mb-4" htmlFor="username">
             Username
             <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none"
+              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
               type="text"
               id="username"
               placeholder="Enter a name"
+              autoComplete="off"
               value={formValue.username}
               onChange={(e) =>
                 setFormValue({ ...formValue, username: e.target.value })
@@ -114,22 +117,25 @@ const AddUser = () => {
           <label className="flex flex-col gap-1 mb-4" htmlFor="password">
             Password
             <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none"
+              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
               type="password"
               id="password"
               placeholder="Enter a password"
+              autoComplete="off"
               value={formValue.password}
               onChange={(e) =>
                 setFormValue({ ...formValue, password: e.target.value })
               }
             />
           </label>
-          <label htmlFor="team">
+
+          <label className="flex flex-col gap-1 mb-4" htmlFor="team">
             Team
             <Select
               options={options}
               styles={customStyles}
               placeholder="The team is not selected"
+              id="team"
               onChange={(choice) =>
                 setFormValue({
                   ...formValue,
@@ -138,11 +144,28 @@ const AddUser = () => {
               }
             />
           </label>
+
+          <label className="flex flex-col gap-1 mb-4" htmlFor="job-position">
+            Job position
+            <input
+              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
+              type="text"
+              id="job-position"
+              placeholder="Enter position"
+              autoComplete="off"
+            />
+          </label>
         </form>
       </div>
-      <button onClick={handleAddUser} className="btn-primary">
-        Add user
-      </button>
+      <div className="flex flex-col gap-4">
+        <button onClick={() => navigate("/manage-permissions")} className="flex justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg">
+          Permissions
+          <AiOutlinePlusCircle className="text-xl" />
+        </button>
+        <button onClick={handleAddUser} className="btn-primary">
+          Add user
+        </button>
+      </div>
     </div>
   );
 };

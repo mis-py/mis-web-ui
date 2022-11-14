@@ -120,9 +120,10 @@ const EditUser = () => {
           <label className="flex flex-col gap-1 mb-4" htmlFor="username">
             Username
             <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none"
+              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
               type="text"
               id="username"
+              autoComplete="off"
               value={formValue.username}
               readOnly
             />
@@ -131,10 +132,11 @@ const EditUser = () => {
           <label className="flex flex-col gap-1 mb-4" htmlFor="new-password">
             Password
             <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none"
+              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
               type="password"
               id="new-password"
               placeholder="Enter a password"
+              autoComplete="off"
               value={formValue.password}
               onChange={(e) =>
                 setFormValue({ ...formValue, password: e.target.value })
@@ -158,25 +160,6 @@ const EditUser = () => {
               }}
             />
           </label>
-          <div
-            className={`${
-              showPermissions ? "opacity-100 visible" : "opacity-0 invisible"
-            } flex flex-col duration-300`}
-          >
-            <h2 className="mt-5 text-2xl">Core:</h2>
-            <div className="flex flex-wrap mt-3 gap-3">
-              <label className="w-full flex items-center" htmlFor="scope">
-                Superuser permissions
-                <input
-                  className="ml-1 w-[40px] h-[25px]"
-                  id="scope"
-                  type="checkbox"
-                  checked={core}
-                  onChange={() => setCore(!core)}
-                />
-              </label>
-            </div>
-          </div>
         </form>
       </div>
 
