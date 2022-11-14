@@ -8,9 +8,9 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
   const navigate = useNavigate();
   const [userLogout] = useUserLogoutMutation();
 
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
+  // const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
+  //   localStorage.getItem("user_id")
+  // );
 
   const handleClickOutside = () => {
     setUserPopup(false);
@@ -41,11 +41,7 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
       <ul>
         <div
           onClick={() =>
-            navigate(
-              `/profile/${
-                getPermissionsUserId && getPermissionsUserId[0].user.id
-              }`
-            )
+            navigate(`/profile/${localStorage.getItem("user_id")}`)
           }
           className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
         >
@@ -56,9 +52,11 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
             Profile
           </h3>
         </div>
-        <Link
+        <button
+          onClick={() =>
+            navigate(`/settings/${localStorage.getItem("user_id")}`)
+          }
           className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
-          to="/settings"
         >
           <div className="duration-300 group-hover:text-primary">
             <FiSettings />
@@ -66,7 +64,7 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
           <h3 className="py-3 duration-300 group-hover:text-primary">
             Settings
           </h3>
-        </Link>
+        </button>
         <button
           onClick={handleLogOut}
           className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"

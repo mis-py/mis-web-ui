@@ -15,6 +15,7 @@ import Users from "./pages/users/index";
 import AddUser from "./pages/users/AddUser";
 import EditUser from "./pages/users/EditUser";
 import ProfileUser from "./pages/users/ProfileUser";
+import SettingsUser from "./pages/users/SettingsUser";
 import Teams from "./pages/teams/index";
 import AddTeam from "./pages/teams/AddTeam";
 import EditTeam from "./pages/teams/EditTeam";
@@ -73,6 +74,7 @@ function App() {
                   <Route path="/add-user" element={<AddUser />} />
                   <Route path="/users/:id" element={<EditUser />} />
                   <Route path="/profile/:id" element={<ProfileUser />} />
+                  <Route path="/settings/:id" element={<SettingsUser />} />
                   <Route path="/teams" element={<Teams />} />
                   <Route path="/add-team" element={<AddTeam />} />
                   <Route path="/teams/:id" element={<EditTeam />} />

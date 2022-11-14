@@ -31,7 +31,7 @@ const Singin = () => {
   const onSubmit = (data) => {
     axios({
       method: "post",
-      url: "http://65.21.238.213:8000/users/token",
+      url: "http://localhost:8000/auth/token",
       data: qs.stringify(data),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
@@ -47,7 +47,7 @@ const Singin = () => {
           localStorage.setItem("user_name", user_name);
           axios({
             method: "get",
-            url: "http://65.21.238.213:8000/",
+            url: "http://localhost:8000/",
             headers: {
               Authorization: `Bearer ${localStorage.getItem("my-token")}`,
             },
@@ -95,6 +95,7 @@ const Singin = () => {
             type="text"
             id="username"
             placeholder="Enter your username"
+            autoComplete="off"
             {...register("username", {
               required: "Username is required",
             })}
@@ -115,6 +116,7 @@ const Singin = () => {
             type={showPassword}
             id="password"
             placeholder="Enter your password"
+            autoComplete="off"
             {...register("password", { required: "Password is required" })}
           />
           {errors.password && (

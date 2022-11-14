@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const permissionsApi = createApi({
   reducerPath: "permissionsApi",
   tagTypes: ["Permissions"],
-  baseQuery: fetchBaseQuery({ baseUrl: "http://65.21.238.213:8000" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000" }),
   endpoints: (build) => ({
     getPermissions: build.query({
       query: () => ({
@@ -38,7 +38,7 @@ export const permissionsApi = createApi({
     //   invalidatesTags: [{ type: "Users", id: "LIST" }],
     // }),
     editUserPermission: build.mutation({
-      query: (id, rest) => ({
+      query: ( id, rest ) => ({
         url: `/permissions/user/${id}`,
         method: "PUT",
         headers: {

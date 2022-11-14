@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const teamsApi = createApi({
   reducerPath: "teamsApi",
   tagTypes: ["Teams"],
-  baseQuery: fetchBaseQuery({ baseUrl: "http://65.21.238.213:8000" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000" }),
   endpoints: (build) => ({
     getTeams: build.query({
       query: () => ({

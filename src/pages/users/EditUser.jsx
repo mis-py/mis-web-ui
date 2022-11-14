@@ -52,9 +52,7 @@ const EditUser = () => {
     useGetTeamsQuery();
   const [editUser] = useEditUserMutation();
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(id);
-  const [editUserPermission] = useEditUserPermissionMutation(id);
-
-  console.log(getPermissionsUserId);
+  const [editUserPermission] = useEditUserPermissionMutation();
 
   const [showPermissions, setShowPermissions] = React.useState(false);
   const [core, setCore] = React.useState(false);
@@ -98,13 +96,13 @@ const EditUser = () => {
       team_id: formValue.team.id,
       new_password: formValue.password ? formValue.password : "",
     }).unwrap();
-    // if (core) {
-    //   await editUserPermission(id, ["core:sudo"]).unwrap();
-    // } else {
-    //   await editUserPermission(id, []).unwrap();
-    // }
+    if (core) {
+      await editUserPermission({ id, str: "core:sudo" }).unwrap();
+    } else {
+      await editUserPermission(id, []);
+    }
     navigate("/users");
-    toast.success("User updating");
+    toast.success("User updated");
   };
 
   return (

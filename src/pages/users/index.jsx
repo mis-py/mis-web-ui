@@ -86,7 +86,7 @@ const Users = () => {
               <input
                 className={`${
                   showSearch ? "w-full px-3" : "w-0 px-0"
-                } bg-blackSecond h-full text-xs text-gray placeholder:text-gray duration-300 rounded-r w-full focus-visible:!outline-none focus:!outline-none`}
+                } bg-blackSecond h-full text-xs text-gray border-none placeholder:text-gray duration-300 rounded-r w-full focus-visible:!outline-none focus:!outline-none`}
                 type="text"
                 placeholder="Enter user name to search..."
               />

@@ -25,5 +25,5 @@ module.exports = {
       transparent: "transparent",
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

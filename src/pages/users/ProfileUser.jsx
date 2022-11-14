@@ -24,7 +24,6 @@ const ProfileUser = () => {
 
   const [formValue, setFormValue] = React.useState({
     username: "",
-    password: "",
     team: {},
   });
 
@@ -32,7 +31,6 @@ const ProfileUser = () => {
     if (!isLoading) {
       setFormValue({
         username: getUserId.username,
-        password: "",
         team: {
           id: getUserId.team === null ? 0 : getUserId.team.id,
           name: getUserId.team === null ? "NO TEAM" : getUserId.team.name,
@@ -88,19 +86,6 @@ const ProfileUser = () => {
             />
           </label>
 
-          <label className="flex flex-col gap-1 mb-4" htmlFor="new-password">
-            Password
-            <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none"
-              type="password"
-              id="new-password"
-              placeholder="Enter a password"
-              value={formValue.password}
-              onChange={(e) =>
-                setFormValue({ ...formValue, password: e.target.value })
-              }
-            />
-          </label>
           <label htmlFor="team">
             Team
             <h3 className="body-2 text-gray mb-4">{formValue.team.name}</h3>
