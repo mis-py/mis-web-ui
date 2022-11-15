@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const permissionsApi = createApi({
   reducerPath: "permissionsApi",
   tagTypes: ["Permissions"],
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://crm.nullgravity.net/api" }),
   endpoints: (build) => ({
     getPermissions: build.query({
       query: () => ({
@@ -26,19 +26,8 @@ export const permissionsApi = createApi({
       }),
       providesTags: (result, error, id) => [{ type: "Permissions", id }],
     }),
-    //   query: (body) => ({
-    //     url: "/users/create",
-    //     method: "POST",
-    //     headers: {
-    //       "content-type": "application/json",
-    //       Authorization: `Bearer ${localStorage.getItem("my-token")}`,
-    //     },
-    //     body,
-    //   }),
-    //   invalidatesTags: [{ type: "Users", id: "LIST" }],
-    // }),
     editUserPermission: build.mutation({
-      query: ( id, rest ) => ({
+      query: (id, rest) => ({
         url: `/permissions/user/${id}`,
         method: "PUT",
         headers: {
@@ -49,17 +38,6 @@ export const permissionsApi = createApi({
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Permissions", id }],
     }),
-    // deleteUser: build.mutation({
-    //   query: (id) => ({
-    //     url: `/users/${id}`,
-    //     method: "DELETE",
-    //     headers: {
-    //       accept: "application/json",
-    //       Authorization: `Bearer ${localStorage.getItem("my-token")}`,
-    //     },
-    //   }),
-    //   invalidatesTags: [{ type: "Users", id: "LIST" }],
-    // }),
   }),
 });
 

@@ -15,6 +15,7 @@ import Users from "./pages/users/index";
 import AddUser from "./pages/users/AddUser";
 import AddUserPermissions from "./pages/users/AddUserPermissions";
 import EditUser from "./pages/users/EditUser";
+import EditUserPermissions from "./pages/users/EditUserPermissions";
 import ProfileUser from "./pages/users/ProfileUser";
 import SettingsUser from "./pages/users/SettingsUser";
 import Teams from "./pages/teams/index";
@@ -78,6 +79,10 @@ function App() {
                     element={<AddUserPermissions />}
                   />
                   <Route path="/users/:id" element={<EditUser />} />
+                  <Route
+                    path="/user/permissions/:id"
+                    element={<EditUserPermissions />}
+                  />
                   <Route path="/profile/:id" element={<ProfileUser />} />
                   <Route path="/settings/:id" element={<SettingsUser />} />
                   <Route path="/teams" element={<Teams />} />

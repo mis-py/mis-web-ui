@@ -31,7 +31,7 @@ const Singin = () => {
   const onSubmit = (data) => {
     axios({
       method: "post",
-      url: "http://localhost:8000/auth/token",
+      url: "https://crm.nullgravity.net/api/auth/token",
       data: qs.stringify(data),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
@@ -47,7 +47,7 @@ const Singin = () => {
           localStorage.setItem("user_name", user_name);
           axios({
             method: "get",
-            url: "http://localhost:8000/",
+            url: "https://crm.nullgravity.net/api/",
             headers: {
               Authorization: `Bearer ${localStorage.getItem("my-token")}`,
             },

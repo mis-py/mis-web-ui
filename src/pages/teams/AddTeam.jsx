@@ -101,6 +101,7 @@ const AddTeam = () => {
               type="text"
               id="name"
               placeholder="Enter a name"
+              autoComplete="off"
               value={formValue.team_name}
               onChange={(e) =>
                 setFormValue({ ...formValue, team_name: e.target.value })

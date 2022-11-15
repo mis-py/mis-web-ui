@@ -98,11 +98,8 @@ const ProfileUser = () => {
       </div>
       {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
         <div className="flex flex-col gap-4">
-          <button onClick={() => navigate("/users")} className="btn-primary">
-            Save
-          </button>
           <button onClick={handleDeleteUser} className="btn-danger">
-            Delete user
+            Delete my profile
           </button>
         </div>
       ) : (

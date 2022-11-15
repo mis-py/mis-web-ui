@@ -11,6 +11,7 @@ import {
 } from "../../redux";
 
 import { IoIosArrowBack } from "react-icons/io";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const customStyles = {
   option: (provided, state) => ({
@@ -54,7 +55,6 @@ const EditUser = () => {
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(id);
   const [editUserPermission] = useEditUserPermissionMutation();
 
-  const [showPermissions, setShowPermissions] = React.useState(false);
   const [core, setCore] = React.useState(false);
   const [formValue, setFormValue] = React.useState({
     username: "",
@@ -165,10 +165,11 @@ const EditUser = () => {
 
       <div className="flex flex-col gap-3">
         <button
-          onClick={() => setShowPermissions(!showPermissions)}
-          className="btn-primary bg-transparent border-2 border-primary text-primary hover:!bg-transparent focus:!bg-transparent active:!bg-transparent"
+          onClick={() => navigate(`/user/permissions/${id}`)}
+          className="flex justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
         >
-          Manage permissions {showPermissions ? "-" : "+"}
+          Permissions
+          <AiOutlinePlusCircle className="text-xl" />
         </button>
         <button onClick={handleEditUser} className="btn-primary">
           Save
