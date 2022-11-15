@@ -74,7 +74,7 @@ function App() {
                   <Route path="/users" element={<Users />} />
                   <Route path="/add-user" element={<AddUser />} />
                   <Route
-                    path="/manage-permissions"
+                    path="/add-user/permissions"
                     element={<AddUserPermissions />}
                   />
                   <Route path="/users/:id" element={<EditUser />} />
