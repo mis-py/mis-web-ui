@@ -7,7 +7,6 @@ import {
   useGetUserIdQuery,
   useGetTeamsQuery,
   useEditUserPermissionMutation,
-  useGetPermissionsUserIdQuery,
 } from "../../redux";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -52,7 +51,6 @@ const EditUser = () => {
   const { data: dataGetTeams = [], isLoading: loadingDataGetTeams } =
     useGetTeamsQuery();
   const [editUser] = useEditUserMutation();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(id);
   const [editUserPermission] = useEditUserPermissionMutation();
 
   const [core, setCore] = React.useState(false);
@@ -81,12 +79,6 @@ const EditUser = () => {
         },
       });
     }
-
-    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
-      setCore(false);
-    } else {
-      setCore(true);
-    }
   }, [isLoading, loadingDataGetTeams]);
 
   const handleEditUser = async (e) => {
@@ -96,11 +88,6 @@ const EditUser = () => {
       team_id: formValue.team.id,
       new_password: formValue.password ? formValue.password : "",
     }).unwrap();
-    if (core) {
-      await editUserPermission({ id, str: "core:sudo" }).unwrap();
-    } else {
-      await editUserPermission(id, []);
-    }
     navigate("/users");
     toast.success("User updated");
   };

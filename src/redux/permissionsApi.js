@@ -27,7 +27,7 @@ export const permissionsApi = createApi({
       providesTags: (result, error, id) => [{ type: "Permissions", id }],
     }),
     editUserPermission: build.mutation({
-      query: (id, rest) => ({
+      query: ({ id, rest }) => ({
         url: `/permissions/user/${id}`,
         method: "PUT",
         headers: {
@@ -35,6 +35,7 @@ export const permissionsApi = createApi({
           Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
         body: rest,
+        responseHandler: (response) => console.log(response),
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Permissions", id }],
     }),

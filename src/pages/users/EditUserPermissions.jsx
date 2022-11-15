@@ -3,7 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetPermissionsQuery,
   useGetPermissionsUserIdQuery,
+  useEditUserPermissionMutation,
 } from "../../redux";
+import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -14,6 +16,7 @@ const EditUserPermissions = () => {
   const [checkSuperUser, setCheckSuperUser] = React.useState(false);
   const { data: dataPermissions } = useGetPermissionsQuery();
   const { data: dataPermissionsUserId } = useGetPermissionsUserIdQuery(id);
+  // const [editUserPermission] = useEditUserPermissionMutation();
 
   React.useEffect(() => {
     if (dataPermissionsUserId && dataPermissionsUserId.length) {
@@ -23,7 +26,20 @@ const EditUserPermissions = () => {
     } else if (dataPermissionsUserId && !dataPermissionsUserId.length) {
       setCheckSuperUser(false);
     }
-  }, []);
+  }, [dataPermissionsUserId]);
+
+  const handleEditUserPermissions = async (e) => {
+    e.preventDefault();
+    // if (checkSuperUser) {
+    //   await editUserPermission({
+    //     id,
+    //     str: "sudo:core", /////// CORE:SUDO
+    //   }).unwrap();
+    // } else {
+    //   await editUserPermission({id, ...[]}).unwrap();
+    // }
+    toast.success("User rights changed");
+  };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -65,7 +81,9 @@ const EditUserPermissions = () => {
           </label>
         </form>
       </div>
-      <button className="btn-primary">Save</button>
+      <button onClick={handleEditUserPermissions} className="btn-primary">
+        Save
+      </button>
     </div>
   );
 };
