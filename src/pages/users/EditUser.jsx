@@ -6,7 +6,6 @@ import {
   useEditUserMutation,
   useGetUserIdQuery,
   useGetTeamsQuery,
-  useEditUserPermissionMutation,
 } from "../../redux";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -51,9 +50,7 @@ const EditUser = () => {
   const { data: dataGetTeams = [], isLoading: loadingDataGetTeams } =
     useGetTeamsQuery();
   const [editUser] = useEditUserMutation();
-  const [editUserPermission] = useEditUserPermissionMutation();
 
-  const [core, setCore] = React.useState(false);
   const [formValue, setFormValue] = React.useState({
     username: "",
     password: "",

@@ -30,12 +30,12 @@ export const permissionsApi = createApi({
       query: ({ id, rest }) => ({
         url: `/permissions/user/${id}`,
         method: "PUT",
+        credentials: "include",
         headers: {
           accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
         body: rest,
-        responseHandler: (response) => console.log(response),
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Permissions", id }],
     }),

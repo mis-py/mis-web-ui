@@ -13,31 +13,29 @@ import { FiSearch } from "react-icons/fi";
 const EditUserPermissions = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [checkSuperUser, setCheckSuperUser] = React.useState(false);
+  const [checked, setChecked] = React.useState([]);
   const { data: dataPermissions } = useGetPermissionsQuery();
   const { data: dataPermissionsUserId } = useGetPermissionsUserIdQuery(id);
-  // const [editUserPermission] = useEditUserPermissionMutation();
+  const [editUserPermission] = useEditUserPermissionMutation();
 
   React.useEffect(() => {
     if (dataPermissionsUserId && dataPermissionsUserId.length) {
-      if (dataPermissionsUserId[0].permission.scope === "core:sudo") {
-        setCheckSuperUser(true);
-      }
+      setChecked(
+        dataPermissionsUserId &&
+          dataPermissionsUserId.map((it) => it.permission.scope)
+      );
     } else if (dataPermissionsUserId && !dataPermissionsUserId.length) {
-      setCheckSuperUser(false);
+      setChecked(false);
     }
   }, [dataPermissionsUserId]);
 
   const handleEditUserPermissions = async (e) => {
     e.preventDefault();
-    // if (checkSuperUser) {
-    //   await editUserPermission({
-    //     id,
-    //     str: "sudo:core", /////// CORE:SUDO
-    //   }).unwrap();
-    // } else {
-    //   await editUserPermission({id, ...[]}).unwrap();
-    // }
+    if (checked) {
+      await editUserPermission({ id, rest: checked }).unwrap();
+    } else {
+      await editUserPermission({ id, rest: [] }).unwrap();
+    }
     toast.success("User rights changed");
   };
 
@@ -59,26 +57,45 @@ const EditUserPermissions = () => {
             <input
               className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
               type="search"
-              placeholder="Search ..."
+              placeholder="Search..."
             />
             <FiSearch className="w-12 text-gray" />
           </label>
 
-          <label
-            className="flex items-center gap-2 text-gray body-2"
-            htmlFor="check-1"
-          >
-            <input
-              type="checkbox"
-              name="checkbox-1"
-              id="check-1"
-              checked={checkSuperUser}
-              onChange={() => setCheckSuperUser(!checkSuperUser)}
-              className="bg-transparent body-2 cursor-pointer 
-      w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
-            />
-            {dataPermissions && dataPermissions.core[0].name}
-          </label>
+          <div className="flex flex-col gap-4">
+            {dataPermissions &&
+              dataPermissions.map((item, index) => (
+                <div key={item.id} className="flex flex-col">
+                  <label
+                    className="flex items-center gap-2 text-gray body-2"
+                    htmlFor={item.name}
+                  >
+                    <input
+                      type="checkbox"
+                      name={item.name}
+                      id={item.name}
+                      checked={
+                        !checked.length
+                          ? setChecked([""])
+                          : checked.includes(item.scope)
+                      }
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setChecked([...checked, item.scope]);
+                        } else {
+                          setChecked(
+                            checked.filter((obj) => obj !== item.scope)
+                          );
+                        }
+                      }}
+                      className="bg-transparent cursor-pointer 
+    w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
+                    />
+                    {item.name} ({item.scope})
+                  </label>
+                </div>
+              ))}
+          </div>
         </form>
       </div>
       <button onClick={handleEditUserPermissions} className="btn-primary">
