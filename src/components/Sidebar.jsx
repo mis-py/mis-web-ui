@@ -23,11 +23,11 @@ const Sidebar = ({ toggleDrawer }) => {
     //   title: "Using applications",
     //   url: "/using-applications",
     // },
-    // {
-    //   icon: <HiOutlineDesktopComputer />,
-    //   title: "WebCatalog",
-    //   url: "/webcatalog",
-    // },
+    {
+      icon: <HiOutlineDesktopComputer />,
+      title: "WebCatalog",
+      url: "/webcatalog",
+    },
   ];
 
   return (

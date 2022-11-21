@@ -81,6 +81,7 @@ const EditUser = () => {
               className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none"
               type="text"
               id="teamname"
+              autoComplete="off"
               value={formValue.name}
               onChange={(e) =>
                 setFormValue({ ...formValue, name: e.target.value })

@@ -13,7 +13,11 @@ const Webcatalog = () => {
 
   return (
     <>
-      <FilterBar showFilter={showFilter} setShowFilter={setShowFilter} setFilterGrid={setFilterGrid} />
+      <FilterBar
+        showFilter={showFilter}
+        setShowFilter={setShowFilter}
+        setFilterGrid={setFilterGrid}
+      />
       <div className="py-6">
         <div className="flex flex-col">
           <div className="flex justify-between gap-3 mb-5">
@@ -21,17 +25,22 @@ const Webcatalog = () => {
               <button
                 onClick={() => setShowSearch(!showSearch)}
                 className={`${
-                  showSearch ? "rounded-l-lg" : "rounded-lg"
+                  showSearch
+                    ? "rounded-l-lg text-primary"
+                    : "rounded-lg text-gray"
                 } flex justify-center duration-300 items-center px-3 h-[32px] bg-blackSecond`}
               >
                 <FiSearch />
               </button>
-              <input
-                className={`${
-                  showSearch ? "w-full px-3" : "w-0 px-0"
-                } bg-[#3F3F3F] duration-300 rounded-r w-full focus-visible:outline-none focus:outline-none`}
-                type="text"
-              />
+              <div className="relative h-[32px] w-full duration-300">
+                <input
+                  className={`${
+                    showSearch ? "w-full px-3" : "w-0 px-0"
+                  } bg-blackSecond h-full text-xs text-gray border-none placeholder:text-gray duration-300 rounded-r w-full focus:shadow-none focus:ring-0`}
+                  type="search"
+                  placeholder="Enter user name to search..."
+                />
+              </div>
             </div>
             <div
               onClick={() => setShowFilter(true)}
