@@ -9,41 +9,9 @@ import {
 } from "../../redux";
 
 import { IoIosArrowBack } from "react-icons/io";
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlus, AiOutlinePlusCircle } from "react-icons/ai";
 
 import IconUserImg from "../../assets/img/user.png";
-
-const customStyles = {
-  option: (provided, state) => ({
-    ...provided,
-    fontWeight: state.isSelected ? "bold" : "normal",
-    color: state.isSelected ? "#ffffff" : "#757575",
-    backgroundColor: state.isSelected ? "#1A69DF" : "#1d1d1d",
-    borderRadius: "4px",
-  }),
-  singleValue: (provided, state) => ({
-    ...provided,
-    color: "#757575",
-    backgroundColor: "#1d1d1d",
-  }),
-  control: (base, state) => ({
-    ...base,
-    background: "#1d1d1d",
-    color: "#757575",
-    borderColor: "none",
-    borderWidth: "0",
-    boxShadow: state.isFocused ? null : null,
-  }),
-  menu: (provided) => ({
-    ...provided,
-    padding: 10,
-    backgroundColor: "#1d1d1d",
-  }),
-  input: (provided) => ({
-    ...provided,
-    color: "#757575",
-  }),
-};
 
 const EditUser = () => {
   const { id } = useParams();
@@ -120,11 +88,6 @@ const EditUser = () => {
             />
           </label>
 
-          <button className="w-[177px] mb-5 btn-primary items-center bg-transparent border border-primary text-primary hover:text-white">
-            Add member
-            <AiOutlinePlus className="ml-2" />
-          </button>
-
           <div className="flex">
             {!isLoading &&
               getTeamId.users.map((item) => (
@@ -136,29 +99,26 @@ const EditUser = () => {
                 />
               ))}
           </div>
-
-          {/* <label htmlFor="team">
-            Team
-            <Select
-              options={options}
-              styles={customStyles}
-              value={{
-                label: formValue.team.name,
-                value: formValue.team.id,
-              }}
-              onChange={(choice) => {
-                setFormValue({
-                  ...formValue,
-                  team: { id: choice.value, name: choice.label },
-                });
-              }}
-            />
-          </label> */}
         </form>
       </div>
-      <button onClick={handleEditTeam} className="btn-primary">
-        Save
-      </button>
+      <div className="flex flex-col gap-3">
+        <div className="flex justify-between items-center gap-6">
+          <button
+            onClick={() => navigate(`/team/permissions/${id}`)}
+            className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
+          >
+            Permissions
+            <AiOutlinePlusCircle className="text-xl" />
+          </button>
+          <button className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg">
+            Members
+            <AiOutlinePlusCircle className="text-xl" />
+          </button>
+        </div>
+        <button onClick={handleEditTeam} className="btn-primary">
+          Save
+        </button>
+      </div>
     </div>
   );
 };

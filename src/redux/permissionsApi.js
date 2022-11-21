@@ -26,9 +26,32 @@ export const permissionsApi = createApi({
       }),
       providesTags: (result, error, id) => [{ type: "Permissions", id }],
     }),
+    getPermissionsTeamId: build.query({
+      query: (id) => ({
+        url: `/permissions/team/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
+      providesTags: (result, error, id) => [{ type: "Permissions", id }],
+    }),
     editUserPermission: build.mutation({
       query: ({ id, rest }) => ({
         url: `/permissions/user/${id}`,
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+        body: rest,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Permissions", id }],
+    }),
+    editTeamPermission: build.mutation({
+      query: ({ id, rest }) => ({
+        url: `/permissions/team/${id}`,
         method: "PUT",
         credentials: "include",
         headers: {
@@ -46,4 +69,6 @@ export const {
   useGetPermissionsQuery,
   useGetPermissionsUserIdQuery,
   useEditUserPermissionMutation,
+  useGetPermissionsTeamIdQuery,
+  useEditTeamPermissionMutation
 } = permissionsApi;

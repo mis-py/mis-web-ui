@@ -1,11 +1,18 @@
 import React from "react";
 import { toast } from "react-toastify";
-import { useGetTeamsQuery, useGetPermissionsUserIdQuery } from "../../redux";
+import { confirmAlert } from "react-confirm-alert";
+import {
+  useGetTeamsQuery,
+  useGetPermissionsUserIdQuery,
+  useDeleteTeamMutation,
+} from "../../redux";
 import { Link, useNavigate } from "react-router-dom";
 import useOutsideClick from "../../hooks/useOutsideClick";
-import { FiSearch, FiUserPlus } from "react-icons/fi";
+
+import { FiSearch } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { IoIosArrowDown } from "react-icons/io";
+import { AiOutlineUsergroupAdd } from "react-icons/ai";
 
 import UserImg from "../../assets/img/user.png";
 
@@ -19,6 +26,7 @@ const Teams = () => {
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
     localStorage.getItem("user_id")
   );
+  const [deleteTeam] = useDeleteTeamMutation();
 
   const [showSearch, setShowSearch] = React.useState(false);
   const [showTeamInfo, setShowTeamInfo] = React.useState(false);
@@ -43,12 +51,34 @@ const Teams = () => {
     }
     setShowTeamInfo(index);
   };
+
   const toggleEdit = (index) => {
     if (showEdit === index) {
       setShowEdit(false);
       return;
     }
     setShowEdit(index);
+  };
+
+  const handleDeleteTeam = async (id) => {
+    confirmAlert({
+      title: "Delete team",
+      message: "Are you sure you want to delete this team?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            await deleteTeam(id);
+            navigate("/teams");
+            toast.success("Team deleted");
+          },
+        },
+        {
+          label: "No",
+        },
+      ],
+      overlayClassName: "bg-blackSecond/70",
+    });
   };
 
   return (
@@ -81,7 +111,7 @@ const Teams = () => {
               to="/add-team"
               className="px-5 flex items-center justify-center bg-blackSecond text-gray rounded-lg"
             >
-              <FiUserPlus />
+              <AiOutlineUsergroupAdd />
             </Link>
           ) : (
             false
@@ -105,7 +135,7 @@ const Teams = () => {
                   } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-16`}
                 >
                   <Link
-                    className="px-5 py-1 block text-gray duration-300 hover:bg-blackSecond hover:text-primary"
+                    className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
                     to="/teams"
                   >
                     Granting privileges
@@ -113,13 +143,19 @@ const Teams = () => {
                   {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
                     <div
                       onClick={(e) => navigate(`/teams/${team.id}`)}
-                      className="px-5 py-1 block text-gray duration-300 hover:bg-blackSecond hover:text-primary"
+                      className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
                     >
                       Editing
                     </div>
                   ) : (
                     false
                   )}
+                  <div
+                    onClick={() => handleDeleteTeam(team.id)}
+                    className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                  >
+                    Remove
+                  </div>
                 </div>
                 <div className="flex justify-between items-center pb-2 border-b border-backGround">
                   <div className="flex flex-col">

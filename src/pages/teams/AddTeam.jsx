@@ -5,7 +5,7 @@ import { useAddTeamMutation, useGetPermissionsUserIdQuery } from "../../redux";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 import UserImg from "../../assets/img/user.png";
 
@@ -109,35 +109,6 @@ const AddTeam = () => {
             />
           </label>
 
-          <button className="w-[177px] mb-5 btn-primary items-center bg-transparent border border-primary text-primary hover:text-white">
-            Add member
-            <AiOutlinePlus className="ml-2" />
-          </button>
-
-          <div className="flex">
-            <img className="w-[29px] h-[29px] shadow" src={UserImg} alt="" />
-            <img
-              className="w-[29px] h-[29px] shadow -ml-1"
-              src={UserImg}
-              alt=""
-            />
-            <img
-              className="w-[29px] h-[29px] shadow -ml-1"
-              src={UserImg}
-              alt=""
-            />
-            <img
-              className="w-[29px] h-[29px] shadow -ml-1"
-              src={UserImg}
-              alt=""
-            />
-            <img
-              className="w-[29px] h-[29px] shadow -ml-1"
-              src={UserImg}
-              alt=""
-            />
-          </div>
-
           {/* <label className="flex flex-col gap-1 mb-4" htmlFor="password">
             Password
             <input
@@ -167,9 +138,21 @@ const AddTeam = () => {
           </label> */}
         </form>
       </div>
-      <button onClick={handleAddUser} className="btn-primary">
-        Create a team
-      </button>
+      <div className="flex flex-col gap-3">
+        <div className="flex justify-between items-center gap-6">
+          <button className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg">
+            Permissions
+            <AiOutlinePlusCircle className="text-xl" />
+          </button>
+          <button className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg">
+            Members
+            <AiOutlinePlusCircle className="text-xl" />
+          </button>
+        </div>
+        <button onClick={handleAddUser} className="btn-primary">
+          Create a team
+        </button>
+      </div>
     </div>
   );
 };

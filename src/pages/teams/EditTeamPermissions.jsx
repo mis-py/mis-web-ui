@@ -2,41 +2,41 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetPermissionsQuery,
-  useGetPermissionsUserIdQuery,
-  useEditUserPermissionMutation,
+  useGetPermissionsTeamIdQuery,
+  useEditTeamPermissionMutation,
 } from "../../redux";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
-const EditUserPermissions = () => {
+const EditTeamPermissions = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [checked, setChecked] = React.useState([]);
   const { data: dataPermissions } = useGetPermissionsQuery();
-  const { data: dataPermissionsUserId } = useGetPermissionsUserIdQuery(id);
-  const [editUserPermission] = useEditUserPermissionMutation();
+  const { data: dataPermissionsTeamId } = useGetPermissionsTeamIdQuery(id);
+  const [editTeamPermission] = useEditTeamPermissionMutation();
 
   React.useEffect(() => {
-    if (dataPermissionsUserId && dataPermissionsUserId.length) {
+    if (dataPermissionsTeamId && dataPermissionsTeamId.length) {
       setChecked(
-        dataPermissionsUserId &&
-          dataPermissionsUserId.map((it) => it.permission.scope)
+        dataPermissionsTeamId &&
+          dataPermissionsTeamId.map((it) => it.permission.scope)
       );
-    } else if (dataPermissionsUserId && !dataPermissionsUserId.length) {
+    } else if (dataPermissionsTeamId && !dataPermissionsTeamId.length) {
       setChecked(false);
     }
-  }, [dataPermissionsUserId]);
+  }, [dataPermissionsTeamId]);
 
-  const handleEditUserPermissions = async (e) => {
+  const handleEditTeamPermissions = async (e) => {
     e.preventDefault();
     if (checked) {
-      await editUserPermission({ id, rest: checked }).unwrap();
+      await editTeamPermission({ id, rest: checked }).unwrap();
     } else {
-      await editUserPermission({ id, rest: [] }).unwrap();
+      await editTeamPermission({ id, rest: [] }).unwrap();
     }
-    toast.success("User rights changed");
+    toast.success("Team rights changed");
   };
 
   return (
@@ -99,11 +99,11 @@ const EditUserPermissions = () => {
           </div>
         </form>
       </div>
-      <button onClick={handleEditUserPermissions} className="btn-primary">
+      <button onClick={handleEditTeamPermissions} className="btn-primary">
         Save
       </button>
     </div>
   );
 };
 
-export default EditUserPermissions;
+export default EditTeamPermissions;
