@@ -22,6 +22,7 @@ import Teams from "./pages/teams/index";
 import AddTeam from "./pages/teams/AddTeam";
 import EditTeam from "./pages/teams/EditTeam";
 import EditTeamPermissions from "./pages/teams/EditTeamPermissions";
+import AddTeamMembers from "./pages/teams/AddTeamMembers";
 import Applications from "./pages/applications/index";
 import UsingApplications from "./pages/usingApplications/index";
 import Webcatalog from "./pages/webcatalog/index";
@@ -92,6 +93,10 @@ function App() {
                   <Route
                     path="/team/permissions/:id"
                     element={<EditTeamPermissions />}
+                  />
+                  <Route
+                    path="/add-team/members"
+                    element={<AddTeamMembers />}
                   />
                   <Route path="/applications" element={<Applications />} />
                   <Route

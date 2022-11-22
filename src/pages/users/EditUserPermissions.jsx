@@ -14,7 +14,8 @@ const EditUserPermissions = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [checked, setChecked] = React.useState([]);
-  const { data: dataPermissions } = useGetPermissionsQuery();
+  const { data: dataPermissions, isLoading: loadingDataPermissions } =
+    useGetPermissionsQuery();
   const { data: dataPermissionsUserId } = useGetPermissionsUserIdQuery(id);
   const [editUserPermission] = useEditUserPermissionMutation();
 
@@ -62,41 +63,45 @@ const EditUserPermissions = () => {
             <FiSearch className="w-12 text-gray" />
           </label>
 
-          <div className="flex flex-col gap-4">
-            {dataPermissions &&
-              dataPermissions.map((item) => (
-                <div key={item.id} className="flex flex-col">
-                  {item.app.name}
-                  <label
-                    className="flex items-center gap-2 text-gray body-2"
-                    htmlFor={item.name}
-                  >
-                    <input
-                      type="checkbox"
-                      name={item.name}
-                      id={item.name}
-                      checked={
-                        !checked.length
-                          ? setChecked([""])
-                          : checked.includes(item.scope)
-                      }
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setChecked([...checked, item.scope]);
-                        } else {
-                          setChecked(
-                            checked.filter((obj) => obj !== item.scope)
-                          );
+          {loadingDataPermissions ? (
+            <h2 className="text-2xl text-center">Loading...</h2>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {dataPermissions &&
+                dataPermissions.map((item) => (
+                  <div key={item.id} className="flex flex-col">
+                    {item.app.name}
+                    <label
+                      className="flex items-center gap-2 text-gray body-2"
+                      htmlFor={item.name}
+                    >
+                      <input
+                        type="checkbox"
+                        name={item.name}
+                        id={item.name}
+                        checked={
+                          !checked.length
+                            ? setChecked([""])
+                            : checked.includes(item.scope)
                         }
-                      }}
-                      className="bg-transparent cursor-pointer 
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setChecked([...checked, item.scope]);
+                          } else {
+                            setChecked(
+                              checked.filter((obj) => obj !== item.scope)
+                            );
+                          }
+                        }}
+                        className="bg-transparent cursor-pointer 
     w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
-                    />
-                    {item.name} ({item.scope})
-                  </label>
-                </div>
-              ))}
-          </div>
+                      />
+                      {item.name} ({item.scope})
+                    </label>
+                  </div>
+                ))}
+            </div>
+          )}
         </form>
       </div>
       <button onClick={handleEditUserPermissions} className="btn-primary">

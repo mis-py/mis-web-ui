@@ -5,6 +5,7 @@ import { permissionsApi } from "./permissionsApi";
 import { appsApi } from "./appsApi";
 
 import addUserPermissionsSlice from "./slices/addUserPermissionsSlice";
+import addTeamMembersSlice from "./slices/addTeamMembersSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     [appsApi.reducerPath]: appsApi.reducer,
 
     addUserPermissions: addUserPermissionsSlice,
+    addTeamMembers: addTeamMembersSlice,
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware({}).concat([

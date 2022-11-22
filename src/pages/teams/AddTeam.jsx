@@ -1,48 +1,15 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import Select from "react-select";
 import { useAddTeamMutation, useGetPermissionsUserIdQuery } from "../../redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
-import UserImg from "../../assets/img/user.png";
-
-// const customStyles = {
-//   option: (provided, state) => ({
-//     ...provided,
-//     fontWeight: state.isSelected ? "bold" : "normal",
-//     color: state.isSelected ? "#ffffff" : "#757575",
-//     backgroundColor: state.isSelected ? "#1A69DF" : "#1d1d1d",
-//     borderRadius: "4px",
-//   }),
-//   singleValue: (provided, state) => ({
-//     ...provided,
-//     color: "#757575",
-//     backgroundColor: "#1d1d1d",
-//   }),
-//   control: (base, state) => ({
-//     ...base,
-//     background: "#1d1d1d",
-//     color: "#757575",
-//     borderColor: "none",
-//     borderWidth: "0",
-//     boxShadow: state.isFocused ? null : null,
-//   }),
-//   menu: (provided) => ({
-//     ...provided,
-//     padding: 10,
-//     backgroundColor: "#1d1d1d",
-//   }),
-//   input: (provided) => ({
-//     ...provided,
-//     color: "#757575",
-//   }),
-// };
-
 const AddTeam = () => {
   const navigate = useNavigate();
+  const members = useSelector((state) => state.addTeamMembers.members);
   const [addTeam, { error: errorAddTeam }] = useAddTeamMutation();
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
     localStorage.getItem("user_id")
@@ -51,15 +18,8 @@ const AddTeam = () => {
   const [formValue, setFormValue] = React.useState({
     team_name: "",
     permissions: [],
+    users_ids: [],
   });
-
-  // const options = dataGetTeams.map((item, index) => {
-  //   return {
-  //     value: item.id,
-  //     label: item.name,
-  //     id: index + 1,
-  //   };
-  // });
 
   React.useEffect(() => {
     if (getPermissionsUserId && getPermissionsUserId.length === 0) {
@@ -75,6 +35,7 @@ const AddTeam = () => {
       } else {
         await addTeam({
           ...formValue,
+          users_ids: members,
         }).unwrap();
         navigate("/teams");
         toast.success("Added new team");
@@ -108,34 +69,6 @@ const AddTeam = () => {
               }
             />
           </label>
-
-          {/* <label className="flex flex-col gap-1 mb-4" htmlFor="password">
-            Password
-            <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none"
-              type="password"
-              id="password"
-              placeholder="Enter a password"
-              value={formValue.password}
-              onChange={(e) =>
-                setFormValue({ ...formValue, password: e.target.value })
-              }
-            />
-          </label> */}
-          {/* <label htmlFor="team">
-            Team
-            <Select
-              options={options}
-              styles={customStyles}
-              placeholder="The team is not selected"
-              onChange={(choice) =>
-                setFormValue({
-                  ...formValue,
-                  team_id: choice.value,
-                })
-              }
-            />
-          </label> */}
         </form>
       </div>
       <div className="flex flex-col gap-3">
@@ -144,8 +77,11 @@ const AddTeam = () => {
             Permissions
             <AiOutlinePlusCircle className="text-xl" />
           </button>
-          <button className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg">
-            Members
+          <button
+            onClick={() => navigate(`/add-team/members`)}
+            className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
+          >
+            Members ({members.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
         </div>

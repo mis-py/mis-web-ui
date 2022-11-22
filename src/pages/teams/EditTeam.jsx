@@ -111,7 +111,7 @@ const EditUser = () => {
             Permissions
             <AiOutlinePlusCircle className="text-xl" />
           </button>
-          <button className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg">
+          <button  onClick={() => navigate(`/team/members`)} className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg">
             Members
             <AiOutlinePlusCircle className="text-xl" />
           </button>
