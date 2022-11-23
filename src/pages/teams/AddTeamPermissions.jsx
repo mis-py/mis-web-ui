@@ -1,44 +1,32 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import {
-  useGetPermissionsQuery,
-  useGetPermissionsTeamIdQuery,
-  useEditTeamPermissionMutation,
-} from "../../redux";
-import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useGetPermissionsQuery } from "../../redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addPermissions } from "../../redux/slices/addTeamPermissionsSlice";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
 const AddTeamPermissions = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const dispatch = useDispatch();
   const [checked, setChecked] = React.useState([]);
+  const permissions = useSelector(
+    (state) => state.addTeamPermissions.permissions
+  );
   const { data: dataPermissions, isLoading: loadingDataPermissions } =
     useGetPermissionsQuery();
-  const { data: dataPermissionsTeamId } = useGetPermissionsTeamIdQuery(id);
-  const [editTeamPermission] = useEditTeamPermissionMutation();
+
+  const handleAddPermissions = () => {
+    dispatch(addPermissions(checked.filter((n) => n !== "")));
+    navigate(-1);
+  };
 
   React.useEffect(() => {
-    if (dataPermissionsTeamId && dataPermissionsTeamId.length) {
-      setChecked(
-        dataPermissionsTeamId &&
-          dataPermissionsTeamId.map((it) => it.permission.scope)
-      );
-    } else if (dataPermissionsTeamId && !dataPermissionsTeamId.length) {
-      setChecked(false);
+    if (permissions.length) {
+      setChecked(permissions);
     }
-  }, [dataPermissionsTeamId]);
-
-  const handleEditTeamPermissions = async (e) => {
-    e.preventDefault();
-    if (checked) {
-      await editTeamPermission({ id, rest: checked }).unwrap();
-    } else {
-      await editTeamPermission({ id, rest: [] }).unwrap();
-    }
-    toast.success("Team rights changed");
-  };
+  }, []);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -104,7 +92,7 @@ const AddTeamPermissions = () => {
           )}
         </form>
       </div>
-      <button onClick={handleEditTeamPermissions} className="btn-primary">
+      <button onClick={handleAddPermissions} className="btn-primary">
         Save
       </button>
     </div>

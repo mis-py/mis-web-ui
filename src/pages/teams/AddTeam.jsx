@@ -1,7 +1,9 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAddTeamMutation, useGetPermissionsUserIdQuery } from "../../redux";
-import { useSelector } from "react-redux";
+import { deletePermissions } from "../../redux/slices/addTeamPermissionsSlice";
+import { deleteMembersAll } from "../../redux/slices/addTeamMembersSlice";
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -9,7 +11,11 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const AddTeam = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const members = useSelector((state) => state.addTeamMembers.members);
+  const permissions = useSelector(
+    (state) => state.addTeamPermissions.permissions
+  );
   const [addTeam, { error: errorAddTeam }] = useAddTeamMutation();
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
     localStorage.getItem("user_id")
@@ -36,8 +42,11 @@ const AddTeam = () => {
         await addTeam({
           ...formValue,
           users_ids: members,
+          permissions: permissions,
         }).unwrap();
         navigate("/teams");
+        dispatch(deletePermissions());
+        dispatch(deleteMembersAll());
         toast.success("Added new team");
       }
     }
@@ -77,7 +86,7 @@ const AddTeam = () => {
             onClick={() => navigate(`/add-team/permissions`)}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Permissions
+            Permissions ({permissions.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
           <button
