@@ -11,9 +11,15 @@ export const addTeamMembersSlice = createSlice({
     addMembers: (state, action) => {
       state.members.push(action.payload);
     },
+    deleteMembers: (state, action) => {
+      let myIndex = state.members.indexOf(action.payload);
+      if (myIndex !== -1) {
+        state.members.splice(myIndex, 1);
+      }
+    },
   },
 });
 
-export const { addMembers } = addTeamMembersSlice.actions;
+export const { addMembers, deleteMembers } = addTeamMembersSlice.actions;
 
 export default addTeamMembersSlice.reducer;

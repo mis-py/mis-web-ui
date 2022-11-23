@@ -42,7 +42,7 @@ const Users = () => {
     if (errorGetUsers) {
       toast.error("No users found");
     }
-  }, [errorGetUsers, serchValue]);
+  }, [dataGetUsers, errorGetUsers, serchValue]);
 
   const toggleEdit = (index) => {
     if (showEdit === index) {

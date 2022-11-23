@@ -2,7 +2,10 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetUsersQuery } from "../../redux";
 import { useDispatch, useSelector } from "react-redux";
-import { addMembers } from "../../redux/slices/addTeamMembersSlice";
+import {
+  addMembers,
+  deleteMembers,
+} from "../../redux/slices/addTeamMembersSlice";
 // import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -19,10 +22,12 @@ const AddTeamMembers = () => {
   const { data: getDataUsers, isLoading: loadingDataUsers } =
     useGetUsersQuery();
 
-  console.log(members);
-
   const handleAddMembers = (id) => {
-    dispatch(addMembers(id));
+    if (!members.includes(id)) {
+      dispatch(addMembers(id));
+    } else {
+      dispatch(deleteMembers(id));
+    }
   };
 
   return (
@@ -73,7 +78,7 @@ const AddTeamMembers = () => {
                       className="absolute right-3 top-1/2 -translate-y-1/2"
                     >
                       {members.includes(user.id) ? (
-                        <AiOutlineCloseCircle className="text-gray text-2xl" />
+                        <AiOutlineCloseCircle className="text-danger text-2xl" />
                       ) : (
                         <AiOutlineCheckCircle className="text-gray text-2xl" />
                       )}
@@ -108,7 +113,10 @@ const AddTeamMembers = () => {
         )}
       </div>
       <div className="flex fixed w-full h-[80px] bottom-0 bg-backGround">
-        <button className="btn-primary absolute z-20 left-0 bottom-6 w-[calc(100%_-_40px)]">
+        <button
+          onClick={() => navigate(-1)}
+          className="btn-primary absolute z-20 left-0 bottom-6 w-[calc(100%_-_40px)]"
+        >
           Save
         </button>
       </div>

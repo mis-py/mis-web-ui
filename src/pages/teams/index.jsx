@@ -43,7 +43,7 @@ const Teams = () => {
     if (errorGetTeams) {
       toast.error("Teams not found");
     }
-  }, [errorGetTeams]);
+  }, [dataGetTeams, errorGetTeams]);
 
   const toggle = (index) => {
     if (showTeamInfo === index) {

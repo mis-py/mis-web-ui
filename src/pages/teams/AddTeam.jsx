@@ -73,7 +73,10 @@ const AddTeam = () => {
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex justify-between items-center gap-6">
-          <button className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg">
+          <button
+            onClick={() => navigate(`/add-team/permissions`)}
+            className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
+          >
             Permissions
             <AiOutlinePlusCircle className="text-xl" />
           </button>
