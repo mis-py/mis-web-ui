@@ -1,12 +1,12 @@
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-// import Select from "react-select";
 import { toast } from "react-toastify";
 import {
   useEditTeamMutation,
   useGetTeamIdQuery,
   useGetPermissionsUserIdQuery,
 } from "../../redux";
+import { useSelector } from "react-redux";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlus, AiOutlinePlusCircle } from "react-icons/ai";
@@ -16,6 +16,9 @@ import IconUserImg from "../../assets/img/user.png";
 const EditUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const permissions = useSelector(
+    (state) => state.editTeamPermissions.permissions
+  );
   const { data: getTeamId, isLoading } = useGetTeamIdQuery(id);
   const [editTeam] = useEditTeamMutation();
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
@@ -23,7 +26,9 @@ const EditUser = () => {
   );
 
   const [formValue, setFormValue] = React.useState({
-    name: "",
+    team_name: "",
+    permissions: [],
+    users_ids: [],
   });
 
   // const options = dataGetTeams.map((item, index) => {
@@ -41,7 +46,9 @@ const EditUser = () => {
 
     if (!isLoading) {
       setFormValue({
-        name: getTeamId.name,
+        team_name: getTeamId.name,
+        permissions: permissions,
+        users_ids: [],
       });
     }
   }, [isLoading]);
@@ -82,7 +89,7 @@ const EditUser = () => {
               type="text"
               id="teamname"
               autoComplete="off"
-              value={formValue.name}
+              value={formValue.team_name}
               onChange={(e) =>
                 setFormValue({ ...formValue, name: e.target.value })
               }
@@ -105,13 +112,16 @@ const EditUser = () => {
       <div className="flex flex-col gap-3">
         <div className="flex justify-between items-center gap-6">
           <button
-            onClick={() => navigate(`/team/permissions/${id}`)}
+            onClick={() => navigate(`/team/permissions`)}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
             Permissions
             <AiOutlinePlusCircle className="text-xl" />
           </button>
-          <button  onClick={() => navigate(`/team/members`)} className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg">
+          <button
+            onClick={() => navigate(`/team/members`)}
+            className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
+          >
             Members
             <AiOutlinePlusCircle className="text-xl" />
           </button>
