@@ -63,51 +63,58 @@ const EditTeamMembers = () => {
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
             {getDataUsers &&
-              getDataUsers.map((user) =>
-                user.team === null || user.team.name === getDataTeamId.name ? (
-                  <div
-                    key={user.id}
-                    className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
-                  >
-                    <button
-                      onClick={() => handleAddMembers(user.id)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
+              getDataUsers
+                .filter((el) =>
+                  el.username
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase().trim())
+                )
+                .map((user) =>
+                  user.team === null ||
+                  user.team.name === getDataTeamId.name ? (
+                    <div
+                      key={user.id}
+                      className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
                     >
-                      {members.includes(user.id) ? (
-                        <AiOutlineCloseCircle className="text-danger text-2xl" />
-                      ) : (
-                        <AiOutlineCheckCircle className="text-gray text-2xl" />
-                      )}
-                    </button>
-                    <div className="flex justify-between items-center lg:border-none lg:pb-0">
-                      <div className="lg:flex lg:items-center">
-                        <div className="flex flex-col lg:pr-[40px] lg:border-r lg:border-gray">
-                          <div className="flex items-center gap-4">
-                            <img
-                              className="w-[56px] h-[56px]"
-                              src={UserImg}
-                              alt=""
-                            />
-                            <div className="flex flex-col">
-                              <h5 className="text-white mb-[10px]">
-                                {user.username}
-                              </h5>
-                              <h4 className={`text-xs mb-[6px] text-gray`}>
-                                Position
-                              </h4>
-                              <h4 className="text-gray text-xs">
-                                Added: 10.10.2000
-                              </h4>
+                      <button
+                        onClick={() => handleAddMembers(user.id)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                      >
+                        {members.includes(user.id) ? (
+                          <AiOutlineCloseCircle className="text-danger text-2xl" />
+                        ) : (
+                          <AiOutlineCheckCircle className="text-gray text-2xl" />
+                        )}
+                      </button>
+                      <div className="flex justify-between items-center lg:border-none lg:pb-0">
+                        <div className="lg:flex lg:items-center">
+                          <div className="flex flex-col lg:pr-[40px] lg:border-r lg:border-gray">
+                            <div className="flex items-center gap-4">
+                              <img
+                                className="w-[56px] h-[56px]"
+                                src={UserImg}
+                                alt=""
+                              />
+                              <div className="flex flex-col">
+                                <h5 className="text-white mb-[10px]">
+                                  {user.username}
+                                </h5>
+                                <h4 className={`text-xs mb-[6px] text-gray`}>
+                                  Position
+                                </h4>
+                                <h4 className="text-gray text-xs">
+                                  Added: 10.10.2000
+                                </h4>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  false
-                )
-              )}
+                  ) : (
+                    false
+                  )
+                )}
           </div>
         )}
       </div>
