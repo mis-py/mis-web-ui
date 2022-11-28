@@ -22,7 +22,7 @@ const AddTeam = () => {
   );
 
   const [formValue, setFormValue] = React.useState({
-    team_name: "",
+    name: "",
     permissions: [],
     users_ids: [],
   });
@@ -37,12 +37,12 @@ const AddTeam = () => {
     e.preventDefault();
     if (!errorAddTeam) {
       if (formValue.username < 1) {
-        toast.error("name min 2");
+        toast.error("Name min 2");
       } else {
         await addTeam({
           ...formValue,
-          users_ids: members,
           permissions: permissions,
+          users_ids: members,
         }).unwrap();
         navigate("/teams");
         dispatch(deletePermissions());
@@ -74,7 +74,7 @@ const AddTeam = () => {
               autoComplete="off"
               value={formValue.team_name}
               onChange={(e) =>
-                setFormValue({ ...formValue, team_name: e.target.value })
+                setFormValue({ ...formValue, name: e.target.value })
               }
             />
           </label>

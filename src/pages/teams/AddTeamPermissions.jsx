@@ -22,11 +22,11 @@ const AddTeamPermissions = () => {
     navigate(-1);
   };
 
-  React.useEffect(() => {
-    if (permissions.length) {
-      setChecked(permissions);
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (permissions.length) {
+  //     setChecked(permissions);
+  //   }
+  // }, []);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">

@@ -6,19 +6,22 @@ import {
   useGetTeamIdQuery,
   useGetPermissionsUserIdQuery,
 } from "../../redux";
-import { useSelector } from "react-redux";
+import { addMembers } from "../../redux/slices/editTeamMembersSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 import { IoIosArrowBack } from "react-icons/io";
-import { AiOutlinePlus, AiOutlinePlusCircle } from "react-icons/ai";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 import IconUserImg from "../../assets/img/user.png";
 
 const EditUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const permissions = useSelector(
     (state) => state.editTeamPermissions.permissions
   );
+  const members = useSelector((state) => state.editTeamMembers.members);
   const { data: getTeamId, isLoading } = useGetTeamIdQuery(id);
   const [editTeam] = useEditTeamMutation();
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
@@ -26,29 +29,26 @@ const EditUser = () => {
   );
 
   const [formValue, setFormValue] = React.useState({
-    team_name: "",
+    name: "",
     permissions: [],
     users_ids: [],
   });
 
-  // const options = dataGetTeams.map((item, index) => {
-  //   return {
-  //     value: item.id,
-  //     label: item.name,
-  //     id: index + 1,
-  //   };
-  // });
-
   React.useEffect(() => {
+    getTeamId &&
+      getTeamId.users.map((user) =>
+        !members.includes(user.id) ? dispatch(addMembers(user.id)) : "sad"
+      );
+
     if (getPermissionsUserId && getPermissionsUserId.length === 0) {
       navigate("/teams");
     }
 
     if (!isLoading) {
       setFormValue({
-        team_name: getTeamId.name,
+        name: getTeamId.name,
         permissions: permissions,
-        users_ids: [],
+        users_ids: members,
       });
     }
   }, [isLoading]);
@@ -57,18 +57,11 @@ const EditUser = () => {
     e.preventDefault();
     await editTeam({
       id,
-      name: formValue.name,
+      ...formValue,
     }).unwrap();
     navigate("/teams");
     toast.success("Team updating");
   };
-
-  // const handleDeletUser = async (e) => {
-  //   e.preventDefault();
-  //   await deletUser(id);
-  //   navigate("/");
-  //   toast.success("User DELETED");
-  // };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -89,7 +82,7 @@ const EditUser = () => {
               type="text"
               id="teamname"
               autoComplete="off"
-              value={formValue.team_name}
+              value={formValue.name}
               onChange={(e) =>
                 setFormValue({ ...formValue, name: e.target.value })
               }
@@ -115,14 +108,14 @@ const EditUser = () => {
             onClick={() => navigate(`/team/permissions`)}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Permissions
+            Permissions ({permissions.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
           <button
-            onClick={() => navigate(`/team/members`)}
+            onClick={() => navigate(`/team/members/${getTeamId.id}`)}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Members
+            Members ({members.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
         </div>

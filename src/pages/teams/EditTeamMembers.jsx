@@ -1,43 +1,35 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useGetTeamIdQuery, useGetUsersQuery } from "../../redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  useGetPermissionsQuery,
-  useGetPermissionsTeamIdQuery,
-  useEditTeamPermissionMutation,
-} from "../../redux";
-import { toast } from "react-toastify";
+  addMembers,
+  deleteMembers,
+} from "../../redux/slices/editTeamMembersSlice";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
+import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
+
+import UserImg from "../../assets/img/user.png";
 
 const EditTeamMembers = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { id } = useParams();
-  const [checked, setChecked] = React.useState([]);
-  const { data: dataPermissions, isLoading: loadingDataPermissions } =
-    useGetPermissionsQuery();
-  const { data: dataPermissionsTeamId } = useGetPermissionsTeamIdQuery(id);
-  const [editTeamPermission] = useEditTeamPermissionMutation();
+  const members = useSelector((state) => state.editTeamMembers.members);
+  const [searchValue, setSearchValue] = React.useState("");
+  const { data: getDataTeamId, isLoading: loadingDataTeamId } =
+    useGetTeamIdQuery(id);
+  const { data: getDataUsers, isLoading: loadingDataUsers } =
+    useGetUsersQuery();
 
-  React.useEffect(() => {
-    if (dataPermissionsTeamId && dataPermissionsTeamId.length) {
-      setChecked(
-        dataPermissionsTeamId &&
-          dataPermissionsTeamId.map((it) => it.permission.scope)
-      );
-    } else if (dataPermissionsTeamId && !dataPermissionsTeamId.length) {
-      setChecked(false);
-    }
-  }, [dataPermissionsTeamId]);
-
-  const handleEditTeamPermissions = async (e) => {
-    e.preventDefault();
-    if (checked) {
-      await editTeamPermission({ id, rest: checked }).unwrap();
+  const handleAddMembers = (id) => {
+    if (!members.includes(id)) {
+      dispatch(addMembers(id));
     } else {
-      await editTeamPermission({ id, rest: [] }).unwrap();
+      dispatch(deleteMembers(id));
     }
-    toast.success("Team rights changed");
   };
 
   return (
@@ -49,8 +41,9 @@ const EditTeamMembers = () => {
           </div>
           <div onClick={() => navigate(-1)}>back</div>
         </div>
-        <h3 className="h3 mt-5">Manage permissions</h3>
-        <form className="my-4">
+        <h3 className="h3 mt-5 mb-6">Manage members</h3>
+        <h3 className="mb-1">Search for member</h3>
+        <form>
           <label
             className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
             htmlFor="search"
@@ -59,14 +52,73 @@ const EditTeamMembers = () => {
               className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
               type="search"
               placeholder="Search..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
             <FiSearch className="w-12 text-gray" />
           </label>
         </form>
+        {loadingDataUsers ? (
+          <h2 className="text-2xl mx-auto">Loading...</h2>
+        ) : (
+          <div className="flex flex-col gap-4 pb-[80px]">
+            {getDataUsers &&
+              getDataUsers.map((user) =>
+                user.team === null || user.team.name === getDataTeamId.name ? (
+                  <div
+                    key={user.id}
+                    className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
+                  >
+                    <button
+                      onClick={() => handleAddMembers(user.id)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                    >
+                      {members.includes(user.id) ? (
+                        <AiOutlineCloseCircle className="text-danger text-2xl" />
+                      ) : (
+                        <AiOutlineCheckCircle className="text-gray text-2xl" />
+                      )}
+                    </button>
+                    <div className="flex justify-between items-center lg:border-none lg:pb-0">
+                      <div className="lg:flex lg:items-center">
+                        <div className="flex flex-col lg:pr-[40px] lg:border-r lg:border-gray">
+                          <div className="flex items-center gap-4">
+                            <img
+                              className="w-[56px] h-[56px]"
+                              src={UserImg}
+                              alt=""
+                            />
+                            <div className="flex flex-col">
+                              <h5 className="text-white mb-[10px]">
+                                {user.username}
+                              </h5>
+                              <h4 className={`text-xs mb-[6px] text-gray`}>
+                                Position
+                              </h4>
+                              <h4 className="text-gray text-xs">
+                                Added: 10.10.2000
+                              </h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  false
+                )
+              )}
+          </div>
+        )}
       </div>
-      <button onClick={handleEditTeamPermissions} className="btn-primary">
-        Save
-      </button>
+      <div className="flex fixed w-full h-[80px] bottom-0 bg-backGround">
+        <button
+          onClick={() => navigate(-1)}
+          className="btn-primary absolute z-20 left-0 bottom-6 w-[calc(100%_-_40px)]"
+        >
+          Save
+        </button>
+      </div>
     </div>
   );
 };

@@ -22,6 +22,7 @@ import Teams from "./pages/teams/index";
 import AddTeam from "./pages/teams/AddTeam";
 import EditTeam from "./pages/teams/EditTeam";
 import EditTeamPermissions from "./pages/teams/EditTeamPermissions";
+import EditTeamMembers from "./pages/teams/EditTeamMembers";
 import AddTeamMembers from "./pages/teams/AddTeamMembers";
 import AddTeamPermissions from "./pages/teams/AddTeamPermissions";
 import Applications from "./pages/applications/index";
@@ -95,6 +96,7 @@ function App() {
                     path="/team/permissions"
                     element={<EditTeamPermissions />}
                   />
+                  <Route path="/team/members/:id" element={<EditTeamMembers />} />
                   <Route
                     path="/add-team/members"
                     element={<AddTeamMembers />}
