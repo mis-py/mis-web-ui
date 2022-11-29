@@ -6,6 +6,7 @@ import {
   useEditUserMutation,
   useGetUserIdQuery,
   useGetTeamsQuery,
+  useGetPermissionsUserIdQuery,
 } from "../../redux";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -49,6 +50,7 @@ const EditUser = () => {
   const { data: getUserId, isLoading } = useGetUserIdQuery(id);
   const { data: dataGetTeams = [], isLoading: loadingDataGetTeams } =
     useGetTeamsQuery();
+  const { data: dataPermissionsUserId } = useGetPermissionsUserIdQuery(id);
   const [editUser] = useEditUserMutation();
 
   const [formValue, setFormValue] = React.useState({
@@ -152,7 +154,7 @@ const EditUser = () => {
           onClick={() => navigate(`/user/permissions/${id}`)}
           className="flex justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
         >
-          Permissions
+          Permissions ({dataPermissionsUserId && dataPermissionsUserId.length})
           <AiOutlinePlusCircle className="text-xl" />
         </button>
         <button onClick={handleEditUser} className="btn-primary">
