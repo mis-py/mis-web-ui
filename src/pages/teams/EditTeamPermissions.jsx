@@ -1,32 +1,46 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useGetPermissionsQuery } from "../../redux";
-import { useDispatch, useSelector } from "react-redux";
-import { addPermissions } from "../../redux/slices/editTeamPermissionsSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  useGetPermissionsQuery,
+  useGetPermissionsTeamIdQuery,
+  useEditTeamPermissionMutation,
+} from "../../redux";
+import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
 const EditTeamPermissions = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const { id } = useParams();
   const [checked, setChecked] = React.useState([]);
-  const permissions = useSelector(
-    (state) => state.editTeamPermissions.permissions
-  );
+  const [editTeamPermission] = useEditTeamPermissionMutation();
   const { data: dataPermissions = [], isLoading: loadingDataPermissions } =
     useGetPermissionsQuery();
+  const { data: getPermissionsTeamId } = useGetPermissionsTeamIdQuery(id);
 
-  const handleAddPermissions = () => {
-    dispatch(addPermissions(checked.filter((n) => n !== "")));
-    navigate(-1);
+  const handleAddPermissions = async (e) => {
+    e.preventDefault();
+    if (checked) {
+      await editTeamPermission({ id, rest: checked }).unwrap();
+    } else {
+      await editTeamPermission({ id, rest: [] }).unwrap();
+    }
+    toast.success("Team rights changed");
   };
 
   React.useEffect(() => {
-    if (permissions.length) {
-      setChecked(permissions);
+    if (getPermissionsTeamId && getPermissionsTeamId.length) {
+      setChecked(
+        getPermissionsTeamId &&
+          getPermissionsTeamId.map((it) => it.permission.scope)
+      );
+    } else if (getPermissionsTeamId && !getPermissionsTeamId.length) {
+      setChecked(false);
     }
-  }, []);
+  }, [getPermissionsTeamId]);
+
+  console.log(checked);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">

@@ -5,6 +5,7 @@ import {
   useEditTeamMutation,
   useGetTeamIdQuery,
   useGetPermissionsUserIdQuery,
+  useGetPermissionsTeamIdQuery,
 } from "../../redux";
 import { addMembers } from "../../redux/slices/editTeamMembersSlice";
 import { addPermissions } from "../../redux/slices/editTeamPermissionsSlice";
@@ -28,6 +29,7 @@ const EditUser = () => {
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
     localStorage.getItem("user_id")
   );
+  const { data: getPermissionsTeamId } = useGetPermissionsTeamIdQuery(id);
 
   const [formValue, setFormValue] = React.useState({
     name: "",
@@ -35,15 +37,13 @@ const EditUser = () => {
     users_ids: [],
   });
 
-  console.log(getTeamId);
-
   React.useEffect(() => {
     getTeamId &&
       getTeamId.users.map((user) =>
         !members.includes(user.id) ? dispatch(addMembers(user.id)) : null
       );
 
-    getTeamId && dispatch(addPermissions(getTeamId.permissions));
+    // getTeamId && dispatch(addPermissions(getTeamId.permissions));
 
     if (getPermissionsUserId && getPermissionsUserId.length === 0) {
       navigate("/teams");
@@ -110,14 +110,14 @@ const EditUser = () => {
       <div className="flex flex-col gap-3">
         <div className="flex justify-between items-center gap-6">
           <button
-            onClick={() => navigate(`/team/permissions`)}
+            onClick={() => navigate(`/team/permissions/${id}`)}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Permissions ({permissions.length})
+            Permissions ({getPermissionsTeamId && getPermissionsTeamId.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
           <button
-            onClick={() => navigate(`/team/members/${getTeamId.id}`)}
+            onClick={() => navigate(`/team/members/${id}`)}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
             Members ({members.length})

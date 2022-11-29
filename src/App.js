@@ -93,10 +93,13 @@ function App() {
                   <Route path="/add-team" element={<AddTeam />} />
                   <Route path="/teams/:id" element={<EditTeam />} />
                   <Route
-                    path="/team/permissions"
+                    path="/team/permissions/:id"
                     element={<EditTeamPermissions />}
                   />
-                  <Route path="/team/members/:id" element={<EditTeamMembers />} />
+                  <Route
+                    path="/team/members/:id"
+                    element={<EditTeamMembers />}
+                  />
                   <Route
                     path="/add-team/members"
                     element={<AddTeamMembers />}
