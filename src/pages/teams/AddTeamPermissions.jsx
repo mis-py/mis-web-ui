@@ -31,7 +31,7 @@ const AddTeamPermissions = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <div className="flex items-center text-gray cursor-pointer">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>

@@ -135,7 +135,7 @@ const Users = () => {
                         showEdit === index
                           ? "opacity-100 visible"
                           : "opacity-0 invisible"
-                      } duration-300 absolute top-1 w-[175px] z-10 right-1 bg-backGround shadow lg:top-16`}
+                      } duration-300 absolute top-1 w-[175px] z-10 right-1 bg-backGround shadow lg:top-3`}
                     >
                       {getPermissionsUserId &&
                       getPermissionsUserId.length !== 0 ? (
@@ -155,9 +155,9 @@ const Users = () => {
                         Remove
                       </div>
                     </div>
-                    <div className="flex justify-between items-center lg:border-none lg:pb-0">
+                    <div className="flex justify-between items-center">
                       <div className="lg:flex lg:items-center">
-                        <div className="flex flex-col lg:pr-[40px] lg:border-r lg:border-gray">
+                        <div className="flex flex-col">
                           <div className="flex items-center gap-4">
                             <img
                               className="w-[56px] h-[56px]"

@@ -148,7 +148,7 @@ const Teams = () => {
                         showEdit === index
                           ? "opacity-100 visible"
                           : "opacity-0 invisible"
-                      } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-16`}
+                      } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-3`}
                     >
                       <Link
                         className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
@@ -209,7 +209,7 @@ const Teams = () => {
                       </div>
                     )}
                     <div
-                      className="flex justify-center py-2"
+                      className="flex justify-center py-2 cursor-pointer"
                       onClick={(e) => {
                         toggle(index);
                       }}

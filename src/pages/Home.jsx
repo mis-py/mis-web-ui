@@ -9,7 +9,7 @@ const Home = () => {
         <div className="flex items-center bg-blackSecond rounded w-full pl-3">
           <FiSearch className="text-lg text-gray" />
           <input
-            className="bg-transparent border-none text-xs text-gray placeholder:text-gray duration-300 w-full focus:!shadow-none focus:ring-0"
+            className="bg-transparent border-none border-0 text-xs text-gray placeholder:text-gray duration-300 w-full focus:!shadow-none focus:ring-0"
             type="search"
             placeholder="Search..."
           />

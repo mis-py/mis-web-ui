@@ -36,7 +36,7 @@ const AddTeam = () => {
   const handleAddUser = async (e) => {
     e.preventDefault();
     if (!errorAddTeam) {
-      if (formValue.username < 1) {
+      if (formValue.name < 1) {
         toast.error("Name min 2");
       } else {
         await addTeam({
@@ -67,7 +67,7 @@ const AddTeam = () => {
           <label className="flex flex-col gap-1 mb-4" htmlFor="name">
             Team name
             <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none"
+              className="bg-blackSecond text-gray rounded border-none border-0 px-3 py-2 focus-visible:outline-none"
               type="text"
               id="name"
               placeholder="Enter a name"

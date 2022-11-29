@@ -78,7 +78,7 @@ const ProfileUser = () => {
           <label className="flex flex-col gap-1 mb-4" htmlFor="username">
             Username
             <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none"
+              className="bg-blackSecond text-gray rounded px-3 py-2 border-none border-0 focus-visible:outline-none"
               type="text"
               id="username"
               value={formValue.username}

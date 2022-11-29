@@ -35,7 +35,7 @@ const EditTeamMembers = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <div className="flex items-center text-gray cursor-pointer">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
@@ -86,9 +86,9 @@ const EditTeamMembers = () => {
                           <AiOutlineCheckCircle className="text-gray text-2xl" />
                         )}
                       </button>
-                      <div className="flex justify-between items-center lg:border-none lg:pb-0">
+                      <div className="flex justify-between items-center">
                         <div className="lg:flex lg:items-center">
-                          <div className="flex flex-col lg:pr-[40px] lg:border-r lg:border-gray">
+                          <div className="flex flex-col lg:pr-[40px]">
                             <div className="flex items-center gap-4">
                               <img
                                 className="w-[56px] h-[56px]"

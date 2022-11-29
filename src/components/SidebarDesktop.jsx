@@ -5,9 +5,9 @@ import { BiUser } from "react-icons/bi";
 import { AiOutlineAppstore, AiOutlineAppstoreAdd } from "react-icons/ai";
 import { HiOutlineDesktopComputer } from "react-icons/hi";
 
-import ProfilePopup from "./ProfilePopup";
+import ProfilePopupDesktop from "./ProfilePopupDesktop";
 
-const SidebarDesktop = ({ toggleDrawer }) => {
+const SidebarDesktop = () => {
   const [userPopup, setUserPopup] = React.useState(false);
 
   const sidebar = [
@@ -35,14 +35,17 @@ const SidebarDesktop = ({ toggleDrawer }) => {
       <div className="hidden fixed h-full w-full bg-backGround text-gray py-6 lg:flex lg:w-[345px] lg:border-r lg:border-blackSecond lg:z-30">
         <div className="flex flex-col">
           <div className="relatie flex mb-4 px-5">
-            <ProfilePopup userPopup={userPopup} setUserPopup={setUserPopup} />
+            <ProfilePopupDesktop
+              userPopup={userPopup}
+              setUserPopup={setUserPopup}
+            />
             <div className="flex flex-auto gap-[10px]">
               <div className="flex flex-auto">
                 <button className="flex justify-center items-center w-[32px] h-[32px] rounded-l bg-blackSecond">
                   <FiSearch />
                 </button>
                 <input
-                  className="bg-[#3F3F3F] rounded-r w-full px-3 focus-visible:outline-none"
+                  className="bg-[#3F3F3F] rounded-r w-full border-0 px-3 h-[32px] focus-visible:outline-none"
                   type="text"
                 />
               </div>
@@ -73,7 +76,6 @@ const SidebarDesktop = ({ toggleDrawer }) => {
                 }
                 to={link.url}
                 key={link.title}
-                onClick={toggleDrawer}
               >
                 <div className="duration-300 group-hover:text-primary">
                   {link.icon}

@@ -31,9 +31,9 @@ const AddTeamMembers = () => {
   };
 
   return (
-    <div className="py-6 min-h-screen h-full flex flex-col justify-between">
+    <div className="py-6 min-h-screen h-full flex flex-col justify-between relative w-full">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <div className="flex items-center text-gray cursor-pointer">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
@@ -83,9 +83,9 @@ const AddTeamMembers = () => {
                         <AiOutlineCheckCircle className="text-gray text-2xl" />
                       )}
                     </button>
-                    <div className="flex justify-between items-center lg:border-none lg:pb-0">
+                    <div className="flex justify-between items-center">
                       <div className="lg:flex lg:items-center">
-                        <div className="flex flex-col lg:pr-[40px] lg:border-r lg:border-gray">
+                        <div className="flex flex-col lg:pr-[40px]">
                           <div className="flex items-center gap-4">
                             <img
                               className="w-[56px] h-[56px]"
@@ -112,10 +112,10 @@ const AddTeamMembers = () => {
           </div>
         )}
       </div>
-      <div className="flex fixed w-full h-[80px] bottom-0 bg-backGround">
+      <div className="flex fixed w-[calc(100%_-_40px)] h-[80px] bottom-0 bg-transparent lg:max-w-[calc(100%_-_345px)]">
         <button
           onClick={() => navigate(-1)}
-          className="btn-primary absolute z-20 left-0 bottom-6 w-[calc(100%_-_40px)]"
+          className="btn-primary absolute z-20 left-0 bottom-6 right-0 w-full"
         >
           Save
         </button>
