@@ -8,7 +8,6 @@ import {
   useGetPermissionsTeamIdQuery,
 } from "../../redux";
 import { addMembers } from "../../redux/slices/editTeamMembersSlice";
-import { addPermissions } from "../../redux/slices/editTeamPermissionsSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -42,8 +41,6 @@ const EditUser = () => {
       getTeamId.users.map((user) =>
         !members.includes(user.id) ? dispatch(addMembers(user.id)) : null
       );
-
-    // getTeamId && dispatch(addPermissions(getTeamId.permissions));
 
     if (getPermissionsUserId && getPermissionsUserId.length === 0) {
       navigate("/teams");

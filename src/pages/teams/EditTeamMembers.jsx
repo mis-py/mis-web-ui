@@ -19,8 +19,8 @@ const EditTeamMembers = () => {
   const { id } = useParams();
   const members = useSelector((state) => state.editTeamMembers.members);
   const [searchValue, setSearchValue] = React.useState("");
-  const { data: getDataTeamId, isLoading: loadingDataTeamId } =
-    useGetTeamIdQuery(id);
+  const [checked, setChecked] = React.useState([]);
+  const { data: getDataTeamId } = useGetTeamIdQuery(id);
   const { data: getDataUsers, isLoading: loadingDataUsers } =
     useGetUsersQuery();
 
@@ -31,6 +31,14 @@ const EditTeamMembers = () => {
       dispatch(deleteMembers(id));
     }
   };
+
+  React.useEffect(() => {
+    if (getDataTeamId && getDataTeamId.users.length) {
+      setChecked(getDataTeamId.users.map((user) => user.id));
+    } else {
+      setChecked(false);
+    }
+  }, [getDataTeamId]);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
