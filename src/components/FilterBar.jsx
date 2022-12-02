@@ -1,10 +1,16 @@
 import React from "react";
 
-import { BsGrid3X3GapFill } from "react-icons/bs";
-import { BiGridVertical } from "react-icons/bi";
+import { BsGrid3X3GapFill, BsListUl } from "react-icons/bs";
 import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 
-const FilterBar = ({ showFilter, setShowFilter, setFilterGrid }) => {
+const FilterBar = ({
+  filterGrid,
+  showFilter,
+  setShowFilter,
+  setFilterGrid,
+  geos,
+  setGeo,
+}) => {
   const [showGeo, setShowGeo] = React.useState(false);
 
   return (
@@ -21,15 +27,19 @@ const FilterBar = ({ showFilter, setShowFilter, setFilterGrid }) => {
       <div className="flex gap-2 mb-6">
         <button
           onClick={() => setFilterGrid(2)}
-          className="flex justify-center items-center w-[32px] h-[32px] rounded bg-backGround duration-300 hover:bg-primary"
+          className={`${
+            filterGrid === 2 ? "bg-primary" : "bg-backGround"
+          } flex justify-center items-center w-[32px] h-[32px] rounded duration-300 hover:bg-primary`}
         >
           <BsGrid3X3GapFill />
         </button>
         <button
           onClick={() => setFilterGrid(1)}
-          className="flex justify-center items-center w-[32px] h-[32px] rounded bg-backGround duration-300 hover:bg-primary"
+          className={`${
+            filterGrid === 1 ? "bg-primary" : "bg-backGround"
+          } flex justify-center items-center w-[32px] h-[32px] rounded duration-300 hover:bg-primary`}
         >
-          <BiGridVertical />
+          <BsListUl />
         </button>
       </div>
       <div className="flex flex-col">
@@ -53,18 +63,16 @@ const FilterBar = ({ showFilter, setShowFilter, setFilterGrid }) => {
             showGeo ? "opacity-100 visible" : "opacity-0 invisible"
           } flex gap-2 overflow-hidden duration-300 text-gray text-sm`}
         >
-          <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-backGround duration-300 hover:bg-primary hover:text-white">
-            KZ
-          </button>
-          <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-backGround duration-300 hover:bg-primary hover:text-white">
-            ES
-          </button>
-          <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-backGround duration-300 hover:bg-primary hover:text-white">
-            TR
-          </button>
-          <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-backGround duration-300 hover:bg-primary hover:text-white">
-            CL
-          </button>
+          {geos &&
+            geos.map((geo) => (
+              <button
+                key={geo}
+                onClick={() => setGeo(geo)}
+                className="flex justify-center items-center w-[32px] h-[32px] rounded bg-backGround duration-300 hover:bg-primary hover:text-white"
+              >
+                {geo}
+              </button>
+            ))}
         </div>
       </div>
     </div>

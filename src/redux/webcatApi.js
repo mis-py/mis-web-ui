@@ -6,20 +6,21 @@ export const webcatApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "https://crm.nullgravity.net/api" }),
   endpoints: (build) => ({
     getWebcat: build.query({
-      query: () => ({
-        url: `/webcat/`,
+      query: (geo) => ({
+        url: `/webcat/${geo}`,
         method: "GET",
         headers: {
+          accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
+        providesTags: (result) =>
+          result
+            ? [
+                ...result.map(({ id }) => ({ type: "Webcat", id })),
+                { type: "Webcat", id: "LIST" },
+              ]
+            : [{ type: "Webcat", id: "LIST" }],
       }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: "Webcat", id })),
-              { type: "Webcat", id: "LIST" },
-            ]
-          : [{ type: "Webcat", id: "LIST" }],
     }),
   }),
 });

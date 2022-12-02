@@ -1,4 +1,5 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetWebcatQuery } from "../../redux";
 
 import FilterBar from "../../components/FilterBar";
@@ -9,20 +10,25 @@ import { BiFilterAlt } from "react-icons/bi";
 import WebcatImg from "../../assets/img/webcat.jpg";
 
 const Webcatalog = () => {
+  const navigate = useNavigate();
   const [showSearch, setShowSearch] = React.useState(false);
   const [showFilter, setShowFilter] = React.useState(false);
   const [filterGrid, setFilterGrid] = React.useState(1);
+  const [geo, setGeo] = React.useState("");
 
-  const { data: getWebcat } = useGetWebcatQuery();
-
-  console.log(getWebcat && getWebcat);
+  const { data: getWebcat, isLoading: loadingWebcat } = useGetWebcatQuery(
+    `?geo=${geo}`
+  );
 
   return (
     <>
       <FilterBar
+        filterGrid={filterGrid}
         showFilter={showFilter}
         setShowFilter={setShowFilter}
         setFilterGrid={setFilterGrid}
+        geos={getWebcat && getWebcat.geos}
+        setGeo={setGeo}
       />
       <div className="py-6">
         <div className="flex flex-col">
@@ -57,79 +63,57 @@ const Webcatalog = () => {
           </div>
 
           <div className="flex flex-wrap gap-4">
-            <div
-              className={`${
-                filterGrid === 1 ? "w-full" : "w-[calc(50%_-_8px)]"
-              } relative duration-300 flex flex-col justify-between p-3 w-full h-[160px] rounded overflow-hidden`}
-            >
-              <div className="absolute bg-black/30 inset-0 z-10"></div>
-              <img
-                className="absolute w-full h-full object-cover inset-0"
-                src={WebcatImg}
-                alt=""
-              />
+            {loadingWebcat ? (
+              <h2 className="text-2xl mx-auto">Loading...</h2>
+            ) : (
+              getWebcat &&
+              getWebcat.landings.map((item) => (
+                <div
+                  key={item.id}
+                  className={`${
+                    filterGrid === 1 ? "w-full" : "w-[calc(50%_-_8px)]"
+                  } relative duration-300 flex flex-col justify-between p-3 w-full h-[160px] rounded overflow-hidden`}
+                >
+                  <div className="absolute bg-black/30 inset-0 z-10"></div>
+                  <img
+                    className="absolute w-full h-full object-cover inset-0"
+                    src={WebcatImg}
+                    alt=""
+                  />
 
-              <div className="flex justify-between z-20">
-                <div className="flex gap-3">
-                  <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary">
-                    <FiDownload />
-                  </button>
-                  <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary">
-                    <FiEdit />
-                  </button>
+                  <div className="flex justify-between z-20">
+                    <div className="flex gap-3">
+                      <a
+                        href={item.clone_url}
+                        target="_blank"
+                        className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary"
+                      >
+                        <FiDownload />
+                      </a>
+                      <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary">
+                        <FiEdit />
+                      </button>
+                    </div>
+                    <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary">
+                      <FiEye />
+                    </button>
+                  </div>
+
+                  <div className="flex justify-between items-end z-20">
+                    <h3>{item.name}</h3>
+                    <div className="flex items-end gap-3">
+                      <p className="body-2 text-gray">{item.branch_name}</p>
+                      <button
+                        onClick={() => setGeo(item.geo)}
+                        className="flex justify-center items-center text-sm w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary"
+                      >
+                        {item.geo}
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary">
-                  <FiEye />
-                </button>
-              </div>
-
-              <div className="flex justify-between items-end z-20">
-                <h3>Halyk Bank</h3>
-                <div className="flex items-end gap-3">
-                  <p className="body-2 text-gray">off19</p>
-                  <button className="flex justify-center items-center text-sm w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary">
-                    KZ
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div
-              className={`${
-                filterGrid === 1 ? "w-full" : "w-[calc(50%_-_8px)]"
-              } relative duration-300 flex flex-col justify-between p-3 w-full h-[160px] rounded overflow-hidden`}
-            >
-              <div className="absolute bg-black/30 inset-0 z-10"></div>
-              <img
-                className="absolute w-full h-full object-cover inset-0"
-                src={WebcatImg}
-                alt=""
-              />
-
-              <div className="flex justify-between z-20">
-                <div className="flex gap-3">
-                  <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary">
-                    <FiDownload />
-                  </button>
-                  <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary">
-                    <FiEdit />
-                  </button>
-                </div>
-                <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary">
-                  <FiEye />
-                </button>
-              </div>
-
-              <div className="flex justify-between items-end z-20">
-                <h3>Halyk Bank</h3>
-                <div className="flex items-end gap-3">
-                  <p className="body-2 text-gray">off19</p>
-                  <button className="flex justify-center items-center text-sm w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary">
-                    KZ
-                  </button>
-                </div>
-              </div>
-            </div>
+              ))
+            )}
           </div>
         </div>
       </div>
