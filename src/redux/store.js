@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { usersApi } from "./usersApi";
 import { teamsApi } from "./teamsApi";
 import { permissionsApi } from "./permissionsApi";
+import { webcatApi } from "./webcatApi";
 import { appsApi } from "./appsApi";
 
 import addUserPermissionsSlice from "./slices/addUserPermissionsSlice";
@@ -15,6 +16,7 @@ export const store = configureStore({
     [usersApi.reducerPath]: usersApi.reducer,
     [teamsApi.reducerPath]: teamsApi.reducer,
     [permissionsApi.reducerPath]: permissionsApi.reducer,
+    [webcatApi.reducerPath]: webcatApi.reducer,
     [appsApi.reducerPath]: appsApi.reducer,
 
     addUserPermissions: addUserPermissionsSlice,
@@ -28,6 +30,7 @@ export const store = configureStore({
       usersApi.middleware,
       teamsApi.middleware,
       permissionsApi.middleware,
+      webcatApi.middleware,
       appsApi.middleware,
     ]),
 });

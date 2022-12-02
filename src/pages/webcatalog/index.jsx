@@ -1,8 +1,10 @@
 import React from "react";
-import { FiSearch, FiDownload, FiEdit, FiEye } from "react-icons/fi";
-import { BiFilterAlt } from "react-icons/bi";
+import { useGetWebcatQuery } from "../../redux";
 
 import FilterBar from "../../components/FilterBar";
+
+import { FiSearch, FiDownload, FiEdit, FiEye } from "react-icons/fi";
+import { BiFilterAlt } from "react-icons/bi";
 
 import WebcatImg from "../../assets/img/webcat.jpg";
 
@@ -10,6 +12,10 @@ const Webcatalog = () => {
   const [showSearch, setShowSearch] = React.useState(false);
   const [showFilter, setShowFilter] = React.useState(false);
   const [filterGrid, setFilterGrid] = React.useState(1);
+
+  const { data: getWebcat } = useGetWebcatQuery();
+
+  console.log(getWebcat && getWebcat);
 
   return (
     <>

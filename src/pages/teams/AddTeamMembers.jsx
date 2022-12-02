@@ -112,10 +112,10 @@ const AddTeamMembers = () => {
           </div>
         )}
       </div>
-      <div className="flex fixed w-[calc(100%_-_40px)] h-[80px] bottom-0 bg-transparent lg:max-w-[calc(100%_-_345px)]">
+      <div className="flex fixed w-[calc(100%_-_40px)] h-[80px] bottom-0 bg-transparent lg:w-[calc(100%_-_345px)]">
         <button
           onClick={() => navigate(-1)}
-          className="btn-primary absolute z-20 left-0 bottom-6 right-0 w-full"
+          className="btn-primary fixed z-20 left-0 bottom-6 right-0 w-full"
         >
           Save
         </button>
