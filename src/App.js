@@ -26,6 +26,8 @@ import EditTeamMembers from "./pages/teams/EditTeamMembers";
 import AddTeamMembers from "./pages/teams/AddTeamMembers";
 import AddTeamPermissions from "./pages/teams/AddTeamPermissions";
 import Applications from "./pages/applications/index";
+import CloneApp from "./pages/applications/CloneApp";
+import SettingsApp from "./pages/applications/SettingsApp";
 import Webcatalog from "./pages/webcatalog/index";
 import EditWebcat from "./pages/webcatalog/EditWebcat";
 
@@ -109,6 +111,14 @@ function App() {
                     element={<AddTeamPermissions />}
                   />
                   <Route path="/applications" element={<Applications />} />
+                  <Route
+                    path="/applications/clone/:id"
+                    element={<CloneApp />}
+                  />
+                  <Route
+                    path="/applications/settings/:id"
+                    element={<SettingsApp />}
+                  />
                   <Route path="/webcatalog" element={<Webcatalog />} />
                   <Route path="/webcatalog/:id" element={<EditWebcat />} />
                 </Route>

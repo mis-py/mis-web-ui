@@ -12,8 +12,8 @@ import {
 
 import { FiSearch } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
-import { AiOutlineUsergroupAdd } from "react-icons/ai";
-import { BiDotsVerticalRounded } from "react-icons/bi";
+import { AiOutlineUsergroupAdd, AiOutlineSetting } from "react-icons/ai";
+import { CgFileDocument } from "react-icons/cg";
 
 import UserImg from "../../assets/img/user.png";
 
@@ -21,8 +21,7 @@ const Applications = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showSearch, setShowSearch] = React.useState(false);
-  const [showTeamInfo, setShowTeamInfo] = React.useState(false);
-  const [showEdit, setShowEdit] = React.useState(false);
+  const [showInfo, setShowInfo] = React.useState(false);
   const [serchValue, setSearchValue] = React.useState("");
   const {
     data: dataGetTeams = [],
@@ -32,6 +31,14 @@ const Applications = () => {
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
     localStorage.getItem("user_id")
   );
+
+  const toggle = (index) => {
+    if (showInfo === index) {
+      setShowInfo(false);
+      return;
+    }
+    setShowInfo(index);
+  };
 
   return (
     <div className="py-6">
@@ -89,66 +96,54 @@ const Applications = () => {
                     key={team.id}
                     className="flex flex-col relative bg-blackSecond px-4 py-2 rounded"
                   >
-                    <div
-                      className={`${
-                        showEdit === index
-                          ? "opacity-100 visible"
-                          : "opacity-0 invisible"
-                      } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-3`}
-                    >
-                      <Link
-                        className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
-                        to="/teams"
-                      >
-                        Granting privileges
-                      </Link>
-                      {getPermissionsUserId &&
-                      getPermissionsUserId.length !== 0 ? (
-                        <div
-                          onClick={(e) => navigate(`/teams/${team.id}`)}
-                          className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
-                        >
-                          Editing
-                        </div>
-                      ) : (
-                        false
-                      )}
-                      <div className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary">
-                        Remove
-                      </div>
-                    </div>
                     <div className="flex justify-between items-center pb-2 border-b border-backGround">
-                      <div className="flex flex-col">
-                        <h5 className="text-gray text-xs">
-                          Name of the department:
-                        </h5>
-                        <h4>{team.name}</h4>
+                      <div className="flex">
+                        <img
+                          className="w-[56px] h-[56px] mr-3"
+                          src={UserImg}
+                          alt=""
+                        />
+                        <div className="flex flex-col">
+                          <h4>App name</h4>
+                          <h5 className="text-gray text-xs">Category</h5>
+                        </div>
                       </div>
-                      <BiDotsVerticalRounded className="text-3xl text-gray cursor-pointer" />
+                      <div className="flex gap-3">
+                        <CgFileDocument
+                          onClick={() =>
+                            navigate(`/applications/clone/${team.id}`)
+                          }
+                          className="text-2xl text-gray cursor-pointer"
+                        />
+                        <AiOutlineSetting
+                          onClick={() =>
+                            navigate(`/applications/settings/${team.id}`)
+                          }
+                          className="text-2xl text-gray cursor-pointer"
+                        />
+                      </div>
                     </div>
-                    {showTeamInfo === index && (
-                      <div className={`duration-300 flex flex-col pt-4`}>
-                        <p className="pb-4">Members of the department:</p>
-                        <div className="flex">
-                          {!loadingGetTeams && team.users.length ? (
-                            team.users.map((item) => (
-                              <img
-                                key={item.id}
-                                className="w-[29px] h-[29px] shadow -ml-1"
-                                src={UserImg}
-                                alt=""
-                              />
-                            ))
-                          ) : (
-                            <p className="text-danger">NO USERS</p>
-                          )}
+                    {showInfo === index && (
+                      <div className={`duration-300 flex flex-col pt-4 gap-2`}>
+                        <div className="flex justify-between">
+                          <h3>Status:</h3>
+                          <p className="text-gray">healthy/unhealthy</p>
+                        </div>
+                        <div className="flex justify-between">
+                          <h3>Is active:</h3>
+                          <p className="text-gray">true / false</p>
                         </div>
                       </div>
                     )}
-                    <div className="flex justify-center py-2 cursor-pointer">
+                    <div
+                      onClick={(e) => {
+                        toggle(index);
+                      }}
+                      className="flex justify-center py-2 cursor-pointer"
+                    >
                       <IoIosArrowDown
                         className={`${
-                          showTeamInfo === index ? "rotate-180" : "rotate-0"
+                          showInfo === index ? "rotate-180" : "rotate-0"
                         } duration-300 text-gray text-base`}
                       />
                     </div>
