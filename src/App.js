@@ -26,8 +26,8 @@ import EditTeamMembers from "./pages/teams/EditTeamMembers";
 import AddTeamMembers from "./pages/teams/AddTeamMembers";
 import AddTeamPermissions from "./pages/teams/AddTeamPermissions";
 import Applications from "./pages/applications/index";
-import UsingApplications from "./pages/usingApplications/index";
 import Webcatalog from "./pages/webcatalog/index";
+import EditWebcat from "./pages/webcatalog/EditWebcat";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -109,11 +109,8 @@ function App() {
                     element={<AddTeamPermissions />}
                   />
                   <Route path="/applications" element={<Applications />} />
-                  <Route
-                    path="/using-applications"
-                    element={<UsingApplications />}
-                  />
                   <Route path="/webcatalog" element={<Webcatalog />} />
+                  <Route path="/webcatalog/:id" element={<EditWebcat />} />
                 </Route>
                 <Route path="/singin" element={<LoginLayout />}>
                   <Route index element={<Singin />} />

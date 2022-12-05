@@ -21,7 +21,7 @@ const FilterBar = ({
     >
       <IoIosClose
         onClick={() => setShowFilter(false)}
-        className="absolute text-2xl right-3 top-3"
+        className="absolute text-2xl right-3 top-3 cursor-pointer"
       />
       <h2 className="h4 text-gray mb-7">Sort by</h2>
       <div className="flex gap-2 mb-6">

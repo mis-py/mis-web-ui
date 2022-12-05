@@ -15,14 +15,9 @@ const Sidebar = ({ toggleDrawer }) => {
     { icon: <FiUsers />, title: "Teams", url: "/teams" },
     {
       icon: <AiOutlineAppstore />,
-      title: "Manage Applications",
-      url: "/manage-aplications",
+      title: "Applications",
+      url: "/applications",
     },
-    // {
-    //   icon: <AiOutlineAppstoreAdd />,
-    //   title: "Using applications",
-    //   url: "/using-applications",
-    // },
     {
       icon: <HiOutlineDesktopComputer />,
       title: "WebCatalog",

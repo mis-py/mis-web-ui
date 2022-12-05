@@ -14,6 +14,7 @@ const Webcatalog = () => {
   const [showSearch, setShowSearch] = React.useState(false);
   const [showFilter, setShowFilter] = React.useState(false);
   const [filterGrid, setFilterGrid] = React.useState(1);
+  const [searchValue, setSearchValue] = React.useState("");
   const [geo, setGeo] = React.useState("");
 
   const { data: getWebcat, isLoading: loadingWebcat } = useGetWebcatQuery(
@@ -51,6 +52,8 @@ const Webcatalog = () => {
                   } bg-blackSecond h-full text-xs text-gray border-none placeholder:text-gray duration-300 rounded-r w-full focus:shadow-none focus:ring-0`}
                   type="search"
                   placeholder="Enter user name to search..."
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
                 />
               </div>
             </div>
@@ -62,57 +65,73 @@ const Webcatalog = () => {
             </div>
           </div>
 
+          <h2
+            onClick={() => setGeo("")}
+            className="cursor-pointer text-gray ml-auto mb-3"
+          >
+            Сбросить фильтр
+          </h2>
+
           <div className="flex flex-wrap gap-4">
             {loadingWebcat ? (
               <h2 className="text-2xl mx-auto">Loading...</h2>
             ) : (
               getWebcat &&
-              getWebcat.landings.map((item) => (
-                <div
-                  key={item.id}
-                  className={`${
-                    filterGrid === 1 ? "w-full" : "w-[calc(50%_-_8px)]"
-                  } relative duration-300 flex flex-col justify-between p-3 w-full h-[160px] rounded overflow-hidden`}
-                >
-                  <div className="absolute bg-black/30 inset-0 z-10"></div>
-                  <img
-                    className="absolute w-full h-full object-cover inset-0"
-                    src={WebcatImg}
-                    alt=""
-                  />
+              getWebcat.landings
+                .filter((el) =>
+                  el.name
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase().trim())
+                )
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    className={`${
+                      filterGrid === 1 ? "w-full" : "w-[calc(50%_-_8px)]"
+                    } relative duration-300 flex flex-col justify-between p-3 w-full h-[160px] rounded overflow-hidden md:h-[200px]`}
+                  >
+                    <div className="absolute bg-black/30 inset-0 z-10"></div>
+                    <img
+                      className="absolute w-full h-full object-cover inset-0"
+                      src={WebcatImg}
+                      alt=""
+                    />
 
-                  <div className="flex justify-between z-20">
-                    <div className="flex gap-3">
-                      <a
-                        href={item.clone_url}
-                        target="_blank"
-                        className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary"
-                      >
-                        <FiDownload />
-                      </a>
+                    <div className="flex justify-between z-20">
+                      <div className="flex gap-3">
+                        <a
+                          href={item.clone_url}
+                          target="_blank"
+                          className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary"
+                        >
+                          <FiDownload />
+                        </a>
+                        <button
+                          onClick={() => navigate(`/webcatalog/${item.id}`)}
+                          className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary"
+                        >
+                          <FiEdit />
+                        </button>
+                      </div>
                       <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary">
-                        <FiEdit />
+                        <FiEye />
                       </button>
                     </div>
-                    <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary">
-                      <FiEye />
-                    </button>
-                  </div>
 
-                  <div className="flex justify-between items-end z-20">
-                    <h3>{item.name}</h3>
-                    <div className="flex items-end gap-3">
-                      <p className="body-2 text-gray">{item.branch_name}</p>
-                      <button
-                        onClick={() => setGeo(item.geo)}
-                        className="flex justify-center items-center text-sm w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary"
-                      >
-                        {item.geo}
-                      </button>
+                    <div className="flex justify-between items-end z-20">
+                      <h3>{item.name}</h3>
+                      <div className="flex items-end gap-3">
+                        <p className="body-2 text-gray">{item.branch_name}</p>
+                        <button
+                          onClick={() => setGeo(item.geo)}
+                          className="flex justify-center items-center text-sm w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary"
+                        >
+                          {item.geo}
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
+                ))
             )}
           </div>
         </div>
