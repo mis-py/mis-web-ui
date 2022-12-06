@@ -1,33 +1,21 @@
 import React from "react";
-import { toast } from "react-toastify";
-import { confirmAlert } from "react-confirm-alert";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import useOutsideClick from "../../hooks/useOutsideClick";
-import {
-  useGetTeamsQuery,
-  useGetPermissionsUserIdQuery,
-  useDeleteTeamMutation,
-} from "../../redux";
+import { useGetTeamsQuery, useGetPermissionsUserIdQuery } from "../../redux";
 
 import { FiSearch } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
-import { AiOutlineUsergroupAdd, AiOutlineSetting } from "react-icons/ai";
+import { AiOutlinePlus, AiOutlineSetting } from "react-icons/ai";
 import { CgFileDocument } from "react-icons/cg";
 
 import UserImg from "../../assets/img/user.png";
 
 const Applications = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [showSearch, setShowSearch] = React.useState(false);
   const [showInfo, setShowInfo] = React.useState(false);
   const [serchValue, setSearchValue] = React.useState("");
-  const {
-    data: dataGetTeams = [],
-    isLoading: loadingGetTeams,
-    error: errorGetTeams,
-  } = useGetTeamsQuery();
+  const { data: dataGetTeams = [], isLoading: loadingGetTeams } =
+    useGetTeamsQuery();
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
     localStorage.getItem("user_id")
   );
@@ -72,14 +60,14 @@ const Applications = () => {
               to="/add-team"
               className="px-5 flex items-center justify-center bg-blackSecond text-gray rounded-lg"
             >
-              <AiOutlineUsergroupAdd />
+              <AiOutlinePlus />
             </Link>
           ) : (
             false
           )}
         </div>
 
-        <h3 className="h3 mb-5">Teams ({dataGetTeams.length})</h3>
+        <h3 className="h3 mb-5">Applications ({dataGetTeams.length})</h3>
         {loadingGetTeams ? (
           <h2 className="text-2xl mx-auto">Loading...</h2>
         ) : (

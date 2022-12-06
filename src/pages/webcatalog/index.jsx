@@ -1,13 +1,11 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGetWebcatQuery } from "../../redux";
 
 import FilterBar from "../../components/FilterBar";
 
 import { FiSearch, FiDownload, FiEdit, FiEye } from "react-icons/fi";
 import { BiFilterAlt } from "react-icons/bi";
-
-import WebcatImg from "../../assets/img/webcat.jpg";
 
 const Webcatalog = () => {
   const navigate = useNavigate();
@@ -93,7 +91,7 @@ const Webcatalog = () => {
                     <div className="absolute bg-black/30 inset-0 z-10"></div>
                     <img
                       className="absolute w-full h-full object-cover inset-0"
-                      src={WebcatImg}
+                      src={`data:image/webp;base64, ${item.thumbnail}`}
                       alt=""
                     />
 
@@ -102,6 +100,7 @@ const Webcatalog = () => {
                         <a
                           href={item.clone_url}
                           target="_blank"
+                          rel="noreferrer"
                           className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond duration-300 hover:bg-primary"
                         >
                           <FiDownload />

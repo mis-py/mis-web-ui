@@ -51,7 +51,7 @@
         @apply text-sm
     }
     .container {
-        @apply w-full px-5 overflow-x-hidden
+        @apply px-5 overflow-x-hidden relative w-full max-w-[1370px]
     }
     .btn-primary {
         @apply text-base font-medium text-white bg-primary py-[11px] px-5 rounded-lg text-center w-full flex justify-center duration-300 hover:bg-hover focus:bg-focused active:bg-active

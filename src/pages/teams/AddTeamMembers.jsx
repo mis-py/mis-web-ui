@@ -17,6 +17,7 @@ import UserImg from "../../assets/img/user.png";
 const AddTeamMembers = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const btnWidth = React.useRef();
   const members = useSelector((state) => state.addTeamMembers.members);
   const [searchValue, setSearchValue] = React.useState("");
   const { data: getDataUsers, isLoading: loadingDataUsers } =
@@ -30,8 +31,10 @@ const AddTeamMembers = () => {
     }
   };
 
+  console.log(btnWidth);
+
   return (
-    <div className="py-6 min-h-screen h-full flex flex-col justify-between relative w-full">
+    <div className="py-6 min-h-screen h-full flex flex-col justify-between relative">
       <div className="flex flex-col">
         <div className="flex items-center text-gray cursor-pointer">
           <div className="flex mr-2">
@@ -112,10 +115,10 @@ const AddTeamMembers = () => {
           </div>
         )}
       </div>
-      <div className="flex fixed w-[calc(100%_-_40px)] h-[80px] bottom-0 bg-transparent lg:w-[calc(100%_-_345px)]">
+      <div className="flex fixed w-full pb-5 bottom-0 left-0 bg-transparent lg:absolute">
         <button
           onClick={() => navigate(-1)}
-          className="btn-primary fixed z-20 left-0 bottom-6 right-0 w-full"
+          className="btn-primary z-20 h-auto w-full left-0 bottom-6 right-0"
         >
           Save
         </button>

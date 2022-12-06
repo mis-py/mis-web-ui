@@ -30,6 +30,8 @@ import CloneApp from "./pages/applications/CloneApp";
 import SettingsApp from "./pages/applications/SettingsApp";
 import Webcatalog from "./pages/webcatalog/index";
 import EditWebcat from "./pages/webcatalog/EditWebcat";
+import NotFoundLayout from "./layouts/NotFoundLayout";
+import NotFound from "./pages/NotFound";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -45,6 +47,7 @@ function App() {
       navigate("/singin");
     }
   }, [location]);
+
   return (
     <div className="relative">
       <ToastContainer theme="dark" />
@@ -124,6 +127,9 @@ function App() {
                 </Route>
                 <Route path="/singin" element={<LoginLayout />}>
                   <Route index element={<Singin />} />
+                </Route>
+                <Route element={<NotFoundLayout />}>
+                  <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
             </MainContentContainer>

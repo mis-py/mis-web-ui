@@ -19,11 +19,6 @@ const SidebarDesktop = () => {
       url: "/applications",
     },
     {
-      icon: <AiOutlineAppstoreAdd />,
-      title: "Using applications",
-      url: "/using-applications",
-    },
-    {
       icon: <HiOutlineDesktopComputer />,
       title: "WebCatalog",
       url: "/webcatalog",
