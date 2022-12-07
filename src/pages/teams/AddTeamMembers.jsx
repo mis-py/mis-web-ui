@@ -17,7 +17,6 @@ import UserImg from "../../assets/img/user.png";
 const AddTeamMembers = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const btnWidth = React.useRef();
   const members = useSelector((state) => state.addTeamMembers.members);
   const [searchValue, setSearchValue] = React.useState("");
   const { data: getDataUsers, isLoading: loadingDataUsers } =
@@ -30,8 +29,6 @@ const AddTeamMembers = () => {
       dispatch(deleteMembers(id));
     }
   };
-
-  console.log(btnWidth);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between relative">

@@ -76,17 +76,21 @@ const Webcatalog = () => {
             ) : (
               getWebcat &&
               getWebcat.landings
-                .filter((el) =>
-                  el.name
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase().trim())
+                .filter(
+                  (el) =>
+                    el.name
+                      .toLowerCase()
+                      .includes(searchValue.toLowerCase().trim()) ||
+                    el.branch_name
+                      .toLowerCase()
+                      .includes(searchValue.toLowerCase().trim())
                 )
                 .map((item) => (
                   <div
                     key={item.id}
                     className={`${
                       filterGrid === 1 ? "w-full" : "w-[calc(50%_-_8px)]"
-                    } relative duration-300 flex flex-col justify-between p-3 w-full h-[160px] rounded overflow-hidden md:h-[200px]`}
+                    } relative duration-300 flex flex-col justify-between p-3 w-full h-[160px] rounded overflow-hidden md:h-[300px]`}
                   >
                     <div className="absolute bg-black/30 inset-0 z-10"></div>
                     <img

@@ -17,7 +17,9 @@ const EditTeamMembers = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
+  let containerWidth = React.useRef();
   const members = useSelector((state) => state.editTeamMembers.members);
+  const [btnWidth, setBtnWidth] = React.useState(985);
   const [searchValue, setSearchValue] = React.useState("");
   const [checked, setChecked] = React.useState([]);
   const { data: getDataTeamId } = useGetTeamIdQuery(id);
@@ -38,10 +40,14 @@ const EditTeamMembers = () => {
     } else {
       setChecked(false);
     }
-  }, [getDataTeamId]);
+    setBtnWidth(containerWidth.current.clientWidth);
+  }, [getDataTeamId, containerWidth, btnWidth]);
 
   return (
-    <div className="py-6 min-h-screen h-full flex flex-col justify-between">
+    <div
+      ref={containerWidth}
+      className="py-6 min-h-screen h-full flex flex-col justify-between"
+    >
       <div className="flex flex-col">
         <div className="flex items-center text-gray cursor-pointer">
           <div className="flex mr-2">
@@ -126,10 +132,12 @@ const EditTeamMembers = () => {
           </div>
         )}
       </div>
-      <div className="flex fixed w-full h-[80px] bottom-0 bg-backGround">
+      <div
+        className={`flex fixed w-full h-[80px] bottom-0 bg-backGround lg:w-[985px] lg:max-w-[-webkit-fill-available]`}
+      >
         <button
           onClick={() => navigate(-1)}
-          className="btn-primary absolute z-20 left-0 bottom-6 w-[calc(100%_-_40px)]"
+          className={`btn-primary absolute z-20 left-0 bottom-6 w-[calc(100%_-_40px)] lg:w-full`}
         >
           Save
         </button>
