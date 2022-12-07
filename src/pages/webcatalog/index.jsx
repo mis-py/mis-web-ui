@@ -57,7 +57,7 @@ const Webcatalog = () => {
             </div>
             <div
               onClick={() => setShowFilter(true)}
-              className="px-5 flex items-center justify-center bg-blackSecond rounded-lg duration-200 cursor-pointer hover:bg-primary"
+              className="px-5 flex items-center justify-center bg-blackSecond rounded-lg duration-200 cursor-pointer text-gray hover:bg-primary"
             >
               <BiFilterAlt />
             </div>

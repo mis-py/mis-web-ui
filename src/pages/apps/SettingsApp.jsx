@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const SettingsApp = () => {
   return (
@@ -10,7 +11,7 @@ const SettingsApp = () => {
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <Link to="/applications">back</Link>
+          <Link to="/apps">back</Link>
         </div>
 
         <h3 className="h3 my-4">App name settings</h3>
@@ -34,6 +35,10 @@ const SettingsApp = () => {
       </div>
 
       <div className="flex flex-col gap-4">
+        <button className="flex justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg">
+          Manage groups
+          <AiOutlinePlusCircle className="text-xl" />
+        </button>
         <button className="btn-primary">Save</button>
       </div>
     </div>

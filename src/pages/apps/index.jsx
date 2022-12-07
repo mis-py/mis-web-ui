@@ -108,7 +108,7 @@ const Apps = () => {
                       </div>
                       <div className="flex gap-3">
                         <CgFileDocument
-                          onClick={() => navigate(`/apps/clone`)}
+                          onClick={() => navigate(`/apps/logs/${app.id}`)}
                           className="text-2xl text-gray cursor-pointer"
                         />
                         <AiOutlineSetting

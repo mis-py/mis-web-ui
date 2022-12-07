@@ -27,6 +27,7 @@ import AddTeamMembers from "./pages/teams/AddTeamMembers";
 import AddTeamPermissions from "./pages/teams/AddTeamPermissions";
 import Apps from "./pages/apps/index";
 import CloneApp from "./pages/apps/CloneApp";
+import LogsApp from "./pages/apps/LogsApp";
 import SettingsApp from "./pages/apps/SettingsApp";
 import Webcatalog from "./pages/webcatalog/index";
 import EditWebcat from "./pages/webcatalog/EditWebcat";
@@ -115,6 +116,7 @@ function App() {
                   />
                   <Route path="/apps" element={<Apps />} />
                   <Route path="/apps/clone" element={<CloneApp />} />
+                  <Route path="/apps/logs/:id" element={<LogsApp />} />
                   <Route path="/apps/settings/:id" element={<SettingsApp />} />
                   <Route path="/webcatalog" element={<Webcatalog />} />
                   <Route path="/webcatalog/:id" element={<EditWebcat />} />
