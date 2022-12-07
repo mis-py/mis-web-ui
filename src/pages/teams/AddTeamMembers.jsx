@@ -49,7 +49,7 @@ const AddTeamMembers = () => {
             <input
               className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
               type="search"
-              placeholder="Search..."
+              placeholder="Enter user name to search..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
             />

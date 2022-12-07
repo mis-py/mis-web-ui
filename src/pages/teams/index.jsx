@@ -111,7 +111,7 @@ const Teams = () => {
                   showSearch ? "w-full px-3" : "w-0 px-0"
                 } bg-blackSecond h-full text-xs text-gray border-none placeholder:text-gray duration-300 rounded-r w-full focus:shadow-none focus:ring-0`}
                 type="search"
-                placeholder="Enter user name to search..."
+                placeholder="Enter team name to search..."
                 value={serchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
               />

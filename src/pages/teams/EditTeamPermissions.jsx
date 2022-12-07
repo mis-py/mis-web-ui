@@ -58,7 +58,7 @@ const EditTeamPermissions = () => {
             <input
               className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
               type="search"
-              placeholder="Search..."
+              placeholder="Enter permission name to search..."
             />
             <FiSearch className="w-12 text-gray" />
           </label>
