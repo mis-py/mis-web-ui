@@ -1,12 +1,43 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useGetPermissionsUserIdQuery, useCloneAppMutation } from "../../redux";
 
 import { IoIosArrowBack } from "react-icons/io";
 
 const CloneApp = () => {
   const navigate = useNavigate();
-  const [formValue, setFormValue] = React.useState({});
+  const [formValue, setFormValue] = React.useState({
+    url: "",
+    branch: "",
+  });
+  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
+    localStorage.getItem("user_id")
+  );
+  const [cloneApp, { error: errorCloneApp }] = useCloneAppMutation();
+
+  React.useEffect(() => {
+    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
+      navigate("/users");
+    }
+  }, []);
+
+  const handleCloneApp = async (e) => {
+    e.preventDefault();
+    if (!errorCloneApp) {
+      if (formValue.url === "") {
+        toast.error("URL required field");
+      } else if (formValue.branch === "") {
+        toast.error("Branch required field");
+      } else {
+        await cloneApp({
+          ...formValue,
+        }).unwrap();
+        navigate("/apps");
+        toast.success("Added new app");
+      }
+    }
+  };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -43,9 +74,9 @@ const CloneApp = () => {
               id="branch"
               autoComplete="off"
               placeholder="Enter branch name (default main)"
-              value={formValue.password}
+              value={formValue.branch}
               onChange={(e) =>
-                setFormValue({ ...formValue, password: e.target.value })
+                setFormValue({ ...formValue, branch: e.target.value })
               }
             />
           </label>
@@ -53,7 +84,9 @@ const CloneApp = () => {
       </div>
 
       <div className="flex flex-col gap-3">
-        <button className="btn-primary">Clone</button>
+        <button onClick={handleCloneApp} className="btn-primary">
+          Clone
+        </button>
       </div>
     </div>
   );
