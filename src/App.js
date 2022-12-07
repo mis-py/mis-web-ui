@@ -25,9 +25,9 @@ import EditTeamPermissions from "./pages/teams/EditTeamPermissions";
 import EditTeamMembers from "./pages/teams/EditTeamMembers";
 import AddTeamMembers from "./pages/teams/AddTeamMembers";
 import AddTeamPermissions from "./pages/teams/AddTeamPermissions";
-import Applications from "./pages/applications/index";
-import CloneApp from "./pages/applications/CloneApp";
-import SettingsApp from "./pages/applications/SettingsApp";
+import Apps from "./pages/apps/index";
+import CloneApp from "./pages/apps/CloneApp";
+import SettingsApp from "./pages/apps/SettingsApp";
 import Webcatalog from "./pages/webcatalog/index";
 import EditWebcat from "./pages/webcatalog/EditWebcat";
 import NotFoundLayout from "./layouts/NotFoundLayout";
@@ -113,15 +113,9 @@ function App() {
                     path="/add-team/permissions"
                     element={<AddTeamPermissions />}
                   />
-                  <Route path="/applications" element={<Applications />} />
-                  <Route
-                    path="/applications/clone/:id"
-                    element={<CloneApp />}
-                  />
-                  <Route
-                    path="/applications/settings/:id"
-                    element={<SettingsApp />}
-                  />
+                  <Route path="/apps" element={<Apps />} />
+                  <Route path="/apps/clone" element={<CloneApp />} />
+                  <Route path="/apps/settings/:id" element={<SettingsApp />} />
                   <Route path="/webcatalog" element={<Webcatalog />} />
                   <Route path="/webcatalog/:id" element={<EditWebcat />} />
                 </Route>

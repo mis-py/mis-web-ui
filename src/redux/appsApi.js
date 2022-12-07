@@ -6,7 +6,7 @@ export const appsApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "https://crm.nullgravity.net/api" }),
   endpoints: (build) => ({
     getApps: build.query({
-      query: () => `/apps/`,
+      query: () => `/modules/`,
       providesTags: (result) =>
         result
           ? [

@@ -16,7 +16,7 @@ const Sidebar = ({ toggleDrawer }) => {
     {
       icon: <AiOutlineAppstore />,
       title: "Applications",
-      url: "/applications",
+      url: "/apps",
     },
     {
       icon: <HiOutlineDesktopComputer />,

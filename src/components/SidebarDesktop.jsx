@@ -16,7 +16,7 @@ const SidebarDesktop = () => {
     {
       icon: <AiOutlineAppstore />,
       title: "Applications",
-      url: "/applications",
+      url: "/apps",
     },
     {
       icon: <HiOutlineDesktopComputer />,
