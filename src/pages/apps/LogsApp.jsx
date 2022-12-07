@@ -30,8 +30,8 @@ const LogsApp = () => {
             <FiSearch className="w-12 text-gray" />
           </label>
         </form>
-        {[...Array(10)].map((arr) => (
-          <li>Line</li>
+        {[...Array(10)].map((arr, index) => (
+          <li key={index}>Line</li>
         ))}
       </div>
     </div>

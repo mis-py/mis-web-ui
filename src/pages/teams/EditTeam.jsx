@@ -14,6 +14,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
 import IconUserImg from "../../assets/img/user.png";
+import Tooltip from "../../components/Tooltip";
 
 const EditUser = () => {
   const { id } = useParams();
@@ -94,12 +95,13 @@ const EditUser = () => {
           <div className="flex">
             {!isLoading &&
               getTeamId.users.map((item) => (
-                <img
+                <div
                   key={item.id}
-                  className="w-[29px] h-[29px] shadow -ml-1"
-                  src={IconUserImg}
-                  alt=""
-                />
+                  className="group cursor-pointer shadow -ml-1 relative"
+                >
+                  <img className="w-[35px] h-[35px]" src={IconUserImg} alt="" />
+                  <Tooltip name={item.username} />
+                </div>
               ))}
           </div>
         </form>

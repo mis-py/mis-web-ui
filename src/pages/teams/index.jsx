@@ -12,6 +12,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import useOutsideClick from "../../hooks/useOutsideClick";
 
+import Tooltip from "../../components/Tooltip";
+
 import { FiSearch } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { IoIosArrowDown } from "react-icons/io";
@@ -197,12 +199,17 @@ const Teams = () => {
                         <div className="flex">
                           {!loadingGetTeams && team.users.length ? (
                             team.users.map((item) => (
-                              <img
+                              <div
                                 key={item.id}
-                                className="w-[29px] h-[29px] shadow -ml-1"
-                                src={UserImg}
-                                alt=""
-                              />
+                                className="group cursor-pointer shadow -ml-1 relative"
+                              >
+                                <img
+                                  className="w-[35px] h-[35px]"
+                                  src={UserImg}
+                                  alt=""
+                                />
+                                <Tooltip name={item.username} />
+                              </div>
                             ))
                           ) : (
                             <p className="text-danger">NO USERS</p>
