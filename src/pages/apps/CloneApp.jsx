@@ -1,14 +1,11 @@
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
-import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const CloneApp = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
-
   const [formValue, setFormValue] = React.useState({});
 
   return (
@@ -18,7 +15,7 @@ const CloneApp = () => {
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <Link to="/applications">back</Link>
+          <Link to="/apps">back</Link>
         </div>
         <h3 className="h3 mt-5">Clone app</h3>
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useGetTeamsQuery, useGetPermissionsUserIdQuery } from "../../redux";
+import { useGetAppsQuery, useGetPermissionsUserIdQuery } from "../../redux";
+import { toast } from "react-toastify";
 
 import { FiSearch } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
@@ -9,13 +10,16 @@ import { CgFileDocument } from "react-icons/cg";
 
 import UserImg from "../../assets/img/user.png";
 
-const Applications = () => {
+const Apps = () => {
   const navigate = useNavigate();
   const [showSearch, setShowSearch] = React.useState(false);
   const [showInfo, setShowInfo] = React.useState(false);
   const [serchValue, setSearchValue] = React.useState("");
-  const { data: dataGetTeams = [], isLoading: loadingGetTeams } =
-    useGetTeamsQuery();
+  const {
+    data: getApps = [],
+    isLoading: loadingApps,
+    error: errorApps,
+  } = useGetAppsQuery();
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
     localStorage.getItem("user_id")
   );
@@ -27,6 +31,12 @@ const Applications = () => {
     }
     setShowInfo(index);
   };
+
+  React.useEffect(() => {
+    if (errorApps) {
+      toast.error("No apps found");
+    }
+  }, [getApps, errorApps, serchValue]);
 
   return (
     <div className="py-6">
@@ -57,7 +67,7 @@ const Applications = () => {
           </div>
           {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
             <Link
-              to="/add-team"
+              to="/apps/clone"
               className="px-5 flex items-center justify-center bg-blackSecond text-gray rounded-lg"
             >
               <AiOutlinePlus />
@@ -67,21 +77,21 @@ const Applications = () => {
           )}
         </div>
 
-        <h3 className="h3 mb-5">Applications ({dataGetTeams.length})</h3>
-        {loadingGetTeams ? (
+        <h3 className="h3 mb-5">Applications ({getApps.length})</h3>
+        {loadingApps ? (
           <h2 className="text-2xl mx-auto">Loading...</h2>
         ) : (
           <div className="flex flex-col gap-4">
-            {dataGetTeams &&
-              dataGetTeams
+            {getApps &&
+              getApps
                 .filter((el) =>
                   el.name
                     .toLowerCase()
                     .includes(serchValue.toLowerCase().trim())
                 )
-                .map((team, index) => (
+                .map((app, index) => (
                   <div
-                    key={team.id}
+                    key={app.id}
                     className="flex flex-col relative bg-blackSecond px-4 py-2 rounded"
                   >
                     <div className="flex justify-between items-center pb-2 border-b border-backGround">
@@ -92,21 +102,17 @@ const Applications = () => {
                           alt=""
                         />
                         <div className="flex flex-col">
-                          <h4>App name</h4>
+                          <h4>{app.name}</h4>
                           <h5 className="text-gray text-xs">Category</h5>
                         </div>
                       </div>
                       <div className="flex gap-3">
                         <CgFileDocument
-                          onClick={() =>
-                            navigate(`/applications/clone/${team.id}`)
-                          }
+                          onClick={() => navigate(`/apps/clone`)}
                           className="text-2xl text-gray cursor-pointer"
                         />
                         <AiOutlineSetting
-                          onClick={() =>
-                            navigate(`/applications/settings/${team.id}`)
-                          }
+                          onClick={() => navigate(`/apps/settings/${app.id}`)}
                           className="text-2xl text-gray cursor-pointer"
                         />
                       </div>
@@ -115,11 +121,15 @@ const Applications = () => {
                       <div className={`duration-300 flex flex-col pt-4 gap-2`}>
                         <div className="flex justify-between">
                           <h3>Status:</h3>
-                          <p className="text-gray">healthy/unhealthy</p>
+                          <p className="text-gray">
+                            {app.loaded ? "healthy" : "unhealthy"}
+                          </p>
                         </div>
                         <div className="flex justify-between">
                           <h3>Is active:</h3>
-                          <p className="text-gray">true / false</p>
+                          <p className="text-gray">
+                            {app.loaded ? "true" : "false"}
+                          </p>
                         </div>
                       </div>
                     )}
@@ -144,4 +154,4 @@ const Applications = () => {
   );
 };
 
-export default Applications;
+export default Apps;
