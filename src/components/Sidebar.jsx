@@ -1,9 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+
 import { FiSearch, FiBell, FiUser, FiUsers } from "react-icons/fi";
 import { BiUser } from "react-icons/bi";
 import { AiOutlineAppstore, AiOutlineAppstoreAdd } from "react-icons/ai";
 import { HiOutlineDesktopComputer } from "react-icons/hi";
+import { MdGroups } from "react-icons/md";
 
 import ProfilePopup from "./ProfilePopup";
 
@@ -13,6 +15,7 @@ const Sidebar = ({ toggleDrawer }) => {
   const sidebar = [
     { icon: <BiUser />, title: "Users", url: "/users" },
     { icon: <FiUsers />, title: "Teams", url: "/teams" },
+    { icon: <MdGroups />, title: "Groups", url: "/groups" },
     {
       icon: <AiOutlineAppstore />,
       title: "Applications",

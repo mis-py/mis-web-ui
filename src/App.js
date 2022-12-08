@@ -25,10 +25,14 @@ import EditTeamPermissions from "./pages/teams/EditTeamPermissions";
 import EditTeamMembers from "./pages/teams/EditTeamMembers";
 import AddTeamMembers from "./pages/teams/AddTeamMembers";
 import AddTeamPermissions from "./pages/teams/AddTeamPermissions";
+import Groups from "./pages/groups/index";
+import AddGroup from "./pages/groups/AddGroup";
 import Apps from "./pages/apps/index";
 import CloneApp from "./pages/apps/CloneApp";
 import LogsApp from "./pages/apps/LogsApp";
 import SettingsApp from "./pages/apps/SettingsApp";
+import ManageGroupApp from "./pages/apps/ManageGroupApp";
+import ManageMembersApp from "./pages/apps/ManageMembersApp";
 import Webcatalog from "./pages/webcatalog/index";
 import EditWebcat from "./pages/webcatalog/EditWebcat";
 import NotFoundLayout from "./layouts/NotFoundLayout";
@@ -98,6 +102,8 @@ function App() {
                   <Route path="/teams" element={<Teams />} />
                   <Route path="/add-team" element={<AddTeam />} />
                   <Route path="/teams/:id" element={<EditTeam />} />
+                  <Route path="/groups" element={<Groups />} />
+                  <Route path="/add-group" element={<AddGroup />} />
                   <Route
                     path="/team/permissions/:id"
                     element={<EditTeamPermissions />}
@@ -118,6 +124,14 @@ function App() {
                   <Route path="/apps/clone" element={<CloneApp />} />
                   <Route path="/apps/logs/:id" element={<LogsApp />} />
                   <Route path="/apps/settings/:id" element={<SettingsApp />} />
+                  <Route
+                    path="/apps/settings/manage/:id"
+                    element={<ManageGroupApp />}
+                  />
+                  <Route
+                    path="/apps/settings/manage/members/:id"
+                    element={<ManageMembersApp />}
+                  />
                   <Route path="/webcatalog" element={<Webcatalog />} />
                   <Route path="/webcatalog/:id" element={<EditWebcat />} />
                 </Route>

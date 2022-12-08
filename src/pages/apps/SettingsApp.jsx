@@ -1,9 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const SettingsApp = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
@@ -35,7 +37,10 @@ const SettingsApp = () => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <button className="flex justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg">
+        <button
+          onClick={() => navigate(`/apps/settings/manage/${id}`)}
+          className="flex justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
+        >
           Manage groups
           <AiOutlinePlusCircle className="text-xl" />
         </button>
