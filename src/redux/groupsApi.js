@@ -34,7 +34,22 @@ export const groupsApi = createApi({
       }),
       invalidatesTags: [{ type: "Groups", id: "LIST" }],
     }),
+    deleteGroup: build.mutation({
+      query: (id) => ({
+        url: `/groups/${id}`,
+        method: "DELETE",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
+      invalidatesTags: [{ type: "Groups", id: "LIST" }],
+    }),
   }),
 });
 
-export const { useGetGroupsQuery, useAddGroupMutation } = groupsApi;
+export const {
+  useGetGroupsQuery,
+  useAddGroupMutation,
+  useDeleteGroupMutation,
+} = groupsApi;
