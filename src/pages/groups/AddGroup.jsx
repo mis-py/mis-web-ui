@@ -7,10 +7,10 @@ import {
   useAddGroupMutation,
 } from "../../redux";
 import {
-  addMembersGroup,
-  deleteMembersGroup,
-  deleteMembersGroupAll,
-} from "../../redux/slices/addMembersSlice";
+  addMembers,
+  deleteMembers,
+  deleteMembersAll,
+} from "../../redux/slices/membersSlice";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -22,7 +22,7 @@ import UserImg from "../../assets/img/user.png";
 const AddGroup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const membersGroup = useSelector((state) => state.addMembers.membersGroup);
+  const members = useSelector((state) => state.membersList.members);
   const {
     data: getUsers,
     isLoading: loadingUsers,
@@ -49,10 +49,10 @@ const AddGroup = () => {
   }, [errorUsers]);
 
   const handleAddMembers = (id) => {
-    if (!membersGroup.includes(id)) {
-      dispatch(addMembersGroup(id));
+    if (!members.includes(id)) {
+      dispatch(addMembers(id));
     } else {
-      dispatch(deleteMembersGroup(id));
+      dispatch(deleteMembers(id));
     }
   };
 
@@ -64,10 +64,10 @@ const AddGroup = () => {
       } else {
         await addGroup({
           ...formValue,
-          users_ids: membersGroup,
+          users_ids: members,
         }).unwrap();
         navigate("/groups");
-        dispatch(deleteMembersGroupAll());
+        dispatch(deleteMembersAll());
         toast.success("Added new group");
       }
     }
@@ -137,7 +137,7 @@ const AddGroup = () => {
                       onClick={() => handleAddMembers(user.id)}
                       className="absolute right-3 top-1/2 -translate-y-1/2"
                     >
-                      {membersGroup.includes(user.id) ? (
+                      {members.includes(user.id) ? (
                         <AiOutlineCloseCircle className="text-danger text-2xl" />
                       ) : (
                         <AiOutlineCheckCircle className="text-gray text-2xl" />

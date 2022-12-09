@@ -11,7 +11,7 @@ import addTeamMembersSlice from "./slices/addTeamMembersSlice";
 import addTeamPermissionsSlice from "./slices/addTeamPermissionsSlice";
 import editTeamPermissionsSlice from "./slices/editTeamPermissionsSlice";
 import editTeamMembersSlice from "./slices/editTeamMembersSlice";
-import addMembersSlice from "./slices/addMembersSlice";
+import membersSlice from "./slices/membersSlice";
 
 export const store = configureStore({
   reducer: {
@@ -27,7 +27,7 @@ export const store = configureStore({
     addTeamPermissions: addTeamPermissionsSlice,
     editTeamPermissions: editTeamPermissionsSlice,
     editTeamMembers: editTeamMembersSlice,
-    addMembers: addMembersSlice,
+    membersList: membersSlice,
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware({}).concat([
