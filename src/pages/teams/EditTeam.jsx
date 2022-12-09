@@ -7,7 +7,7 @@ import {
   useGetPermissionsUserIdQuery,
   useGetPermissionsTeamIdQuery,
 } from "../../redux";
-import { addMembers } from "../../redux/slices/editTeamMembersSlice";
+import { addMembers } from "../../redux/slices/membersSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -23,7 +23,7 @@ const EditUser = () => {
   const permissions = useSelector(
     (state) => state.editTeamPermissions.permissions
   );
-  const members = useSelector((state) => state.editTeamMembers.members);
+  const members = useSelector((state) => state.membersList.members);
   const { data: getTeamId, isLoading } = useGetTeamIdQuery(id);
   const [editTeam] = useEditTeamMutation();
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(

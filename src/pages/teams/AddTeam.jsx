@@ -12,7 +12,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 const AddTeam = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const members = useSelector((state) => state.addTeamMembers.members);
+  const members = useSelector((state) => state.membersList.members);
   const permissions = useSelector(
     (state) => state.addTeamPermissions.permissions
   );

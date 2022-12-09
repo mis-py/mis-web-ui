@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addMembers,
   deleteMembers,
-} from "../../redux/slices/addTeamMembersSlice";
+  deleteMembersAll,
+} from "../../redux/slices/membersSlice";
 // import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -17,7 +18,7 @@ import UserImg from "../../assets/img/user.png";
 const AddTeamMembers = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const members = useSelector((state) => state.addTeamMembers.members);
+  const members = useSelector((state) => state.membersList.members);
   const [searchValue, setSearchValue] = React.useState("");
   const { data: getDataUsers, isLoading: loadingDataUsers } =
     useGetUsersQuery();
@@ -37,7 +38,14 @@ const AddTeamMembers = () => {
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <div onClick={() => navigate(-1)}>back</div>
+          <div
+            onClick={() => {
+              navigate(-1);
+              dispatch(deleteMembersAll());
+            }}
+          >
+            back
+          </div>
         </div>
         <h3 className="h3 mt-5 mb-6">Manage members</h3>
         <h3 className="mb-1">Search for member</h3>

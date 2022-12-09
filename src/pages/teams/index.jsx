@@ -6,7 +6,7 @@ import {
   useGetPermissionsUserIdQuery,
   useDeleteTeamMutation,
 } from "../../redux";
-import { deleteMembersAll } from "../../redux/slices/addTeamMembersSlice";
+import { deleteMembersAll } from "../../redux/slices/membersSlice";
 import { deletePermissions } from "../../redux/slices/addTeamPermissionsSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";

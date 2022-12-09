@@ -80,7 +80,9 @@ const AddGroup = () => {
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <Link to="/groups">back</Link>
+          <Link to="/groups" onClick={() => dispatch(deleteMembersAll())}>
+            back
+          </Link>
         </div>
         <h3 className="h3 mt-5">New group</h3>
 

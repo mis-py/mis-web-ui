@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addMembers,
   deleteMembers,
-} from "../../redux/slices/editTeamMembersSlice";
+} from "../../redux/slices/membersSlice";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -17,7 +17,7 @@ const EditTeamMembers = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const members = useSelector((state) => state.editTeamMembers.members);
+  const members = useSelector((state) => state.membersList.members);
   const [searchValue, setSearchValue] = React.useState("");
   const [checked, setChecked] = React.useState([]);
   const { data: getDataTeamId } = useGetTeamIdQuery(id);
