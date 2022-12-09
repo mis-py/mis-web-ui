@@ -6,7 +6,9 @@ import {
   useGetPermissionsUserIdQuery,
   useDeleteGroupMutation,
 } from "../../redux";
+import { deleteMembersAll } from "../../redux/slices/membersSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import useOutsideClick from "../../hooks/useOutsideClick";
 
 import Tooltip from "../../components/Tooltip";
@@ -21,6 +23,7 @@ import GroupImg from "../../assets/img/groups.png";
 
 const Groups = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     data: getGroups = [],
     isLoading: loadingGroup,
@@ -46,6 +49,7 @@ const Groups = () => {
     if (errorGroup) {
       toast.error("Groups not found");
     }
+    dispatch(deleteMembersAll());
   }, [errorGroup]);
 
   const toggle = (index) => {
@@ -149,19 +153,21 @@ const Groups = () => {
                           : "opacity-0 invisible"
                       } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-3`}
                     >
-                      <Link
+                      <div
+                        onClick={(e) => navigate(`/group/members/${group.id}`)}
                         className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
-                        to="/teams"
                       >
-                        Granting privileges
-                      </Link>
+                        Manage members
+                      </div>
                       {getPermissionsUserId &&
                       getPermissionsUserId.length !== 0 ? (
                         <div
-                          onClick={(e) => navigate(`/teams/${group.id}`)}
+                          onClick={(e) =>
+                            navigate(`/group/objects/${group.id}`)
+                          }
                           className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
                         >
-                          Editing
+                          Manage objects
                         </div>
                       ) : (
                         false

@@ -1,48 +1,37 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  useGetPermissionsUserIdQuery,
-  useGetUsersQuery,
-  useAddGroupMutation,
-} from "../../redux";
-import { addMembers, deleteMembers } from "../../redux/slices/membersSlice";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import {
+  useGetGroupIdUsersQuery,
+  useGetUsersQuery,
+  useEditGroupMembersMutation,
+} from "../../redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addMembers, deleteMembers } from "../../redux/slices/membersSlice";
 
 import { IoIosArrowBack } from "react-icons/io";
-import { AiOutlineCloseCircle, AiOutlineCheckCircle } from "react-icons/ai";
 import { FiSearch } from "react-icons/fi";
+import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 
 import UserImg from "../../assets/img/user.png";
+import { useState } from "react";
 
-const AddGroup = () => {
+const EditMembersGroup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id } = useParams();
   const members = useSelector((state) => state.membersList.members);
-  const {
-    data: getUsers,
-    isLoading: loadingUsers,
-    error: errorUsers,
-  } = useGetUsersQuery();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
-  const [addGroup] = useAddGroupMutation();
-
   const [searchValue, setSearchValue] = React.useState("");
-  const [formValue, setFormValue] = React.useState({
-    name: "",
-    users_ids: [],
-  });
+  const { data: getDataUsers, isLoading: loadingDataUsers } =
+    useGetUsersQuery();
+  const { data: getGroupIdUsers } = useGetGroupIdUsersQuery(id);
+  const [editGroupMembers] = useEditGroupMembersMutation();
 
   React.useEffect(() => {
-    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
-      navigate("/groups");
+    if (getGroupIdUsers) {
+      getGroupIdUsers.map((user) => dispatch(addMembers(user.id)));
     }
-    if (errorUsers) {
-      toast.error("No users found");
-    }
-  }, [errorUsers]);
+  }, [getGroupIdUsers]);
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {
@@ -52,72 +41,47 @@ const AddGroup = () => {
     }
   };
 
-  const handleAddGroup = async (e) => {
+  const handleEditGroupMembers = async (e) => {
     e.preventDefault();
-    if (!errorUsers) {
-      if (formValue.name < 1) {
-        toast.error("Invalid group name");
-      } else {
-        await addGroup({
-          ...formValue,
-          users_ids: members,
-        }).unwrap();
-        navigate("/groups");
-        toast.success("Added new group");
-      }
+    if (members) {
+      await editGroupMembers({ id, rest: members }).unwrap();
     }
+    navigate("/groups");
+    toast.success("Group members updating");
   };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <div className="flex items-center text-gray cursor-pointer">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <Link to="/groups">back</Link>
+          <div onClick={() => navigate(-1)}>back</div>
         </div>
-        <h3 className="h3 mt-5">New group</h3>
-
-        <form className="my-7">
-          <label className="flex flex-col gap-1 mb-4" htmlFor="name">
-            Group name
+        <h3 className="h3 mt-5 mb-6">Manage members</h3>
+        <h3 className="mb-1">Search for member</h3>
+        <form>
+          <label
+            className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
+            htmlFor="search"
+          >
             <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-              type="text"
-              id="name"
-              placeholder="Enter a group name"
-              autoComplete="off"
-              value={formValue.name}
-              onChange={(e) =>
-                setFormValue({ ...formValue, name: e.target.value })
-              }
+              className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
+              type="search"
+              placeholder="Enter user name to search..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
+            <FiSearch className="w-12 text-gray" />
           </label>
         </form>
-
-        {loadingUsers ? (
+        {loadingDataUsers ? (
           <h2 className="text-2xl mx-auto">Loading...</h2>
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
-            <div className="flex flex-col">
-              <h3 className="mb-1">Search for member</h3>
-              <label
-                className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray"
-                htmlFor="search"
-              >
-                <input
-                  className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
-                  type="search"
-                  placeholder="Enter user name to search..."
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                />
-                <FiSearch className="w-12 text-gray" />
-              </label>
-            </div>
-            {getUsers &&
-              getUsers
+            {getDataUsers &&
+              getDataUsers
                 .filter((el) =>
                   el.username
                     .toLowerCase()
@@ -168,12 +132,12 @@ const AddGroup = () => {
         )}
       </div>
       <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-        <button onClick={handleAddGroup} className="btn-primary">
-          Add group
+        <button onClick={handleEditGroupMembers} className="btn-primary">
+          Save
         </button>
       </div>
     </div>
   );
 };
 
-export default AddGroup;
+export default EditMembersGroup;

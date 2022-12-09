@@ -27,6 +27,8 @@ import AddTeamMembers from "./pages/teams/AddTeamMembers";
 import AddTeamPermissions from "./pages/teams/AddTeamPermissions";
 import Groups from "./pages/groups/index";
 import AddGroup from "./pages/groups/AddGroup";
+import EditMembersGroup from "./pages/groups/EditMembersGroup";
+import EditObjectsGroup from "./pages/groups/EditObjectsGroup";
 import Apps from "./pages/apps/index";
 import CloneApp from "./pages/apps/CloneApp";
 import LogsApp from "./pages/apps/LogsApp";
@@ -104,6 +106,14 @@ function App() {
                   <Route path="/teams/:id" element={<EditTeam />} />
                   <Route path="/groups" element={<Groups />} />
                   <Route path="/add-group" element={<AddGroup />} />
+                  <Route
+                    path="/group/members/:id"
+                    element={<EditMembersGroup />}
+                  />
+                  <Route
+                    path="/group/objects/:id"
+                    element={<EditObjectsGroup />}
+                  />
                   <Route
                     path="/team/permissions/:id"
                     element={<EditTeamPermissions />}
