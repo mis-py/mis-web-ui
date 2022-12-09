@@ -2,10 +2,10 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetGroupsObjectsQuery,
+  useGetGroupIdObjectsQuery,
   useEditObjectsGroupMutation,
 } from "../../redux";
 import { toast } from "react-toastify";
-import qs from "qs";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -17,7 +17,13 @@ const EditObjectsGroup = () => {
 
   const { data: getGroupsObjects, isLoading: loadingGroupsObjects } =
     useGetGroupsObjectsQuery();
+  const { data: getIdObjects } = useGetGroupIdObjectsQuery(id);
   const [editObjectsGroup] = useEditObjectsGroupMutation();
+
+  React.useEffect(() => {
+    getIdObjects &&
+      getIdObjects.map((obj) => setChecked((checked) => [...checked, obj.id]));
+  }, [getIdObjects]);
 
   const handleEditObjectsGroup = async (e) => {
     e.preventDefault();

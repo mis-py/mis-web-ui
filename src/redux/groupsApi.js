@@ -56,6 +56,23 @@ export const groupsApi = createApi({
             ]
           : [{ type: "Groups", id: "LIST" }],
     }),
+    getGroupIdObjects: build.query({
+      query: (id) => ({
+        url: `/groups/${id}/objects`,
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Groups", id })),
+              { type: "Groups", id: "LIST" },
+            ]
+          : [{ type: "Groups", id: "LIST" }],
+    }),
     addGroup: build.mutation({
       query: (body) => ({
         url: "/groups/create",
@@ -110,6 +127,7 @@ export const {
   useGetGroupsQuery,
   useGetGroupsObjectsQuery,
   useGetGroupIdUsersQuery,
+  useGetGroupIdObjectsQuery,
   useAddGroupMutation,
   useEditGroupMembersMutation,
   useEditObjectsGroupMutation,

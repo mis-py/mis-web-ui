@@ -14,7 +14,6 @@ import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 
 import UserImg from "../../assets/img/user.png";
-import { useState } from "react";
 
 const EditMembersGroup = () => {
   const navigate = useNavigate();
