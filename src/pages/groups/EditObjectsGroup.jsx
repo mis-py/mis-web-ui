@@ -1,7 +1,11 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetGroupsObjectsQuery } from "../../redux";
+import {
+  useGetGroupsObjectsQuery,
+  useEditObjectsGroupMutation,
+} from "../../redux";
 import { toast } from "react-toastify";
+import qs from "qs";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -13,10 +17,18 @@ const EditObjectsGroup = () => {
 
   const { data: getGroupsObjects, isLoading: loadingGroupsObjects } =
     useGetGroupsObjectsQuery();
+  const [editObjectsGroup] = useEditObjectsGroupMutation();
 
-  console.log(getGroupsObjects);
-
-  console.log(checked);
+  const handleEditObjectsGroup = async (e) => {
+    e.preventDefault();
+    if (checked) {
+      await editObjectsGroup({ id, rest: checked }).unwrap();
+    } else {
+      await editObjectsGroup({ id, resto: [] }).unwrap();
+    }
+    navigate("/groups");
+    toast.success("Group objects changed");
+  };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -56,11 +68,7 @@ const EditObjectsGroup = () => {
                         type="checkbox"
                         name={item.object_id}
                         id={item.object_id}
-                        checked={
-                          !checked.length
-                            ? setChecked([""])
-                            : checked.includes(item.id)
-                        }
+                        checked={checked.includes(item.id)}
                         onChange={(e) => {
                           if (e.target.checked) {
                             setChecked([...checked, item.id]);
@@ -81,7 +89,9 @@ const EditObjectsGroup = () => {
           )}
         </form>
       </div>
-      <button className="btn-primary">Save</button>
+      <button onClick={handleEditObjectsGroup} className="btn-primary">
+        Save
+      </button>
     </div>
   );
 };

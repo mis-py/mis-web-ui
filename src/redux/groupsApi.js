@@ -69,7 +69,7 @@ export const groupsApi = createApi({
       invalidatesTags: [{ type: "Groups", id: "LIST" }],
     }),
     editGroupMembers: build.mutation({
-      query: ({ id, ...rest }) => ({
+      query: ({ id, rest }) => ({
         url: `/groups/${id}/users`,
         method: "PUT",
         headers: {
@@ -78,7 +78,19 @@ export const groupsApi = createApi({
         },
         body: rest,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Teams", id }],
+      invalidatesTags: (result, error, { id }) => [{ type: "Groups", id }],
+    }),
+    editObjectsGroup: build.mutation({
+      query: ({ id, rest }) => ({
+        url: `/groups/${id}/objects`,
+        method: "PUT",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+        body: rest,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Groups", id }],
     }),
     deleteGroup: build.mutation({
       query: (id) => ({
@@ -100,5 +112,6 @@ export const {
   useGetGroupIdUsersQuery,
   useAddGroupMutation,
   useEditGroupMembersMutation,
+  useEditObjectsGroupMutation,
   useDeleteGroupMutation,
 } = groupsApi;
