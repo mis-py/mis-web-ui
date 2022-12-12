@@ -32,14 +32,12 @@ const EditObjectsGroup = () => {
   };
 
   React.useEffect(() => {
-    // getIdObjects &&
-    //   getIdObjects.map((obj) => setChecked((checked) => [...checked, obj.id]));
     if (getIdObjects) {
-      getIdObjects.map((obj) => setChecked((checked) => [...checked, obj.id]));
+      setChecked(getIdObjects.map((obj) => obj.id));
+    } else {
+      setChecked(false);
     }
   }, [getIdObjects]);
-
-  console.log(getIdObjects);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -79,7 +77,7 @@ const EditObjectsGroup = () => {
                         type="checkbox"
                         name={item.object_id}
                         id={item.object_id}
-                        checked={checked.includes(item.id)}
+                        checked={checked ? checked.includes(item.id) : false}
                         onChange={(e) => {
                           if (e.target.checked) {
                             setChecked([...checked, item.id]);

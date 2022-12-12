@@ -65,13 +65,7 @@ export const groupsApi = createApi({
           Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
       }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: "Groups", id })),
-              { type: "Groups", id: "LIST" },
-            ]
-          : [{ type: "Groups", id: "LIST" }],
+      providesTags: (result, error, id) => [{ type: "Groups", id }],
     }),
     addGroup: build.mutation({
       query: (body) => ({

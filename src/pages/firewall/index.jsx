@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import { Link, useNavigate } from "react-router-dom";
 import useOutsideClick from "../../hooks/useOutsideClick";
-import { useGetTeamsQuery, useGetPermissionsUserIdQuery } from "../../redux";
+import { useGetPermissionsUserIdQuery, useGetFirewallQuery } from "../../redux";
 
 import { FiSearch } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -12,10 +12,10 @@ import { AiOutlinePlus } from "react-icons/ai";
 const Firewall = () => {
   const navigate = useNavigate();
   const {
-    data: dataGetTeams = [],
-    isLoading: loadingGetTeams,
-    error: errorGetTeams,
-  } = useGetTeamsQuery();
+    data: getFirewall = [],
+    isLoading: loadingFirewall,
+    error: errorFirewall,
+  } = useGetFirewallQuery();
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
     localStorage.getItem("user_id")
   );
@@ -30,11 +30,11 @@ const Firewall = () => {
 
   const refPopup = useOutsideClick(handleClickOutside);
 
-  //   React.useEffect(() => {
-  //     if (errorGetTeams) {
-  //       toast.error("Firewall not found");
-  //     }
-  //   }, [errorGetTeams]);
+  React.useEffect(() => {
+    if (errorFirewall) {
+      toast.error("Firewall not found");
+    }
+  }, [errorFirewall]);
 
   const toggleEdit = (index) => {
     if (showEdit === index) {
@@ -44,26 +44,26 @@ const Firewall = () => {
     setShowEdit(index);
   };
 
-  const handleDeleteTeam = async (id) => {
-    confirmAlert({
-      title: "Delete team",
-      message: "Are you sure you want to delete this team?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: async () => {
-            // await deleteTeam(id);
-            navigate("/teams");
-            toast.success("Team deleted");
-          },
-        },
-        {
-          label: "No",
-        },
-      ],
-      overlayClassName: "bg-blackSecond/70",
-    });
-  };
+  // const handleDeleteTeam = async (id) => {
+  //   confirmAlert({
+  //     title: "Delete team",
+  //     message: "Are you sure you want to delete this team?",
+  //     buttons: [
+  //       {
+  //         label: "Yes",
+  //         onClick: async () => {
+  //           // await deleteTeam(id);
+  //           navigate("/teams");
+  //           toast.success("Team deleted");
+  //         },
+  //       },
+  //       {
+  //         label: "No",
+  //       },
+  //     ],
+  //     overlayClassName: "bg-blackSecond/70",
+  //   });
+  // };
 
   return (
     <div className="py-6">
@@ -104,21 +104,21 @@ const Firewall = () => {
           )}
         </div>
 
-        <h3 className="h3 mb-5">Firewalls ({dataGetTeams.length})</h3>
-        {loadingGetTeams ? (
+        <h3 className="h3 mb-5">Firewalls ({getFirewall.length})</h3>
+        {loadingFirewall ? (
           <h2 className="text-2xl mx-auto">Loading...</h2>
         ) : (
           <div className="flex flex-col gap-4">
-            {dataGetTeams &&
-              dataGetTeams
-                .filter((el) =>
-                  el.name
-                    .toLowerCase()
-                    .includes(serchValue.toLowerCase().trim())
-                )
-                .map((team, index) => (
+            {getFirewall &&
+              getFirewall
+                // .filter((el) =>
+                //   el.name
+                //     .toLowerCase()
+                //     .includes(serchValue.toLowerCase().trim())
+                // )
+                .map((firewall, index) => (
                   <div
-                    key={team.id}
+                    key={firewall.id}
                     className="flex flex-col relative bg-blackSecond px-4 py-2 rounded lg:p-6"
                   >
                     <div
@@ -143,8 +143,8 @@ const Firewall = () => {
                     </div>
                     <div className="flex justify-between items-center">
                       <div className="flex flex-col">
-                        <h4>{team.name}</h4>
-                        <h5 className="text-gray text-xs">8.8.8.8</h5>
+                        <h4>{firewall.name}</h4>
+                        <h5 className="text-gray text-xs">{firewall.ip}</h5>
                       </div>
                       <BiDotsVerticalRounded
                         onClick={(e) => {

@@ -5,3 +5,4 @@ export * from "./permissionsApi";
 export * from "./webcatApi";
 export * from "./appsApi";
 export * from "./groupsApi";
+export * from "./firewallApi";
