@@ -37,6 +37,8 @@ import ManageGroupApp from "./pages/apps/ManageGroupApp";
 import ManageMembersApp from "./pages/apps/ManageMembersApp";
 import Webcatalog from "./pages/webcatalog/index";
 import EditWebcat from "./pages/webcatalog/EditWebcat";
+import Firewall from "./pages/firewall/index";
+import AddFirewall from "./pages/firewall/AddFirewall";
 import NotFoundLayout from "./layouts/NotFoundLayout";
 import NotFound from "./pages/NotFound";
 
@@ -144,6 +146,8 @@ function App() {
                   />
                   <Route path="/webcatalog" element={<Webcatalog />} />
                   <Route path="/webcatalog/:id" element={<EditWebcat />} />
+                  <Route path="/firewall" element={<Firewall />} />
+                  <Route path="/add-firewall" element={<AddFirewall />} />
                 </Route>
                 <Route path="/singin" element={<LoginLayout />}>
                   <Route index element={<Singin />} />

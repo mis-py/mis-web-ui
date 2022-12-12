@@ -50,7 +50,7 @@ const Groups = () => {
       toast.error("Groups not found");
     }
     dispatch(deleteMembersAll());
-  }, [errorGroup]);
+  }, [errorGroup, loadingGroup]);
 
   const toggle = (index) => {
     if (showTeamInfo === index) {

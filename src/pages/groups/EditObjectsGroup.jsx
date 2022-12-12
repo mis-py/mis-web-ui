@@ -20,21 +20,26 @@ const EditObjectsGroup = () => {
   const { data: getIdObjects } = useGetGroupIdObjectsQuery(id);
   const [editObjectsGroup] = useEditObjectsGroupMutation();
 
-  React.useEffect(() => {
-    getIdObjects &&
-      getIdObjects.map((obj) => setChecked((checked) => [...checked, obj.id]));
-  }, [getIdObjects]);
-
   const handleEditObjectsGroup = async (e) => {
     e.preventDefault();
     if (checked) {
       await editObjectsGroup({ id, rest: checked }).unwrap();
     } else {
-      await editObjectsGroup({ id, resto: [] }).unwrap();
+      await editObjectsGroup({ id, rest: [] }).unwrap();
     }
     navigate("/groups");
     toast.success("Group objects changed");
   };
+
+  React.useEffect(() => {
+    // getIdObjects &&
+    //   getIdObjects.map((obj) => setChecked((checked) => [...checked, obj.id]));
+    if (getIdObjects) {
+      getIdObjects.map((obj) => setChecked((checked) => [...checked, obj.id]));
+    }
+  }, [getIdObjects]);
+
+  console.log(getIdObjects);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
