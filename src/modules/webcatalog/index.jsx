@@ -4,6 +4,7 @@ import { useGetWebcatQuery } from "../../redux";
 
 import FilterBar from "../../components/FilterBar";
 
+import { HiOutlineDesktopComputer } from "react-icons/hi";
 import { FiSearch, FiDownload, FiEdit, FiEye } from "react-icons/fi";
 import { BiFilterAlt } from "react-icons/bi";
 
@@ -143,4 +144,11 @@ const Webcatalog = () => {
   );
 };
 
-export default Webcatalog;
+export default {
+  routeProps: {
+    path: "/webcatalog",
+    component: <Webcatalog />,
+  },
+  name: "Webcatalog",
+  icon: <HiOutlineDesktopComputer />,
+};

@@ -4,11 +4,11 @@ import { NavLink } from "react-router-dom";
 import { FiSearch, FiBell, FiUser, FiUsers } from "react-icons/fi";
 import { BiUser } from "react-icons/bi";
 import { AiOutlineAppstore } from "react-icons/ai";
-import { HiOutlineDesktopComputer } from "react-icons/hi";
 import { MdGroups } from "react-icons/md";
-import { GiFirewall } from "react-icons/gi";
 
 import ProfilePopupDesktop from "./ProfilePopupDesktop";
+
+import modules from "../modules";
 
 const SidebarDesktop = () => {
   const [userPopup, setUserPopup] = React.useState(false);
@@ -22,16 +22,16 @@ const SidebarDesktop = () => {
       title: "Applications",
       url: "/apps",
     },
-    {
-      icon: <HiOutlineDesktopComputer />,
-      title: "WebCatalog",
-      url: "/webcatalog",
-    },
-    {
-      icon: <GiFirewall />,
-      title: "Firewall",
-      url: "/firewall",
-    },
+    // {
+    //   icon: <HiOutlineDesktopComputer />,
+    //   title: "WebCatalog",
+    //   url: "/webcatalog",
+    // },
+    // {
+    //   icon: <GiFirewall />,
+    //   title: "Firewall",
+    //   url: "/firewall",
+    // },
   ];
 
   return (
@@ -86,6 +86,24 @@ const SidebarDesktop = () => {
                 </div>
                 <h3 className="py-3 duration-300 group-hover:text-primary">
                   {link.title}
+                </h3>
+              </NavLink>
+            ))}
+            {modules.map((module) => (
+              <NavLink
+                className={({ isActive }) =>
+                  isActive
+                    ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
+                    : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
+                }
+                to={module.routeProps.path}
+                key={module.name}
+              >
+                <div className="duration-300 group-hover:text-primary">
+                  {module.icon}
+                </div>
+                <h3 className="py-3 duration-300 group-hover:text-primary">
+                  {module.name}
                 </h3>
               </NavLink>
             ))}

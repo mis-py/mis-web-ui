@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { useGetPermissionsUserIdQuery, useGetFirewallQuery } from "../../redux";
 
+import { GiFirewall } from "react-icons/gi";
 import { FiSearch } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -163,4 +164,11 @@ const Firewall = () => {
   );
 };
 
-export default Firewall;
+export default {
+  routeProps: {
+    path: "/firewall",
+    component: <Firewall />,
+  },
+  name: "Firewall",
+  icon: <GiFirewall />,
+};
