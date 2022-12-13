@@ -97,6 +97,6 @@ export default {
     path: "/add-firewall",
     component: <AddFirewall />,
   },
-  name: "Firewall",
+  name: "firewall",
   sidebar: false,
 };

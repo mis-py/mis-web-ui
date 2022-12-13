@@ -85,26 +85,26 @@ const SidebarDesktop = () => {
               (module) =>
                 getModules &&
                 getModules.map((mod) =>
-                  mod.loaded && mod.name === module.name ? (
-                    <NavLink
-                      className={({ isActive }) =>
-                        isActive
-                          ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
-                          : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
-                      }
-                      to={module.routeProps.path}
-                      key={module.name}
-                    >
-                      <div className="duration-300 group-hover:text-primary">
-                        {module.icon}
-                      </div>
-                      <h3 className="py-3 duration-300 group-hover:text-primary">
-                        {module.title}
-                      </h3>
-                    </NavLink>
-                  ) : (
-                    false
-                  )
+                  mod.loaded && mod.name === module.name
+                    ? module.sidebar && (
+                        <NavLink
+                          className={({ isActive }) =>
+                            isActive
+                              ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
+                              : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
+                          }
+                          to={module.routeProps.path}
+                          key={module.name}
+                        >
+                          <div className="duration-300 group-hover:text-primary">
+                            {module.icon}
+                          </div>
+                          <h3 className="py-3 duration-300 group-hover:text-primary">
+                            {module.title}
+                          </h3>
+                        </NavLink>
+                      )
+                    : false
                 )
             )}
           </ul>
