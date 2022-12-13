@@ -6,3 +6,4 @@ export * from "./webcatApi";
 export * from "./appsApi";
 export * from "./groupsApi";
 export * from "./firewallApi";
+export * from "./modulesApi";

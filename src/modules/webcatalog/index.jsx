@@ -95,7 +95,7 @@ const Webcatalog = () => {
                   >
                     <div className="absolute bg-black/30 inset-0 z-10"></div>
                     <img
-                      className="absolute w-full h-full object-cover inset-0"
+                      className="absolute w-full h-full object-cover object-center inset-0"
                       src={`data:image/webp;base64, ${item.thumbnail}`}
                       alt=""
                     />
@@ -149,6 +149,8 @@ export default {
     path: "/webcatalog",
     component: <Webcatalog />,
   },
-  name: "Webcatalog",
+  name: "webcat",
+  title: "Webcatalog",
+  sidebar: true,
   icon: <HiOutlineDesktopComputer />,
 };

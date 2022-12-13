@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useGetModulesQuery } from "../redux";
 
 import { FiSearch, FiBell, FiUser, FiUsers } from "react-icons/fi";
 import { BiUser } from "react-icons/bi";
@@ -11,6 +12,7 @@ import ProfilePopupDesktop from "./ProfilePopupDesktop";
 import modules from "../modules";
 
 const SidebarDesktop = () => {
+  const { data: getModules, isLoading, isSuccess } = useGetModulesQuery();
   const [userPopup, setUserPopup] = React.useState(false);
 
   const sidebar = [
@@ -22,16 +24,6 @@ const SidebarDesktop = () => {
       title: "Applications",
       url: "/apps",
     },
-    // {
-    //   icon: <HiOutlineDesktopComputer />,
-    //   title: "WebCatalog",
-    //   url: "/webcatalog",
-    // },
-    // {
-    //   icon: <GiFirewall />,
-    //   title: "Firewall",
-    //   url: "/firewall",
-    // },
   ];
 
   return (
@@ -89,24 +81,32 @@ const SidebarDesktop = () => {
                 </h3>
               </NavLink>
             ))}
-            {modules.map((module) => (
-              <NavLink
-                className={({ isActive }) =>
-                  isActive
-                    ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
-                    : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
-                }
-                to={module.routeProps.path}
-                key={module.name}
-              >
-                <div className="duration-300 group-hover:text-primary">
-                  {module.icon}
-                </div>
-                <h3 className="py-3 duration-300 group-hover:text-primary">
-                  {module.name}
-                </h3>
-              </NavLink>
-            ))}
+            {modules.map(
+              (module) =>
+                getModules &&
+                getModules.map((mod) =>
+                  mod.loaded && mod.name === module.name ? (
+                    <NavLink
+                      className={({ isActive }) =>
+                        isActive
+                          ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
+                          : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
+                      }
+                      to={module.routeProps.path}
+                      key={module.name}
+                    >
+                      <div className="duration-300 group-hover:text-primary">
+                        {module.icon}
+                      </div>
+                      <h3 className="py-3 duration-300 group-hover:text-primary">
+                        {module.title}
+                      </h3>
+                    </NavLink>
+                  ) : (
+                    false
+                  )
+                )
+            )}
           </ul>
         </div>
       </div>

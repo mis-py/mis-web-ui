@@ -5,6 +5,7 @@ import Drawer, {
   DrawerContainer,
   MainContentContainer,
 } from "react-swipeable-drawer";
+import { useGetModulesQuery } from "./redux";
 
 import MainLayout from "./layouts/MainLayout";
 import LoginLayout from "./layouts/LoginLayout";
@@ -35,10 +36,6 @@ import LogsApp from "./pages/apps/LogsApp";
 import SettingsApp from "./pages/apps/SettingsApp";
 import ManageGroupApp from "./pages/apps/ManageGroupApp";
 import ManageMembersApp from "./pages/apps/ManageMembersApp";
-// import Webcatalog from "./pages/webcatalog/index";
-// import EditWebcat from "./pages/webcatalog/EditWebcat";
-// import Firewall from "./pages/firewall/index";
-// import AddFirewall from "./pages/firewall/AddFirewall";
 import NotFoundLayout from "./layouts/NotFoundLayout";
 import NotFound from "./pages/NotFound";
 
@@ -49,6 +46,7 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { data: getModules } = useGetModulesQuery();
 
   React.useEffect(() => {
     if (
@@ -146,17 +144,21 @@ function App() {
                     path="/apps/settings/manage/members/:id"
                     element={<ManageMembersApp />}
                   />
-                  {/* <Route path="/webcatalog" element={<Webcatalog />} />
-                  <Route path="/webcatalog/:id" element={<EditWebcat />} />
-                  <Route path="/firewall" element={<Firewall />} />
-                  <Route path="/add-firewall" element={<AddFirewall />} /> */}
-                  {modules.map((module) => (
-                    <Route
-                      {...module.routeProps}
-                      key={module.name}
-                      element={module.routeProps.component}
-                    />
-                  ))}
+                  {modules.map(
+                    (module) =>
+                      getModules &&
+                      getModules.map((mod) =>
+                        mod.loaded && mod.name === module.name ? (
+                          <Route
+                            {...module.routeProps}
+                            key={module.name}
+                            element={module.routeProps.component}
+                          />
+                        ) : (
+                          false
+                        )
+                      )
+                  )}
                 </Route>
                 <Route path="/singin" element={<LoginLayout />}>
                   <Route index element={<Singin />} />

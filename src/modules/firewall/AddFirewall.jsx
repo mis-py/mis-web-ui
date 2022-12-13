@@ -95,7 +95,8 @@ const AddFirewall = () => {
 export default {
   routeProps: {
     path: "/add-firewall",
-    component: AddFirewall,
+    component: <AddFirewall />,
   },
   name: "Firewall",
+  sidebar: false,
 };

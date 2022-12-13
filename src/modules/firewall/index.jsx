@@ -169,6 +169,8 @@ export default {
     path: "/firewall",
     component: <Firewall />,
   },
-  name: "Firewall",
+  name: "firewall",
+  title: "Firewall",
+  sidebar: true,
   icon: <GiFirewall />,
 };
