@@ -1,16 +1,18 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useGetModulesQuery } from "../redux";
+
+import modules from "../modules";
 
 import { FiUser, FiUsers } from "react-icons/fi";
 import { BiUser } from "react-icons/bi";
 import { AiOutlineAppstore } from "react-icons/ai";
-import { HiOutlineDesktopComputer } from "react-icons/hi";
 import { MdGroups } from "react-icons/md";
-import { GiFirewall } from "react-icons/gi";
 
 import ProfilePopup from "./ProfilePopup";
 
 const Sidebar = ({ toggleDrawer }) => {
+  const { data: getModules } = useGetModulesQuery();
   const [userPopup, setUserPopup] = React.useState(false);
 
   const sidebar = [
@@ -21,16 +23,6 @@ const Sidebar = ({ toggleDrawer }) => {
       icon: <AiOutlineAppstore />,
       title: "Applications",
       url: "/apps",
-    },
-    {
-      icon: <HiOutlineDesktopComputer />,
-      title: "WebCatalog",
-      url: "/webcatalog",
-    },
-    {
-      icon: <GiFirewall />,
-      title: "Firewall",
-      url: "/firewall",
     },
   ];
 
@@ -84,6 +76,33 @@ const Sidebar = ({ toggleDrawer }) => {
                 </h3>
               </NavLink>
             ))}
+            {modules.map(
+              (module) =>
+                getModules &&
+                getModules.map((mod) =>
+                  mod.loaded && mod.name === module.name
+                    ? module.sidebar && (
+                        <NavLink
+                          className={({ isActive }) =>
+                            isActive
+                              ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
+                              : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
+                          }
+                          to={module.routeProps.path}
+                          key={module.name}
+                          onClick={toggleDrawer}
+                        >
+                          <div className="duration-300 group-hover:text-primary">
+                            {module.icon}
+                          </div>
+                          <h3 className="py-3 duration-300 group-hover:text-primary">
+                            {module.title}
+                          </h3>
+                        </NavLink>
+                      )
+                    : false
+                )
+            )}
           </ul>
         </div>
       </div>

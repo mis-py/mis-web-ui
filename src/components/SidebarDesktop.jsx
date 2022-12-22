@@ -12,7 +12,7 @@ import ProfilePopupDesktop from "./ProfilePopupDesktop";
 import modules from "../modules";
 
 const SidebarDesktop = () => {
-  const { data: getModules, isLoading, isSuccess } = useGetModulesQuery();
+  const { data: getModules } = useGetModulesQuery();
   const [userPopup, setUserPopup] = React.useState(false);
 
   const sidebar = [
