@@ -7,3 +7,4 @@ export * from "./appsApi";
 export * from "./groupsApi";
 export * from "./firewallApi";
 export * from "./modulesApi";
+export * from "./settingsApi";

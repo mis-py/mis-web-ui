@@ -22,7 +22,48 @@ export const modulesApi = createApi({
             : [{ type: "Modules", id: "LIST" }],
       }),
     }),
+    unloadAppModules: build.mutation({
+      query: (id) => ({
+        url: `/modules/${id}/unload`,
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Modules", id }],
+    }),
+    startApp: build.mutation({
+      query: (id) => ({
+        url: `/modules/${id}/start`,
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Modules", id }],
+    }),
+    stopApp: build.mutation({
+      query: (id) => ({
+        url: `/modules/${id}/stop`,
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Modules", id }],
+    }),
   }),
 });
 
-export const { useGetModulesQuery } = modulesApi;
+export const {
+  useGetModulesQuery,
+  useUnloadAppModulesMutation,
+  useStartAppMutation,
+  useStopAppMutation,
+} = modulesApi;
