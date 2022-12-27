@@ -13,14 +13,8 @@ export const settingsApi = createApi({
           accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
-        providesTags: (result) =>
-          result
-            ? [
-                ...result.map(({ id }) => ({ type: "Settings", id })),
-                { type: "Settings", id: "LIST" },
-              ]
-            : [{ type: "Settings", id: "LIST" }],
       }),
+      providesTags: ["Post"],
     }),
   }),
 });

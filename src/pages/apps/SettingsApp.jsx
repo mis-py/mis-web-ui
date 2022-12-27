@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Switch from "react-switch";
+import { confirmAlert } from "react-confirm-alert";
+import { toast } from "react-toastify";
 import {
   useGetSettingsAppIdQuery,
   useUnloadAppModulesMutation,
@@ -25,20 +27,62 @@ const SettingsApp = () => {
   const [startApp] = useStartAppMutation();
   const [stopApp] = useStopAppMutation();
 
-  console.log(getSettingsAppId && getSettingsAppId);
+  React.useEffect(() => {
+    if (getSettingsAppId && getSettingsAppId.enabled) {
+      setActive(true);
+    } else {
+      setActive(false);
+    }
+  }, [getSettingsAppId]);
 
-  const handleChange = (nextChecked) => {
-    setActive(nextChecked);
+  const handleChange = async (nextChecked) => {
+    if (nextChecked) {
+      await startApp(id).unwrap();
+      setActive(nextChecked);
+    } else {
+      await stopApp(id).unwrap();
+      setActive(nextChecked);
+    }
+  };
+
+  const handleDeleteApp = (e) => {
+    e.preventDefault();
+    confirmAlert({
+      title: "Delete application",
+      message: "Are you sure you want to delete this application?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            await unloadAppModules(id);
+            navigate("/apps");
+            toast.success("Application deleted");
+          },
+        },
+        {
+          label: "No",
+        },
+      ],
+      overlayClassName: "bg-blackSecond/70",
+    });
   };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
+        <div className="flex items-center justify-between text-gray">
+          <div className="flex">
+            <div className="flex items-center mr-2">
+              <IoIosArrowBack />
+            </div>
+            <Link to="/apps">back</Link>
           </div>
-          <Link to="/apps">back</Link>
+          <button
+            onClick={handleDeleteApp}
+            className="bg-danger rounded-lg p-3 cursor-pointer text-white flex text-bold"
+          >
+            <BsTrash />
+          </button>
         </div>
 
         <h3 className="h3 my-4">App name settings</h3>
@@ -47,12 +91,7 @@ const SettingsApp = () => {
           <Switch onChange={handleChange} checked={active} />
           <p>Enable app</p>
         </div>
-        <button
-          onClick={() => unloadAppModules(id)}
-          className="bg-danger rounded-lg py-3 cursor-pointer text-white flex text-bold justify-center items-center gap-3 w-[150px] mb-10"
-        >
-          <BsTrash /> Unload
-        </button>
+
         <h1>Global settings</h1>
         <form className="my-7">
           <label className="flex flex-col gap-1 mb-4" htmlFor="username">

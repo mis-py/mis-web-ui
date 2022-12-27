@@ -13,14 +13,14 @@ export const webcatApi = createApi({
           accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
-        providesTags: (result) =>
-          result
-            ? [
-                ...result.map(({ id }) => ({ type: "Webcat", id })),
-                { type: "Webcat", id: "LIST" },
-              ]
-            : [{ type: "Webcat", id: "LIST" }],
       }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Webcat", id })),
+              { type: "Webcat", id: "LIST" },
+            ]
+          : [{ type: "Webcat", id: "LIST" }],
     }),
   }),
 });

@@ -10,7 +10,7 @@ import { useGetModulesQuery } from "./redux";
 import MainLayout from "./layouts/MainLayout";
 import LoginLayout from "./layouts/LoginLayout";
 import Sidebar from "./components/Sidebar";
-import Singin from "./pages/Singin";
+import Signin from "./pages/Signin";
 import Home from "./pages/Home";
 import Users from "./pages/users/index";
 import AddUser from "./pages/users/AddUser";
@@ -51,9 +51,9 @@ function App() {
   React.useEffect(() => {
     if (
       localStorage.getItem("my-token") === null &&
-      location.pathname !== "/singin"
+      location.pathname !== "/signin"
     ) {
-      navigate("/singin");
+      navigate("/signin");
     }
   }, [location]);
 
@@ -160,8 +160,8 @@ function App() {
                       )
                   )}
                 </Route>
-                <Route path="/singin" element={<LoginLayout />}>
-                  <Route index element={<Singin />} />
+                <Route path="/signin" element={<LoginLayout />}>
+                  <Route index element={<Signin />} />
                 </Route>
                 <Route element={<NotFoundLayout />}>
                   <Route path="*" element={<NotFound />} />

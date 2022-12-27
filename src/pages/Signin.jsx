@@ -4,12 +4,15 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from "axios";
 import qs from "qs";
+
 import { AiOutlineEye } from "react-icons/ai";
 
 import LogoImg from "../assets/img/logo.png";
 import EllipseImg from "../assets/img/ellipse.png";
 
-const Singin = () => {
+import { getUrl } from "../config";
+
+const Signin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showPassword, setShowPassword] = React.useState("password");
@@ -31,7 +34,7 @@ const Singin = () => {
   const onSubmit = (data) => {
     axios({
       method: "post",
-      url: "https://crm.nullgravity.net/api/auth/token",
+      url: getUrl("/auth/token"),
       data: qs.stringify(data),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
@@ -47,7 +50,7 @@ const Singin = () => {
           localStorage.setItem("user_name", user_name);
           axios({
             method: "get",
-            url: "https://crm.nullgravity.net/api/",
+            url: getUrl(),
             headers: {
               Authorization: `Bearer ${localStorage.getItem("my-token")}`,
             },
@@ -144,4 +147,4 @@ const Singin = () => {
   );
 };
 
-export default Singin;
+export default Signin;

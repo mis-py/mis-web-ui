@@ -13,20 +13,19 @@ export const modulesApi = createApi({
           accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
-        providesTags: (result) =>
-          result
-            ? [
-                ...result.map(({ id }) => ({ type: "Modules", id })),
-                { type: "Modules", id: "LIST" },
-              ]
-            : [{ type: "Modules", id: "LIST" }],
       }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Modules", id })),
+              { type: "Modules", id: "LIST" },
+            ]
+          : [{ type: "Modules", id: "LIST" }],
     }),
     unloadAppModules: build.mutation({
       query: (id) => ({
         url: `/modules/${id}/unload`,
         method: "PUT",
-        credentials: "include",
         headers: {
           accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("my-token")}`,
@@ -38,7 +37,6 @@ export const modulesApi = createApi({
       query: (id) => ({
         url: `/modules/${id}/start`,
         method: "PUT",
-        credentials: "include",
         headers: {
           accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("my-token")}`,
