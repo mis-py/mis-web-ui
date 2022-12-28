@@ -1,11 +1,7 @@
 import React from "react";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
-import {
-  useGetTeamsQuery,
-  useGetPermissionsUserIdQuery,
-  useDeleteTeamMutation,
-} from "../../redux";
+import { useGetTeamsQuery, useDeleteTeamMutation } from "../../redux";
 import { deleteMembersAll } from "../../redux/slices/membersSlice";
 import { deletePermissions } from "../../redux/slices/addTeamPermissionsSlice";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +9,7 @@ import { useDispatch } from "react-redux";
 import useOutsideClick from "../../hooks/useOutsideClick";
 
 import Tooltip from "../../components/Tooltip";
+import AdminWrapper from "../../config/AdminWrapper";
 
 import { FiSearch } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -29,9 +26,6 @@ const Teams = () => {
     isLoading: loadingGetTeams,
     error: errorGetTeams,
   } = useGetTeamsQuery();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
   const [deleteTeam] = useDeleteTeamMutation();
 
   const [showSearch, setShowSearch] = React.useState(false);
@@ -117,16 +111,14 @@ const Teams = () => {
               />
             </div>
           </div>
-          {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
+          <AdminWrapper>
             <Link
               to="/add-team"
               className="px-5 flex items-center justify-center bg-blackSecond text-gray rounded-lg"
             >
               <AiOutlineUsergroupAdd />
             </Link>
-          ) : (
-            false
-          )}
+          </AdminWrapper>
         </div>
 
         <h3 className="h3 mb-5">Teams ({dataGetTeams.length})</h3>
@@ -160,17 +152,13 @@ const Teams = () => {
                       >
                         Granting privileges
                       </Link>
-                      {getPermissionsUserId &&
-                      getPermissionsUserId.length !== 0 ? (
-                        <div
-                          onClick={(e) => navigate(`/teams/${team.id}`)}
-                          className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
-                        >
-                          Editing
-                        </div>
-                      ) : (
-                        false
-                      )}
+                      <div
+                        onClick={(e) => navigate(`/teams/${team.id}`)}
+                        className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                      >
+                        Editing
+                      </div>
+
                       <div
                         onClick={() => handleDeleteTeam(team.id)}
                         className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
@@ -185,13 +173,15 @@ const Teams = () => {
                         </h5>
                         <h4>{team.name}</h4>
                       </div>
-                      <BiDotsVerticalRounded
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleEdit(index);
-                        }}
-                        className="text-3xl text-gray cursor-pointer"
-                      />
+                      <AdminWrapper>
+                        <BiDotsVerticalRounded
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleEdit(index);
+                          }}
+                          className="text-3xl text-gray cursor-pointer"
+                        />
+                      </AdminWrapper>
                     </div>
                     {showTeamInfo === index && (
                       <div className={`duration-300 flex flex-col pt-4`}>

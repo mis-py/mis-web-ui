@@ -26,7 +26,7 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
       localStorage.removeItem("my-token");
       localStorage.removeItem("user_id");
       localStorage.removeItem("user_name");
-      navigate("/singin");
+      navigate("/signin");
     }, 300);
   };
 

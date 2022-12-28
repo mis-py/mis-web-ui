@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Drawer, {
   DrawerContainer,
@@ -44,18 +44,7 @@ import modules from "./modules";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  const navigate = useNavigate();
-  const location = useLocation();
   const { data: getModules } = useGetModulesQuery();
-
-  React.useEffect(() => {
-    if (
-      localStorage.getItem("my-token") === null &&
-      location.pathname !== "/signin"
-    ) {
-      navigate("/signin");
-    }
-  }, [location]);
 
   return (
     <div className="relative">

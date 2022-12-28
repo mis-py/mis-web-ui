@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useGetPermissionsUserIdQuery } from "../redux";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -16,6 +17,7 @@ const Signin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showPassword, setShowPassword] = React.useState("password");
+
   const {
     register,
     formState: { errors },
@@ -135,10 +137,6 @@ const Signin = () => {
             <AiOutlineEye />
           </button>
         </label>
-        {/* <label className="flex items-center" htmlFor="remember">
-          <input className="mr-2 w-5 h-5" type="checkbox" id="remember" />
-          Remember me
-        </label> */}
         <button type="submit" className="btn-primary mt-14">
           Sign in
         </button>

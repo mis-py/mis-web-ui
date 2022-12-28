@@ -1,7 +1,9 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useGetAppsQuery, useGetPermissionsUserIdQuery } from "../../redux";
+import { useGetAppsQuery } from "../../redux";
 import { toast } from "react-toastify";
+
+import AdminWrapper from "../../config/AdminWrapper";
 
 import { FiSearch } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
@@ -20,9 +22,6 @@ const Apps = () => {
     isLoading: loadingApps,
     error: errorApps,
   } = useGetAppsQuery();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
 
   const toggle = (index) => {
     if (showInfo === index) {
@@ -65,16 +64,14 @@ const Apps = () => {
               />
             </div>
           </div>
-          {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
+          <AdminWrapper>
             <Link
               to="/apps/clone"
               className="px-5 flex items-center justify-center bg-blackSecond text-gray rounded-lg"
             >
               <AiOutlinePlus />
             </Link>
-          ) : (
-            false
-          )}
+          </AdminWrapper>
         </div>
 
         <h3 className="h3 mb-5">Applications ({getApps.length})</h3>
@@ -111,10 +108,12 @@ const Apps = () => {
                           onClick={() => navigate(`/apps/logs/${app.id}`)}
                           className="text-2xl text-gray cursor-pointer"
                         />
-                        <AiOutlineSetting
-                          onClick={() => navigate(`/apps/settings/${app.id}`)}
-                          className="text-2xl text-gray cursor-pointer"
-                        />
+                        <AdminWrapper>
+                          <AiOutlineSetting
+                            onClick={() => navigate(`/apps/settings/${app.id}`)}
+                            className="text-2xl text-gray cursor-pointer"
+                          />
+                        </AdminWrapper>
                       </div>
                     </div>
                     {showInfo === index && (

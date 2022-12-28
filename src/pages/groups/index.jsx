@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import useOutsideClick from "../../hooks/useOutsideClick";
 
 import Tooltip from "../../components/Tooltip";
+import AdminWrapper from "../../config/AdminWrapper";
 
 import { FiSearch } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -29,9 +30,7 @@ const Groups = () => {
     isLoading: loadingGroup,
     error: errorGroup,
   } = useGetGroupsQuery();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
+
   const [deleteGroup] = useDeleteGroupMutation();
 
   const [showSearch, setShowSearch] = React.useState(false);
@@ -116,16 +115,14 @@ const Groups = () => {
               />
             </div>
           </div>
-          {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
+          <AdminWrapper>
             <Link
               to="/add-group"
               className="px-5 flex items-center justify-center bg-blackSecond text-gray rounded-lg"
             >
               <AiOutlineUsergroupAdd />
             </Link>
-          ) : (
-            false
-          )}
+          </AdminWrapper>
         </div>
 
         <h3 className="h3 mb-5">Groups ({getGroups.length})</h3>
@@ -159,19 +156,14 @@ const Groups = () => {
                       >
                         Manage members
                       </div>
-                      {getPermissionsUserId &&
-                      getPermissionsUserId.length !== 0 ? (
-                        <div
-                          onClick={(e) =>
-                            navigate(`/group/objects/${group.id}`)
-                          }
-                          className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
-                        >
-                          Manage objects
-                        </div>
-                      ) : (
-                        false
-                      )}
+
+                      <div
+                        onClick={(e) => navigate(`/group/objects/${group.id}`)}
+                        className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                      >
+                        Manage objects
+                      </div>
+
                       <div
                         onClick={() => handleDeleteGroup(group.id)}
                         className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
@@ -193,13 +185,15 @@ const Groups = () => {
                           <h4>{group.name}</h4>
                         </div>
                       </div>
-                      <BiDotsVerticalRounded
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleEdit(index);
-                        }}
-                        className="text-3xl text-gray cursor-pointer"
-                      />
+                      <AdminWrapper>
+                        <BiDotsVerticalRounded
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleEdit(index);
+                          }}
+                          className="text-3xl text-gray cursor-pointer"
+                        />
+                      </AdminWrapper>
                     </div>
                     {showTeamInfo === index && (
                       <div className={`duration-300 flex flex-col pt-4`}>

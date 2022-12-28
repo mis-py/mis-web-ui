@@ -1,10 +1,6 @@
 import React from "react";
 import { toast } from "react-toastify";
-import {
-  useGetUsersQuery,
-  useGetPermissionsUserIdQuery,
-  useDeleteUserMutation,
-} from "../../redux";
+import { useGetUsersQuery, useDeleteUserMutation } from "../../redux";
 import { Link, useNavigate } from "react-router-dom";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { confirmAlert } from "react-confirm-alert";
@@ -13,6 +9,8 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 
 import { FiSearch, FiUserPlus } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+
+import AdminWrapper from "../../config/AdminWrapper";
 
 import UserImg from "../../assets/img/user.png";
 
@@ -23,9 +21,7 @@ const Users = () => {
     isLoading: loadingGetUser,
     error: errorGetUsers,
   } = useGetUsersQuery();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
+
   const [deleteUser] = useDeleteUserMutation();
 
   const [showSearch, setShowSearch] = React.useState(false);
@@ -100,16 +96,14 @@ const Users = () => {
               />
             </div>
           </div>
-          {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
+          <AdminWrapper>
             <Link
               to="/add-user"
               className="px-3 flex items-center justify-center bg-blackSecond text-gray rounded-lg"
             >
               <FiUserPlus />
             </Link>
-          ) : (
-            false
-          )}
+          </AdminWrapper>
         </div>
 
         <h3 className="h3 mb-5">Users ({dataGetUsers.length})</h3>
@@ -137,17 +131,12 @@ const Users = () => {
                           : "opacity-0 invisible"
                       } duration-300 absolute top-1 w-[175px] z-10 right-1 bg-backGround shadow lg:top-3`}
                     >
-                      {getPermissionsUserId &&
-                      getPermissionsUserId.length !== 0 ? (
-                        <div
-                          onClick={(e) => navigate(`/users/${user.id}`)}
-                          className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
-                        >
-                          Edit
-                        </div>
-                      ) : (
-                        false
-                      )}
+                      <AdminWrapper
+                        onClick={(e) => navigate(`/users/${user.id}`)}
+                        className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                      >
+                        Edit
+                      </AdminWrapper>
                       <div
                         onClick={() => handleDeleteUser(user.id)}
                         className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
@@ -186,8 +175,7 @@ const Users = () => {
                           </div>
                         </div>
                       </div>
-                      {getPermissionsUserId &&
-                      getPermissionsUserId.length !== 0 ? (
+                      <AdminWrapper>
                         <BiDotsVerticalRounded
                           onClick={(e) => {
                             e.stopPropagation();
@@ -195,9 +183,7 @@ const Users = () => {
                           }}
                           className="text-3xl text-gray cursor-pointer"
                         />
-                      ) : (
-                        false
-                      )}
+                      </AdminWrapper>
                     </div>
                   </div>
                 ))}
