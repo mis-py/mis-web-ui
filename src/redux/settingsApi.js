@@ -17,9 +17,21 @@ export const settingsApi = createApi({
       providesTags: ["Settings"],
     }),
     settingAppSet: build.mutation({
-      query: ({id, body}) => ({
+      query: ({ id, rest }) => ({
         url: `/settings/app/${id}`,
-        method: "POST",
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+        body: rest,
+      }),
+      invalidatesTags: [{ type: "Settings", id: "LIST" }],
+    }),
+    settingUserSet: build.mutation({
+      query: ({ id, body }) => ({
+        url: `/settings/user/${id}`,
+        method: "PUT",
         headers: {
           "content-type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("my-token")}`,
@@ -31,5 +43,8 @@ export const settingsApi = createApi({
   }),
 });
 
-export const { useGetSettingsAppIdQuery, useSettingAppSetMutation } =
-  settingsApi;
+export const {
+  useGetSettingsAppIdQuery,
+  useSettingAppSetMutation,
+  useSettingUserSetMutation,
+} = settingsApi;

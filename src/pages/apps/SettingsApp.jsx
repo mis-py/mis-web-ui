@@ -9,7 +9,10 @@ import {
   useStartAppMutation,
   useStopAppMutation,
   useSettingAppSetMutation,
+  useSettingUserSetMutation,
 } from "../../redux";
+
+import AdminWrapper from "../../config/AdminWrapper";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
@@ -19,14 +22,22 @@ const SettingsApp = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [active, setActive] = React.useState(false);
-  const [formValue, setFormValue] = React.useState([]);
-  const [newSettings, setNewSettings] = React.useState({});
+  const [userId, setUserId] = React.useState(0);
+  const [formGlobalValue, setFormGlobalValue] = React.useState([]);
+  const [newGlobalSettings, setNewGlobalSettings] = React.useState([]);
+  const [formLocalValue, setFormLocalValue] = React.useState([]);
+  const [newLocalSettings, setNewLocalSettings] = React.useState([]);
 
   const { data: getSettingsAppId } = useGetSettingsAppIdQuery(id);
   const [unloadAppModules] = useUnloadAppModulesMutation();
   const [startApp] = useStartAppMutation();
   const [stopApp] = useStopAppMutation();
   const [settingAppSet] = useSettingAppSetMutation();
+  const [settingUserSet] = useSettingUserSetMutation();
+
+  React.useEffect(() => {
+    setUserId(+localStorage.getItem("user_id"));
+  }, []);
 
   React.useEffect(() => {
     if (getSettingsAppId && getSettingsAppId.enabled) {
@@ -37,9 +48,14 @@ const SettingsApp = () => {
 
     getSettingsAppId &&
       getSettingsAppId.settings.map((setting) => {
-        setFormValue((formValue) => [...formValue, setting]);
+        setFormGlobalValue((formGlobalValue) => [...formGlobalValue, setting]);
       });
-  }, [getSettingsAppId]);
+
+    getSettingsAppId &&
+      getSettingsAppId.settings.map((setting) => {
+        setFormLocalValue((formLocalValue) => [...formLocalValue, setting]);
+      });
+  }, [getSettingsAppId, userId]);
 
   const handleChange = async (nextChecked) => {
     if (nextChecked) {
@@ -75,8 +91,21 @@ const SettingsApp = () => {
 
   const handleNewSettings = async (e) => {
     e.preventDefault();
-    await settingAppSet({ id, body: Object.values(newSettings) }).unwrap();
+    // if (newGlobalSettings.length !== 0) {
+    //   await settingAppSet({
+    //     id,
+    //     rest: Object.values(newGlobalSettings),
+    //   }).unwrap();
+    // }
+    if (newLocalSettings.length !== 0) {
+      await settingUserSet({
+        userId,
+        body: Object.values(newLocalSettings),
+      }).unwrap();
+    }
   };
+
+  console.log(userId);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -102,12 +131,55 @@ const SettingsApp = () => {
           <Switch onChange={handleChange} checked={active} />
           <p>Enable app</p>
         </div>
+        {/* <AdminWrapper>
+          <h1 className="text-2xl font-bold">Global settings</h1>
+          <form className="my-7">
+            {formGlobalValue.map(
+              (item, index) =>
+                item.is_global && (
+                  <label
+                    key={item.id}
+                    className="flex flex-col gap-1 mb-4"
+                    htmlFor={item.key}
+                  >
+                    {item.key}
+                    <input
+                      className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
+                      type={item.type}
+                      id={item.id}
+                      name={item.default_value}
+                      autoComplete="off"
+                      value={
+                        item.default_value === null ? "" : item.default_value
+                      }
+                      onChange={(e) => {
+                        let data = [...formGlobalValue];
+                        data[index] = { ...data[index] };
+                        data[index].default_value = e.target.value;
 
-        <h1>Global settings</h1>
+                        let data2 = { ...newGlobalSettings };
+                        data2[e.target.id] = {
+                          setting_id: data[index].id,
+                          new_value:
+                            data[index].default_value === ""
+                              ? null
+                              : data[index].default_value,
+                        };
+                        setFormGlobalValue(data);
+                        setNewGlobalSettings(data2);
+                      }}
+                    />
+                  </label>
+                )
+            )}
+          </form>
+        </AdminWrapper> */}
+
+        <h1 className="text-2xl font-bold">User-local app settings</h1>
         <form className="my-7">
-          {formValue.map(
+          {formLocalValue.map(
             (item, index) =>
-              item.is_global && (
+              !item.is_global && (
                 <label
                   key={item.id}
                   className="flex flex-col gap-1 mb-4"
@@ -120,20 +192,24 @@ const SettingsApp = () => {
                     id={item.id}
                     name={item.default_value}
                     autoComplete="off"
-                    value={item.default_value}
+                    value={
+                      item.default_value === null ? "" : item.default_value
+                    }
                     onChange={(e) => {
-                      let data = [...formValue];
+                      let data = [...formLocalValue];
                       data[index] = { ...data[index] };
                       data[index].default_value = e.target.value;
 
-                      let data2 = { ...newSettings };
+                      let data2 = { ...newLocalSettings };
                       data2[e.target.id] = {
                         setting_id: data[index].id,
-                        new_value: data[index].default_value,
+                        new_value:
+                          data[index].default_value === ""
+                            ? null
+                            : data[index].default_value,
                       };
-
-                      setFormValue(data);
-                      setNewSettings(data2);
+                      setFormLocalValue(data);
+                      setNewLocalSettings(data2);
                     }}
                   />
                 </label>
