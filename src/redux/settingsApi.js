@@ -14,7 +14,7 @@ export const settingsApi = createApi({
           Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
       }),
-      providesTags: ["Settings"],
+      providesTags: (result, error, id) => [{ type: "Settings", id }],
     }),
     getSettingsUserId: build.query({
       query: (id) => ({
@@ -25,7 +25,7 @@ export const settingsApi = createApi({
           Authorization: `Bearer ${localStorage.getItem("my-token")}`,
         },
       }),
-      providesTags: ["Settings"],
+      providesTags: (result, error, id) => [{ type: "Settings", id }],
     }),
     settingAppSet: build.mutation({
       query: (data) => ({
@@ -37,7 +37,7 @@ export const settingsApi = createApi({
         },
         body: data.body,
       }),
-      invalidatesTags: [{ type: "Settings", id: "LIST" }],
+      invalidatesTags: ["Setting"],
     }),
     settingUserSet: build.mutation({
       query: (data) => ({
@@ -49,7 +49,7 @@ export const settingsApi = createApi({
         },
         body: data.body,
       }),
-      invalidatesTags: [{ type: "Settings", id: "LIST" }],
+      invalidatesTags: ["Setting"],
     }),
   }),
 });

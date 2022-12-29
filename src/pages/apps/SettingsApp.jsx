@@ -37,8 +37,7 @@ const SettingsApp = () => {
   const [startApp] = useStartAppMutation();
   const [stopApp] = useStopAppMutation();
   const [settingAppSet] = useSettingAppSetMutation();
-  // const [settingUserSet] = useSettingUserSetMutation();
-
+  const [settingUserSet] = useSettingUserSetMutation();
 
   React.useEffect(() => {
     setUserId(localStorage.getItem("user_id"));
@@ -53,12 +52,14 @@ const SettingsApp = () => {
       getSettingsAppId.settings.map((setting) => {
         setFormGlobalValue((formGlobalValue) => [...formGlobalValue, setting]);
       });
+  }, [getSettingsAppId]);
 
+  React.useEffect(() => {
     getSettingsUserId &&
       getSettingsUserId.map((item) => {
         setFormLocalValue((formLocalValue) => [...formLocalValue, item]);
       });
-  }, [getSettingsAppId]);
+  }, [getSettingsUserId]);
 
   const handleChange = async (nextChecked) => {
     if (nextChecked) {
@@ -100,12 +101,13 @@ const SettingsApp = () => {
         body: Object.values(newGlobalSettings),
       }).unwrap();
     }
-    // if (newLocalSettings !== 0) {
-    //   await settingUserSet({
-    //     userId,
-    //     body: Object.values(newLocalSettings),
-    //   }).unwrap();
-    // }
+    if (newLocalSettings !== 0) {
+      await settingUserSet({
+        userId,
+        body: Object.values(newLocalSettings),
+      }).unwrap();
+    }
+    toast.success("Settings updated");
   };
 
   return (
@@ -178,42 +180,37 @@ const SettingsApp = () => {
 
         <h1 className="text-2xl font-bold">User-local app settings</h1>
         <form className="my-7">
-          {formGlobalValue.map(
-            (item, index) =>
-              !item.is_global && (
-                <label
-                  key={item.id}
-                  className="flex flex-col gap-1 mb-4"
-                  htmlFor={item.key}
-                >
-                  {item.key}
-                  <input
-                    className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-                    type={item.type}
-                    id={item.id}
-                    // name={item.default_value}
-                    autoComplete="off"
-                    value={item.default_value}
-                    onChange={(e) => {
-                      let data = [...formLocalValue];
-                      data[index] = { ...data[index] };
-                      data[index].default_value = e.target.value;
+          {formLocalValue.map((item, index) => (
+            <label
+              key={item.setting.id}
+              className="flex flex-col gap-1 mb-4"
+              htmlFor={item.setting.key}
+            >
+              {item.setting.key}
+              <input
+                className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
+                type={item.setting.type}
+                id={item.setting.id}
+                name={formLocalValue[index].value}
+                autoComplete="off"
+                value={formLocalValue[index].value}
+                onChange={(e) => {
+                  let data = [...formLocalValue];
+                  data[index] = { ...data[index] };
+                  data[index].value = e.target.value;
 
-                      let data2 = { ...newLocalSettings };
-                      data2[e.target.id] = {
-                        setting_id: data[index].id,
-                        new_value:
-                          data[index].default_value === ""
-                            ? null
-                            : data[index].default_value,
-                      };
-                      setFormLocalValue(data);
-                      setNewLocalSettings(data2);
-                    }}
-                  />
-                </label>
-              )
-          )}
+                  let data2 = { ...newLocalSettings };
+                  data2[e.target.id] = {
+                    setting_id: data[index].setting.id,
+                    new_value:
+                      data[index].value === "" ? null : data[index].value,
+                  };
+                  setFormLocalValue(data);
+                  setNewLocalSettings(data2);
+                }}
+              />
+            </label>
+          ))}
         </form>
       </div>
 
