@@ -5,6 +5,7 @@ import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
 import {
   useGetSettingsAppIdQuery,
+  useGetSettingsUserIdQuery,
   useUnloadAppModulesMutation,
   useStartAppMutation,
   useStopAppMutation,
@@ -24,22 +25,24 @@ const SettingsApp = () => {
   const [active, setActive] = React.useState(false);
   const [userId, setUserId] = React.useState(0);
   const [formGlobalValue, setFormGlobalValue] = React.useState([]);
-  const [newGlobalSettings, setNewGlobalSettings] = React.useState([]);
+  const [newGlobalSettings, setNewGlobalSettings] = React.useState({});
   const [formLocalValue, setFormLocalValue] = React.useState([]);
-  const [newLocalSettings, setNewLocalSettings] = React.useState([]);
+  const [newLocalSettings, setNewLocalSettings] = React.useState({});
 
   const { data: getSettingsAppId } = useGetSettingsAppIdQuery(id);
+  const { data: getSettingsUserId } = useGetSettingsUserIdQuery(
+    localStorage.getItem("user_id")
+  );
   const [unloadAppModules] = useUnloadAppModulesMutation();
   const [startApp] = useStartAppMutation();
   const [stopApp] = useStopAppMutation();
   const [settingAppSet] = useSettingAppSetMutation();
-  const [settingUserSet] = useSettingUserSetMutation();
+  // const [settingUserSet] = useSettingUserSetMutation();
+
 
   React.useEffect(() => {
-    setUserId(+localStorage.getItem("user_id"));
-  }, []);
+    setUserId(localStorage.getItem("user_id"));
 
-  React.useEffect(() => {
     if (getSettingsAppId && getSettingsAppId.enabled) {
       setActive(true);
     } else {
@@ -51,11 +54,11 @@ const SettingsApp = () => {
         setFormGlobalValue((formGlobalValue) => [...formGlobalValue, setting]);
       });
 
-    getSettingsAppId &&
-      getSettingsAppId.settings.map((setting) => {
-        setFormLocalValue((formLocalValue) => [...formLocalValue, setting]);
+    getSettingsUserId &&
+      getSettingsUserId.map((item) => {
+        setFormLocalValue((formLocalValue) => [...formLocalValue, item]);
       });
-  }, [getSettingsAppId, userId]);
+  }, [getSettingsAppId]);
 
   const handleChange = async (nextChecked) => {
     if (nextChecked) {
@@ -91,21 +94,19 @@ const SettingsApp = () => {
 
   const handleNewSettings = async (e) => {
     e.preventDefault();
-    // if (newGlobalSettings.length !== 0) {
-    //   await settingAppSet({
-    //     id,
-    //     rest: Object.values(newGlobalSettings),
-    //   }).unwrap();
-    // }
-    if (newLocalSettings.length !== 0) {
-      await settingUserSet({
-        userId,
-        body: Object.values(newLocalSettings),
+    if (newGlobalSettings.length !== 0) {
+      await settingAppSet({
+        id,
+        body: Object.values(newGlobalSettings),
       }).unwrap();
     }
+    // if (newLocalSettings !== 0) {
+    //   await settingUserSet({
+    //     userId,
+    //     body: Object.values(newLocalSettings),
+    //   }).unwrap();
+    // }
   };
-
-  console.log(userId);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -131,7 +132,7 @@ const SettingsApp = () => {
           <Switch onChange={handleChange} checked={active} />
           <p>Enable app</p>
         </div>
-        {/* <AdminWrapper>
+        <AdminWrapper>
           <h1 className="text-2xl font-bold">Global settings</h1>
           <form className="my-7">
             {formGlobalValue.map(
@@ -173,11 +174,11 @@ const SettingsApp = () => {
                 )
             )}
           </form>
-        </AdminWrapper> */}
+        </AdminWrapper>
 
         <h1 className="text-2xl font-bold">User-local app settings</h1>
         <form className="my-7">
-          {formLocalValue.map(
+          {formGlobalValue.map(
             (item, index) =>
               !item.is_global && (
                 <label
@@ -190,11 +191,9 @@ const SettingsApp = () => {
                     className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
                     type={item.type}
                     id={item.id}
-                    name={item.default_value}
+                    // name={item.default_value}
                     autoComplete="off"
-                    value={
-                      item.default_value === null ? "" : item.default_value
-                    }
+                    value={item.default_value}
                     onChange={(e) => {
                       let data = [...formLocalValue];
                       data[index] = { ...data[index] };

@@ -17,7 +17,7 @@ export const appsApi = createApi({
     }),
     cloneApp: build.mutation({
       query: (body) => ({
-        url: "/modules/clone",
+        url: "/modules/install",
         method: "POST",
         headers: {
           "content-type": "application/json",

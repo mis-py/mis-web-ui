@@ -1,9 +1,43 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useGetPermissionsUserIdQuery, useCloneAppMutation } from "../../redux";
+import Select from "react-select";
+import { useGetPermissionsUserIdQuery, useCloneAppMutation, useGetTeamsQuery } from "../../redux";
 
 import { IoIosArrowBack } from "react-icons/io";
+
+const customStyles = {
+  option: (provided, state) => ({
+    ...provided,
+    fontWeight: state.isSelected ? "bold" : "normal",
+    color: state.isSelected ? "#ffffff" : "#757575",
+    backgroundColor: state.isSelected ? "#1A69DF" : "#1d1d1d",
+    borderRadius: "4px",
+  }),
+  singleValue: (provided, state) => ({
+    ...provided,
+    color: "#757575",
+    backgroundColor: "#1d1d1d",
+  }),
+  control: (base, state) => ({
+    ...base,
+    background: "#1d1d1d",
+    color: "#757575",
+    borderColor: "none",
+    borderWidth: "0",
+    boxShadow: state.isFocused ? null : null,
+  }),
+  menu: (provided) => ({
+    ...provided,
+    padding: 10,
+    backgroundColor: "#1d1d1d",
+  }),
+  input: (provided) => ({
+    ...provided,
+    color: "#757575",
+    boxShadow: "none",
+  }),
+};
 
 const CloneApp = () => {
   const navigate = useNavigate();
@@ -11,16 +45,27 @@ const CloneApp = () => {
     url: "",
     branch: "",
   });
+  const [formLoadValue, setFormLoadValue] = React.useState({
+    name: "",
+  });
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
     localStorage.getItem("user_id")
   );
   const [cloneApp, { error: errorCloneApp }] = useCloneAppMutation();
+  const { data: dataGetTeams = [] } = useGetTeamsQuery();
 
   React.useEffect(() => {
     if (getPermissionsUserId && getPermissionsUserId.length === 0) {
       navigate("/users");
     }
   }, []);
+
+  const options = dataGetTeams.map((item, index) => {
+    return {
+      value: "value",
+      label: "label",
+    };
+  });
 
   const handleCloneApp = async (e) => {
     e.preventDefault();
@@ -81,6 +126,23 @@ const CloneApp = () => {
             />
           </label>
         </form>
+
+        <h3 className="h3 mt-5">Load app</h3>
+        <label className="flex flex-col gap-1 mb-4" htmlFor="team">
+          Name
+          <Select
+            options={options}
+            styles={customStyles}
+            placeholder="The team is not selected"
+            id="team"
+            onChange={(choice) =>
+              setFormValue({
+                ...formValue,
+                team_id: choice.value,
+              })
+            }
+          />
+        </label>
       </div>
 
       <div className="flex flex-col gap-3">

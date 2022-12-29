@@ -131,11 +131,13 @@ const Users = () => {
                           : "opacity-0 invisible"
                       } duration-300 absolute top-1 w-[175px] z-10 right-1 bg-backGround shadow lg:top-3`}
                     >
-                      <AdminWrapper
-                        onClick={(e) => navigate(`/users/${user.id}`)}
-                        className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
-                      >
-                        Edit
+                      <AdminWrapper>
+                        <div
+                          onClick={(e) => navigate(`/users/${user.id}`)}
+                          className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                        >
+                          Edit
+                        </div>
                       </AdminWrapper>
                       <div
                         onClick={() => handleDeleteUser(user.id)}

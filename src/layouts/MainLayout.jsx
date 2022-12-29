@@ -37,6 +37,7 @@ const MainLayout = () => {
       linksAdmin.includes(location.pathname)
     ) {
       navigate("/");
+
     }
   }, [location, getPermissionsUser]);
 
