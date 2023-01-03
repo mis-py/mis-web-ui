@@ -39,12 +39,31 @@ import ManageMembersApp from "./pages/apps/ManageMembersApp";
 import NotFoundLayout from "./layouts/NotFoundLayout";
 import NotFound from "./pages/NotFound";
 
-import modules from "./modules";
-
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  const { data: getModules } = useGetModulesQuery();
+  // const [moduleComponent, setModuleComponent] = React.useState([]);
+  // const { data: getModules } = useGetModulesQuery();
+
+  // React.useEffect(() => {
+  //   if (getModules) {
+  //     getModules.map(async (module) => {
+  //       console.log(module);
+  //       if (module.enabled && getModules.front_bundle_path !== null) {
+  //         module.name = await import(`${module.front_bundle_path}`);
+  //       }
+  //       if (module.front_bundle_path === null) {
+  //         console.log(module);
+  //         setModuleComponent((moduleComponent) => [
+  //           ...moduleComponent,
+  //           module.name,
+  //         ]);
+  //       }
+  //     });
+  //   }
+  // }, [getModules]);
+
+  // console.log(moduleComponent);
 
   return (
     <div className="relative">
@@ -133,7 +152,8 @@ function App() {
                     path="/apps/settings/manage/members/:id"
                     element={<ManageMembersApp />}
                   />
-                  {modules.map(
+
+                  {/* {modules.map(
                     (module) =>
                       getModules &&
                       getModules.map((mod) =>
@@ -141,13 +161,25 @@ function App() {
                           <Route
                             {...module.routeProps}
                             key={module.name}
-                            element={module.routeProps.component}
+                            element={
+                              <React.Suspense>
+                                module.routeProps.component
+                              </React.Suspense>
+                            }
                           />
                         ) : (
                           false
                         )
                       )
-                  )}
+                  )} */}
+                  {/* <Route
+                    path="/webcat"
+                    element={
+                      <React.Suspense>
+                        <OtherComponent />
+                      </React.Suspense>
+                    }
+                  /> */}
                 </Route>
                 <Route path="/signin" element={<LoginLayout />}>
                   <Route index element={<Signin />} />
