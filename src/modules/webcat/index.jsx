@@ -8,7 +8,7 @@ import { HiOutlineDesktopComputer } from "react-icons/hi";
 import { FiSearch, FiDownload, FiEdit, FiEye } from "react-icons/fi";
 import { BiFilterAlt } from "react-icons/bi";
 
-const Webcatalog = () => {
+const Webcat = () => {
   const navigate = useNavigate();
   const [showSearch, setShowSearch] = React.useState(false);
   const [showFilter, setShowFilter] = React.useState(false);
@@ -144,13 +144,15 @@ const Webcatalog = () => {
   );
 };
 
-export default {
-  routeProps: {
-    path: "/webcatalog",
-    component: <Webcatalog />,
-  },
-  name: "webcat",
-  title: "Webcatalog",
-  sidebar: true,
-  icon: <HiOutlineDesktopComputer />,
-};
+export default Webcat;
+
+// export default {
+//   routeProps: {
+//     path: "/webcatalog",
+//     component: <Webcatalog />,
+//   },
+//   name: "webcat",
+//   title: "Webcatalog",
+//   sidebar: true,
+//   icon: <HiOutlineDesktopComputer />,
+// };

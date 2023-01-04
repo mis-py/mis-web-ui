@@ -2,7 +2,11 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Select from "react-select";
-import { useGetPermissionsUserIdQuery, useCloneAppMutation, useGetTeamsQuery } from "../../redux";
+import {
+  useCloneAppMutation,
+  useGetModulesQuery,
+  useCloneAppNameMutation,
+} from "../../redux";
 
 import { IoIosArrowBack } from "react-icons/io";
 
@@ -45,42 +49,41 @@ const CloneApp = () => {
     url: "",
     branch: "",
   });
-  const [formLoadValue, setFormLoadValue] = React.useState({
+  const [formValueName, setFormValueName] = React.useState({
+    id: 0,
     name: "",
+    enabled: true,
   });
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
+
+  const { data: getModules = [] } = useGetModulesQuery();
   const [cloneApp, { error: errorCloneApp }] = useCloneAppMutation();
-  const { data: dataGetTeams = [] } = useGetTeamsQuery();
+  const [cloneAppName] = useCloneAppNameMutation();
 
-  React.useEffect(() => {
-    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
-      navigate("/users");
+  const options = getModules?.map((item, index) => {
+    if (item.enabled) {
+      return {
+        value: item.name,
+        label: item.name,
+        id: item.id,
+        enabled: true,
+      };
     }
-  }, []);
-
-  const options = dataGetTeams.map((item, index) => {
-    return {
-      value: "value",
-      label: "label",
-    };
   });
 
   const handleCloneApp = async (e) => {
     e.preventDefault();
-    if (!errorCloneApp) {
-      if (formValue.url === "") {
-        toast.error("URL required field");
-      } else if (formValue.branch === "") {
-        toast.error("Branch required field");
-      } else {
-        await cloneApp({
-          ...formValue,
-        }).unwrap();
-        navigate("/apps");
-        toast.success("Added new app");
-      }
+    if (!errorCloneApp || formValueName.name !== "") {
+      await cloneApp({
+        ...formValue,
+      }).unwrap();
+      navigate("/apps");
+      toast.success("Added new app");
+    }
+
+    if (formValueName.name !== "") {
+      await cloneAppName({ name: formValueName.name, ...formValueName });
+      navigate("/apps");
+      toast.success("Added new app");
     }
   };
 
@@ -128,17 +131,19 @@ const CloneApp = () => {
         </form>
 
         <h3 className="h3 mt-5">Load app</h3>
-        <label className="flex flex-col gap-1 mb-4" htmlFor="team">
+        <label className="flex flex-col gap-1 mb-4" htmlFor="app">
           Name
           <Select
             options={options}
             styles={customStyles}
-            placeholder="The team is not selected"
-            id="team"
+            placeholder="The app is not selected"
+            id="app"
             onChange={(choice) =>
-              setFormValue({
-                ...formValue,
-                team_id: choice.value,
+              setFormValueName({
+                ...formValueName,
+                id: choice.id,
+                name: choice.value,
+                enabled: choice.enabled,
               })
             }
           />

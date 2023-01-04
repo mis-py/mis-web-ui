@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import axios from "axios";
 import Drawer, {
   DrawerContainer,
   MainContentContainer,
@@ -41,29 +42,18 @@ import NotFound from "./pages/NotFound";
 
 import "react-toastify/dist/ReactToastify.css";
 
+// const Webcat = React.lazy(
+//   async () => await import("./modules/webcat/index").MyComponent
+// );
+
+// const Webcat = React.lazy(() =>
+//   import("./modules/webcat/index").then((module) => ({
+//     default: module.Webcat,
+//   }))
+// );
+
 function App() {
-  // const [moduleComponent, setModuleComponent] = React.useState([]);
   // const { data: getModules } = useGetModulesQuery();
-
-  // React.useEffect(() => {
-  //   if (getModules) {
-  //     getModules.map(async (module) => {
-  //       console.log(module);
-  //       if (module.enabled && getModules.front_bundle_path !== null) {
-  //         module.name = await import(`${module.front_bundle_path}`);
-  //       }
-  //       if (module.front_bundle_path === null) {
-  //         console.log(module);
-  //         setModuleComponent((moduleComponent) => [
-  //           ...moduleComponent,
-  //           module.name,
-  //         ]);
-  //       }
-  //     });
-  //   }
-  // }, [getModules]);
-
-  // console.log(moduleComponent);
 
   return (
     <div className="relative">
@@ -152,34 +142,6 @@ function App() {
                     path="/apps/settings/manage/members/:id"
                     element={<ManageMembersApp />}
                   />
-
-                  {/* {modules.map(
-                    (module) =>
-                      getModules &&
-                      getModules.map((mod) =>
-                        mod.loaded && mod.name === module.name ? (
-                          <Route
-                            {...module.routeProps}
-                            key={module.name}
-                            element={
-                              <React.Suspense>
-                                module.routeProps.component
-                              </React.Suspense>
-                            }
-                          />
-                        ) : (
-                          false
-                        )
-                      )
-                  )} */}
-                  {/* <Route
-                    path="/webcat"
-                    element={
-                      <React.Suspense>
-                        <OtherComponent />
-                      </React.Suspense>
-                    }
-                  /> */}
                 </Route>
                 <Route path="/signin" element={<LoginLayout />}>
                   <Route index element={<Signin />} />

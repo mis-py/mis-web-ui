@@ -76,7 +76,7 @@ const Sidebar = ({ toggleDrawer }) => {
                 </h3>
               </NavLink>
             ))}
-            {modules.map(
+            {/* {modules.map(
               (module) =>
                 getModules &&
                 getModules.map((mod) =>
@@ -102,7 +102,7 @@ const Sidebar = ({ toggleDrawer }) => {
                       )
                     : false
                 )
-            )}
+            )} */}
           </ul>
         </div>
       </div>

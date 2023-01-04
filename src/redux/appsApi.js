@@ -27,7 +27,20 @@ export const appsApi = createApi({
       }),
       invalidatesTags: [{ type: "Apps", id: "LIST" }],
     }),
+    cloneAppName: build.mutation({
+      query: ({ name, ...rest }) => ({
+        url: `/modules/install/${name}`,
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+        body: rest,
+      }),
+      invalidatesTags: [{ type: "Apps", id: "LIST" }],
+    }),
   }),
 });
 
-export const { useGetAppsQuery, useCloneAppMutation } = appsApi;
+export const { useGetAppsQuery, useCloneAppMutation, useCloneAppNameMutation } =
+  appsApi;

@@ -9,8 +9,6 @@ import { MdGroups } from "react-icons/md";
 
 import ProfilePopupDesktop from "./ProfilePopupDesktop";
 
-import modules from "../modules";
-
 const SidebarDesktop = () => {
   const { data: getModules } = useGetModulesQuery();
   const [userPopup, setUserPopup] = React.useState(false);
@@ -81,32 +79,28 @@ const SidebarDesktop = () => {
                 </h3>
               </NavLink>
             ))}
-            {modules.map(
-              (module) =>
-                getModules &&
-                getModules.map((mod) =>
-                  mod.loaded && mod.name === module.name
-                    ? module.sidebar && (
-                        <NavLink
-                          className={({ isActive }) =>
-                            isActive
-                              ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
-                              : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
-                          }
-                          to={module.routeProps.path}
-                          key={module.name}
-                        >
-                          <div className="duration-300 group-hover:text-primary">
-                            {module.icon}
-                          </div>
-                          <h3 className="py-3 duration-300 group-hover:text-primary">
-                            {module.title}
-                          </h3>
-                        </NavLink>
-                      )
-                    : false
-                )
-            )}
+            {getModules &&
+              getModules.map(
+                (item) =>
+                  item.enabled && (
+                    <NavLink
+                      className={({ isActive }) =>
+                        isActive
+                          ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
+                          : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
+                      }
+                      to={item.name}
+                      key={item.id}
+                    >
+                      <div className="duration-300 group-hover:text-primary">
+                        <AiOutlineAppstore />
+                      </div>
+                      <h3 className="py-3 duration-300 group-hover:text-primary">
+                        {item.name}
+                      </h3>
+                    </NavLink>
+                  )
+              )}
           </ul>
         </div>
       </div>
