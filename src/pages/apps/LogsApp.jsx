@@ -8,7 +8,7 @@ import { FiSearch } from "react-icons/fi";
 const LogsApp = () => {
   const navigate = useNavigate();
   const [terminalLineData, setTerminalLineData] = React.useState([
-    <TerminalOutput>Welcome to the App name logs</TerminalOutput>,
+    // <TerminalOutput>Welcome to the App name logs</TerminalOutput>,
   ]);
 
   return (
