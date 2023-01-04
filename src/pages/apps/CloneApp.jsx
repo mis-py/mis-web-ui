@@ -72,7 +72,7 @@ const CloneApp = () => {
 
   const handleCloneApp = async (e) => {
     e.preventDefault();
-    if (!errorCloneApp || formValueName.name !== "") {
+    if (formValue.url !== "") {
       await cloneApp({
         ...formValue,
       }).unwrap();

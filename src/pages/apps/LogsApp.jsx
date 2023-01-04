@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Terminal, { ColorMode, TerminalOutput } from 'react-terminal-ui';
+import Terminal, { ColorMode, TerminalOutput } from "react-terminal-ui";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -8,7 +8,7 @@ import { FiSearch } from "react-icons/fi";
 const LogsApp = () => {
   const navigate = useNavigate();
   const [terminalLineData, setTerminalLineData] = React.useState([
-    <TerminalOutput>Welcome to the App name logs</TerminalOutput>
+    <TerminalOutput>Welcome to the App name logs</TerminalOutput>,
   ]);
 
   return (
@@ -34,9 +34,15 @@ const LogsApp = () => {
             <FiSearch className="w-12 text-gray" />
           </label>
         </form>
-        <Terminal name='React Terminal Usage Example' colorMode={ ColorMode.Dark }  onInput={ terminalInput => console.log(`New terminal input received: '${ terminalInput }'`) }>
-        { terminalLineData }
-      </Terminal>
+        <Terminal
+          // name="React Terminal Usage Example"
+          colorMode={ColorMode.Dark}
+          onInput={(terminalInput) =>
+            console.log(`New terminal input received: '${terminalInput}'`)
+          }
+        >
+          {terminalLineData}
+        </Terminal>
       </div>
     </div>
   );
