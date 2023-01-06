@@ -27,6 +27,17 @@ export const settingsApi = createApi({
       }),
       providesTags: (result, error, id) => [{ type: "Settings", id }],
     }),
+    getSettingsTeamId: build.query({
+      query: (id) => ({
+        url: `/settings/team/${id}`,
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
+      providesTags: (result, error, id) => [{ type: "Settings", id }],
+    }),
     settingAppSet: build.mutation({
       query: (data) => ({
         url: `/settings/app/${data.id}`,
@@ -57,6 +68,7 @@ export const settingsApi = createApi({
 export const {
   useGetSettingsAppIdQuery,
   useGetSettingsUserIdQuery,
+  useGetSettingsTeamIdQuery,
   useSettingAppSetMutation,
   useSettingUserSetMutation,
 } = settingsApi;

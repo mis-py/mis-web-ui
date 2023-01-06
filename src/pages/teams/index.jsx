@@ -14,7 +14,7 @@ import AdminWrapper from "../../config/AdminWrapper";
 import { FiSearch } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { IoIosArrowDown } from "react-icons/io";
-import { AiOutlineUsergroupAdd } from "react-icons/ai";
+import { AiOutlineUsergroupAdd, AiOutlineSetting } from "react-icons/ai";
 
 import UserImg from "../../assets/img/user.png";
 
@@ -174,13 +174,19 @@ const Teams = () => {
                         <h4>{team.name}</h4>
                       </div>
                       <AdminWrapper>
-                        <BiDotsVerticalRounded
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleEdit(index);
-                          }}
-                          className="text-3xl text-gray cursor-pointer"
-                        />
+                        <div className="flex gap-3 items-center">
+                          <AiOutlineSetting
+                            onClick={() => navigate(`/team/settings/${team.id}`)}
+                            className="text-2xl text-gray cursor-pointer"
+                          />
+                          <BiDotsVerticalRounded
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleEdit(index);
+                            }}
+                            className="text-3xl text-gray cursor-pointer"
+                          />
+                        </div>
                       </AdminWrapper>
                     </div>
                     {showTeamInfo === index && (

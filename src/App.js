@@ -27,6 +27,7 @@ import EditTeamPermissions from "./pages/teams/EditTeamPermissions";
 import EditTeamMembers from "./pages/teams/EditTeamMembers";
 import AddTeamMembers from "./pages/teams/AddTeamMembers";
 import AddTeamPermissions from "./pages/teams/AddTeamPermissions";
+import SettingsTeam from "./pages/teams/SettingsTeam";
 import Groups from "./pages/groups/index";
 import AddGroup from "./pages/groups/AddGroup";
 import EditMembersGroup from "./pages/groups/EditMembersGroup";
@@ -42,15 +43,7 @@ import NotFound from "./pages/NotFound";
 
 import "react-toastify/dist/ReactToastify.css";
 
-// const Webcat = React.lazy(
-//   async () => await import("./modules/webcat/index").MyComponent
-// );
-
-// const Webcat = React.lazy(() =>
-//   import("./modules/webcat/index").then((module) => ({
-//     default: module.Webcat,
-//   }))
-// );
+const Webcat = React.lazy(() => import("./modules/webcat/index"));
 
 function App() {
   // const { data: getModules } = useGetModulesQuery();
@@ -85,71 +78,81 @@ function App() {
               translation={translation}
               mainContentScroll={mainContentScroll}
             >
-              <Routes>
-                <Route path="/" element={<MainLayout />}>
-                  <Route index element={<Home />} />
-                  <Route path="/users" element={<Users />} />
-                  <Route path="/add-user" element={<AddUser />} />
-                  <Route
-                    path="/add-user/permissions"
-                    element={<AddUserPermissions />}
-                  />
-                  <Route path="/users/:id" element={<EditUser />} />
-                  <Route
-                    path="/user/permissions/:id"
-                    element={<EditUserPermissions />}
-                  />
-                  <Route path="/profile/:id" element={<ProfileUser />} />
-                  <Route path="/settings/:id" element={<SettingsUser />} />
-                  <Route path="/teams" element={<Teams />} />
-                  <Route path="/add-team" element={<AddTeam />} />
-                  <Route path="/teams/:id" element={<EditTeam />} />
-                  <Route path="/groups" element={<Groups />} />
-                  <Route path="/add-group" element={<AddGroup />} />
-                  <Route
-                    path="/group/members/:id"
-                    element={<EditMembersGroup />}
-                  />
-                  <Route
-                    path="/group/objects/:id"
-                    element={<EditObjectsGroup />}
-                  />
-                  <Route
-                    path="/team/permissions/:id"
-                    element={<EditTeamPermissions />}
-                  />
-                  <Route
-                    path="/team/members/:id"
-                    element={<EditTeamMembers />}
-                  />
-                  <Route
-                    path="/add-team/members"
-                    element={<AddTeamMembers />}
-                  />
-                  <Route
-                    path="/add-team/permissions"
-                    element={<AddTeamPermissions />}
-                  />
-                  <Route path="/apps" element={<Apps />} />
-                  <Route path="/apps/clone" element={<CloneApp />} />
-                  <Route path="/apps/logs/:id" element={<LogsApp />} />
-                  <Route path="/apps/settings/:id" element={<SettingsApp />} />
-                  <Route
-                    path="/apps/settings/manage/:id"
-                    element={<ManageGroupApp />}
-                  />
-                  <Route
-                    path="/apps/settings/manage/members/:id"
-                    element={<ManageMembersApp />}
-                  />
-                </Route>
-                <Route path="/signin" element={<LoginLayout />}>
-                  <Route index element={<Signin />} />
-                </Route>
-                <Route element={<NotFoundLayout />}>
-                  <Route path="*" element={<NotFound />} />
-                </Route>
-              </Routes>
+              <React.Suspense fallback="Loading...">
+                <Routes>
+                  <Route path="/" element={<MainLayout />}>
+                    <Route index element={<Home />} />
+                    <Route path="/users" element={<Users />} />
+                    <Route path="/add-user" element={<AddUser />} />
+                    <Route
+                      path="/add-user/permissions"
+                      element={<AddUserPermissions />}
+                    />
+                    <Route path="/users/:id" element={<EditUser />} />
+                    <Route
+                      path="/user/permissions/:id"
+                      element={<EditUserPermissions />}
+                    />
+                    <Route path="/profile/:id" element={<ProfileUser />} />
+                    <Route path="/settings/:id" element={<SettingsUser />} />
+                    <Route path="/teams" element={<Teams />} />
+                    <Route path="/add-team" element={<AddTeam />} />
+                    <Route path="/teams/:id" element={<EditTeam />} />
+                    <Route path="/groups" element={<Groups />} />
+                    <Route path="/add-group" element={<AddGroup />} />
+                    <Route
+                      path="/group/members/:id"
+                      element={<EditMembersGroup />}
+                    />
+                    <Route
+                      path="/group/objects/:id"
+                      element={<EditObjectsGroup />}
+                    />
+                    <Route
+                      path="/team/permissions/:id"
+                      element={<EditTeamPermissions />}
+                    />
+                    <Route
+                      path="/team/members/:id"
+                      element={<EditTeamMembers />}
+                    />
+                    <Route
+                      path="/add-team/members"
+                      element={<AddTeamMembers />}
+                    />
+                    <Route
+                      path="/add-team/permissions"
+                      element={<AddTeamPermissions />}
+                    />
+                    <Route
+                      path="/team/settings/:id"
+                      element={<SettingsTeam />}
+                    />
+                    <Route path="/apps" element={<Apps />} />
+                    <Route path="/apps/clone" element={<CloneApp />} />
+                    <Route path="/apps/logs/:id" element={<LogsApp />} />
+                    <Route
+                      path="/apps/settings/:id"
+                      element={<SettingsApp />}
+                    />
+                    <Route
+                      path="/apps/settings/manage/:id"
+                      element={<ManageGroupApp />}
+                    />
+                    <Route
+                      path="/apps/settings/manage/members/:id"
+                      element={<ManageMembersApp />}
+                    />
+                    <Route path="/webcat" element={<Webcat />} />
+                  </Route>
+                  <Route path="/signin" element={<LoginLayout />}>
+                    <Route index element={<Signin />} />
+                  </Route>
+                  <Route element={<NotFoundLayout />}>
+                    <Route path="*" element={<NotFound />} />
+                  </Route>
+                </Routes>
+              </React.Suspense>
             </MainContentContainer>
           </div>
         )}
