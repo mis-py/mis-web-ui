@@ -60,7 +60,7 @@ const CloneApp = () => {
   const [cloneAppName] = useCloneAppNameMutation();
 
   const options = getModules?.map((item, index) => {
-    if (item.enabled) {
+    if (!item.enabled) {
       return {
         value: item.name,
         label: item.name,
@@ -130,13 +130,18 @@ const CloneApp = () => {
           </label>
         </form>
 
-        <h3 className="h3 mt-5">Load app</h3>
+        <h3 className="h3 my-5">Load app</h3>
         <label className="flex flex-col gap-1 mb-4" htmlFor="app">
           Name
           <Select
             options={options}
+            isDisabled={options.includes(undefined) ? true : false}
             styles={customStyles}
-            placeholder="The app is not selected"
+            placeholder={
+              options.includes(undefined)
+                ? "None App"
+                : "The app is not selected"
+            }
             id="app"
             onChange={(choice) =>
               setFormValueName({
