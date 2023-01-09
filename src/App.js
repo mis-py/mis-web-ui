@@ -45,6 +45,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Webcat = React.lazy(() => import("./modules/webcat/index"));
 
+console.log(process.env);
+
 function App() {
   // const { data: getModules } = useGetModulesQuery();
 

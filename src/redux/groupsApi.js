@@ -3,7 +3,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const groupsApi = createApi({
   reducerPath: "groupsApi",
   tagTypes: ["Groups"],
-  baseQuery: fetchBaseQuery({ baseUrl: "https://crm.nullgravity.net/api" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl:
+      process.env.NODE_ENV === "development"
+        ? "https://crm.nullgravity.net/api"
+        : "/api",
+  }),
   endpoints: (build) => ({
     getGroups: build.query({
       query: () => ({

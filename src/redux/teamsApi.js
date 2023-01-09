@@ -3,7 +3,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const teamsApi = createApi({
   reducerPath: "teamsApi",
   tagTypes: ["Teams"],
-  baseQuery: fetchBaseQuery({ baseUrl: "https://crm.nullgravity.net/api" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl:
+      process.env.NODE_ENV === "development"
+        ? "https://crm.nullgravity.net/api"
+        : "/api",
+  }),
   endpoints: (build) => ({
     getTeams: build.query({
       query: () => ({
