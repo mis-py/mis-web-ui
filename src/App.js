@@ -16,10 +16,12 @@ import Home from "./pages/Home";
 import Users from "./pages/users/index";
 import AddUser from "./pages/users/AddUser";
 import AddUserPermissions from "./pages/users/AddUserPermissions";
+import AddUserSettings from "./pages/users/AddUserSettings";
 import EditUser from "./pages/users/EditUser";
 import EditUserPermissions from "./pages/users/EditUserPermissions";
 import ProfileUser from "./pages/users/ProfileUser";
 import SettingsUser from "./pages/users/SettingsUser";
+import EditUserSettings from "./pages/users/EditUserSettings";
 import Teams from "./pages/teams/index";
 import AddTeam from "./pages/teams/AddTeam";
 import EditTeam from "./pages/teams/EditTeam";
@@ -43,12 +45,11 @@ import NotFound from "./pages/NotFound";
 
 import "react-toastify/dist/ReactToastify.css";
 
-const Webcat = React.lazy(() => import("./modules/webcat/index"));
-
-console.log(process.env);
-
 function App() {
-  // const { data: getModules } = useGetModulesQuery();
+  const Webcat = React.lazy(() => import("./modules/webcat/index"));
+  const { data: getModules } = useGetModulesQuery();
+
+  // const appName = getModules?.map((app) => import(app.name));
 
   return (
     <div className="relative">
@@ -94,6 +95,14 @@ function App() {
                     <Route
                       path="/user/permissions/:id"
                       element={<EditUserPermissions />}
+                    />
+                    <Route
+                      path="/add-user/settings"
+                      element={<AddUserSettings />}
+                    />
+                    <Route
+                      path="/user/settings/:id"
+                      element={<EditUserSettings />}
                     />
                     <Route path="/profile/:id" element={<ProfileUser />} />
                     <Route path="/settings/:id" element={<SettingsUser />} />
@@ -145,7 +154,7 @@ function App() {
                       path="/apps/settings/manage/members/:id"
                       element={<ManageMembersApp />}
                     />
-                    <Route path="/webcat" element={<Webcat />} />
+                    {/* <Route path="/webcat" element={<Webcat />} /> */}
                   </Route>
                   <Route path="/signin" element={<LoginLayout />}>
                     <Route index element={<Signin />} />

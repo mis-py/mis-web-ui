@@ -150,13 +150,23 @@ const EditUser = () => {
       </div>
 
       <div className="flex flex-col gap-3">
-        <button
-          onClick={() => navigate(`/user/permissions/${id}`)}
-          className="flex justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
-        >
-          Permissions ({dataPermissionsUserId && dataPermissionsUserId.length})
-          <AiOutlinePlusCircle className="text-xl" />
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => navigate(`/user/permissions/${id}`)}
+            className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
+          >
+            Permissions ({dataPermissionsUserId && dataPermissionsUserId.length}
+            )
+            <AiOutlinePlusCircle className="text-xl" />
+          </button>
+          <button
+            onClick={() => navigate(`/user/settings/${id}`)}
+            className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
+          >
+            Settings
+            <AiOutlinePlusCircle className="text-xl" />
+          </button>
+        </div>
         <button onClick={handleEditUser} className="btn-primary">
           Save
         </button>

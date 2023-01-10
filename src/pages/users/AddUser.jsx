@@ -158,10 +158,13 @@ const AddUser = () => {
         </form>
       </div>
       <div className="flex flex-col gap-4">
-        {/* <button onClick={() => navigate("/add-user/permissions")} className="flex justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg">
-          Permissions
+        <button
+          onClick={() => navigate(`/add-user/settings`)}
+          className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
+        >
+          Settings
           <AiOutlinePlusCircle className="text-xl" />
-        </button> */}
+        </button>
         <button onClick={handleAddUser} className="btn-primary">
           Add user
         </button>

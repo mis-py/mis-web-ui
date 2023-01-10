@@ -10,6 +10,40 @@ export const settingsApi = createApi({
         : "/api",
   }),
   endpoints: (build) => ({
+    getUserSettings: build.query({
+      query: () => ({
+        url: `/settings/`,
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Settings", id })),
+              { type: "Settings", id: "LIST" },
+            ]
+          : [{ type: "Settings", id: "LIST" }],
+    }),
+    getUserSettingsId: build.query({
+      query: (id) => ({
+        url: `/settings/user/${id}`,
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Settings", id })),
+              { type: "Settings", id: "LIST" },
+            ]
+          : [{ type: "Settings", id: "LIST" }],
+    }),
     getSettingsAppId: build.query({
       query: (id) => ({
         url: `/settings/app/${id}`,
@@ -71,6 +105,8 @@ export const settingsApi = createApi({
 });
 
 export const {
+  useGetUserSettingsQuery,
+  useGetUserSettingsIdQuery,
   useGetSettingsAppIdQuery,
   useGetSettingsUserIdQuery,
   useGetSettingsTeamIdQuery,
