@@ -11,7 +11,13 @@ export const appsApi = createApi({
   }),
   endpoints: (build) => ({
     getApps: build.query({
-      query: () => `/modules/`,
+      query: () => ({
+        url: `/modules/`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+        },
+      }),
       providesTags: (result) =>
         result
           ? [
