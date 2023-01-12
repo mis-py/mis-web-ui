@@ -3,7 +3,7 @@ import { useGetModulesQuery } from "../redux";
 
 const Modules = () => {
   const { data: getModules } = useGetModulesQuery();
-  console.log(getModules);
+
   return (
     <>
       <div className="w-full h-full">
@@ -11,9 +11,9 @@ const Modules = () => {
           (item) =>
             item.front_bundle_path !== null && (
               <iframe
-              className="w-full h-full min-h-screen"
+                className="w-full h-full min-h-screen"
                 key={item.id}
-                src={`/api${item.front_bundle_path}/`}
+                src={`http://crm.ng.lan/api${item.front_bundle_path}`}
               ></iframe>
             )
         )}

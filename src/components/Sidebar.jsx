@@ -1,8 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useGetModulesQuery } from "../redux";
-
-import modules from "../modules";
+import { firstUppercase } from "../config/functions";
 
 import { FiUser, FiUsers } from "react-icons/fi";
 import { BiUser } from "react-icons/bi";
@@ -76,33 +75,28 @@ const Sidebar = ({ toggleDrawer }) => {
                 </h3>
               </NavLink>
             ))}
-            {/* {modules.map(
-              (module) =>
-                getModules &&
-                getModules.map((mod) =>
-                  mod.loaded && mod.name === module.name
-                    ? module.sidebar && (
-                        <NavLink
-                          className={({ isActive }) =>
-                            isActive
-                              ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
-                              : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
-                          }
-                          to={module.routeProps.path}
-                          key={module.name}
-                          onClick={toggleDrawer}
-                        >
-                          <div className="duration-300 group-hover:text-primary">
-                            {module.icon}
-                          </div>
-                          <h3 className="py-3 duration-300 group-hover:text-primary">
-                            {module.title}
-                          </h3>
-                        </NavLink>
-                      )
-                    : false
-                )
-            )} */}
+            {getModules &&
+              getModules.map(
+                (item) =>
+                  !item.enabled && (
+                    <NavLink
+                      className={({ isActive }) =>
+                        isActive
+                          ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
+                          : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
+                      }
+                      to={`/api${item.front_bundle_path}`}
+                      key={item.id}
+                    >
+                      <div className="duration-300 group-hover:text-primary">
+                        <AiOutlineAppstore />
+                      </div>
+                      <h3 className="py-3 duration-300 group-hover:text-primary">
+                        {firstUppercase(item.name)}
+                      </h3>
+                    </NavLink>
+                  )
+              )}
           </ul>
         </div>
       </div>

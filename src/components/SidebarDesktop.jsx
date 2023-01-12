@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useGetModulesQuery } from "../redux";
+import { firstUppercase } from "../config/functions";
 
 import { FiSearch, FiBell, FiUser, FiUsers } from "react-icons/fi";
 import { BiUser } from "react-icons/bi";
@@ -89,14 +90,14 @@ const SidebarDesktop = () => {
                           ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
                           : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
                       }
-                      to={`/api${item.front_bundle_path}/`}
+                      to={`/api${item.front_bundle_path}`}
                       key={item.id}
                     >
                       <div className="duration-300 group-hover:text-primary">
                         <AiOutlineAppstore />
                       </div>
                       <h3 className="py-3 duration-300 group-hover:text-primary">
-                        {item.name}
+                        {firstUppercase(item.name)}
                       </h3>
                     </NavLink>
                   )

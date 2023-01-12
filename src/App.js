@@ -1,7 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import axios from "axios";
 import Drawer, {
   DrawerContainer,
   MainContentContainer,
@@ -48,12 +47,7 @@ import Modules from "./pages/Modules";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  // const Webcat = React.lazy(() => import("./modules/webcat/index"));
   const { data: getModules } = useGetModulesQuery();
-
-  // const appName = getModules?.map((app) => import(app.name));
-
-  console.log(getModules);
 
   return (
     <div className="relative">

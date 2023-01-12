@@ -1,13 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseUrl } from "../config/variables";
 
 export const modulesApi = createApi({
   reducerPath: "modulesApi",
   tagTypes: ["Modules"],
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      process.env.NODE_ENV === "development"
-        ? "http://crm.ng.lan/api"
-        : "/api",
+    baseUrl,
   }),
   endpoints: (build) => ({
     getModules: build.query({

@@ -11,7 +11,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import LogoImg from "../assets/img/logo.png";
 import EllipseImg from "../assets/img/ellipse.png";
 
-import { getUrl } from "../config";
+import { getUrl } from "../config/variables";
 
 const Signin = () => {
   const navigate = useNavigate();
