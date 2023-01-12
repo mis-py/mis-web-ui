@@ -9,17 +9,18 @@ const AdminWrapper = ({ children }) => {
     localStorage.getItem("user_id")
   );
 
-  if (
-    !isLoading &&
-    data.length !== 0 &&
-    data[0].permission.scope === "core:sudo"
-  ) {
-    return <>{children}</>;
-  } else if (data && data.length === 0) {
-    return false;
-  } else {
-    return false;
-  }
+  // if (
+  //   !isLoading &&
+  //   data.length !== 0 &&
+  //   data[0].permission.scope === "core:sudo"
+  // ) {
+  //   return <>{children}</>;
+  // } else if (data && data.length === 0) {
+  //   return false;
+  // } else {
+  //   return false;
+  // }
+  return <></>;
 };
 
 export default AdminWrapper;

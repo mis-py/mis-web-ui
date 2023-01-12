@@ -36,7 +36,7 @@ const Signin = () => {
   const onSubmit = (data) => {
     axios({
       method: "post",
-      url: getUrl("/auth/token"),
+      url: "http://crm.ng.lan/api/auth/token",
       data: qs.stringify(data),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
@@ -52,7 +52,7 @@ const Signin = () => {
           localStorage.setItem("user_name", user_name);
           axios({
             method: "get",
-            url: getUrl(),
+            url: "http://crm.ng.lan/api/",
             headers: {
               Authorization: `Bearer ${localStorage.getItem("my-token")}`,
             },

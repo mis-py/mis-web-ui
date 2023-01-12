@@ -82,14 +82,14 @@ const SidebarDesktop = () => {
             {getModules &&
               getModules.map(
                 (item) =>
-                  item.enabled && (
+                  !item.enabled && (
                     <NavLink
                       className={({ isActive }) =>
                         isActive
                           ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
                           : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
                       }
-                      to={item.name}
+                      to={`/api${item.front_bundle_path}/`}
                       key={item.id}
                     >
                       <div className="duration-300 group-hover:text-primary">

@@ -8,7 +8,7 @@ export const usersApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl:
       process.env.NODE_ENV === "development"
-        ? "https://crm.nullgravity.net/api"
+        ? "http://crm.ng.lan/api"
         : "/api",
   }),
   endpoints: (build) => ({

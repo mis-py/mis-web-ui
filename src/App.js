@@ -43,13 +43,17 @@ import ManageMembersApp from "./pages/apps/ManageMembersApp";
 import NotFoundLayout from "./layouts/NotFoundLayout";
 import NotFound from "./pages/NotFound";
 
+import Modules from "./pages/Modules";
+
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  const Webcat = React.lazy(() => import("./modules/webcat/index"));
+  // const Webcat = React.lazy(() => import("./modules/webcat/index"));
   const { data: getModules } = useGetModulesQuery();
 
   // const appName = getModules?.map((app) => import(app.name));
+
+  console.log(getModules);
 
   return (
     <div className="relative">
@@ -154,6 +158,13 @@ function App() {
                       path="/apps/settings/manage/members/:id"
                       element={<ManageMembersApp />}
                     />
+                    {getModules?.map((item) => (
+                      <Route
+                        key={item.id}
+                        path={`/api${item.front_bundle_path}/`}
+                        element={<Modules />}
+                      />
+                    ))}
                     {/* <Route path="/webcat" element={<Webcat />} /> */}
                   </Route>
                   <Route path="/signin" element={<LoginLayout />}>
