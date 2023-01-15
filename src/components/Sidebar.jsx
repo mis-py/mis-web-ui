@@ -78,7 +78,7 @@ const Sidebar = ({ toggleDrawer }) => {
             {getModules &&
               getModules.map(
                 (item) =>
-                  !item.enabled && (
+                  item.enabled && (
                     <NavLink
                       className={({ isActive }) =>
                         isActive

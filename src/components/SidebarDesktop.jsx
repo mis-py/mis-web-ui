@@ -83,7 +83,7 @@ const SidebarDesktop = () => {
             {getModules &&
               getModules.map(
                 (item) =>
-                  !item.enabled && (
+                  item.enabled && (
                     <NavLink
                       className={({ isActive }) =>
                         isActive
