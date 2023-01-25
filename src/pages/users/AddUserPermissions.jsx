@@ -2,17 +2,16 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetPermissionsQuery } from "../../redux";
 import { useSelector, useDispatch } from "react-redux";
-import { addSuperUser } from "../../redux/slices/addUserPermissionsSlice";
+import { addSuperUser } from "../../redux/slices/addUserSlice";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
 const AddUserPermissions = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [checkSuperUser, setCheckSuperUser] = React.useState(false);
   const { data: dataPermissions } = useGetPermissionsQuery();
-  const superUser = useSelector((state) => state.addUserPermissions.superUser);
-  const dispatch = useDispatch();
 
   const handleCheckSuperPermissions = () => {
     if (checkSuperUser) {

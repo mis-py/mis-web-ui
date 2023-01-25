@@ -1,9 +1,10 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addUserName } from "../../redux/slices/addUserSlice";
 import { useAddUserMutation } from "../../redux/usersApi";
 import { useGetTeamsQuery } from "../../redux/teamsApi";
-import { useGetPermissionsUserIdQuery } from "../../redux";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -44,14 +45,13 @@ const customStyles = {
 
 const AddUser = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.addUser);
   const [addUser, { error: errorAddUser }] = useAddUserMutation();
   const { data: dataGetTeams = [] } = useGetTeamsQuery();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
 
   const [formValue, setFormValue] = React.useState({
-    username: "",
+    username: user.name,
     password: "",
     team_id: null,
   });
@@ -64,19 +64,13 @@ const AddUser = () => {
     };
   });
 
-  React.useEffect(() => {
-    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
-      navigate("/users");
-    }
-  }, []);
-
   const handleAddUser = async (e) => {
     e.preventDefault();
     if (!errorAddUser) {
       if (formValue.username < 1) {
-        toast.error("name min 2");
+        toast.error("Name too short");
       } else if (formValue.password < 5) {
-        toast.error("password min 6");
+        toast.error("The password is too short");
       } else {
         await addUser({
           ...formValue,
@@ -90,12 +84,12 @@ const AddUser = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <Link to={-1} className="flex items-center text-gray">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <Link to="/users">back</Link>
-        </div>
+          <span>back</span>
+        </Link>
         <h3 className="h3 mt-5">New user</h3>
 
         <form className="my-7">
@@ -158,13 +152,28 @@ const AddUser = () => {
         </form>
       </div>
       <div className="flex flex-col gap-4">
-        <button
-          onClick={() => navigate(`/add-user/settings`)}
-          className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
-        >
-          Settings
-          <AiOutlinePlusCircle className="text-xl" />
-        </button>
+        <div className="flex gap-4">
+          <button
+            onClick={() => {
+              dispatch(addUserName(formValue.username));
+              navigate(`/add-user/settings`);
+            }}
+            className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
+          >
+            Permissions ({user.permissions.length})
+            <AiOutlinePlusCircle className="text-xl" />
+          </button>
+          <button
+            onClick={() => {
+              dispatch(addUserName(formValue.username));
+              navigate(`/add-user/settings`);
+            }}
+            className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
+          >
+            Settings
+            <AiOutlinePlusCircle className="text-xl" />
+          </button>
+        </div>
         <button onClick={handleAddUser} className="btn-primary">
           Add user
         </button>

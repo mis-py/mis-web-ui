@@ -11,7 +11,7 @@ import { settingsApi } from "./settingsApi";
 // import { webcatApi } from "./webcatApi";
 // import { firewallApi } from "./firewallApi";
 
-import addUserPermissionsSlice from "./slices/addUserPermissionsSlice";
+import addUserSlice from "./slices/addUserSlice";
 import addTeamMembersSlice from "./slices/addTeamMembersSlice";
 import addTeamPermissionsSlice from "./slices/addTeamPermissionsSlice";
 import editTeamPermissionsSlice from "./slices/editTeamPermissionsSlice";
@@ -27,12 +27,12 @@ export const store = configureStore({
     [groupsApi.reducerPath]: groupsApi.reducer,
     [modulesApi.reducerPath]: modulesApi.reducer,
     [settingsApi.reducerPath]: settingsApi.reducer,
-    
+
     //modules
     // [webcatApi.reducerPath]: webcatApi.reducer,
     // [firewallApi.reducerPath]: firewallApi.reducer,
 
-    addUserPermissions: addUserPermissionsSlice,
+    addUser: addUserSlice,
     addTeamMembers: addTeamMembersSlice,
     addTeamPermissions: addTeamPermissionsSlice,
     editTeamPermissions: editTeamPermissionsSlice,
@@ -48,10 +48,9 @@ export const store = configureStore({
       groupsApi.middleware,
       modulesApi.middleware,
       settingsApi.middleware,
-      
+
       //modules
       // webcatApi.middleware,
       // firewallApi.middleware,
-
     ]),
 });

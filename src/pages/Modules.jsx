@@ -1,6 +1,8 @@
 import React from "react";
 import { useGetModulesQuery } from "../redux";
 
+import { baseUrl } from "../config/variables";
+
 const Modules = () => {
   const { data: getModules } = useGetModulesQuery();
 
@@ -13,7 +15,7 @@ const Modules = () => {
               <iframe
                 className="w-full h-full min-h-screen"
                 key={item.id}
-                src={`http://crm.ng.lan/api${item.front_bundle_path}`}
+                src={`${baseUrl}${item.front_bundle_path}`}
               ></iframe>
             )
         )}
