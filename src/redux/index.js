@@ -1,11 +1,11 @@
 export * from "./store";
-export * from "./usersApi";
-export * from "./teamsApi";
-export * from "./permissionsApi";
-export * from "./appsApi";
-export * from "./groupsApi";
-export * from "./modulesApi";
-export * from "./settingsApi";
+export * from "./api/usersApi";
+export * from "./api/teamsApi";
+export * from "./api/permissionsApi";
+export * from "./api/appsApi";
+export * from "./api/groupsApi";
+export * from "./api/modulesApi";
+export * from "./api/settingsApi";
 
 //modules
 // export * from "./webcatApi";

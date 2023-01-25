@@ -50,7 +50,7 @@ const EditUser = () => {
   const { data: getUserId, isLoading } = useGetUserIdQuery(id);
   const { data: dataGetTeams = [], isLoading: loadingDataGetTeams } =
     useGetTeamsQuery();
-  const { data: dataPermissionsUserId } = useGetPermissionsUserIdQuery(id);
+  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(id);
   const [editUser] = useEditUserMutation();
 
   const [formValue, setFormValue] = React.useState({
@@ -59,26 +59,25 @@ const EditUser = () => {
     team: {},
   });
 
-  const options = dataGetTeams.map((item, index) => {
+  const options = dataGetTeams?.map((item) => {
     return {
       value: item.id,
       label: item.name,
-      id: index + 1,
     };
   });
 
   React.useEffect(() => {
-    if (!isLoading && !loadingDataGetTeams) {
+    if (!isLoading) {
       setFormValue({
         username: getUserId.username,
         password: "",
         team: {
           id: getUserId.team === null ? 0 : getUserId.team.id,
-          name: getUserId.team === null ? "NO TEAM" : getUserId.team.name,
+          name: getUserId.team === null ? "No team" : getUserId.team.name,
         },
       });
     }
-  }, [isLoading, loadingDataGetTeams]);
+  }, [isLoading]);
 
   const handleEditUser = async (e) => {
     e.preventDefault();
@@ -94,12 +93,12 @@ const EditUser = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <Link to={-1} className="flex items-center text-gray">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <Link to="/users">back</Link>
-        </div>
+          <span>back</span>
+        </Link>
         <h3 className="h3 mt-5">Editing Profile</h3>
 
         <form className="my-7">
@@ -155,7 +154,7 @@ const EditUser = () => {
             onClick={() => navigate(`/user/permissions/${id}`)}
             className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Permissions ({dataPermissionsUserId && dataPermissionsUserId.length}
+            Permissions ({getPermissionsUserId?.length}
             )
             <AiOutlinePlusCircle className="text-xl" />
           </button>

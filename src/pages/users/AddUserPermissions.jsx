@@ -14,7 +14,7 @@ const AddUserPermissions = () => {
   const permissions = useSelector((state) => state.addUser.permissions);
   const [searchValue, setSearchValue] = React.useState("");
   const [checked, setChecked] = React.useState([...permissions]);
-  const { data: getPermissions, isLoading: loadingPermissions } =
+  const { data: getPermissions = [], isLoading: loadingPermissions } =
     useGetPermissionsQuery();
 
   const handleUserPermissions = () => {

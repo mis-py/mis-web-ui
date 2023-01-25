@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   useGetPermissionsQuery,
   useGetPermissionsUserIdQuery,
@@ -13,19 +13,17 @@ import { FiSearch } from "react-icons/fi";
 const EditUserPermissions = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [searchValue, setSearchValue] = React.useState("");
   const [checked, setChecked] = React.useState([]);
-  const { data: dataPermissions, isLoading: loadingDataPermissions } =
+  const { data: dataPermissions = [], isLoading: loadingPermissions } =
     useGetPermissionsQuery();
-  const { data: dataPermissionsUserId } = useGetPermissionsUserIdQuery(id);
+  const { data: dataPermissionsUserId = [] } = useGetPermissionsUserIdQuery(id);
   const [editUserPermission] = useEditUserPermissionMutation();
 
   React.useEffect(() => {
-    if (dataPermissionsUserId && dataPermissionsUserId.length) {
-      setChecked(
-        dataPermissionsUserId &&
-          dataPermissionsUserId.map((it) => it.permission.scope)
-      );
-    } else if (dataPermissionsUserId && !dataPermissionsUserId.length) {
+    if (dataPermissionsUserId?.length) {
+      setChecked(dataPermissionsUserId?.map((it) => it.permission.scope));
+    } else if (!dataPermissionsUserId?.length) {
       setChecked(false);
     }
   }, [dataPermissionsUserId]);
@@ -43,12 +41,12 @@ const EditUserPermissions = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center cursor-pointer text-gray">
+        <Link to={-1} className="flex items-center text-gray">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <div onClick={() => navigate(-1)}>back</div>
-        </div>
+          <span>back</span>
+        </Link>
         <h3 className="h3 mt-5">Manage permissions</h3>
         <form className="my-4">
           <label
@@ -59,16 +57,23 @@ const EditUserPermissions = () => {
               className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
               type="search"
               placeholder="Enter permission name to search..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
             <FiSearch className="w-12 text-gray" />
           </label>
 
-          {loadingDataPermissions ? (
+          {loadingPermissions ? (
             <h2 className="text-2xl text-center">Loading...</h2>
           ) : (
             <div className="flex flex-col gap-4">
-              {dataPermissions &&
-                dataPermissions.map((item) => (
+              {dataPermissions
+                ?.filter((el) =>
+                  el.name
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase().trim())
+                )
+                .map((item) => (
                   <div key={item.id} className="flex flex-col">
                     {item.app.name}
                     <label

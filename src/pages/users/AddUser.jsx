@@ -3,8 +3,7 @@ import Select from "react-select";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserName, addUserTeam } from "../../redux/slices/addUserSlice";
-import { useAddUserMutation } from "../../redux/usersApi";
-import { useGetTeamsQuery } from "../../redux/teamsApi";
+import { useAddUserMutation, useGetTeamsQuery } from "../../redux";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -130,11 +129,7 @@ const AddUser = () => {
               styles={customStyles}
               placeholder="The team is not selected"
               id="team"
-              value={
-                formValue.team.value === null
-                  ? ""
-                  : { ...formValue.team }
-              }
+              value={formValue.team.value === null ? "" : { ...formValue.team }}
               onChange={(choice) =>
                 setFormValue({
                   ...formValue,

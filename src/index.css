@@ -64,6 +64,10 @@
     } */
 }
 
+.react-confirm-alert-body {
+    box-shadow: none;
+}
+
 ::-webkit-scrollbar {
     -webkit-appearance: none;
 }

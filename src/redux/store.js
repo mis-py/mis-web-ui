@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { usersApi } from "./usersApi";
-import { teamsApi } from "./teamsApi";
-import { permissionsApi } from "./permissionsApi";
-import { appsApi } from "./appsApi";
-import { groupsApi } from "./groupsApi";
-import { modulesApi } from "./modulesApi";
-import { settingsApi } from "./settingsApi";
+import { usersApi } from "./api/usersApi";
+import { teamsApi } from "./api/teamsApi";
+import { permissionsApi } from "./api/permissionsApi";
+import { appsApi } from "./api/appsApi";
+import { groupsApi } from "./api/groupsApi";
+import { modulesApi } from "./api/modulesApi";
+import { settingsApi } from "./api/settingsApi";
 
 //modules
 // import { webcatApi } from "./webcatApi";

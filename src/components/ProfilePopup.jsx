@@ -1,16 +1,12 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useGetPermissionsUserIdQuery, useUserLogoutMutation } from "../redux";
+import { useNavigate } from "react-router-dom";
+import { useUserLogoutMutation } from "../redux";
 import { FiUser, FiSettings, FiLogOut } from "react-icons/fi";
 import useOutsideClick from "../hooks/useOutsideClick";
 
 const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
   const navigate = useNavigate();
   const [userLogout] = useUserLogoutMutation();
-
-  // const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-  //   localStorage.getItem("user_id")
-  // );
 
   const handleClickOutside = () => {
     setUserPopup(false);

@@ -5,9 +5,7 @@ export const firewallApi = createApi({
   tagTypes: ["Firewall"],
   baseQuery: fetchBaseQuery({
     baseUrl:
-      process.env.NODE_ENV === "development"
-        ? "http://crm.ng.lan/api"
-        : "/api",
+      process.env.NODE_ENV === "development" ? "http://crm.ng.lan/api" : "/api",
   }),
   endpoints: (build) => ({
     getFirewall: build.query({

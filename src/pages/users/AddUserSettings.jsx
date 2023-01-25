@@ -7,7 +7,7 @@ import { FiSearch } from "react-icons/fi";
 
 const AddUserSettings = () => {
   const navigate = useNavigate();
-  const { data: getUserSettings } = useGetUserSettingsQuery();
+  const { data: getUserSettings = [] } = useGetUserSettingsQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
 
