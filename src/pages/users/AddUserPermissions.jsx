@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetPermissionsQuery } from "../../redux";
 import { useSelector, useDispatch } from "react-redux";
-import { addSuperUser } from "../../redux/slices/addUserSlice";
+// import { addSuperUser } from "../../redux/slices/addUserSlice";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -14,9 +14,9 @@ const AddUserPermissions = () => {
   const { data: dataPermissions } = useGetPermissionsQuery();
 
   const handleCheckSuperPermissions = () => {
-    if (checkSuperUser) {
-      dispatch(addSuperUser("core:sudo"));
-    }
+    // if (checkSuperUser) {
+    //   dispatch(addSuperUser("core:sudo"));
+    // }
     navigate(-1);
   };
 

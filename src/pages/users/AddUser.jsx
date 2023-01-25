@@ -2,7 +2,7 @@ import React from "react";
 import Select from "react-select";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserName } from "../../redux/slices/addUserSlice";
+import { addUserName, addUserTeam } from "../../redux/slices/addUserSlice";
 import { useAddUserMutation } from "../../redux/usersApi";
 import { useGetTeamsQuery } from "../../redux/teamsApi";
 import { toast } from "react-toastify";
@@ -48,19 +48,18 @@ const AddUser = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.addUser);
   const [addUser, { error: errorAddUser }] = useAddUserMutation();
-  const { data: dataGetTeams = [] } = useGetTeamsQuery();
+  const { data: getTeams = [] } = useGetTeamsQuery();
 
   const [formValue, setFormValue] = React.useState({
     username: user.name,
     password: "",
-    team_id: null,
+    team: user.team,
   });
 
-  const options = dataGetTeams.map((item, index) => {
+  const options = getTeams?.map((item) => {
     return {
       value: item.id,
       label: item.name,
-      id: index + 1,
     };
   });
 
@@ -74,6 +73,7 @@ const AddUser = () => {
       } else {
         await addUser({
           ...formValue,
+          team_id: formValue.team.value,
         }).unwrap();
         navigate("/users");
         toast.success("Added new user");
@@ -130,10 +130,15 @@ const AddUser = () => {
               styles={customStyles}
               placeholder="The team is not selected"
               id="team"
+              value={
+                formValue.team.value === null
+                  ? ""
+                  : { ...formValue.team }
+              }
               onChange={(choice) =>
                 setFormValue({
                   ...formValue,
-                  team_id: choice.value,
+                  team: choice,
                 })
               }
             />
@@ -156,6 +161,7 @@ const AddUser = () => {
           <button
             onClick={() => {
               dispatch(addUserName(formValue.username));
+              dispatch(addUserTeam(formValue.team));
               navigate(`/add-user/settings`);
             }}
             className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"

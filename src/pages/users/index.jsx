@@ -165,7 +165,7 @@ const Users = () => {
                                 user.team === null ? "text-danger" : "text-gray"
                               } text-xs mb-[6px]`}
                             >
-                              {user.team === null ? "NO TEAM" : user.team.name}
+                              {user.team === null ? "No team" : user.team.name}
                             </h4>
                             <h4 className="text-gray text-xs">Position name</h4>
                           </div>
