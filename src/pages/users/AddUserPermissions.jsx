@@ -1,8 +1,9 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useGetPermissionsQuery } from "../../redux";
 import { useSelector, useDispatch } from "react-redux";
-// import { addSuperUser } from "../../redux/slices/addUserSlice";
+import { addUserPermissions } from "../../redux/slices/addUserSlice";
+import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -10,25 +11,27 @@ import { FiSearch } from "react-icons/fi";
 const AddUserPermissions = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [checkSuperUser, setCheckSuperUser] = React.useState(false);
-  const { data: dataPermissions } = useGetPermissionsQuery();
+  const permissions = useSelector((state) => state.addUser.permissions);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [checked, setChecked] = React.useState([...permissions]);
+  const { data: getPermissions, isLoading: loadingPermissions } =
+    useGetPermissionsQuery();
 
-  const handleCheckSuperPermissions = () => {
-    // if (checkSuperUser) {
-    //   dispatch(addSuperUser("core:sudo"));
-    // }
+  const handleUserPermissions = () => {
+    dispatch(addUserPermissions(checked));
     navigate(-1);
+    toast.success("Permissions saved");
   };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <Link to={-1} className="flex items-center text-gray">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <div onClick={() => navigate(-1)}>back</div>
-        </div>
+          <span>back</span>
+        </Link>
         <h3 className="h3 mt-5">Manage permissions</h3>
         <form className="my-4">
           <label
@@ -39,28 +42,59 @@ const AddUserPermissions = () => {
               className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
               type="search"
               placeholder="Enter permission name to search..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
             <FiSearch className="w-12 text-gray" />
           </label>
 
-          <label
-            className="flex items-center gap-2 text-gray body-2"
-            htmlFor="check-1"
-          >
-            <input
-              type="checkbox"
-              name="checkbox-1"
-              id="check-1"
-              checked={checkSuperUser}
-              onChange={() => setCheckSuperUser(!checkSuperUser)}
-              className="bg-transparent body-2 cursor-pointer 
-      w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
-            />
-            {dataPermissions && dataPermissions.core[0].name}
-          </label>
+          {loadingPermissions ? (
+            <h2 className="text-2xl text-center">Loading...</h2>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {getPermissions
+                ?.filter((el) =>
+                  el.name
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase().trim())
+                )
+                .map((item) => (
+                  <div key={item.id} className="flex flex-col">
+                    {item.app.name}
+                    <label
+                      className="flex items-center gap-2 text-gray body-2"
+                      htmlFor={item.name}
+                    >
+                      <input
+                        type="checkbox"
+                        name={item.name}
+                        id={item.name}
+                        checked={
+                          checked.length === []
+                            ? setChecked([])
+                            : checked.includes(item.scope)
+                        }
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setChecked([...checked, item.scope]);
+                          } else {
+                            setChecked(
+                              checked.filter((obj) => obj !== item.scope)
+                            );
+                          }
+                        }}
+                        className="bg-transparent cursor-pointer 
+    w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
+                      />
+                      {item.name} ({item.scope})
+                    </label>
+                  </div>
+                ))}
+            </div>
+          )}
         </form>
       </div>
-      <button onClick={handleCheckSuperPermissions} className="btn-primary">
+      <button onClick={handleUserPermissions} className="btn-primary">
         Save
       </button>
     </div>

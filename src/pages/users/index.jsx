@@ -108,7 +108,7 @@ const Users = () => {
           </AdminWrapper>
         </div>
 
-        <h3 className="h3 mb-5">Users ({getUsers.length})</h3>
+        <h3 className="h3 mb-5">Users ({getUsers?.length})</h3>
         {loadingGetUser ? (
           <h2 className="text-2xl mx-auto">Loading...</h2>
         ) : (

@@ -6,8 +6,8 @@ const initialState = {
     value: null,
     label: "",
   },
-  settings: [],
   permissions: [],
+  settings: [],
 };
 
 export const addUserSlice = createSlice({
@@ -20,13 +20,18 @@ export const addUserSlice = createSlice({
     addUserTeam: (state, action) => {
       state.team = action.payload;
     },
+    addUserPermissions: (state, action) => {
+      state.permissions = action.payload;
+    },
     resetUser: (state) => {
       state.name = "";
+      state.permissions = [];
       state.settings = [];
     },
   },
 });
 
-export const { addUserName, addUserTeam, resetUser } = addUserSlice.actions;
+export const { addUserName, addUserTeam, addUserPermissions, resetUser } =
+  addUserSlice.actions;
 
 export default addUserSlice.reducer;

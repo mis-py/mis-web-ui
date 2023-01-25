@@ -152,7 +152,6 @@ function App() {
                       element={<Modules />}
                     />
                   ))}
-                  {/* <Route path="/webcat" element={<Webcat />} /> */}
                 </Route>
                 <Route path="/signin" element={<LoginLayout />}>
                   <Route index element={<Signin />} />

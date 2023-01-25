@@ -162,7 +162,7 @@ const AddUser = () => {
             onClick={() => {
               dispatch(addUserName(formValue.username));
               dispatch(addUserTeam(formValue.team));
-              navigate(`/add-user/settings`);
+              navigate(`/add-user/permissions`);
             }}
             className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
@@ -172,6 +172,7 @@ const AddUser = () => {
           <button
             onClick={() => {
               dispatch(addUserName(formValue.username));
+              dispatch(addUserTeam(formValue.team));
               navigate(`/add-user/settings`);
             }}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
