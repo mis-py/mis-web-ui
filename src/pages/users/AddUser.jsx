@@ -2,8 +2,8 @@ import React from "react";
 import Select from "react-select";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserName, addUserTeam } from "../../redux/slices/addUserSlice";
-import { useAddUserMutation, useGetTeamsQuery } from "../../redux";
+import { addUserName, addUserTeam } from "redux/slices/addUserSlice";
+import { useAddUserMutation, useGetTeamsQuery } from "redux/index";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";

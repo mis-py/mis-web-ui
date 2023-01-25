@@ -1,18 +1,18 @@
 import React from "react";
-import useOutsideClick from "../../hooks/useOutsideClick";
+import useOutsideClick from "hooks/useOutsideClick";
 import { toast } from "react-toastify";
-import { useGetUsersQuery, useDeleteUserMutation } from "../../redux";
+import { useGetUsersQuery, useDeleteUserMutation } from "redux/index";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
-import { resetUser } from "../../redux/slices/addUserSlice";
+import { resetUser } from "redux/slices/addUserSlice";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 import { FiSearch, FiUserPlus } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
-import AdminWrapper from "../../config/AdminWrapper";
+import AdminWrapper from "config/AdminWrapper";
 
 const Users = () => {
   const navigate = useNavigate();

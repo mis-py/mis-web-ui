@@ -1,14 +1,14 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useGetModulesQuery } from "../redux";
-import { firstUppercase } from "../config/functions";
+import { useGetModulesQuery } from "redux/index";
+import { firstUppercase } from "config/functions";
 
 import { FiUser, FiUsers } from "react-icons/fi";
 import { BiUser } from "react-icons/bi";
 import { AiOutlineAppstore } from "react-icons/ai";
 import { MdGroups } from "react-icons/md";
 
-import ProfilePopup from "./ProfilePopup";
+import ProfilePopup from "components/ProfilePopup";
 
 const Sidebar = ({ toggleDrawer }) => {
   const { data: getModules } = useGetModulesQuery();

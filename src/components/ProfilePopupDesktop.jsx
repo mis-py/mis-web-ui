@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserLogoutMutation } from "../redux";
+import { useUserLogoutMutation } from "redux/index";
 import { FiUser, FiSettings, FiLogOut } from "react-icons/fi";
-import useOutsideClick from "../hooks/useOutsideClick";
+import useOutsideClick from "hooks/useOutsideClick";
 
 const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
   const navigate = useNavigate();

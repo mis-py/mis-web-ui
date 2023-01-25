@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useGetUserSettingsQuery } from "../../redux";
+import { useGetUserSettingsQuery } from "redux/index";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";

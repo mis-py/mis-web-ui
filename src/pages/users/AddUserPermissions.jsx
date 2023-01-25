@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useGetPermissionsQuery } from "../../redux";
+import { useGetPermissionsQuery } from "redux/index";
 import { useSelector, useDispatch } from "react-redux";
-import { addUserPermissions } from "../../redux/slices/addUserSlice";
+import { addUserPermissions } from "redux/slices/addUserSlice";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";
