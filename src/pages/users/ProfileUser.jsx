@@ -5,11 +5,9 @@ import { confirmAlert } from "react-confirm-alert";
 import {
   useDeleteUserMutation,
   useGetUserIdQuery,
-  useGetPermissionsUserIdQuery,
+  useUserLogoutMutation,
 } from "../../redux";
 import { IoIosArrowBack } from "react-icons/io";
-
-import UserImg from "../../assets/img/user.png";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
 
@@ -18,9 +16,7 @@ const ProfileUser = () => {
   const navigate = useNavigate();
   const { data: getUserId, isLoading } = useGetUserIdQuery(id);
   const [deleteUser] = useDeleteUserMutation();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
+  const [userLogout] = useUserLogoutMutation();
 
   const [formValue, setFormValue] = React.useState({
     username: "",
@@ -33,7 +29,7 @@ const ProfileUser = () => {
         username: getUserId.username,
         team: {
           id: getUserId.team === null ? 0 : getUserId.team.id,
-          name: getUserId.team === null ? "NO TEAM" : getUserId.team.name,
+          name: getUserId.team === null ? "No team" : getUserId.team.name,
         },
       });
     }
@@ -42,15 +38,19 @@ const ProfileUser = () => {
   const handleDeleteUser = async (e) => {
     e.preventDefault();
     confirmAlert({
-      title: "Delete user",
-      message: "Are you sure you want to delete this user?",
+      title: "Delete profile",
+      message: "Are you sure you want to delete your profile?",
       buttons: [
         {
           label: "Yes",
           onClick: async () => {
             await deleteUser(id);
-            navigate("/users");
-            toast.success("User deleted");
+            await userLogout();
+            localStorage.removeItem("my-token");
+            localStorage.removeItem("user_id");
+            localStorage.removeItem("user_name");
+            navigate("/signin");
+            toast.success("Profile deleted");
           },
         },
         {
@@ -64,15 +64,19 @@ const ProfileUser = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <Link to={-1} className="flex items-center text-gray">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <Link to="/users">back</Link>
-        </div>
+          <span>back</span>
+        </Link>
         <h3 className="h3 my-5">Profile</h3>
 
-        <img className="w-[64px] h-[64px]" src={UserImg} alt="" />
+        <img
+          className="w-[64px] h-[64px]"
+          src={require("../../assets/img/user.png")}
+          alt=""
+        />
 
         <form className="my-7">
           <label className="flex flex-col gap-1 mb-4" htmlFor="username">
@@ -96,15 +100,11 @@ const ProfileUser = () => {
           </label>
         </form>
       </div>
-      {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
-        <div className="flex flex-col gap-4">
-          <button onClick={handleDeleteUser} className="btn-danger">
-            Delete my profile
-          </button>
-        </div>
-      ) : (
-        false
-      )}
+      <div className="flex flex-col gap-4">
+        <button onClick={handleDeleteUser} className="btn-danger">
+          Delete my profile
+        </button>
+      </div>
     </div>
   );
 };
