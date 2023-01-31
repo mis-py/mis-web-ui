@@ -13,7 +13,6 @@ import AdminWrapper from "config/AdminWrapper";
 
 import { FiSearch } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { IoIosArrowDown } from "react-icons/io";
 import { AiOutlineUsergroupAdd, AiOutlineSetting } from "react-icons/ai";
 
 import UserImg from "assets/img/user.png";
@@ -22,7 +21,7 @@ const Teams = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
-    data: dataGetTeams = [],
+    data: getTeams = [],
     isLoading: loadingGetTeams,
     error: errorGetTeams,
   } = useGetTeamsQuery();
@@ -44,7 +43,7 @@ const Teams = () => {
     if (errorGetTeams) {
       toast.error("Teams not found");
     }
-  }, [dataGetTeams, errorGetTeams]);
+  }, [getTeams, errorGetTeams]);
 
   const toggleEdit = (index) => {
     if (showEdit === index) {
@@ -112,12 +111,12 @@ const Teams = () => {
           </AdminWrapper>
         </div>
 
-        <h3 className="h3 mb-5">Teams ({dataGetTeams?.length})</h3>
+        <h3 className="h3 mb-5">Teams ({getTeams?.length})</h3>
         {loadingGetTeams ? (
           <h2 className="text-2xl mx-auto">Loading...</h2>
         ) : (
           <div className="flex flex-col gap-4">
-            {dataGetTeams
+            {getTeams
               ?.filter((el) =>
                 el.name.toLowerCase().includes(serchValue.toLowerCase().trim())
               )
@@ -154,7 +153,7 @@ const Teams = () => {
                       Remove
                     </div>
                   </div>
-                  <div className="flex justify-between items-center p-6 pb-3 border-b border-backGround">
+                  <div className="flex justify-between items-center p-6 pb-3 pr-0 border-b border-backGround">
                     <div className="flex flex-col">
                       <h5 className="text-gray text-xs">
                         Name of the department:

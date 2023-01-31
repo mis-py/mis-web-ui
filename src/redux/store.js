@@ -12,6 +12,7 @@ import { settingsApi } from "./api/settingsApi";
 // import { firewallApi } from "./firewallApi";
 
 import addUserSlice from "./slices/addUserSlice";
+import addTeamSlice from "./slices/addTeamSlice";
 import addTeamMembersSlice from "./slices/addTeamMembersSlice";
 import addTeamPermissionsSlice from "./slices/addTeamPermissionsSlice";
 import editTeamPermissionsSlice from "./slices/editTeamPermissionsSlice";
@@ -33,6 +34,7 @@ export const store = configureStore({
     // [firewallApi.reducerPath]: firewallApi.reducer,
 
     addUser: addUserSlice,
+    addTeam: addTeamSlice,
     addTeamMembers: addTeamMembersSlice,
     addTeamPermissions: addTeamPermissionsSlice,
     editTeamPermissions: editTeamPermissionsSlice,

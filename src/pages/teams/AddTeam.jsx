@@ -1,8 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAddTeamMutation, useGetPermissionsUserIdQuery } from "../../redux";
-import { deletePermissions } from "../../redux/slices/addTeamPermissionsSlice";
-import { deleteMembersAll } from "../../redux/slices/addTeamMembersSlice";
+import { useAddTeamMutation } from "redux/index";
+import { addTeamName } from "redux/slices/addTeamSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -12,41 +11,25 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 const AddTeam = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const members = useSelector((state) => state.membersList.members);
-  const permissions = useSelector(
-    (state) => state.addTeamPermissions.permissions
-  );
+  const team = useSelector((state) => state.addTeam);
   const [addTeam, { error: errorAddTeam }] = useAddTeamMutation();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
 
   const [formValue, setFormValue] = React.useState({
-    name: "",
-    permissions: [],
-    users_ids: [],
+    name: team.name,
+    permissions: team.permissions,
+    users_ids: team.members,
   });
-
-  React.useEffect(() => {
-    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
-      navigate("/teams");
-    }
-  }, []);
 
   const handleAddUser = async (e) => {
     e.preventDefault();
     if (!errorAddTeam) {
       if (formValue.name < 1) {
-        toast.error("Name min 2");
+        toast.error("Team name too short");
       } else {
         await addTeam({
           ...formValue,
-          permissions: permissions,
-          users_ids: members,
         }).unwrap();
         navigate("/teams");
-        dispatch(deletePermissions());
-        dispatch(deleteMembersAll());
         toast.success("Added new team");
       }
     }
@@ -55,12 +38,12 @@ const AddTeam = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <Link to={-1} className="flex items-center text-gray">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <Link to="/teams">back</Link>
-        </div>
+          <span>back</span>
+        </Link>
         <h3 className="h3 mt-5">New team</h3>
 
         <form className="my-7">
@@ -72,7 +55,7 @@ const AddTeam = () => {
               id="name"
               placeholder="Enter a name"
               autoComplete="off"
-              value={formValue.team_name}
+              value={formValue.name}
               onChange={(e) =>
                 setFormValue({ ...formValue, name: e.target.value })
               }
@@ -83,17 +66,23 @@ const AddTeam = () => {
       <div className="flex flex-col gap-3">
         <div className="flex justify-between items-center gap-6">
           <button
-            onClick={() => navigate(`/add-team/permissions`)}
+            onClick={() => {
+              dispatch(addTeamName(formValue.name));
+              navigate(`/add-team/permissions`);
+            }}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Permissions ({permissions.length})
+            Permissions ({team.permissions.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
           <button
-            onClick={() => navigate(`/add-team/members`)}
+            onClick={() => {
+              dispatch(addTeamName(formValue.name));
+              navigate(`/add-team/members`);
+            }}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Members ({members.length})
+            Members ({team.members.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
         </div>

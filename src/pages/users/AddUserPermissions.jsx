@@ -20,7 +20,7 @@ const AddUserPermissions = () => {
   const handleUserPermissions = () => {
     dispatch(addUserPermissions(checked));
     navigate(-1);
-    toast.success("Permissions saved");
+    toast.success("User permissions saved");
   };
 
   return (
