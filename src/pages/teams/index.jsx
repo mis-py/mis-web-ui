@@ -2,7 +2,7 @@ import React from "react";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import { useGetTeamsQuery, useDeleteTeamMutation } from "redux/index";
-import { deleteMembersAll } from "redux/slices/membersSlice";
+import { resetTeam } from "redux/slices/addTeamSlice";
 import { deletePermissions } from "redux/slices/addTeamPermissionsSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -14,8 +14,6 @@ import AdminWrapper from "config/AdminWrapper";
 import { FiSearch } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { AiOutlineUsergroupAdd, AiOutlineSetting } from "react-icons/ai";
-
-import UserImg from "assets/img/user.png";
 
 const Teams = () => {
   const navigate = useNavigate();
@@ -38,8 +36,7 @@ const Teams = () => {
   const refPopup = useOutsideClick(handleClickOutside);
 
   React.useEffect(() => {
-    dispatch(deleteMembersAll());
-    dispatch(deletePermissions());
+    dispatch(resetTeam());
     if (errorGetTeams) {
       toast.error("Teams not found");
     }
@@ -187,7 +184,7 @@ const Teams = () => {
                           >
                             <img
                               className="w-[35px] h-[35px]"
-                              src={UserImg}
+                              src={require("assets/img/user.png")}
                               alt=""
                             />
                             <Tooltip name={item.username} />
