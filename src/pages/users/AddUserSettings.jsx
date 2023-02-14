@@ -10,6 +10,17 @@ const AddUserSettings = () => {
   const { data: getUserSettings = [] } = useGetUserSettingsQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
+  const [formValue, setFormValue] = React.useState([]);
+
+  React.useEffect(() => {
+    const settings = getUserSettings?.reduce(function (prev, curr) {
+      return [...prev, { id: curr.id, name: curr.key, value: "" }];
+    }, []);
+
+    setFormValue([...settings]);
+  }, [getUserSettings]);
+
+  console.log(formValue);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -36,23 +47,28 @@ const AddUserSettings = () => {
             <FiSearch className="w-12 text-gray" />
           </label>
 
-          {getUserSettings
+          {formValue
             ?.filter((el) =>
-              el.key.toLowerCase().includes(searchValue.toLowerCase().trim())
+              el.name.toLowerCase().includes(searchValue.toLowerCase().trim())
             )
-            .map((item, index) => (
+            ?.map((item, index) => (
               <label
                 key={item.id}
                 className="flex flex-col gap-1 mb-4"
-                htmlFor={item.key}
+                htmlFor={item.name}
               >
-                {item.key}
+                {item.name}
                 <input
                   autoComplete="off"
-                  type={item.type}
-                  name={item.key}
-                  id={item.key}
+                  type="text"
                   className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
+                  name={item.name}
+                  id={item.name}
+                  value={item.value}
+                  readOnly
+                  // onChange={(e) => {
+                  //   setFormValue([...formValue, {...item, value: e.target.value}])
+                  // }}
                 />
               </label>
             ))}

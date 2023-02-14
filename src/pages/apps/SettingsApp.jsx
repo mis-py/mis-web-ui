@@ -39,6 +39,7 @@ const SettingsApp = () => {
   const [settingAppSet] = useSettingAppSetMutation();
   const [settingUserSet] = useSettingUserSetMutation();
 
+  
   React.useEffect(() => {
     setUserId(localStorage.getItem("user_id"));
 
@@ -52,17 +53,17 @@ const SettingsApp = () => {
       getSettingsAppId.settings.map((setting) => {
         setFormGlobalValue((formGlobalValue) => [...formGlobalValue, setting]);
       });
-  }, [getSettingsAppId]);
+    }, [getSettingsAppId]);
 
-  React.useEffect(() => {
+    React.useEffect(() => {
     getSettingsUserId &&
       getSettingsUserId.map((item) => {
         setFormLocalValue((formLocalValue) => [...formLocalValue, item]);
       });
-  }, [getSettingsUserId]);
-
-  const handleChange = async (nextChecked) => {
-    if (nextChecked) {
+    }, [getSettingsUserId]);
+    
+    const handleChange = async (nextChecked) => {
+      if (nextChecked) {
       await startApp(id).unwrap();
       setActive(nextChecked);
     } else {

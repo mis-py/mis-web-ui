@@ -6,15 +6,14 @@ import {
   useGetTeamIdQuery,
   useGetPermissionsUserIdQuery,
   useGetPermissionsTeamIdQuery,
-} from "../../redux";
-import { addMembers } from "../../redux/slices/membersSlice";
+} from "redux/index";
+import { addMembers } from "redux/slices/membersSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
-import IconUserImg from "../../assets/img/user.png";
-import Tooltip from "../../components/Tooltip";
+import Tooltip from "components/Tooltip";
 
 const EditUser = () => {
   const { id } = useParams();
@@ -69,12 +68,12 @@ const EditUser = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <Link to={-1} className="flex items-center text-gray">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <Link to="/teams">back</Link>
-        </div>
+          <span>back</span>
+        </Link>
         <h3 className="h3 mt-5">Editing Team</h3>
 
         <form className="my-7">
@@ -99,7 +98,11 @@ const EditUser = () => {
                   key={item.id}
                   className="group cursor-pointer shadow -ml-1 relative"
                 >
-                  <img className="w-[35px] h-[35px]" src={IconUserImg} alt="" />
+                  <img
+                    className="w-[35px] h-[35px]"
+                    src={require("assets/img/user.png")}
+                    alt=""
+                  />
                   <Tooltip name={item.username} />
                 </div>
               ))}

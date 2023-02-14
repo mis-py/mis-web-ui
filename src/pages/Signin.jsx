@@ -11,7 +11,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import LogoImg from "../assets/img/logo.png";
 import EllipseImg from "../assets/img/ellipse.png";
 
-import { getUrl } from "../config/variables";
+import { baseUrl } from "../config/variables";
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ const Signin = () => {
   const onSubmit = (data) => {
     axios({
       method: "post",
-      url: "http://crm.ng.lan/api/auth/token",
+      url: `${baseUrl}/auth/token`,
       data: qs.stringify(data),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
@@ -52,7 +52,7 @@ const Signin = () => {
           localStorage.setItem("user_name", user_name);
           axios({
             method: "get",
-            url: "http://crm.ng.lan/api/",
+            url: `${baseUrl}/`,
             headers: {
               Authorization: `Bearer ${localStorage.getItem("my-token")}`,
             },

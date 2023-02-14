@@ -7,7 +7,7 @@ import {
   useGetUserIdQuery,
   useGetTeamsQuery,
   useGetPermissionsUserIdQuery,
-} from "../../redux";
+} from "redux/index";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
@@ -48,8 +48,7 @@ const EditUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: getUserId, isLoading } = useGetUserIdQuery(id);
-  const { data: dataGetTeams = [], isLoading: loadingDataGetTeams } =
-    useGetTeamsQuery();
+  const { data: dataGetTeams = [] } = useGetTeamsQuery();
   const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(id);
   const [editUser] = useEditUserMutation();
 

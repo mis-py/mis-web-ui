@@ -4,7 +4,7 @@ import {
   useGetPermissionsQuery,
   useGetPermissionsUserIdQuery,
   useEditUserPermissionMutation,
-} from "../../redux";
+} from "redux/index";
 import { toast } from "react-toastify";
 
 import { IoIosArrowBack } from "react-icons/io";

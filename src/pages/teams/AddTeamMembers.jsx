@@ -24,8 +24,6 @@ const AddTeamMembers = () => {
     }
   };
 
-  console.log(members);
-
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between relative">
       <div className="flex flex-col">

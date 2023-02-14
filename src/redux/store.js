@@ -8,7 +8,7 @@ import { modulesApi } from "./api/modulesApi";
 import { settingsApi } from "./api/settingsApi";
 
 //modules
-// import { webcatApi } from "./webcatApi";
+import { webcatApi } from "./api/webcatApi";
 // import { firewallApi } from "./firewallApi";
 
 import addUserSlice from "./slices/addUserSlice";
@@ -30,7 +30,7 @@ export const store = configureStore({
     [settingsApi.reducerPath]: settingsApi.reducer,
 
     //modules
-    // [webcatApi.reducerPath]: webcatApi.reducer,
+    [webcatApi.reducerPath]: webcatApi.reducer,
     // [firewallApi.reducerPath]: firewallApi.reducer,
 
     addUser: addUserSlice,
@@ -52,7 +52,7 @@ export const store = configureStore({
       settingsApi.middleware,
 
       //modules
-      // webcatApi.middleware,
+      webcatApi.middleware,
       // firewallApi.middleware,
     ]),
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useGetUserSettingsQuery } from "../../redux";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -13,12 +13,12 @@ const EditUserSettings = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <Link to={-1} className="flex items-center text-gray">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <div onClick={() => navigate(-1)}>back</div>
-        </div>
+          <span>back</span>
+        </Link>
         <h3 className="h3 mt-5">Settings</h3>
         <form className="my-4">
           <label
