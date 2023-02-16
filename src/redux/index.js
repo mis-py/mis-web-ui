@@ -8,5 +8,4 @@ export * from "./api/modulesApi";
 export * from "./api/settingsApi";
 
 //modules
-export * from "./api/webcatApi";
-// export * from "./firewallApi";
+export * from "./api/modulesApi/webcatApi";

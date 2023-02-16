@@ -1,11 +1,11 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import PulseLoader from "react-spinners/PulseLoader";
 import Drawer, {
   DrawerContainer,
   MainContentContainer,
 } from "react-swipeable-drawer";
-import { useGetModulesQuery } from "redux/index";
 
 import MainLayout from "layouts/MainLayout";
 import LoginLayout from "layouts/LoginLayout";
@@ -44,6 +44,7 @@ import NotFound from "pages/NotFound";
 
 // MODULES
 const Webcat = React.lazy(() => import("modules/webcat"));
+const EditWebcat = React.lazy(() => import("modules/webcat/EditWebcat"));
 
 function App() {
   // const { data: getModules = [] } = useGetModulesQuery();
@@ -78,7 +79,21 @@ function App() {
               translation={translation}
               mainContentScroll={mainContentScroll}
             >
-              <React.Suspense fallback={<div>Loading...</div>}>
+              <React.Suspense
+                fallback={
+                  <PulseLoader
+                    size={30}
+                    cssOverride={{
+                      height: "100vh",
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    color="#1A69DF"
+                  />
+                }
+              >
                 <Routes>
                   <Route path="/" element={<MainLayout />}>
                     <Route index element={<Home />} />
@@ -152,6 +167,7 @@ function App() {
                       element={<ManageMembersApp />}
                     />
                     <Route path="/webcat" element={<Webcat />} />
+                    <Route path="/webcat/:id" element={<EditWebcat />} />
                   </Route>
                   <Route path="/signin" element={<LoginLayout />}>
                     <Route index element={<Signin />} />

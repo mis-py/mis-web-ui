@@ -7,20 +7,35 @@ import { FiSearch } from "react-icons/fi";
 
 const AddUserSettings = () => {
   const navigate = useNavigate();
-  const { data: getUserSettings = [] } = useGetUserSettingsQuery();
+  const { data: getUserSettings = [], isLoading } = useGetUserSettingsQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
-  const [formValue, setFormValue] = React.useState([]);
+  const [formGlobalValue, setFormGlobalValue] = React.useState([]);
+  const [newGlobalSettings, setNewGlobalSettings] = React.useState({});
 
   React.useEffect(() => {
     const settings = getUserSettings?.reduce(function (prev, curr) {
       return [...prev, { id: curr.id, name: curr.key, value: "" }];
     }, []);
 
-    setFormValue([...settings]);
-  }, [getUserSettings]);
+    setFormGlobalValue([...settings]);
+  }, [isLoading]);
 
-  console.log(formValue);
+  const handleFormChange = (e, index) => {
+    let data = [...formGlobalValue];
+    data[index] = { ...data[index] };
+    data[index].value = e.target.value;
+
+    let data2 = { ...newGlobalSettings };
+    data2[index] = {
+      setting_id: data[index].id,
+      new_value: data[index].value === "" ? null : data[index].value,
+    };
+    setFormGlobalValue(data);
+    setNewGlobalSettings(data2);
+  };
+
+  console.log(newGlobalSettings);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -47,7 +62,7 @@ const AddUserSettings = () => {
             <FiSearch className="w-12 text-gray" />
           </label>
 
-          {formValue
+          {formGlobalValue
             ?.filter((el) =>
               el.name.toLowerCase().includes(searchValue.toLowerCase().trim())
             )
@@ -65,10 +80,8 @@ const AddUserSettings = () => {
                   name={item.name}
                   id={item.name}
                   value={item.value}
-                  readOnly
-                  // onChange={(e) => {
-                  //   setFormValue([...formValue, {...item, value: e.target.value}])
-                  // }}
+                  // readOnly
+                  onChange={(e) => handleFormChange(e, index)}
                 />
               </label>
             ))}

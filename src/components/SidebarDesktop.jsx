@@ -64,7 +64,6 @@ const SidebarDesktop = () => {
                 }
                 to={link.url}
                 key={link.title}
-                onClick={() => setShowListApps(false)}
               >
                 <div className="duration-300 group-hover:text-primary">
                   {link.icon}
@@ -75,9 +74,7 @@ const SidebarDesktop = () => {
               </NavLink>
             ))}
             <div
-              className={`${
-                showListApps ? "text-primary bg-blackSecond" : ""
-              } flex items-center justify-between px-5 gap-3 duration-300 group cursor-pointer hover:bg-blackSecond`}
+              className={`flex items-center justify-between px-5 gap-3 duration-300 group cursor-pointer hover:bg-blackSecond`}
               onClick={() => setShowListApps(!showListApps)}
             >
               <div className="flex items-center gap-3">

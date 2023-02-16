@@ -14,12 +14,12 @@ const EditWebcat = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <Link to={-1} className="flex items-center text-gray">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <Link to="/webcatalog">back</Link>
-        </div>
+          <span>back</span>
+        </Link>
         <h3 className="h3 mt-5">Editing Webcatalog</h3>
         <form className="my-7">
           <label className="flex flex-col gap-1 mb-4" htmlFor="name">

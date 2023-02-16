@@ -1,4 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
+
+//api
 import { usersApi } from "./api/usersApi";
 import { teamsApi } from "./api/teamsApi";
 import { permissionsApi } from "./api/permissionsApi";
@@ -8,9 +10,9 @@ import { modulesApi } from "./api/modulesApi";
 import { settingsApi } from "./api/settingsApi";
 
 //modules
-import { webcatApi } from "./api/webcatApi";
-// import { firewallApi } from "./firewallApi";
+import { webcatApi } from "./api/modulesApi/webcatApi";
 
+//slices
 import addUserSlice from "./slices/addUserSlice";
 import addTeamSlice from "./slices/addTeamSlice";
 import addTeamMembersSlice from "./slices/addTeamMembersSlice";
@@ -21,6 +23,7 @@ import membersSlice from "./slices/membersSlice";
 
 export const store = configureStore({
   reducer: {
+    //api
     [usersApi.reducerPath]: usersApi.reducer,
     [teamsApi.reducerPath]: teamsApi.reducer,
     [permissionsApi.reducerPath]: permissionsApi.reducer,
@@ -31,8 +34,8 @@ export const store = configureStore({
 
     //modules
     [webcatApi.reducerPath]: webcatApi.reducer,
-    // [firewallApi.reducerPath]: firewallApi.reducer,
 
+    //slices
     addUser: addUserSlice,
     addTeam: addTeamSlice,
     addTeamMembers: addTeamMembersSlice,
@@ -43,6 +46,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware({}).concat([
+      //api
       usersApi.middleware,
       teamsApi.middleware,
       permissionsApi.middleware,
@@ -53,6 +57,5 @@ export const store = configureStore({
 
       //modules
       webcatApi.middleware,
-      // firewallApi.middleware,
     ]),
 });
