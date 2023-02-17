@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import PulseLoader from "react-spinners/PulseLoader";
 import {
   useGetGroupIdUsersQuery,
   useGetUsersQuery,
@@ -76,7 +77,15 @@ const EditMembersGroup = () => {
           </label>
         </form>
         {loadingDataUsers ? (
-          <h2 className="text-2xl mx-auto">Loading...</h2>
+          <PulseLoader
+            size={15}
+            cssOverride={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+            color="#757575"
+          />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
             {getDataUsers &&

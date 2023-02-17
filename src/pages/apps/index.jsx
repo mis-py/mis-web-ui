@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetAppsQuery } from "../../redux";
 import { toast } from "react-toastify";
+import PulseLoader from "react-spinners/PulseLoader";
 
 import AdminWrapper from "../../config/AdminWrapper";
 
@@ -76,7 +77,15 @@ const Apps = () => {
 
         <h3 className="h3 mb-5">Applications ({getApps.length})</h3>
         {loadingApps ? (
-          <h2 className="text-2xl mx-auto">Loading...</h2>
+          <PulseLoader
+            size={15}
+            cssOverride={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+            color="#757575"
+          />
         ) : (
           <div className="flex flex-col gap-4">
             {getApps &&

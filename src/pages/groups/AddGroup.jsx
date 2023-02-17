@@ -8,6 +8,7 @@ import {
 } from "../../redux";
 import { addMembers, deleteMembers } from "../../redux/slices/membersSlice";
 import { toast } from "react-toastify";
+import PulseLoader from "react-spinners/PulseLoader";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from "react-icons/ai";
@@ -97,7 +98,15 @@ const AddGroup = () => {
         </form>
 
         {loadingUsers ? (
-          <h2 className="text-2xl mx-auto">Loading...</h2>
+          <PulseLoader
+            size={15}
+            cssOverride={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+            color="#757575"
+          />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
             <div className="flex flex-col">

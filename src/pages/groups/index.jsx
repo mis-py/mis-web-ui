@@ -1,5 +1,6 @@
 import React from "react";
 import { toast } from "react-toastify";
+import PulseLoader from "react-spinners/PulseLoader";
 import { confirmAlert } from "react-confirm-alert";
 import {
   useGetGroupsQuery,
@@ -127,7 +128,15 @@ const Groups = () => {
 
         <h3 className="h3 mb-5">Groups ({getGroups.length})</h3>
         {loadingGroup ? (
-          <h2 className="text-2xl mx-auto">Loading...</h2>
+          <PulseLoader
+            size={15}
+            cssOverride={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+            color="#757575"
+          />
         ) : (
           <div className="flex flex-col gap-4">
             {getGroups &&

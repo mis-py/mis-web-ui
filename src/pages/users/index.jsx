@@ -118,7 +118,7 @@ const Users = () => {
               display: "flex",
               justifyContent: "center",
             }}
-            color="#1A69DF"
+            color="#757575"
           />
         ) : (
           <div className="flex flex-col gap-4">

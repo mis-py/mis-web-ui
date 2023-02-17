@@ -1,9 +1,9 @@
 import React from "react";
 import { toast } from "react-toastify";
+import PulseLoader from "react-spinners/PulseLoader";
 import { confirmAlert } from "react-confirm-alert";
 import { useGetTeamsQuery, useDeleteTeamMutation } from "redux/index";
 import { resetTeam } from "redux/slices/addTeamSlice";
-import { deletePermissions } from "redux/slices/addTeamPermissionsSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import useOutsideClick from "hooks/useOutsideClick";
@@ -110,7 +110,15 @@ const Teams = () => {
 
         <h3 className="h3 mb-5">Teams ({getTeams?.length})</h3>
         {loadingGetTeams ? (
-          <h2 className="text-2xl mx-auto">Loading...</h2>
+          <PulseLoader
+            size={15}
+            cssOverride={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+            color="#757575"
+          />
         ) : (
           <div className="flex flex-col gap-4">
             {getTeams

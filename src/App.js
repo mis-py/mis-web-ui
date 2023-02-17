@@ -90,7 +90,7 @@ function App() {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                    color="#1A69DF"
+                    color="#757575"
                   />
                 }
               >

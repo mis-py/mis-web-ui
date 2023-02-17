@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import PulseLoader from "react-spinners/PulseLoader";
 import {
   useGetWebcatQuery,
   useGetWebcatIdQuery,
@@ -100,7 +101,15 @@ const Webcat = () => {
           </div>
           <div className="flex flex-wrap gap-4">
             {loadingWebcat ? (
-              <h2 className="text-2xl mx-auto">Loading...</h2>
+              <PulseLoader
+                size={15}
+                cssOverride={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+                color="#757575"
+              />
             ) : (
               getWebcat.landings
                 ?.filter(

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useGetGroupsQuery, useGetPermissionsUserIdQuery } from "../../redux";
 import { toast } from "react-toastify";
+import PulseLoader from "react-spinners/PulseLoader";
 import useOutsideClick from "../../hooks/useOutsideClick";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -71,7 +72,15 @@ const ManageGroupApp = () => {
           </label>
         </form>
         {loadingGroups ? (
-          <h2 className="text-2xl mx-auto">Loading...</h2>
+          <PulseLoader
+            size={15}
+            cssOverride={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+            color="#757575"
+          />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
             {getGroups &&

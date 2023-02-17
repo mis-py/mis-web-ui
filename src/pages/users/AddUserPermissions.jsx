@@ -4,6 +4,7 @@ import { useGetPermissionsQuery } from "redux/index";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserPermissions } from "redux/slices/addUserSlice";
 import { toast } from "react-toastify";
+import PulseLoader from "react-spinners/PulseLoader";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -49,7 +50,15 @@ const AddUserPermissions = () => {
           </label>
 
           {loadingPermissions ? (
-            <h2 className="text-2xl text-center">Loading...</h2>
+            <PulseLoader
+              size={15}
+              cssOverride={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+              color="#757575"
+            />
           ) : (
             <div className="flex flex-col gap-4">
               {getPermissions
