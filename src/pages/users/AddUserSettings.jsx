@@ -80,8 +80,8 @@ const AddUserSettings = () => {
                   name={item.name}
                   id={item.name}
                   value={item.value}
-                  // readOnly
-                  onChange={(e) => handleFormChange(e, index)}
+                  readOnly
+                  // onChange={(e) => handleFormChange(e, index)}
                 />
               </label>
             ))}

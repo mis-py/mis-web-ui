@@ -1,5 +1,6 @@
 import React from "react";
 import useOutsideClick from "hooks/useOutsideClick";
+import PulseLoader from "react-spinners/PulseLoader";
 import { toast } from "react-toastify";
 import { useGetUsersQuery, useDeleteUserMutation } from "redux/index";
 import { useDispatch } from "react-redux";
@@ -110,7 +111,15 @@ const Users = () => {
 
         <h3 className="h3 mb-5">Users ({getUsers?.length})</h3>
         {loadingGetUser ? (
-          <h2 className="text-2xl mx-auto">Loading...</h2>
+          <PulseLoader
+            size={15}
+            cssOverride={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+            color="#1A69DF"
+          />
         ) : (
           <div className="flex flex-col gap-4">
             {getUsers
