@@ -2,21 +2,24 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   name: "",
+  password: "",
   team: {
     value: null,
     label: "",
   },
   permissions: [],
   settings: [],
-  newSettings: {},
 };
 
-export const addUserSlice = createSlice({
-  name: "addUser",
+export const userSlice = createSlice({
+  name: "user",
   initialState,
   reducers: {
     addUserName: (state, action) => {
       state.name = action.payload;
+    },
+    addUserPassword: (state, action) => {
+      state.password = action.payload;
     },
     addUserTeam: (state, action) => {
       state.team = action.payload;
@@ -27,11 +30,9 @@ export const addUserSlice = createSlice({
     addUserSettings: (state, action) => {
       state.settings = action.payload;
     },
-    addUserNewSettings: (state, action) => {
-      state.newSettings = action.payload;
-    },
     resetUser: (state) => {
       state.name = "";
+      state.password = "";
       state.team = {
         value: null,
         label: "",
@@ -44,11 +45,11 @@ export const addUserSlice = createSlice({
 
 export const {
   addUserName,
+  addUserPassword,
   addUserTeam,
   addUserPermissions,
   addUserSettings,
-  addUserNewSettings,
   resetUser,
-} = addUserSlice.actions;
+} = userSlice.actions;
 
-export default addUserSlice.reducer;
+export default userSlice.reducer;

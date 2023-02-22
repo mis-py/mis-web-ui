@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useGetPermissionsQuery } from "redux/index";
 import { useSelector, useDispatch } from "react-redux";
-import { addUserPermissions } from "redux/slices/addUserSlice";
+import { addUserPermissions } from "redux/slices/userSlice";
 import { toast } from "react-toastify";
 import PulseLoader from "react-spinners/PulseLoader";
 
@@ -12,7 +12,7 @@ import { FiSearch } from "react-icons/fi";
 const AddUserPermissions = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const permissions = useSelector((state) => state.addUser.permissions);
+  const permissions = useSelector((state) => state.user.permissions);
   const [searchValue, setSearchValue] = React.useState("");
   const [checked, setChecked] = React.useState([...permissions]);
   const { data: getPermissions = [], isLoading: loadingPermissions } =

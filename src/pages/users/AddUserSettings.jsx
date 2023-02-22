@@ -1,24 +1,29 @@
 import React from "react";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { useGetUserSettingsQuery } from "redux/index";
+import { addUserSettings } from "redux/slices/userSlice";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
 const AddUserSettings = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const settings = useSelector((state) => state.user.settings);
   const { data: getUserSettings = [], isLoading } = useGetUserSettingsQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
   const [formGlobalValue, setFormGlobalValue] = React.useState([]);
-  const [newGlobalSettings, setNewGlobalSettings] = React.useState({});
+  const [newGlobalSettings, setNewGlobalSettings] = React.useState([]);
 
   React.useEffect(() => {
-    const settings = getUserSettings?.reduce(function (prev, curr) {
+    const settingsList = getUserSettings?.reduce(function (prev, curr) {
       return [...prev, { id: curr.id, name: curr.key, value: "" }];
     }, []);
 
-    setFormGlobalValue([...settings]);
+    setFormGlobalValue([...settingsList]);
   }, [isLoading]);
 
   const handleFormChange = (e, index) => {
@@ -26,13 +31,23 @@ const AddUserSettings = () => {
     data[index] = { ...data[index] };
     data[index].value = e.target.value;
 
-    let data2 = { ...newGlobalSettings };
+    let data2 = [...newGlobalSettings];
     data2[index] = {
       setting_id: data[index].id,
       new_value: data[index].value === "" ? null : data[index].value,
     };
     setFormGlobalValue(data);
     setNewGlobalSettings(data2);
+  };
+
+  const handleSaveSettings = (e) => {
+    e.preventDefault();
+    dispatch(
+      addUserSettings(newGlobalSettings.filter((el) => el !== undefined))
+    );
+    setNewGlobalSettings();
+    navigate(-1);
+    toast.success("User settings saved");
   };
 
   console.log(newGlobalSettings);
@@ -80,8 +95,8 @@ const AddUserSettings = () => {
                   name={item.name}
                   id={item.name}
                   value={item.value}
-                  readOnly
-                  // onChange={(e) => handleFormChange(e, index)}
+                  // readOnly
+                  onChange={(e) => handleFormChange(e, index)}
                 />
               </label>
             ))}
@@ -89,7 +104,9 @@ const AddUserSettings = () => {
       </div>
 
       <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-        <button className="btn-primary">Save</button>
+        <button onClick={handleSaveSettings} className="btn-primary">
+          Save
+        </button>
       </div>
     </div>
   );

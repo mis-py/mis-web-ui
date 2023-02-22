@@ -2,7 +2,11 @@ import React from "react";
 import Select from "react-select";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserName, addUserTeam } from "redux/slices/addUserSlice";
+import {
+  addUserName,
+  addUserPassword,
+  addUserTeam,
+} from "redux/slices/userSlice";
 import { useAddUserMutation, useGetTeamsQuery } from "redux/index";
 import { toast } from "react-toastify";
 
@@ -45,13 +49,13 @@ const customStyles = {
 const AddUser = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.addUser);
+  const user = useSelector((state) => state.user);
   const [addUser, { error: errorAddUser }] = useAddUserMutation();
   const { data: getTeams = [] } = useGetTeamsQuery();
 
   const [formValue, setFormValue] = React.useState({
     username: user.name,
-    password: "",
+    password: user.password,
     team: user.team,
   });
 
@@ -71,8 +75,9 @@ const AddUser = () => {
         toast.error("The password is too short");
       } else {
         await addUser({
-          ...formValue,
-          team_id: formValue.team.value,
+          username: user.name,
+          password: user.password,
+          team_id: user.team.value,
         }).unwrap();
         navigate("/users");
         toast.success("Added new user");
@@ -156,6 +161,7 @@ const AddUser = () => {
           <button
             onClick={() => {
               dispatch(addUserName(formValue.username));
+              dispatch(addUserPassword(formValue.password));
               dispatch(addUserTeam(formValue.team));
               navigate(`/add-user/permissions`);
             }}
@@ -167,12 +173,13 @@ const AddUser = () => {
           <button
             onClick={() => {
               dispatch(addUserName(formValue.username));
+              dispatch(addUserPassword(formValue.password));
               dispatch(addUserTeam(formValue.team));
               navigate(`/add-user/settings`);
             }}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Settings (0)
+            Settings ({user.settings.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
         </div>

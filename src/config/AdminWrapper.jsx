@@ -5,6 +5,7 @@ import { currentUserId } from "config/variables";
 const AdminWrapper = ({ children }) => {
   const { data = [], isLoading } = useGetPermissionsUserIdQuery(currentUserId);
 
+  //USEEFFECT
   if (
     !isLoading &&
     data?.length !== 0 &&

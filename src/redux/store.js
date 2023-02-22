@@ -13,7 +13,7 @@ import { settingsApi } from "./api/settingsApi";
 import { webcatApi } from "./api/modulesApi/webcatApi";
 
 //slices
-import addUserSlice from "./slices/addUserSlice";
+import userSlice from "./slices/userSlice";
 import addTeamSlice from "./slices/addTeamSlice";
 import addTeamMembersSlice from "./slices/addTeamMembersSlice";
 import addTeamPermissionsSlice from "./slices/addTeamPermissionsSlice";
@@ -36,7 +36,7 @@ export const store = configureStore({
     [webcatApi.reducerPath]: webcatApi.reducer,
 
     //slices
-    addUser: addUserSlice,
+    user: userSlice,
     addTeam: addTeamSlice,
     addTeamMembers: addTeamMembersSlice,
     addTeamPermissions: addTeamPermissionsSlice,

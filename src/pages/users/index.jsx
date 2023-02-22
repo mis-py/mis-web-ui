@@ -6,7 +6,7 @@ import { useGetUsersQuery, useDeleteUserMutation } from "redux/index";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
-import { resetUser } from "redux/slices/addUserSlice";
+import { resetUser } from "redux/slices/userSlice";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
 
