@@ -128,7 +128,7 @@ const Teams = () => {
               .map((team, index) => (
                 <div
                   key={team.id}
-                  className="flex flex-col relative bg-blackSecond px-4 py-2 rounded"
+                  className="flex flex-col relative bg-blackSecond p-6 rounded"
                 >
                   <div
                     ref={refPopup}
@@ -158,12 +158,19 @@ const Teams = () => {
                       Remove
                     </div>
                   </div>
-                  <div className="flex justify-between items-center p-6 pb-3 pr-0 border-b border-backGround">
-                    <div className="flex flex-col">
-                      <h5 className="text-gray text-xs">
-                        Name of the department:
-                      </h5>
-                      <h4>{team.name}</h4>
+                  <div className="flex justify-between items-center pb-3 border-b border-backGround">
+                    <div className="flex items-center gap-4">
+                      <img
+                        className="w-[56px] h-[56px]"
+                        src={require("assets/img/groups.png")}
+                        alt=""
+                      />
+                      <div className="flex flex-col">
+                        <h5 className="text-gray text-xs">
+                          Name of the department:
+                        </h5>
+                        <h4>{team.name}</h4>
+                      </div>
                     </div>
                     <AdminWrapper>
                       <div className="flex gap-3 items-center">
@@ -181,10 +188,10 @@ const Teams = () => {
                       </div>
                     </AdminWrapper>
                   </div>
-                  <div className={`duration-300 flex flex-col p-6 pt-3`}>
-                    <p className="pb-4">Members of the department:</p>
-                    <div className="flex">
-                      {!loadingGetTeams && team.users.length ? (
+                  <div className={`duration-300 flex flex-col pt-3`}>
+                    <p className="mb-2">Members of the department:</p>
+                    <div className="flex pl-1">
+                      {team.users.length ? (
                         team.users.map((item) => (
                           <div
                             key={item.id}

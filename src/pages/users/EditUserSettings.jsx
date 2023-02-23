@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useGetUserSettingsQuery } from "../../redux";
+import { useGetSettingsQuery } from "redux/index";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -8,7 +8,8 @@ import { FiSearch } from "react-icons/fi";
 const EditUserSettings = () => {
   const navigate = useNavigate();
   const [searchInput, setSearchInput] = React.useState("");
-  const { data: getUserSettings } = useGetUserSettingsQuery();
+
+  const { data: getSettings = [] } = useGetSettingsQuery();
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -35,7 +36,7 @@ const EditUserSettings = () => {
             <FiSearch className="w-12 text-gray" />
           </label>
 
-          {getUserSettings
+          {getSettings
             ?.filter((set) =>
               set.app.name
                 .toLowerCase()

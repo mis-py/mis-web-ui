@@ -47,10 +47,12 @@ const customStyles = {
 const EditUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data: getUserId, isLoading } = useGetUserIdQuery(id);
+  const { data: getUserId = [], isLoading } = useGetUserIdQuery(id);
   const { data: dataGetTeams = [] } = useGetTeamsQuery();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(id);
+  const { data: getPermissionsUserId = [] } = useGetPermissionsUserIdQuery(id);
   const [editUser] = useEditUserMutation();
+
+  console.log(getUserId);
 
   const [formValue, setFormValue] = React.useState({
     username: "",
@@ -161,7 +163,7 @@ const EditUser = () => {
             onClick={() => navigate(`/user/settings/${id}`)}
             className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Settings
+            Settings ({getUserId.settings?.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
         </div>

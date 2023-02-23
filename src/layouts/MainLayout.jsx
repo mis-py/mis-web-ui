@@ -2,17 +2,18 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
-import { useGetPermissionsUserIdQuery } from "../redux";
+import { useGetPermissionsUserIdQuery } from "redux/index";
 
-import SidebarDesktop from "../components/SidebarDesktop";
+import SidebarDesktop from "components/SidebarDesktop";
+
+import { currentUserId } from "config/variables";
 
 const MainLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data: getPermissionsUser } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
+  const { data: getPermissionsUser = [], isLoading: loadingPermissionsUser } =
+    useGetPermissionsUserIdQuery(currentUserId);
 
   React.useEffect(() => {
     const linksAdmin = [
@@ -37,9 +38,8 @@ const MainLayout = () => {
       linksAdmin.includes(location.pathname)
     ) {
       navigate("/");
-
     }
-  }, [location, getPermissionsUser]);
+  }, [location, loadingPermissionsUser]);
 
   return (
     <>

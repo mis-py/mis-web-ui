@@ -2,7 +2,7 @@ import React from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { useGetUserSettingsQuery } from "redux/index";
+import { useGetSettingsQuery } from "redux/index";
 import { addUserSettings } from "redux/slices/userSlice";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -12,14 +12,14 @@ const AddUserSettings = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const settings = useSelector((state) => state.user.settings);
-  const { data: getUserSettings = [], isLoading } = useGetUserSettingsQuery();
+  const { data: getSettings = [], isLoading } = useGetSettingsQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
   const [formGlobalValue, setFormGlobalValue] = React.useState([]);
   const [newGlobalSettings, setNewGlobalSettings] = React.useState([]);
 
   React.useEffect(() => {
-    const settingsList = getUserSettings?.reduce(function (prev, curr) {
+    const settingsList = getSettings?.reduce(function (prev, curr) {
       return [...prev, { id: curr.id, name: curr.key, value: "" }];
     }, []);
 
@@ -45,7 +45,6 @@ const AddUserSettings = () => {
     dispatch(
       addUserSettings(newGlobalSettings.filter((el) => el !== undefined))
     );
-    setNewGlobalSettings();
     navigate(-1);
     toast.success("User settings saved");
   };

@@ -20,6 +20,7 @@ const Webcat = () => {
   const [showSearch, setShowSearch] = React.useState(false);
   const [showFilter, setShowFilter] = React.useState(false);
   const [filterGrid, setFilterGrid] = React.useState(1);
+  const [filterGeo, setFilterGeo] = React.useState(null);
   const [searchValue, setSearchValue] = React.useState("");
   const [geo, setGeo] = React.useState("");
 
@@ -48,6 +49,7 @@ const Webcat = () => {
       <FilterBar
         filterGrid={filterGrid}
         showFilter={showFilter}
+        filterGeo={filterGeo}
         setShowFilter={setShowFilter}
         setFilterGrid={setFilterGrid}
         geos={getWebcat && getWebcat.geos}
@@ -81,7 +83,7 @@ const Webcat = () => {
             </div>
             <div
               onClick={() => setShowFilter(true)}
-              className="px-5 flex items-center justify-center bg-blackSecond rounded-lg duration-200 cursor-pointer text-gray hover:bg-primary"
+              className="px-5 flex items-center justify-center bg-blackSecond rounded-lg duration-200 cursor-pointer text-gray hover:bg-primary hover:text-white"
             >
               <BiFilterAlt />
             </div>

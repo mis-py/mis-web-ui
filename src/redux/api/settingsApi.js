@@ -8,7 +8,7 @@ export const settingsApi = createApi({
     baseUrl,
   }),
   endpoints: (build) => ({
-    getUserSettings: build.query({
+    getSettings: build.query({
       query: () => ({
         url: `/settings/`,
         method: "GET",
@@ -103,7 +103,7 @@ export const settingsApi = createApi({
 });
 
 export const {
-  useGetUserSettingsQuery,
+  useGetSettingsQuery,
   useGetUserSettingsIdQuery,
   useGetSettingsAppIdQuery,
   useGetSettingsUserIdQuery,
