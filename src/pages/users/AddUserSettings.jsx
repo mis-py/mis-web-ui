@@ -18,6 +18,8 @@ const AddUserSettings = () => {
   const [formGlobalValue, setFormGlobalValue] = React.useState([]);
   const [newGlobalSettings, setNewGlobalSettings] = React.useState([]);
 
+  console.log(settings);
+
   React.useEffect(() => {
     const settingsList = getSettings?.reduce(function (prev, curr) {
       return [...prev, { id: curr.id, name: curr.key, value: "" }];

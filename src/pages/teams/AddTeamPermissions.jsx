@@ -4,7 +4,7 @@ import PulseLoader from "react-spinners/PulseLoader";
 import { useNavigate, Link } from "react-router-dom";
 import { useGetPermissionsQuery } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
-import { addTeamPermissions } from "redux/slices/addTeamSlice";
+import { addTeamPermissions } from "redux/slices/teamSlice";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -12,14 +12,15 @@ import { FiSearch } from "react-icons/fi";
 const AddTeamPermissions = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [searchValue, setSearchValue] = React.useState("");
-  const [checked, setChecked] = React.useState([]);
-  const permissions = useSelector((state) => state.addTeam.permissions);
+  const permissions = useSelector((state) => state.team.permissions);
   const { data: getPermissions = [], isLoading: loadingPermissions } =
     useGetPermissionsQuery();
 
+  const [searchValue, setSearchValue] = React.useState("");
+  const [checked, setChecked] = React.useState([]);
+
   React.useEffect(() => {
-    if (permissions.length) {
+    if (permissions?.length) {
       setChecked(permissions);
     }
   }, []);

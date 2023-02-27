@@ -1,13 +1,12 @@
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useEditTeamMutation, useGetTeamIdQuery } from "redux/index";
 import {
-  useEditTeamMutation,
-  useGetTeamIdQuery,
-  useGetPermissionsUserIdQuery,
-  useGetPermissionsTeamIdQuery,
-} from "redux/index";
-import { addMembers } from "redux/slices/membersSlice";
+  addTeamName,
+  addTeamPermissions,
+  addTeamMembers,
+} from "redux/slices/teamSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -19,16 +18,10 @@ const EditUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const permissions = useSelector(
-    (state) => state.editTeamPermissions.permissions
-  );
-  const members = useSelector((state) => state.membersList.members);
-  const { data: getTeamId, isLoading } = useGetTeamIdQuery(id);
+  const team = useSelector((state) => state.team);
+  const { data: getTeamId = [], isLoading: loadingTeamId } =
+    useGetTeamIdQuery(id);
   const [editTeam] = useEditTeamMutation();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
-  const { data: getPermissionsTeamId } = useGetPermissionsTeamIdQuery(id);
 
   const [formValue, setFormValue] = React.useState({
     name: "",
@@ -37,23 +30,20 @@ const EditUser = () => {
   });
 
   React.useEffect(() => {
-    getTeamId &&
-      getTeamId.users.map((user) =>
-        !members.includes(user.id) ? dispatch(addMembers(user.id)) : null
-      );
+    dispatch(addTeamName(getTeamId?.name));
+    getTeamId.users?.map((user) =>
+      !team.members.includes(user.id) ? dispatch(addTeamMembers(user.id)) : null
+    );
+    dispatch(addTeamPermissions(getTeamId?.permissions));
 
-    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
-      navigate("/teams");
-    }
-
-    if (!isLoading) {
-      setFormValue({
-        name: getTeamId.name,
-        permissions: permissions,
-        users_ids: members,
-      });
-    }
-  }, [isLoading]);
+    // if (!loadingTeamId) {
+    //   setFormValue({
+    //     name: getTeamId.name,
+    //     permissions: permissions,
+    //     users_ids: members,
+    //   });
+    // }
+  }, [loadingTeamId]);
 
   const handleEditTeam = async (e) => {
     e.preventDefault();
@@ -83,29 +73,27 @@ const EditUser = () => {
               className="bg-blackSecond text-gray border-none border-0 rounded px-3 py-2 focus-visible:outline-none"
               type="text"
               id="teamname"
+              name="teamname"
               autoComplete="off"
-              value={formValue.name}
-              onChange={(e) =>
-                setFormValue({ ...formValue, name: e.target.value })
-              }
+              value={team.name}
+              onChange={(e) => dispatch(addTeamName(e.target.value))}
             />
           </label>
 
-          <div className="flex">
-            {!isLoading &&
-              getTeamId.users.map((item) => (
-                <div
-                  key={item.id}
-                  className="group cursor-pointer shadow -ml-1 relative"
-                >
-                  <img
-                    className="w-[35px] h-[35px]"
-                    src={require("assets/img/user.png")}
-                    alt=""
-                  />
-                  <Tooltip name={item.username} />
-                </div>
-              ))}
+          <div className="flex pl-1">
+            {getTeamId.users?.map((item) => (
+              <div
+                key={item.id}
+                className="group cursor-pointer shadow -ml-1 relative"
+              >
+                <img
+                  className="w-[35px] h-[35px]"
+                  src={require("assets/img/user.png")}
+                  alt=""
+                />
+                <Tooltip name={item.username} />
+              </div>
+            ))}
           </div>
         </form>
       </div>
@@ -115,14 +103,14 @@ const EditUser = () => {
             onClick={() => navigate(`/team/permissions/${id}`)}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Permissions ({getPermissionsTeamId && getPermissionsTeamId.length})
+            Permissions ({getTeamId.permissions?.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
           <button
             onClick={() => navigate(`/team/members/${id}`)}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Members ({members.length})
+            Members ({getTeamId.users?.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
         </div>

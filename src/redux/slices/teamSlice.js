@@ -6,8 +6,8 @@ const initialState = {
   members: [],
 };
 
-export const addTeamSlice = createSlice({
-  name: "addTeam",
+export const teamSlice = createSlice({
+  name: "team",
   initialState,
   reducers: {
     addTeamName: (state, action) => {
@@ -39,6 +39,6 @@ export const {
   addTeamMembers,
   deleteTeamMembers,
   resetTeam,
-} = addTeamSlice.actions;
+} = teamSlice.actions;
 
-export default addTeamSlice.reducer;
+export default teamSlice.reducer;

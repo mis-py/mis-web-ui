@@ -52,8 +52,6 @@ const EditUser = () => {
   const { data: getPermissionsUserId = [] } = useGetPermissionsUserIdQuery(id);
   const [editUser] = useEditUserMutation();
 
-  console.log(getUserId);
-
   const [formValue, setFormValue] = React.useState({
     username: "",
     password: "",

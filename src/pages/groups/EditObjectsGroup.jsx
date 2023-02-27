@@ -1,10 +1,10 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   useGetGroupsObjectsQuery,
   useGetGroupIdObjectsQuery,
   useEditObjectsGroupMutation,
-} from "../../redux";
+} from "redux/index";
 import { toast } from "react-toastify";
 import PulseLoader from "react-spinners/PulseLoader";
 
@@ -14,13 +14,22 @@ import { FiSearch } from "react-icons/fi";
 const EditObjectsGroup = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [checked, setChecked] = React.useState([]);
-  const [searchValue, setSearchValue] = React.useState("");
 
   const { data: getGroupsObjects, isLoading: loadingGroupsObjects } =
     useGetGroupsObjectsQuery();
   const { data: getIdObjects } = useGetGroupIdObjectsQuery(id);
   const [editObjectsGroup] = useEditObjectsGroupMutation();
+
+  const [checked, setChecked] = React.useState([]);
+  const [searchValue, setSearchValue] = React.useState("");
+
+  React.useEffect(() => {
+    if (getIdObjects) {
+      setChecked(getIdObjects.map((obj) => obj.id));
+    } else {
+      setChecked(false);
+    }
+  }, [getIdObjects]);
 
   const handleEditObjectsGroup = async (e) => {
     e.preventDefault();
@@ -33,23 +42,25 @@ const EditObjectsGroup = () => {
     toast.success("Group objects changed");
   };
 
-  React.useEffect(() => {
-    if (getIdObjects) {
-      setChecked(getIdObjects.map((obj) => obj.id));
-    } else {
-      setChecked(false);
+  const handleChooseAll = () => {
+    getGroupsObjects?.map((item) => {
+      setChecked((checked) => [...checked, item.id]);
+    });
+
+    if (checked.length === getGroupsObjects?.length) {
+      setChecked([]);
     }
-  }, [getIdObjects]);
+  };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray cursor-pointer">
+        <Link to={-1} className="flex items-center text-gray">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <div onClick={() => navigate(-1)}>back</div>
-        </div>
+          <span>back</span>
+        </Link>
         <h3 className="h3 mt-5">Manage objects</h3>
         <form className="my-4">
           <label
@@ -66,6 +77,13 @@ const EditObjectsGroup = () => {
             <FiSearch className="w-12 text-gray" />
           </label>
 
+          <h2
+            onClick={handleChooseAll}
+            className="flex justify-end cursor-pointer text-gray mb-5"
+          >
+            Choose all
+          </h2>
+
           {loadingGroupsObjects ? (
             <PulseLoader
               size={15}
@@ -77,7 +95,7 @@ const EditObjectsGroup = () => {
               color="#757575"
             />
           ) : (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap gap-4">
               {getGroupsObjects &&
                 getGroupsObjects
                   .filter((el) =>
@@ -86,7 +104,10 @@ const EditObjectsGroup = () => {
                       .includes(searchValue.toLowerCase().trim())
                   )
                   .map((item) => (
-                    <div key={item.id} className="flex flex-col">
+                    <div
+                      key={item.id}
+                      className="flex w-full md:w-[calc(33.3333%_-_15px)]"
+                    >
                       <label
                         className="flex items-center gap-2 text-gray body-2"
                         htmlFor={item.object_id}
@@ -108,7 +129,9 @@ const EditObjectsGroup = () => {
                           className="bg-transparent cursor-pointer 
     w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
                         />
-                        {item.object_id}
+                        {item.object_id.includes("Repo:")
+                          ? item.object_id.slice(5)
+                          : item.object_id}
                       </label>
                     </div>
                   ))}

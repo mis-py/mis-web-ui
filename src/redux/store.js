@@ -14,9 +14,7 @@ import { webcatApi } from "./api/modulesApi/webcatApi";
 
 //slices
 import userSlice from "./slices/userSlice";
-import addTeamSlice from "./slices/addTeamSlice";
-import addTeamMembersSlice from "./slices/addTeamMembersSlice";
-import addTeamPermissionsSlice from "./slices/addTeamPermissionsSlice";
+import teamSlice from "./slices/teamSlice";
 import editTeamPermissionsSlice from "./slices/editTeamPermissionsSlice";
 import editTeamMembersSlice from "./slices/editTeamMembersSlice";
 import membersSlice from "./slices/membersSlice";
@@ -37,9 +35,7 @@ export const store = configureStore({
 
     //slices
     user: userSlice,
-    addTeam: addTeamSlice,
-    addTeamMembers: addTeamMembersSlice,
-    addTeamPermissions: addTeamPermissionsSlice,
+    team: teamSlice,
     editTeamPermissions: editTeamPermissionsSlice,
     editTeamMembers: editTeamMembersSlice,
     membersList: membersSlice,

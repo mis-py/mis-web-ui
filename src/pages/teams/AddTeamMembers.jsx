@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import PulseLoader from "react-spinners/PulseLoader";
 import { useGetUsersQuery } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
-import { addTeamMembers, deleteTeamMembers } from "redux/slices/addTeamSlice";
+import { addTeamMembers, deleteTeamMembers } from "redux/slices/teamSlice";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -13,9 +13,10 @@ import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 const AddTeamMembers = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const members = useSelector((state) => state.addTeam.members);
-  const [searchValue, setSearchValue] = React.useState("");
+  const members = useSelector((state) => state.team.members);
   const { data: getUsers = [], isLoading: loadingUsers } = useGetUsersQuery();
+
+  const [searchValue, setSearchValue] = React.useState("");
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {

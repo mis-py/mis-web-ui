@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import PulseLoader from "react-spinners/PulseLoader";
 import { confirmAlert } from "react-confirm-alert";
 import { useGetTeamsQuery, useDeleteTeamMutation } from "redux/index";
-import { resetTeam } from "redux/slices/addTeamSlice";
+import { resetTeam } from "redux/slices/teamSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import useOutsideClick from "hooks/useOutsideClick";
@@ -145,7 +145,7 @@ const Teams = () => {
                       Granting privileges
                     </Link>
                     <div
-                      onClick={(e) => navigate(`/teams/${team.id}`)}
+                      onClick={() => navigate(`/teams/${team.id}`)}
                       className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
                     >
                       Editing
@@ -206,7 +206,7 @@ const Teams = () => {
                           </div>
                         ))
                       ) : (
-                        <p className="text-danger">NO USERS</p>
+                        <p className="text-danger">No users</p>
                       )}
                     </div>
                   </div>

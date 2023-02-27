@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAddTeamMutation } from "redux/index";
-import { addTeamName } from "redux/slices/addTeamSlice";
+import { addTeamName } from "redux/slices/teamSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -11,7 +11,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 const AddTeam = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const team = useSelector((state) => state.addTeam);
+  const team = useSelector((state) => state.team);
   const [addTeam, { error: errorAddTeam }] = useAddTeamMutation();
 
   const [formValue, setFormValue] = React.useState({
@@ -64,7 +64,7 @@ const AddTeam = () => {
         </form>
       </div>
       <div className="flex flex-col gap-3">
-        <div className="flex justify-between items-center gap-6">
+        <div className="flex justify-between items-center gap-4">
           <button
             onClick={() => {
               dispatch(addTeamName(formValue.name));
