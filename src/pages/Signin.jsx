@@ -1,6 +1,5 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useGetPermissionsUserIdQuery } from "../redux";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from "axios";

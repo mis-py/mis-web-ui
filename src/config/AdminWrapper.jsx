@@ -1,6 +1,7 @@
 import React from "react";
 import { useGetPermissionsUserIdQuery } from "redux/index";
 import { currentUserId } from "config/variables";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AdminWrapper = ({ children }) => {
   const { data = [], isLoading } = useGetPermissionsUserIdQuery(currentUserId);

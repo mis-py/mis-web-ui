@@ -23,6 +23,8 @@ const AddUserSettings = () => {
       return [...prev, { id: curr.id, name: curr.key, value: "" }];
     }, []);
 
+    console.log(formGlobalValue);
+
     setFormGlobalValue([...settingsList]);
   }, [isLoading]);
 
@@ -93,11 +95,8 @@ const AddUserSettings = () => {
                   id={item.name}
                   value={item.value}
                   onChange={(e) => {
-                    console.log(item.value);
-                    console.log(settings[item.id]);
                     handleFormChange(e, index);
                   }}
-                  // readOnly
                 />
               </label>
             ))}

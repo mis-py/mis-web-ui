@@ -6,6 +6,7 @@ import {
   addUserName,
   addUserPassword,
   addUserTeam,
+  addUserPosition,
 } from "redux/slices/userSlice";
 import { useAddUserMutation, useGetTeamsQuery } from "redux/index";
 import { toast } from "react-toastify";
@@ -57,6 +58,7 @@ const AddUser = () => {
     username: user.name,
     password: user.password,
     team: user.team,
+    position: user.position,
   });
 
   const options = getTeams?.map((item) => {
@@ -152,6 +154,10 @@ const AddUser = () => {
               id="job-position"
               placeholder="Enter position"
               autoComplete="off"
+              value={formValue.position}
+              onChange={(e) =>
+                setFormValue({ ...formValue, position: e.target.value })
+              }
             />
           </label>
         </form>
@@ -163,6 +169,7 @@ const AddUser = () => {
               dispatch(addUserName(formValue.username));
               dispatch(addUserPassword(formValue.password));
               dispatch(addUserTeam(formValue.team));
+              dispatch(addUserPosition(formValue.position));
               navigate(`/add-user/permissions`);
             }}
             className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
@@ -175,6 +182,7 @@ const AddUser = () => {
               dispatch(addUserName(formValue.username));
               dispatch(addUserPassword(formValue.password));
               dispatch(addUserTeam(formValue.team));
+              dispatch(addUserPosition(formValue.position));
               navigate(`/add-user/settings`);
             }}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"

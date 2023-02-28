@@ -14,7 +14,6 @@ import { FiSearch } from "react-icons/fi";
 const EditObjectsGroup = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-
   const { data: getGroupsObjects, isLoading: loadingGroupsObjects } =
     useGetGroupsObjectsQuery();
   const { data: getIdObjects } = useGetGroupIdObjectsQuery(id);

@@ -4,6 +4,8 @@ import { useUserLogoutMutation } from "redux/index";
 import { FiUser, FiSettings, FiLogOut } from "react-icons/fi";
 import useOutsideClick from "hooks/useOutsideClick";
 
+import { currentUserId } from "config/variables";
+
 const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
   const navigate = useNavigate();
   const [userLogout] = useUserLogoutMutation();
@@ -37,7 +39,7 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
       <ul>
         <button
           onClick={() => {
-            navigate(`/profile/${localStorage.getItem("user_id")}`);
+            navigate(`/profile/${currentUserId}`);
             toggleDrawer();
           }}
           className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"

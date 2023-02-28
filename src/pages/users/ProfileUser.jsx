@@ -6,7 +6,7 @@ import {
   useDeleteUserMutation,
   useGetUserIdQuery,
   useUserLogoutMutation,
-} from "../../redux";
+} from "redux/index";
 import { IoIosArrowBack } from "react-icons/io";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
@@ -14,7 +14,7 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 const ProfileUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data: getUserId, isLoading } = useGetUserIdQuery(id);
+  const { data: getUserId = [], isLoading } = useGetUserIdQuery(id);
   const [deleteUser] = useDeleteUserMutation();
   const [userLogout] = useUserLogoutMutation();
 
@@ -74,7 +74,7 @@ const ProfileUser = () => {
 
         <img
           className="w-[64px] h-[64px]"
-          src={require("../../assets/img/user.png")}
+          src={require("assets/img/user.png")}
           alt=""
         />
 
@@ -96,7 +96,7 @@ const ProfileUser = () => {
           </label>
           <label htmlFor="position">
             Position
-            <h3 className="body-2 text-gray">Job title</h3>
+            <h3 className="body-2 text-gray">{getUserId?.position === null ? "Position name none" : getUserId?.position}</h3>
           </label>
         </form>
       </div>

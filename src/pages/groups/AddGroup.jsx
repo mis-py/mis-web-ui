@@ -1,12 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useGetPermissionsUserIdQuery,
-  useGetUsersQuery,
-  useAddGroupMutation,
-} from "../../redux";
-import { addMembers, deleteMembers } from "../../redux/slices/membersSlice";
+import { useGetUsersQuery, useAddGroupMutation } from "redux/index";
+import { addMembers, deleteMembers } from "redux/slices/membersSlice";
 import { toast } from "react-toastify";
 import PulseLoader from "react-spinners/PulseLoader";
 
@@ -14,20 +10,15 @@ import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from "react-icons/ai";
 import { FiSearch } from "react-icons/fi";
 
-import UserImg from "../../assets/img/user.png";
-
 const AddGroup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const members = useSelector((state) => state.membersList.members);
   const {
-    data: getUsers,
+    data: getUsers = [],
     isLoading: loadingUsers,
     error: errorUsers,
   } = useGetUsersQuery();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
   const [addGroup] = useAddGroupMutation();
 
   const [searchValue, setSearchValue] = React.useState("");
@@ -37,9 +28,6 @@ const AddGroup = () => {
   });
 
   React.useEffect(() => {
-    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
-      navigate("/groups");
-    }
     if (errorUsers) {
       toast.error("No users found");
     }
@@ -72,12 +60,12 @@ const AddGroup = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <Link to={-1} className="flex items-center text-gray">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <Link to="/groups">back</Link>
-        </div>
+          <span>back</span>
+        </Link>
         <h3 className="h3 mt-5">New group</h3>
 
         <form className="my-7">
@@ -125,54 +113,55 @@ const AddGroup = () => {
                 <FiSearch className="w-12 text-gray" />
               </label>
             </div>
-            {getUsers &&
-              getUsers
-                .filter((el) =>
-                  el.username
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase().trim())
-                )
-                .map((user) => (
-                  <div
-                    key={user.id}
-                    className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
+            {getUsers
+              ?.filter((el) =>
+                el.username
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase().trim())
+              )
+              .map((user) => (
+                <div
+                  key={user.id}
+                  className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
+                >
+                  <button
+                    onClick={() => handleAddMembers(user.id)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2"
                   >
-                    <button
-                      onClick={() => handleAddMembers(user.id)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
-                    >
-                      {members.includes(user.id) ? (
-                        <AiOutlineCloseCircle className="text-danger text-2xl" />
-                      ) : (
-                        <AiOutlineCheckCircle className="text-gray text-2xl" />
-                      )}
-                    </button>
-                    <div className="flex justify-between items-center">
-                      <div className="lg:flex lg:items-center">
-                        <div className="flex flex-col lg:pr-[40px]">
-                          <div className="flex items-center gap-4">
-                            <img
-                              className="w-[56px] h-[56px]"
-                              src={UserImg}
-                              alt=""
-                            />
-                            <div className="flex flex-col">
-                              <h5 className="text-white mb-[10px]">
-                                {user.username}
-                              </h5>
-                              <h4 className={`text-xs mb-[6px] text-gray`}>
-                                Position
-                              </h4>
-                              <h4 className="text-gray text-xs">
-                                Added: 10.10.2000
-                              </h4>
-                            </div>
+                    {members.includes(user.id) ? (
+                      <AiOutlineCloseCircle className="text-danger text-2xl" />
+                    ) : (
+                      <AiOutlineCheckCircle className="text-gray text-2xl" />
+                    )}
+                  </button>
+                  <div className="flex justify-between items-center">
+                    <div className="lg:flex lg:items-center">
+                      <div className="flex flex-col lg:pr-[40px]">
+                        <div className="flex items-center gap-4">
+                          <img
+                            className="w-[56px] h-[56px]"
+                            src={require("assets/img/user.png")}
+                            alt=""
+                          />
+                          <div className="flex flex-col">
+                            <h5 className="text-white mb-[10px]">
+                              {user.username}
+                            </h5>
+                            <h4 className={`text-xs mb-[6px] text-gray`}>
+                              {user.position === null
+                                ? "Position name none"
+                                : user.position}
+                            </h4>
+                            <h4 className="text-gray text-xs">
+                              Added: 10.10.2000
+                            </h4>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                ))}
+                </div>
+              ))}
           </div>
         )}
       </div>

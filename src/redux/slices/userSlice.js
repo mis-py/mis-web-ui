@@ -7,6 +7,7 @@ const initialState = {
     value: null,
     label: "",
   },
+  position: "",
   permissions: [],
   settings: [],
 };
@@ -24,6 +25,9 @@ export const userSlice = createSlice({
     addUserTeam: (state, action) => {
       state.team = action.payload;
     },
+    addUserPosition: (state, action) => {
+      state.position = action.payload;
+    },
     addUserPermissions: (state, action) => {
       state.permissions = action.payload;
     },
@@ -37,6 +41,7 @@ export const userSlice = createSlice({
         value: null,
         label: "",
       };
+      state.position = "";
       state.permissions = [];
       state.settings = [];
     },
@@ -47,6 +52,7 @@ export const {
   addUserName,
   addUserPassword,
   addUserTeam,
+  addUserPosition,
   addUserPermissions,
   addUserSettings,
   resetUser,

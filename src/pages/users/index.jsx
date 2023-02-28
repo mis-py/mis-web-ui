@@ -162,7 +162,7 @@ const Users = () => {
                         <div className="flex items-center gap-4">
                           <img
                             className="w-[56px] h-[56px]"
-                            src={require("../../assets/img/user.png")}
+                            src={require("assets/img/user.png")}
                             alt=""
                           />
                           <div className="flex flex-col">
@@ -176,7 +176,11 @@ const Users = () => {
                             >
                               {user.team === null ? "No team" : user.team.name}
                             </h4>
-                            <h4 className="text-gray text-xs">Position name</h4>
+                            <h4 className="text-gray text-xs">
+                              {user.position === null
+                                ? "Position name none"
+                                : user.position}
+                            </h4>
                           </div>
                         </div>
                       </div>
