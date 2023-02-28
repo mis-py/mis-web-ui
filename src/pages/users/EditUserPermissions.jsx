@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   useGetPermissionsQuery,
   useGetPermissionsUserIdQuery,
@@ -12,14 +12,14 @@ import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
 const EditUserPermissions = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
-  const [searchValue, setSearchValue] = React.useState("");
-  const [checked, setChecked] = React.useState([]);
   const { data: dataPermissions = [], isLoading: loadingPermissions } =
     useGetPermissionsQuery();
   const { data: dataPermissionsUserId = [] } = useGetPermissionsUserIdQuery(id);
   const [editUserPermission] = useEditUserPermissionMutation();
+
+  const [searchValue, setSearchValue] = React.useState("");
+  const [checked, setChecked] = React.useState([]);
 
   React.useEffect(() => {
     if (dataPermissionsUserId?.length) {

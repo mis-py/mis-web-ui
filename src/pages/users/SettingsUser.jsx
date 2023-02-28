@@ -1,36 +1,83 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useGetSettingsQuery } from "redux/index";
+
 import { IoIosArrowBack } from "react-icons/io";
+import { FiSearch } from "react-icons/fi";
 
 const SettingsUser = () => {
+  const { data: getSettings = [], isLoading: loadingSettings } =
+    useGetSettingsQuery();
+
+  const [searchInput, setSearchInput] = React.useState("");
+  const [formValue, setFormValue] = React.useState([]);
+  const [newFormValue, setNewFormValue] = React.useState([]);
+
+  React.useEffect(() => {
+    setFormValue(getSettings);
+    const settingsList = getSettings?.reduce(function (prev, curr) {
+      return [
+        ...prev,
+        { id: curr.id, name: curr.key, value: "", default_value: "" },
+      ];
+    }, []);
+    setNewFormValue(settingsList);
+  }, [loadingSettings]);
+
+  console.log(newFormValue);
+  console.log(getSettings);
+
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <Link to={-1} className="flex items-center text-gray">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <Link to="/users">back</Link>
-        </div>
-
-        <form className="my-7">
+          <span>back</span>
+        </Link>
+        <h3 className="h3 mt-5">Settings</h3>
+        <form className="my-4 pb-[50px]">
           <label
-            className="flex items-center gap-2 text-gray body-2"
-            htmlFor="notifications"
+            className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
+            htmlFor="search"
           >
             <input
-              type="checkbox"
-              name="checkbox-one"
-              id="notifications"
-              className="bg-transparent cursor-pointer 
-    w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
+              className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
+              type="search"
+              placeholder="Enter setting name to search..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
             />
-            Enable PUSH notifications
+            <FiSearch className="w-12 text-gray" />
           </label>
+
+          {newFormValue
+            ?.filter((set) =>
+              set.name.toLowerCase().includes(searchInput.toLowerCase().trim())
+            )
+            .map((item) => (
+              <label
+                key={item.id}
+                className="flex flex-col gap-1 mb-4"
+                htmlFor={item.key}
+              >
+                {item.name}
+                <input
+                  type={item.type}
+                  name={item.key}
+                  id={item.key}
+                  autoComplete="off"
+                  className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
+                  value={item.value}
+                  readOnly
+                />
+              </label>
+            ))}
         </form>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
         <button className="btn-primary">Save</button>
       </div>
     </div>

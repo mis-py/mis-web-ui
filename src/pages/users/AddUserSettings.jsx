@@ -18,8 +18,6 @@ const AddUserSettings = () => {
   const [formGlobalValue, setFormGlobalValue] = React.useState([]);
   const [newGlobalSettings, setNewGlobalSettings] = React.useState([]);
 
-  console.log(settings);
-
   React.useEffect(() => {
     const settingsList = getSettings?.reduce(function (prev, curr) {
       return [...prev, { id: curr.id, name: curr.key, value: "" }];
@@ -50,8 +48,6 @@ const AddUserSettings = () => {
     navigate(-1);
     toast.success("User settings saved");
   };
-
-  console.log(newGlobalSettings);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -96,8 +92,12 @@ const AddUserSettings = () => {
                   name={item.name}
                   id={item.name}
                   value={item.value}
+                  onChange={(e) => {
+                    console.log(item.value);
+                    console.log(settings[item.id]);
+                    handleFormChange(e, index);
+                  }}
                   // readOnly
-                  onChange={(e) => handleFormChange(e, index)}
                 />
               </label>
             ))}

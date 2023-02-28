@@ -1,15 +1,14 @@
 import React from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGetSettingsQuery } from "redux/index";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
 const EditUserSettings = () => {
-  const navigate = useNavigate();
-  const [searchInput, setSearchInput] = React.useState("");
-
   const { data: getSettings = [] } = useGetSettingsQuery();
+
+  const [searchInput, setSearchInput] = React.useState("");
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -21,7 +20,7 @@ const EditUserSettings = () => {
           <span>back</span>
         </Link>
         <h3 className="h3 mt-5">Settings</h3>
-        <form className="my-4">
+        <form className="my-4 pb-[50px]">
           <label
             className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
             htmlFor="search"
@@ -48,7 +47,7 @@ const EditUserSettings = () => {
                 className="flex flex-col gap-1 mb-4"
                 htmlFor={setting.key}
               >
-                {setting.app.name}
+                {setting.key}
                 <input
                   type={setting.type}
                   name={setting.key}
