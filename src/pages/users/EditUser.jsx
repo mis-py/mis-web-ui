@@ -60,8 +60,6 @@ const EditUser = () => {
   const { data: getPermissionsUserId = [] } = useGetPermissionsUserIdQuery(id);
   const [editUser] = useEditUserMutation();
 
-  console.log(getUserId);
-
   const options = dataGetTeams?.map((item) => {
     return {
       value: item.id,

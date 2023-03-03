@@ -3,10 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   username: "",
   password: "",
-  team: {
-    value: null,
-    label: "",
-  },
+  team: null,
   position: "",
   permissions: [],
   settings: [],
@@ -37,10 +34,7 @@ export const userSlice = createSlice({
     resetUser: (state) => {
       state.username = "";
       state.password = "";
-      state.team = {
-        value: null,
-        label: "",
-      };
+      state.team = null;
       state.position = "";
       state.permissions = [];
       state.settings = [];

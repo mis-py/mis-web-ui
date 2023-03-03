@@ -126,12 +126,11 @@ const AddUser = () => {
               isClearable
               placeholder="The team is not selected"
               id="team"
+              value={
+                user.team === null ? "The team is not selected" : user.team
+              }
               onChange={(choice) =>
-                dispatch(
-                  addUserTeam(
-                    choice !== null ? choice : { value: null, label: "" }
-                  )
-                )
+                dispatch(addUserTeam(choice !== null ? choice : null))
               }
             />
           </label>
