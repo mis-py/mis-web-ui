@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import {
@@ -8,6 +9,11 @@ import {
   useGetTeamsQuery,
   useGetPermissionsUserIdQuery,
 } from "redux/index";
+import {
+  addUserName,
+  addUserPassword,
+  addUserTeam,
+} from "redux/slices/userSlice";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
@@ -47,16 +53,14 @@ const customStyles = {
 const EditUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const { data: getUserId = [], isLoading } = useGetUserIdQuery(id);
   const { data: dataGetTeams = [] } = useGetTeamsQuery();
   const { data: getPermissionsUserId = [] } = useGetPermissionsUserIdQuery(id);
   const [editUser] = useEditUserMutation();
 
-  const [formValue, setFormValue] = React.useState({
-    username: "",
-    password: "",
-    team: {},
-  });
+  console.log(getUserId);
 
   const options = dataGetTeams?.map((item) => {
     return {
@@ -67,14 +71,14 @@ const EditUser = () => {
 
   React.useEffect(() => {
     if (!isLoading) {
-      setFormValue({
-        username: getUserId.username,
-        password: "",
-        team: {
-          id: getUserId.team === null ? 0 : getUserId.team.id,
-          name: getUserId.team === null ? "No team" : getUserId.team.name,
-        },
-      });
+      dispatch(addUserName(getUserId?.username));
+      dispatch(
+        addUserTeam(
+          getUserId?.team === null
+            ? null
+            : { value: getUserId?.team.id, label: getUserId?.team.name }
+        )
+      );
     }
   }, [isLoading]);
 
@@ -82,8 +86,8 @@ const EditUser = () => {
     e.preventDefault();
     await editUser({
       id,
-      team_id: formValue.team.id,
-      new_password: formValue.password ? formValue.password : "",
+      team_id: user.team === null ? null : user.team.value,
+      new_password: user.password ? user.password : "",
     }).unwrap();
     navigate("/users");
     toast.success("User updated");
@@ -108,7 +112,7 @@ const EditUser = () => {
               type="text"
               id="username"
               autoComplete="off"
-              value={formValue.username}
+              value={user.username}
               readOnly
             />
           </label>
@@ -121,27 +125,21 @@ const EditUser = () => {
               id="new-password"
               placeholder="Enter a password"
               autoComplete="off"
-              value={formValue.password}
-              onChange={(e) =>
-                setFormValue({ ...formValue, password: e.target.value })
-              }
+              value={user.password}
+              onChange={(e) => dispatch(addUserPassword(e.target.value))}
             />
           </label>
           <label htmlFor="team">
             Team
             <Select
+              isClearable
               options={options}
               styles={customStyles}
-              value={{
-                label: formValue.team.name,
-                value: formValue.team.id,
-              }}
-              onChange={(choice) => {
-                setFormValue({
-                  ...formValue,
-                  team: { id: choice.value, name: choice.label },
-                });
-              }}
+              placeholder="No team"
+              value={user.team}
+              onChange={(choice) =>
+                dispatch(addUserTeam(choice !== null ? choice : null))
+              }
             />
           </label>
         </form>
