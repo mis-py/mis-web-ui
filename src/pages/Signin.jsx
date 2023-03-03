@@ -7,10 +7,7 @@ import qs from "qs";
 
 import { AiOutlineEye } from "react-icons/ai";
 
-import LogoImg from "../assets/img/logo.png";
-import EllipseImg from "../assets/img/ellipse.png";
-
-import { baseUrl } from "../config/variables";
+import { baseUrl } from "config/variables";
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -84,10 +81,14 @@ const Signin = () => {
     <div className="flex flex-col relative z-20 justify-center h-screen py-7 px-5 bg-backGround overflow-hidden lg:z-40">
       <img
         className="absolute bottom-0 left-0 h-[60%] w-full"
-        src={EllipseImg}
+        src={require("assets/img/ellipse.png")}
         alt=""
       />
-      <img className="w-[192px] mx-auto mb-[104px] z-10" src={LogoImg} alt="" />
+      <img
+        className="w-[192px] mx-auto mb-[104px] z-10"
+        src={require("assets/img/logo.png")}
+        alt=""
+      />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="z-10 sm:w-[345px] sm:mx-auto"

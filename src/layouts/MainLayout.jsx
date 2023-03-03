@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { useGetPermissionsUserIdQuery } from "redux/index";
 
@@ -33,8 +33,7 @@ const MainLayout = () => {
     }
 
     if (
-      getPermissionsUser &&
-      getPermissionsUser.length === 0 &&
+      getPermissionsUser?.length === 0 &&
       linksAdmin.includes(location.pathname)
     ) {
       navigate("/");

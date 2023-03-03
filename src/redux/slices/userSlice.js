@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  name: "",
+  username: "",
   password: "",
   team: {
     value: null,
@@ -17,7 +17,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     addUserName: (state, action) => {
-      state.name = action.payload;
+      state.username = action.payload;
     },
     addUserPassword: (state, action) => {
       state.password = action.payload;
@@ -35,7 +35,7 @@ export const userSlice = createSlice({
       state.settings = action.payload;
     },
     resetUser: (state) => {
-      state.name = "";
+      state.username = "";
       state.password = "";
       state.team = {
         value: null,

@@ -51,15 +51,8 @@ const AddUser = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const [addUser, { error: errorAddUser }] = useAddUserMutation();
   const { data: getTeams = [] } = useGetTeamsQuery();
-
-  const [formValue, setFormValue] = React.useState({
-    username: user.name,
-    password: user.password,
-    team: user.team,
-    position: user.position,
-  });
+  const [addUser, { error: errorAddUser }] = useAddUserMutation();
 
   const options = getTeams?.map((item) => {
     return {
@@ -71,13 +64,13 @@ const AddUser = () => {
   const handleAddUser = async (e) => {
     e.preventDefault();
     if (!errorAddUser) {
-      if (formValue.username < 1) {
+      if (user.username < 1) {
         toast.error("Name too short");
-      } else if (formValue.password < 5) {
+      } else if (user.password < 5) {
         toast.error("The password is too short");
       } else {
         await addUser({
-          username: user.name,
+          username: user.username,
           password: user.password,
           team_id: user.team.value,
         }).unwrap();
@@ -107,10 +100,8 @@ const AddUser = () => {
               id="username"
               placeholder="Enter a name"
               autoComplete="off"
-              value={formValue.username}
-              onChange={(e) =>
-                setFormValue({ ...formValue, username: e.target.value })
-              }
+              value={user.username}
+              onChange={(e) => dispatch(addUserName(e.target.value))}
             />
           </label>
 
@@ -122,10 +113,8 @@ const AddUser = () => {
               id="password"
               placeholder="Enter a password"
               autoComplete="off"
-              value={formValue.password}
-              onChange={(e) =>
-                setFormValue({ ...formValue, password: e.target.value })
-              }
+              value={user.password}
+              onChange={(e) => dispatch(addUserPassword(e.target.value))}
             />
           </label>
 
@@ -134,14 +123,15 @@ const AddUser = () => {
             <Select
               options={options}
               styles={customStyles}
+              isClearable
               placeholder="The team is not selected"
               id="team"
-              value={formValue.team.value === null ? "" : { ...formValue.team }}
               onChange={(choice) =>
-                setFormValue({
-                  ...formValue,
-                  team: choice,
-                })
+                dispatch(
+                  addUserTeam(
+                    choice !== null ? choice : { value: null, label: "" }
+                  )
+                )
               }
             />
           </label>
@@ -154,10 +144,8 @@ const AddUser = () => {
               id="job-position"
               placeholder="Enter position"
               autoComplete="off"
-              value={formValue.position}
-              onChange={(e) =>
-                setFormValue({ ...formValue, position: e.target.value })
-              }
+              value={user.position}
+              onChange={(e) => dispatch(addUserPosition(e.target.value))}
             />
           </label>
         </form>
@@ -166,10 +154,6 @@ const AddUser = () => {
         <div className="flex gap-4">
           <button
             onClick={() => {
-              dispatch(addUserName(formValue.username));
-              dispatch(addUserPassword(formValue.password));
-              dispatch(addUserTeam(formValue.team));
-              dispatch(addUserPosition(formValue.position));
               navigate(`/add-user/permissions`);
             }}
             className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
@@ -179,10 +163,6 @@ const AddUser = () => {
           </button>
           <button
             onClick={() => {
-              dispatch(addUserName(formValue.username));
-              dispatch(addUserPassword(formValue.password));
-              dispatch(addUserTeam(formValue.team));
-              dispatch(addUserPosition(formValue.position));
               navigate(`/add-user/settings`);
             }}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
