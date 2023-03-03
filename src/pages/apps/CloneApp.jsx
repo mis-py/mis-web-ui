@@ -6,7 +6,7 @@ import {
   useCloneAppMutation,
   useGetModulesQuery,
   useCloneAppNameMutation,
-} from "../../redux";
+} from "redux/index";
 
 import { IoIosArrowBack } from "react-icons/io";
 
@@ -56,7 +56,7 @@ const CloneApp = () => {
   });
 
   const { data: getModules = [] } = useGetModulesQuery();
-  const [cloneApp, { error: errorCloneApp }] = useCloneAppMutation();
+  const [cloneApp] = useCloneAppMutation();
   const [cloneAppName] = useCloneAppNameMutation();
 
   const options = getModules?.map((item, index) => {

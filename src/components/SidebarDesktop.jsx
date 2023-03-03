@@ -94,24 +94,27 @@ const SidebarDesktop = () => {
                 showListApps ? "opacity-100 visible" : "opacity-0 invisible"
               } flex flex-col duration-300`}
             >
-              {getModules?.map((module) => (
-                <NavLink
-                  className={({ isActive }) =>
-                    isActive
-                      ? `flex items-center pl-11 pr-5 gap-3 duration-300 group text-primary bg-blackSecond`
-                      : `flex items-center pl-11 pr-5 gap-3 duration-300 group hover:bg-blackSecond`
-                  }
-                  to={`/${module.name}`}
-                  key={module.id}
-                >
-                  <div className="duration-300 group-hover:text-primary">
-                    <RiAppsLine />
-                  </div>
-                  <h3 className="py-3 duration-300 group-hover:text-primary">
-                    {firstUppercase(module.name)}
-                  </h3>
-                </NavLink>
-              ))}
+              {getModules?.map(
+                (module) =>
+                  module.enabled && (
+                    <NavLink
+                      className={({ isActive }) =>
+                        isActive
+                          ? `flex items-center pl-11 pr-5 gap-3 duration-300 group text-primary bg-blackSecond`
+                          : `flex items-center pl-11 pr-5 gap-3 duration-300 group hover:bg-blackSecond`
+                      }
+                      to={`/${module.name}`}
+                      key={module.id}
+                    >
+                      <div className="duration-300 group-hover:text-primary">
+                        <RiAppsLine />
+                      </div>
+                      <h3 className="py-3 duration-300 group-hover:text-primary">
+                        {firstUppercase(module.name)}
+                      </h3>
+                    </NavLink>
+                  )
+              )}
             </div>
           </ul>
         </div>

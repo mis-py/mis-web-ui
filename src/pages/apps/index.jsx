@@ -1,17 +1,15 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useGetAppsQuery } from "../../redux";
+import { useGetAppsQuery } from "redux/index";
 import { toast } from "react-toastify";
 import PulseLoader from "react-spinners/PulseLoader";
 
-import AdminWrapper from "../../config/AdminWrapper";
+import AdminWrapper from "config/AdminWrapper";
 
 import { FiSearch } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
 import { AiOutlinePlus, AiOutlineSetting } from "react-icons/ai";
 import { CgFileDocument } from "react-icons/cg";
-
-import UserImg from "../../assets/img/user.png";
 
 const Apps = () => {
   const navigate = useNavigate();
@@ -104,7 +102,7 @@ const Apps = () => {
                       <div className="flex">
                         <img
                           className="w-[56px] h-[56px] mr-3"
-                          src={UserImg}
+                          src={require("assets/img/user.png")}
                           alt=""
                         />
                         <div className="flex flex-col">

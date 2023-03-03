@@ -3,27 +3,19 @@ import { NavLink } from "react-router-dom";
 import { useGetModulesQuery } from "redux/index";
 import { firstUppercase } from "config/functions";
 
-import { FiUser, FiUsers } from "react-icons/fi";
-import { BiUser } from "react-icons/bi";
-import { AiOutlineAppstore } from "react-icons/ai";
-import { MdGroups } from "react-icons/md";
-
 import ProfilePopup from "components/ProfilePopup";
 
-const Sidebar = ({ toggleDrawer }) => {
-  const { data: getModules } = useGetModulesQuery();
-  const [userPopup, setUserPopup] = React.useState(false);
+import { FiUser } from "react-icons/fi";
+import { AiOutlineAppstoreAdd } from "react-icons/ai";
+import { IoIosArrowForward } from "react-icons/io";
+import { RiAppsLine } from "react-icons/ri";
 
-  const sidebar = [
-    { icon: <BiUser />, title: "Users", url: "/users" },
-    { icon: <FiUsers />, title: "Teams", url: "/teams" },
-    { icon: <MdGroups />, title: "Groups", url: "/groups" },
-    {
-      icon: <AiOutlineAppstore />,
-      title: "Applications",
-      url: "/apps",
-    },
-  ];
+import { sidebar } from "config/variables";
+
+const Sidebar = ({ toggleDrawer }) => {
+  const { data: getModules = [] } = useGetModulesQuery();
+  const [userPopup, setUserPopup] = React.useState(false);
+  const [showListApps, setShowListApps] = React.useState(false);
 
   return (
     <>
@@ -75,28 +67,49 @@ const Sidebar = ({ toggleDrawer }) => {
                 </h3>
               </NavLink>
             ))}
-            {getModules &&
-              getModules.map(
-                (item) =>
-                  item.enabled && (
+            <div
+              className={`flex items-center justify-between px-5 gap-3 duration-300 group cursor-pointer hover:bg-blackSecond`}
+              onClick={() => setShowListApps(!showListApps)}
+            >
+              <div className="flex items-center gap-3">
+                <div className="duration-300 group-hover:text-primary">
+                  <AiOutlineAppstoreAdd />
+                </div>
+                <h3 className="py-3 duration-300 group-hover:text-primary">
+                  List Apps
+                </h3>
+              </div>
+              <IoIosArrowForward
+                className={`${showListApps ? "rotate-90" : ""} duration-300`}
+              />
+            </div>
+            <div
+              className={`${
+                showListApps ? "opacity-100 visible" : "opacity-0 invisible"
+              } flex flex-col duration-300`}
+            >
+              {getModules?.map(
+                (module) =>
+                  module.enabled && (
                     <NavLink
                       className={({ isActive }) =>
                         isActive
-                          ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
-                          : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
+                          ? `flex items-center pl-11 pr-5 gap-3 duration-300 group text-primary bg-blackSecond`
+                          : `flex items-center pl-11 pr-5 gap-3 duration-300 group hover:bg-blackSecond`
                       }
-                      to={`/api${item.front_bundle_path}`}
-                      key={item.id}
+                      to={`/${module.name}`}
+                      key={module.id}
                     >
                       <div className="duration-300 group-hover:text-primary">
-                        <AiOutlineAppstore />
+                        <RiAppsLine />
                       </div>
                       <h3 className="py-3 duration-300 group-hover:text-primary">
-                        {firstUppercase(item.name)}
+                        {firstUppercase(module.name)}
                       </h3>
                     </NavLink>
                   )
               )}
+            </div>
           </ul>
         </div>
       </div>
