@@ -49,26 +49,26 @@ const CloneApp = () => {
     url: "",
     branch: "",
   });
-  const [formValueName, setFormValueName] = React.useState({
-    id: 0,
-    name: "",
-    enabled: true,
-  });
+  // const [formValueName, setFormValueName] = React.useState({
+  //   id: 0,
+  //   name: "",
+  //   enabled: true,
+  // });
 
-  const { data: getModules = [] } = useGetModulesQuery();
+  // const { data: getModules = [] } = useGetModulesQuery();
   const [cloneApp] = useCloneAppMutation();
-  const [cloneAppName] = useCloneAppNameMutation();
+  // const [cloneAppName] = useCloneAppNameMutation();
 
-  const options = getModules?.map((item, index) => {
-    if (!item.enabled) {
-      return {
-        value: item.name,
-        label: item.name,
-        id: item.id,
-        enabled: true,
-      };
-    }
-  });
+  // const options = getModules?.map((item, index) => {
+  //   if (!item.enabled) {
+  //     return {
+  //       value: item.name,
+  //       label: item.name,
+  //       id: item.id,
+  //       enabled: true,
+  //     };
+  //   }
+  // });
 
   const handleCloneApp = async (e) => {
     e.preventDefault();
@@ -80,22 +80,22 @@ const CloneApp = () => {
       toast.success("Added new app");
     }
 
-    if (formValueName.name !== "") {
-      await cloneAppName({ name: formValueName.name, ...formValueName });
-      navigate("/apps");
-      toast.success("Added new app");
-    }
+    // if (formValueName.name !== "") {
+    //   await cloneAppName({ name: formValueName.name, ...formValueName });
+    //   navigate("/apps");
+    //   toast.success("Added new app");
+    // }
   };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
+        <Link to={-1} className="flex items-center text-gray">
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
-          <Link to="/apps">back</Link>
-        </div>
+          <span>back</span>
+        </Link>
         <h3 className="h3 mt-5">Clone app</h3>
 
         <form className="my-7">
@@ -130,7 +130,7 @@ const CloneApp = () => {
           </label>
         </form>
 
-        <h3 className="h3 my-5">Load app</h3>
+        {/* <h3 className="h3 my-5">Load app</h3>
         <label className="flex flex-col gap-1 mb-4" htmlFor="app">
           Name
           <Select
@@ -152,7 +152,7 @@ const CloneApp = () => {
               })
             }
           />
-        </label>
+        </label> */}
       </div>
 
       <div className="flex flex-col gap-3">

@@ -11,30 +11,27 @@ import {
   useStopAppMutation,
   useSettingAppSetMutation,
   useSettingUserSetMutation,
-} from "../../redux";
+} from "redux/index";
 
-import AdminWrapper from "../../config/AdminWrapper";
+import AdminWrapper from "config/AdminWrapper";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 
+import { currentUserId } from "config/variables";
+
 const SettingsApp = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [active, setActive] = React.useState(false);
-  const [userId, setUserId] = React.useState(0);
   const [formGlobalValue, setFormGlobalValue] = React.useState([]);
   const [newGlobalSettings, setNewGlobalSettings] = React.useState({});
   const [formLocalValue, setFormLocalValue] = React.useState([]);
   const [newLocalSettings, setNewLocalSettings] = React.useState({});
 
-  console.log(newGlobalSettings);
-
   const { data: getSettingsAppId } = useGetSettingsAppIdQuery(id);
-  const { data: getSettingsUserId } = useGetSettingsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
+  const { data: getSettingsUserId } = useGetSettingsUserIdQuery(currentUserId);
   const [unloadAppModules] = useUnloadAppModulesMutation();
   const [startApp] = useStartAppMutation();
   const [stopApp] = useStopAppMutation();
@@ -42,8 +39,6 @@ const SettingsApp = () => {
   const [settingUserSet] = useSettingUserSetMutation();
 
   React.useEffect(() => {
-    setUserId(localStorage.getItem("user_id"));
-
     if (getSettingsAppId && getSettingsAppId.enabled) {
       setActive(true);
     } else {
@@ -105,7 +100,7 @@ const SettingsApp = () => {
     }
     if (newLocalSettings !== 0) {
       await settingUserSet({
-        userId,
+        currentUserId,
         body: Object.values(newLocalSettings),
       }).unwrap();
     }
