@@ -18,12 +18,15 @@ const AddUserPermissions = () => {
   const { data: getPermissions = [], isLoading: loadingPermissions } =
     useGetPermissionsQuery();
 
+    console.log(checked);
+
   const handleUserPermissions = () => {
     dispatch(addUserPermissions(checked));
     navigate(-1);
     toast.success("User permissions saved");
   };
-
+  
+  
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
@@ -36,11 +39,12 @@ const AddUserPermissions = () => {
         <h3 className="h3 mt-5">Manage permissions</h3>
         <form className="my-4">
           <label
-            className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
+            className={`flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7`}
             htmlFor="search"
+            
           >
             <input
-              className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
+              className={`w-full bg-transparent border-none focus:shadow-none focus:ring-0 `}
               type="search"
               placeholder="Enter permission name to search..."
               value={searchValue}
@@ -60,18 +64,18 @@ const AddUserPermissions = () => {
               color="#757575"
             />
           ) : (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 md:grid md:gap-4 md:grid-cols-2 lg:grid lg:gap-4 lg:grid-cols-2">
               {getPermissions
                 ?.filter((el) =>
                   el.name
                     .toLowerCase()
                     .includes(searchValue.toLowerCase().trim())
                 )
-                .map((item) => (
+                .map((item, index) => (
                   <div key={item.id} className="flex flex-col">
                     {item.app.name}
                     <label
-                      className="flex items-center gap-2 text-gray body-2"
+                    className={`${checked.includes(item.scope) ? 'border-primary border-2 h-10 w-full lg:w-3/4 rounded-md shadow-sm shadow-primary ' : 'text-gray'} flex items-center gap-2  body-2`}
                       htmlFor={item.name}
                     >
                       <input
@@ -92,7 +96,7 @@ const AddUserPermissions = () => {
                             );
                           }
                         }}
-                        className="bg-transparent cursor-pointer 
+                        className="bg-transparent cursor-pointer ml-5
     w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
                       />
                       {item.name} ({item.scope})
