@@ -127,7 +127,7 @@ const AddUser = () => {
               placeholder="The team is not selected"
               id="team"
               value={
-                user.team === null ? "The team is not selected" : user.team
+                user.team === null ? "" : user.team
               }
               onChange={(choice) =>
                 dispatch(addUserTeam(choice !== null ? choice : null))

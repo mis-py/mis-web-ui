@@ -5,8 +5,11 @@ import { useNavigate, Link } from "react-router-dom";
 import { useGetSettingsQuery } from "redux/index";
 import { addUserSettings } from "redux/slices/userSlice";
 
+import Tooltip from "components/Tooltip";
+
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
+import { BiPaste } from "react-icons/bi";
 
 const AddUserSettings = () => {
   const navigate = useNavigate();
@@ -23,10 +26,10 @@ const AddUserSettings = () => {
       return [...prev, { id: curr.id, name: curr.key, value: "" }];
     }, []);
 
-    console.log(formGlobalValue);
-
     setFormGlobalValue([...settingsList]);
   }, [isLoading]);
+
+  console.log(formGlobalValue);
 
   const handleFormChange = (e, index) => {
     let data = [...formGlobalValue];
@@ -83,21 +86,27 @@ const AddUserSettings = () => {
             ?.map((item, index) => (
               <label
                 key={item.id}
-                className="flex flex-col gap-1 mb-4"
+                className={`flex flex-col gap-1 mb-4 relative`}
                 htmlFor={item.name}
               >
                 {item.name}
                 <input
                   autoComplete="off"
                   type="text"
-                  className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
+                  className={`bg-blackSecond  rounded px-3 py-2 focus-visible:outline-none border-none`}
                   name={item.name}
                   id={item.name}
-                  value={item.value}
+                  value={settings.find((el) =>
+                    el.setting_id === item.id ? el.new_value : item.value
+                  )}
                   onChange={(e) => {
                     handleFormChange(e, index);
                   }}
                 />
+                <div className="group absolute right-5 bottom-3 cursor-pointer">
+                  <Tooltip name={`Paste default value`} />
+                  <BiPaste className="text-gray" />
+                </div>
               </label>
             ))}
         </form>
