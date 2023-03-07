@@ -14,7 +14,6 @@ import { CgFileDocument } from "react-icons/cg";
 const Apps = () => {
   const navigate = useNavigate();
   const [showSearch, setShowSearch] = React.useState(false);
-  const [showInfo, setShowInfo] = React.useState(false);
   const [serchValue, setSearchValue] = React.useState("");
   const {
     data: getApps = [],
@@ -22,19 +21,11 @@ const Apps = () => {
     error: errorApps,
   } = useGetAppsQuery();
 
-  const toggle = (index) => {
-    if (showInfo === index) {
-      setShowInfo(false);
-      return;
-    }
-    setShowInfo(index);
-  };
-
   React.useEffect(() => {
     if (errorApps) {
       toast.error("No apps found");
     }
-  }, [getApps, errorApps, serchValue]);
+  }, [errorApps]);
 
   return (
     <div className="py-6">
@@ -73,7 +64,7 @@ const Apps = () => {
           </AdminWrapper>
         </div>
 
-        <h3 className="h3 mb-5">Applications ({getApps.length})</h3>
+        <h3 className="h3 mb-5">Applications ({getApps?.length})</h3>
         {loadingApps ? (
           <PulseLoader
             size={15}
@@ -86,73 +77,61 @@ const Apps = () => {
           />
         ) : (
           <div className="flex flex-col gap-4">
-            {getApps &&
-              getApps
-                .filter((el) =>
-                  el.name
-                    .toLowerCase()
-                    .includes(serchValue.toLowerCase().trim())
-                )
-                .map((app, index) => (
-                  <div
-                    key={app.id}
-                    className="flex flex-col relative bg-blackSecond px-4 py-2 rounded"
-                  >
-                    <div className="flex justify-between items-center pb-2 border-b border-backGround">
-                      <div className="flex">
-                        <img
-                          className="w-[56px] h-[56px] mr-3"
-                          src={require("assets/img/user.png")}
-                          alt=""
-                        />
-                        <div className="flex flex-col">
-                          <h4>{app.name}</h4>
-                          <h5 className="text-gray text-xs">Category</h5>
-                        </div>
+            {getApps
+              ?.filter((el) =>
+                el.name.toLowerCase().includes(serchValue.toLowerCase().trim())
+              )
+              .map((app, index) => (
+                <div
+                  key={app.id}
+                  className="flex flex-col relative bg-blackSecond p-6 rounded"
+                >
+                  <div className="flex justify-between items-center pb-2 border-b border-backGround">
+                    <div className="flex">
+                      <img
+                        className="w-[56px] h-[56px] rounded-full mr-3"
+                        src={require("assets/img/app.png")}
+                        alt=""
+                      />
+                      <div className="flex flex-col">
+                        <h4>{app.name}</h4>
+                        <h5 className="text-gray text-xs">Category</h5>
                       </div>
-                      <div className="flex gap-3">
-                        <CgFileDocument
-                          onClick={() => navigate(`/apps/logs/${app.id}`)}
+                    </div>
+                    <div className="flex gap-3">
+                      <CgFileDocument
+                        onClick={() => navigate(`/apps/logs/${app.id}`)}
+                        className="text-2xl text-gray cursor-pointer"
+                      />
+                      <AdminWrapper>
+                        <AiOutlineSetting
+                          onClick={() => navigate(`/apps/settings/${app.id}`)}
                           className="text-2xl text-gray cursor-pointer"
                         />
-                        <AdminWrapper>
-                          <AiOutlineSetting
-                            onClick={() => navigate(`/apps/settings/${app.id}`)}
-                            className="text-2xl text-gray cursor-pointer"
-                          />
-                        </AdminWrapper>
-                      </div>
-                    </div>
-                    {showInfo === index && (
-                      <div className={`duration-300 flex flex-col pt-4 gap-2`}>
-                        <div className="flex justify-between">
-                          <h3>Status:</h3>
-                          <p className="text-gray">
-                            {app.loaded ? "healthy" : "unhealthy"}
-                          </p>
-                        </div>
-                        <div className="flex justify-between">
-                          <h3>Is active:</h3>
-                          <p className="text-gray">
-                            {app.loaded ? "true" : "false"}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                    <div
-                      onClick={(e) => {
-                        toggle(index);
-                      }}
-                      className="flex justify-center py-2 cursor-pointer"
-                    >
-                      <IoIosArrowDown
-                        className={`${
-                          showInfo === index ? "rotate-180" : "rotate-0"
-                        } duration-300 text-gray text-base`}
-                      />
+                      </AdminWrapper>
                     </div>
                   </div>
-                ))}
+
+                  <div className={`duration-300 flex flex-col pt-4 gap-2`}>
+                    <div className="flex justify-between">
+                      <h3>Status:</h3>
+                      <p className="text-gray">
+                        {app.enabled ? "Healthy" : "Unhealthy"}
+                      </p>
+                    </div>
+                    <div className="flex justify-between">
+                      <h3>Is active:</h3>
+                      <p
+                        className={`${
+                          app.enabled ? "text-success" : "text-danger"
+                        }`}
+                      >
+                        {app.enabled ? "Enabled" : "Disabled"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
           </div>
         )}
       </div>
