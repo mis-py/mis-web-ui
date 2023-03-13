@@ -16,7 +16,7 @@ const EditObjectsGroup = () => {
   const { id } = useParams();
   const { data: getGroupsObjects = [], isLoading: loadingGroupsObjects } =
     useGetGroupsObjectsQuery();
-  const { data: getIdObjects } = useGetGroupIdObjectsQuery(id);
+  const { data: getIdObjects = [] } = useGetGroupIdObjectsQuery(id);
   const [editObjectsGroup] = useEditObjectsGroupMutation();
 
   const [checked, setChecked] = React.useState([]);
@@ -95,41 +95,45 @@ const EditObjectsGroup = () => {
             />
           ) : (
             <div className="flex flex-wrap gap-4">
-              {getGroupsObjects
-                ?.filter((el) =>
-                  el.object_id
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase().trim())
-                )
-                .map((item) => (
-                  <label
-                    className={`${
-                      checked.includes(item.id)
-                        ? "border-primary"
-                        : "border-blackSecond"
-                    } flex border duration-300 items-center gap-2 rounded w-full bg-blackSecond p-5 cursor-pointer text-gray body-2 sm:w-[calc(50%_-_8px)]`}
-                    htmlFor={item.object_id}
-                  >
-                    <input
-                      type="checkbox"
-                      name={item.object_id}
-                      id={item.object_id}
-                      checked={checked ? checked.includes(item.id) : false}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setChecked([...checked, item.id]);
-                        } else {
-                          setChecked(checked.filter((obj) => obj !== item.id));
-                        }
-                      }}
-                      className="bg-transparent cursor-pointer 
+              {getGroupsObjects &&
+                getGroupsObjects
+                  .filter((el) =>
+                    el.object_id
+                      .toLowerCase()
+                      .includes(searchValue.toLowerCase().trim())
+                  )
+                  .map((item) => (
+                    <label
+                      key={item.id}
+                      className={`${
+                        checked.includes(item.id)
+                          ? "border-primary"
+                          : "border-blackSecond"
+                      } flex border duration-300 items-center gap-2 rounded w-full bg-blackSecond p-5 cursor-pointer text-gray body-2 sm:w-[calc(50%_-_8px)]`}
+                      htmlFor={item.object_id}
+                    >
+                      <input
+                        type="checkbox"
+                        name={item.object_id}
+                        id={item.object_id}
+                        checked={checked ? checked.includes(item.id) : false}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setChecked([...checked, item.id]);
+                          } else {
+                            setChecked(
+                              checked.filter((obj) => obj !== item.id)
+                            );
+                          }
+                        }}
+                        className="bg-transparent cursor-pointer 
     w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
-                    />
-                    {item.object_id.includes("Repo:")
-                      ? item.object_id.slice(5)
-                      : item.object_id}
-                  </label>
-                ))}
+                      />
+                      {item.object_id.includes("Repo:")
+                        ? item.object_id.slice(5)
+                        : item.object_id}
+                    </label>
+                  ))}
             </div>
           )}
         </form>

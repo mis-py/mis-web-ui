@@ -30,8 +30,10 @@ const SettingsApp = () => {
   const [formLocalValue, setFormLocalValue] = React.useState([]);
   const [newLocalSettings, setNewLocalSettings] = React.useState({});
 
-  const { data: getSettingsAppId } = useGetSettingsAppIdQuery(id);
-  const { data: getSettingsUserId } = useGetSettingsUserIdQuery(currentUserId);
+  const { data: getSettingsAppId, isLoading: loadingGetSettingsAppId } =
+    useGetSettingsAppIdQuery(id);
+  const { data: getSettingsUserId = [], isLoading: loadingGetSettingsUserId } =
+    useGetSettingsUserIdQuery(currentUserId);
   const [unloadAppModules] = useUnloadAppModulesMutation();
   const [startApp] = useStartAppMutation();
   const [stopApp] = useStopAppMutation();
@@ -39,24 +41,24 @@ const SettingsApp = () => {
   const [settingUserSet] = useSettingUserSetMutation();
 
   React.useEffect(() => {
-    if (getSettingsAppId && getSettingsAppId.enabled) {
+    if (!loadingGetSettingsAppId && getSettingsAppId?.enabled) {
       setActive(true);
     } else {
       setActive(false);
     }
 
-    getSettingsAppId &&
-      getSettingsAppId.settings.map((setting) => {
+    !loadingGetSettingsAppId &&
+      getSettingsAppId?.settings.map((setting) => {
         setFormGlobalValue((formGlobalValue) => [...formGlobalValue, setting]);
       });
-  }, [getSettingsAppId]);
+  }, [loadingGetSettingsAppId]);
 
   React.useEffect(() => {
-    getSettingsUserId &&
-      getSettingsUserId.map((item) => {
+    !loadingGetSettingsUserId &&
+      getSettingsUserId?.map((item) => {
         setFormLocalValue((formLocalValue) => [...formLocalValue, item]);
       });
-  }, [getSettingsUserId]);
+  }, [loadingGetSettingsUserId]);
 
   const handleChange = async (nextChecked) => {
     if (nextChecked) {
@@ -111,28 +113,30 @@ const SettingsApp = () => {
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
         <div className="flex items-center justify-between text-gray">
-          <div className="flex">
-            <div className="flex items-center mr-2">
+          <Link to={-1} className="flex items-center text-gray mb-5">
+            <div className="flex mr-2">
               <IoIosArrowBack />
             </div>
-            <Link to="/apps">back</Link>
-          </div>
-          <button
-            onClick={handleDeleteApp}
-            className="bg-danger rounded-lg p-3 cursor-pointer text-white flex text-bold"
-          >
-            <BsTrash />
-          </button>
-        </div>
-
-        <h3 className="h3 my-4">App name settings</h3>
-        <h4 className="text-gray mb-5">General settings</h4>
-        <div className="flex items-center gap-3 mb-5">
-          <Switch onChange={handleChange} checked={active} />
-          <p>Enable app</p>
+            <span>back</span>
+          </Link>
+          <AdminWrapper>
+            <button
+              onClick={handleDeleteApp}
+              className="bg-danger rounded-lg p-3 cursor-pointer text-white flex text-bold"
+            >
+              <BsTrash />
+            </button>
+          </AdminWrapper>
         </div>
         <AdminWrapper>
-          <h1 className="text-2xl font-bold">Global settings</h1>
+          <h4 className="text-2xl font-bold mb-5">General settings</h4>
+          <div className="flex items-center gap-3 mb-5">
+            <Switch onChange={handleChange} checked={active} />
+            <p>Enable app</p>
+          </div>
+          {formGlobalValue.length !== 0 && (
+            <h1 className="text-2xl font-bold">Global settings</h1>
+          )}
           <form className="my-7">
             {formGlobalValue.map(
               (item, index) =>

@@ -72,7 +72,7 @@ const AddUser = () => {
         await addUser({
           username: user.username,
           password: user.password,
-          team_id: user.team.value,
+          team_id: user.team === null ? null : user.team.value,
         }).unwrap();
         navigate("/users");
         toast.success("Added new user");
@@ -127,7 +127,7 @@ const AddUser = () => {
               placeholder="The team is not selected"
               id="team"
               value={
-                user.team === null ? "" : user.team
+                user.team === null ? 0 : user.team
               }
               onChange={(choice) =>
                 dispatch(addUserTeam(choice !== null ? choice : null))
