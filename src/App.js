@@ -45,6 +45,8 @@ import NotFound from "pages/NotFound";
 // MODULES
 const Webcat = React.lazy(() => import("modules/webcat"));
 const EditWebcat = React.lazy(() => import("modules/webcat/EditWebcat"));
+const Tasks = React.lazy(() => import("modules/tasks"));
+const Consumers = React.lazy(() => import("modules/consumers"));
 
 function App() {
   // const { data: getModules = [] } = useGetModulesQuery();
@@ -168,6 +170,8 @@ function App() {
                     />
                     <Route path="/webcat" element={<Webcat />} />
                     <Route path="/webcat/:id" element={<EditWebcat />} />
+                    <Route path="/tasks" element={<Tasks/>}/>
+                    <Route path="/consumers" element={<Consumers/>}/>
                   </Route>
                   <Route path="/signin" element={<LoginLayout />}>
                     <Route index element={<Signin />} />
