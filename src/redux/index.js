@@ -9,3 +9,5 @@ export * from "./api/settingsApi";
 
 //modules
 export * from "./api/modulesApi/webcatApi";
+export * from "./api/modulesApi/consumersApi";
+export * from "./api/modulesApi/tasksApi";

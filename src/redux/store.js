@@ -10,7 +10,9 @@ import { modulesApi } from "./api/modulesApi";
 import { settingsApi } from "./api/settingsApi";
 
 //modules
-import { webcatApi } from "./api/modulesApi/webcatApi";
+import {webcatApi} from "./api/modulesApi/webcatApi";
+import {consumersApi} from "./api/modulesApi/consumersApi";
+import { tasksApi } from "./api/modulesApi/tasksApi";
 
 //slices
 import userSlice from "./slices/userSlice";
@@ -32,6 +34,8 @@ export const store = configureStore({
 
     //modules
     [webcatApi.reducerPath]: webcatApi.reducer,
+    [consumersApi.reducerPath]: consumersApi.reducer,
+    [tasksApi.reducerPath]: tasksApi.reducer,
 
     //slices
     user: userSlice,
@@ -53,5 +57,7 @@ export const store = configureStore({
 
       //modules
       webcatApi.middleware,
+      consumersApi.middleware,
+      tasksApi.middleware,
     ]),
 });
