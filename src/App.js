@@ -47,6 +47,7 @@ const Webcat = React.lazy(() => import("modules/webcat"));
 const EditWebcat = React.lazy(() => import("modules/webcat/EditWebcat"));
 const Tasks = React.lazy(() => import("modules/tasks"));
 const Consumers = React.lazy(() => import("modules/consumers"));
+const Timer = React.lazy(() => import("modules/timer"));
 
 function App() {
   // const { data: getModules = [] } = useGetModulesQuery();
@@ -172,6 +173,7 @@ function App() {
                     <Route path="/webcat/:id" element={<EditWebcat />} />
                     <Route path="/tasks" element={<Tasks/>}/>
                     <Route path="/consumers" element={<Consumers/>}/>
+                    <Route path="/timer" element={<Timer/>}/>
                   </Route>
                   <Route path="/signin" element={<LoginLayout />}>
                     <Route index element={<Signin />} />
