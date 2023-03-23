@@ -23,11 +23,24 @@ const AddUserSettings = () => {
 
   React.useEffect(() => {
     const settingsList = getSettings?.reduce(function (prev, curr) {
-      return [...prev, { id: curr.id, name: curr.key, value: "" }];
+      return [
+        ...prev,
+        {
+          id: curr.id,
+          value: settings
+            ?.map((el) => (el.setting_id === curr.id ? el.new_value : ""))
+            .filter((empty) => !!empty)
+            .toString(),
+          key: curr.key,
+          default_value: curr.default_value,
+          is_global: curr.is_global,
+          app: curr.app,
+        },
+      ];
     }, []);
 
     setFormGlobalValue([...settingsList]);
-  }, [isLoading]);
+  }, [isLoading, settings]);
 
   console.log(formGlobalValue);
 
@@ -81,24 +94,22 @@ const AddUserSettings = () => {
 
           {formGlobalValue
             ?.filter((el) =>
-              el.name.toLowerCase().includes(searchValue.toLowerCase().trim())
+              el.key.toLowerCase().includes(searchValue.toLowerCase().trim())
             )
             ?.map((item, index) => (
               <label
                 key={item.id}
                 className={`flex flex-col gap-1 mb-4 relative`}
-                htmlFor={item.name}
+                htmlFor={item.key}
               >
-                {item.name}
+                {item.key}
                 <input
                   autoComplete="off"
                   type="text"
                   className={`bg-blackSecond  rounded px-3 py-2 focus-visible:outline-none border-none`}
-                  name={item.name}
-                  id={item.name}
-                  value={settings.find((el) =>
-                    el.setting_id === item.id ? el.new_value : item.value
-                  )}
+                  name={item.key}
+                  id={item.key}
+                  value={item.value}
                   onChange={(e) => {
                     handleFormChange(e, index);
                   }}
