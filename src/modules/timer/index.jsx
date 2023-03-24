@@ -1,15 +1,9 @@
-<<<<<<< HEAD
-import React from 'react'
-// import PulseLoader from "react-spinners/PulseLoader";
-import { useLeadEdpointMutation } from 'redux/index';
-=======
 import React from "react";
 import { useTimerLeadMutation } from "redux/index";
 import { toast } from "react-toastify";
->>>>>>> 47e2534a4d687cadee5c3c14655564b1129a535a
 
 const Timer = () => {
-  const [timerLead] = useLeadEdpointMutation();
+  const [timerLead] = useTimerLeadMutation();
 
   const [timerValues, setTimerValues] = React.useState({
     id: "",
@@ -498,18 +492,11 @@ const Timer = () => {
         />
       </div>
 
-<<<<<<< HEAD
-
-      {/* <div className="w-full left-0 bottom-0 pb-6 pt-14 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-        <button onClick={SaveSettings} className="btn-primary">Save</button>
-      </div> */}
-=======
       <div className="w-full left-0 bottom-0 pb-6 pt-14 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
         <button onClick={handleTimerLead} className="btn-primary">
           Save
         </button>
       </div>
->>>>>>> 47e2534a4d687cadee5c3c14655564b1129a535a
     </>
   );
 };
