@@ -42,7 +42,11 @@ const AddUserSettings = () => {
     setFormGlobalValue([...settingsList]);
   }, [isLoading, settings]);
 
-  console.log(formGlobalValue);
+  console.log(newGlobalSettings);
+
+  const pasteDefaultValue = ({ id, default_value }) => {
+    dispatch(addUserSettings({ setting_id: id, new_value: default_value }));
+  };
 
   const handleFormChange = (e, index) => {
     let data = [...formGlobalValue];
@@ -61,7 +65,7 @@ const AddUserSettings = () => {
   const handleSaveSettings = (e) => {
     e.preventDefault();
     dispatch(
-      addUserSettings(newGlobalSettings.filter((el) => el !== undefined))
+      addUserSettings(...newGlobalSettings?.filter((el) => console.log(el)))
     );
     navigate(-1);
     toast.success("User settings saved");
@@ -116,7 +120,10 @@ const AddUserSettings = () => {
                 />
                 <div className="group absolute right-5 bottom-3 cursor-pointer">
                   <Tooltip name={`Paste default value`} />
-                  <BiPaste className="text-gray" />
+                  <BiPaste
+                    onClick={() => pasteDefaultValue(item)}
+                    className="text-gray"
+                  />
                 </div>
               </label>
             ))}

@@ -29,7 +29,7 @@ export const userSlice = createSlice({
       state.permissions = action.payload;
     },
     addUserSettings: (state, action) => {
-      state.settings = action.payload;
+      state.settings = [...state.settings, action.payload];
     },
     resetUser: (state) => {
       state.username = "";
