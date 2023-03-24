@@ -1,9 +1,9 @@
 import React from 'react'
-import PulseLoader from "react-spinners/PulseLoader";
-import { useTimerLeadMutation } from 'redux/index';
+// import PulseLoader from "react-spinners/PulseLoader";
+import { useLeadEdpointMutation } from 'redux/index';
 
 const Timer = () => {
-  const [timerLead] = useTimerLeadMutation();
+  const [timerLead] = useLeadEdpointMutation();
 
   const [timerValues, setTimerValues] = React.useState(
     {
@@ -143,9 +143,9 @@ const Timer = () => {
       </div>
 
 
-      <div className="w-full left-0 bottom-0 pb-6 pt-14 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
+      {/* <div className="w-full left-0 bottom-0 pb-6 pt-14 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
         <button onClick={SaveSettings} className="btn-primary">Save</button>
-      </div>
+      </div> */}
     </>
   );
 }

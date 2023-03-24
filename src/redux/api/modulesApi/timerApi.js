@@ -8,7 +8,7 @@ export const timerApi = createApi({
         baseUrl,
     }),
     endpoints: (build) => ({
-        timerLead: build.mutation({
+        leadEdpoint: build.mutation({
             query: () => ({
                 url: `/timer/lead`,
                 method: "POST",
@@ -24,5 +24,5 @@ export const timerApi = createApi({
 });
 
 export const {
-    useTimerLeadMutation
+    useLeadEdpointMutation
 } = timerApi;
