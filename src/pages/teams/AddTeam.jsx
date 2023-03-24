@@ -14,20 +14,16 @@ const AddTeam = () => {
   const team = useSelector((state) => state.team);
   const [addTeam, { error: errorAddTeam }] = useAddTeamMutation();
 
-  const [formValue, setFormValue] = React.useState({
-    name: team.name,
-    permissions: team.permissions,
-    users_ids: team.members,
-  });
-
   const handleAddUser = async (e) => {
     e.preventDefault();
     if (!errorAddTeam) {
-      if (formValue.name < 1) {
+      if (team.name < 1) {
         toast.error("Team name too short");
       } else {
         await addTeam({
-          ...formValue,
+          name: team.name,
+          permissions: team.permissions,
+          users_ids: team.members,
         }).unwrap();
         navigate("/teams");
         toast.success("Added new team");
@@ -55,10 +51,8 @@ const AddTeam = () => {
               id="name"
               placeholder="Enter a name"
               autoComplete="off"
-              value={formValue.name}
-              onChange={(e) =>
-                setFormValue({ ...formValue, name: e.target.value })
-              }
+              value={team.name}
+              onChange={(e) => dispatch(addTeamName(e.target.value))}
             />
           </label>
         </form>
@@ -67,7 +61,6 @@ const AddTeam = () => {
         <div className="flex justify-between items-center gap-4">
           <button
             onClick={() => {
-              dispatch(addTeamName(formValue.name));
               navigate(`/add-team/permissions`);
             }}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
@@ -77,7 +70,6 @@ const AddTeam = () => {
           </button>
           <button
             onClick={() => {
-              dispatch(addTeamName(formValue.name));
               navigate(`/add-team/members`);
             }}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"

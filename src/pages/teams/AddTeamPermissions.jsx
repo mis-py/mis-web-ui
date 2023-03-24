@@ -67,7 +67,7 @@ const AddTeamPermissions = () => {
               color="#757575"
             />
           ) : (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap gap-4">
               {getPermissions
                 ?.filter((el) =>
                   el.name
@@ -75,10 +75,14 @@ const AddTeamPermissions = () => {
                     .includes(searchValue.toLowerCase().trim())
                 )
                 .map((item) => (
-                  <div key={item.id} className="flex flex-col">
+                  <div key={item.id} className="flex flex-col w-full sm:w-[calc(50%_-_8px)]">
                     {item.app.name}
                     <label
-                      className="flex items-center gap-2 text-gray body-2"
+                      className={`${
+                        checked.includes(item.id)
+                          ? "border-primary"
+                          : "border-blackSecond"
+                      } flex border duration-300 items-center gap-2 rounded bg-blackSecond p-5 cursor-pointer text-gray body-2`}
                       htmlFor={item.name}
                     >
                       <input
@@ -100,7 +104,7 @@ const AddTeamPermissions = () => {
                           }
                         }}
                         className="bg-transparent cursor-pointer 
-    w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
+                        w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
                       />
                       {item.name} ({item.scope})
                     </label>
