@@ -23,33 +23,21 @@ const EditUser = () => {
     useGetTeamIdQuery(id);
   const [editTeam] = useEditTeamMutation();
 
-  const [formValue, setFormValue] = React.useState({
-    name: "",
-    permissions: [],
-    users_ids: [],
-  });
-
   React.useEffect(() => {
     dispatch(addTeamName(getTeamId?.name));
     getTeamId.users?.map((user) =>
       !team.members.includes(user.id) ? dispatch(addTeamMembers(user.id)) : null
     );
     dispatch(addTeamPermissions(getTeamId?.permissions));
-
-    // if (!loadingTeamId) {
-    //   setFormValue({
-    //     name: getTeamId.name,
-    //     permissions: permissions,
-    //     users_ids: members,
-    //   });
-    // }
   }, [loadingTeamId]);
 
   const handleEditTeam = async (e) => {
     e.preventDefault();
     await editTeam({
       id,
-      ...formValue,
+      name: "",
+      permissions: team.permissions,
+      users_ids: team.members,
     }).unwrap();
     navigate("/teams");
     toast.success("Team updating");
@@ -103,14 +91,14 @@ const EditUser = () => {
             onClick={() => navigate(`/team/permissions/${id}`)}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Permissions ({getTeamId.permissions?.length})
+            Permissions ({team.permissions?.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
           <button
             onClick={() => navigate(`/team/members/${id}`)}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Members ({getTeamId.users?.length})
+            Members ({team.members?.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
         </div>

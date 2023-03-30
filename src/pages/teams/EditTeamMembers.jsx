@@ -1,42 +1,31 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
-import { useGetTeamIdQuery, useGetUsersQuery } from "../../redux";
+import { useGetTeamIdQuery, useGetUsersQuery } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
-import { addMembers, deleteMembers } from "../../redux/slices/membersSlice";
+import { addTeamMembers, deleteTeamMembers } from "redux/slices/teamSlice";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 
-import UserImg from "../../assets/img/user.png";
-
 const EditTeamMembers = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const members = useSelector((state) => state.membersList.members);
+  const members = useSelector((state) => state.team.members);
   const [searchValue, setSearchValue] = React.useState("");
-  const [checked, setChecked] = React.useState([]);
-  const { data: getDataTeamId } = useGetTeamIdQuery(id);
+  const { data: getTeamId } = useGetTeamIdQuery(id);
   const { data: getDataUsers, isLoading: loadingDataUsers } =
     useGetUsersQuery();
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {
-      dispatch(addMembers(id));
+      dispatch(addTeamMembers(id));
     } else {
-      dispatch(deleteMembers(id));
+      dispatch(deleteTeamMembers(id));
     }
   };
-
-  React.useEffect(() => {
-    if (getDataTeamId && getDataTeamId.users.length) {
-      setChecked(getDataTeamId.users.map((user) => user.id));
-    } else {
-      setChecked(false);
-    }
-  }, [getDataTeamId]);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -76,59 +65,57 @@ const EditTeamMembers = () => {
           />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
-            {getDataUsers &&
-              getDataUsers
-                .filter((el) =>
-                  el.username
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase().trim())
-                )
-                .map((user) =>
-                  user.team === null ||
-                  user.team.name === getDataTeamId.name ? (
-                    <div
-                      key={user.id}
-                      className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
+            {getDataUsers
+              ?.filter((el) =>
+                el.username
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase().trim())
+              )
+              .map((user) =>
+                user.team === null || user.team.name === getTeamId.name ? (
+                  <div
+                    key={user.id}
+                    className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
+                  >
+                    <button
+                      onClick={() => handleAddMembers(user.id)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
                     >
-                      <button
-                        onClick={() => handleAddMembers(user.id)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2"
-                      >
-                        {members.includes(user.id) ? (
-                          <AiOutlineCloseCircle className="text-danger text-2xl" />
-                        ) : (
-                          <AiOutlineCheckCircle className="text-gray text-2xl" />
-                        )}
-                      </button>
-                      <div className="flex justify-between items-center">
-                        <div className="lg:flex lg:items-center">
-                          <div className="flex flex-col lg:pr-[40px]">
-                            <div className="flex items-center gap-4">
-                              <img
-                                className="w-[56px] h-[56px]"
-                                src={UserImg}
-                                alt=""
-                              />
-                              <div className="flex flex-col">
-                                <h5 className="text-white mb-[10px]">
-                                  {user.username}
-                                </h5>
-                                <h4 className={`text-xs mb-[6px] text-gray`}>
-                                  Position
-                                </h4>
-                                <h4 className="text-gray text-xs">
-                                  Added: 10.10.2000
-                                </h4>
-                              </div>
+                      {members.includes(user.id) ? (
+                        <AiOutlineCloseCircle className="text-danger text-2xl" />
+                      ) : (
+                        <AiOutlineCheckCircle className="text-gray text-2xl" />
+                      )}
+                    </button>
+                    <div className="flex justify-between items-center">
+                      <div className="lg:flex lg:items-center">
+                        <div className="flex flex-col lg:pr-[40px]">
+                          <div className="flex items-center gap-4">
+                            <img
+                              className="w-[56px] h-[56px]"
+                              src={require("assets/img/user.png")}
+                              alt=""
+                            />
+                            <div className="flex flex-col">
+                              <h5 className="text-white mb-[10px]">
+                                {user.username}
+                              </h5>
+                              <h4 className={`text-xs mb-[6px] text-gray`}>
+                                Position
+                              </h4>
+                              <h4 className="text-gray text-xs">
+                                Added: 10.10.2000
+                              </h4>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  ) : (
-                    false
-                  )
-                )}
+                  </div>
+                ) : (
+                  false
+                )
+              )}
           </div>
         )}
       </div>

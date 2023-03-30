@@ -4,7 +4,8 @@ import {
   useGetPermissionsQuery,
   useGetPermissionsTeamIdQuery,
   useEditTeamPermissionMutation,
-} from "../../redux";
+} from "redux/index";
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import PulseLoader from "react-spinners/PulseLoader";
 
@@ -13,7 +14,9 @@ import { FiSearch } from "react-icons/fi";
 
 const EditTeamPermissions = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { id } = useParams();
+  const permissions = useSelector((state) => state.team.permissions);
   const [checked, setChecked] = React.useState([]);
   const [editTeamPermission] = useEditTeamPermissionMutation();
   const { data: dataPermissions = [], isLoading: loadingDataPermissions } =
