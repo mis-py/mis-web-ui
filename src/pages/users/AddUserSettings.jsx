@@ -15,61 +15,32 @@ const AddUserSettings = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const settings = useSelector((state) => state.user.settings);
-  const { data: getSettings = [], isLoading } = useGetSettingsQuery();
+  const { data: getSettings = [], isLoading: loadingGetSettings } =
+    useGetSettingsQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
-  const [formGlobalValue, setFormGlobalValue] = React.useState([]);
-  const [newGlobalSettings, setNewGlobalSettings] = React.useState([]);
 
-  React.useEffect(() => {
-    const settingsList = getSettings?.reduce(function (prev, curr) {
-      return [
-        ...prev,
-        {
-          id: curr.id,
-          value: settings
-            ?.map((el) => (el.setting_id === curr.id ? el.new_value : ""))
-            .filter((empty) => !!empty)
-            .toString(),
-          key: curr.key,
-          default_value: curr.default_value,
-          is_global: curr.is_global,
-          app: curr.app,
-        },
-      ];
-    }, []);
+  // React.useEffect(() => {
+  //   const settingsList = getSettings?.reduce((prev, curr) => {
+  //     return [
+  //       ...prev,
+  //       {
+  //         id: curr.id,
+  //         value: settings
+  //           ?.map((el) => (el.setting_id === curr.id ? el.new_value : ""))
+  //           .filter((empty) => !!empty)
+  //           .toString(),
+  //         key: curr.key,
+  //         default_value: curr.default_value,
+  //         is_global: curr.is_global,
+  //         app: curr.app,
+  //       },
+  //     ];
+  //   }, []);
 
-    setFormGlobalValue([...settingsList]);
-  }, [isLoading, settings]);
-
-  console.log(newGlobalSettings);
-
-  const pasteDefaultValue = ({ id, default_value }) => {
-    dispatch(addUserSettings({ setting_id: id, new_value: default_value }));
-  };
-
-  const handleFormChange = (e, index) => {
-    let data = [...formGlobalValue];
-    data[index] = { ...data[index] };
-    data[index].value = e.target.value;
-
-    let data2 = [...newGlobalSettings];
-    data2[index] = {
-      setting_id: data[index].id,
-      new_value: data[index].value === "" ? null : data[index].value,
-    };
-    setFormGlobalValue(data);
-    setNewGlobalSettings(data2);
-  };
-
-  const handleSaveSettings = (e) => {
-    e.preventDefault();
-    dispatch(
-      addUserSettings(...newGlobalSettings?.filter((el) => console.log(el)))
-    );
-    navigate(-1);
-    toast.success("User settings saved");
-  };
+  //   dispatch(addUserSettings(settingsList));
+  //   dispatch(addUserSettings(settingsList));
+  // }, [isLoading]);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -96,7 +67,7 @@ const AddUserSettings = () => {
             <FiSearch className="w-12 text-gray" />
           </label>
 
-          {formGlobalValue
+          {getSettings
             ?.filter((el) =>
               el.key.toLowerCase().includes(searchValue.toLowerCase().trim())
             )
@@ -113,17 +84,10 @@ const AddUserSettings = () => {
                   className={`bg-blackSecond  rounded px-3 py-2 focus-visible:outline-none border-none`}
                   name={item.key}
                   id={item.key}
-                  value={item.value}
-                  onChange={(e) => {
-                    handleFormChange(e, index);
-                  }}
                 />
                 <div className="group absolute right-5 bottom-3 cursor-pointer">
                   <Tooltip name={`Paste default value`} />
-                  <BiPaste
-                    onClick={() => pasteDefaultValue(item)}
-                    className="text-gray"
-                  />
+                  <BiPaste className="text-gray" />
                 </div>
               </label>
             ))}
@@ -131,9 +95,7 @@ const AddUserSettings = () => {
       </div>
 
       <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-        <button onClick={handleSaveSettings} className="btn-primary">
-          Save
-        </button>
+        <button className="btn-primary">Save</button>
       </div>
     </div>
   );
