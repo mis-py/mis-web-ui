@@ -19,28 +19,37 @@ const AddUserSettings = () => {
     useGetSettingsQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
+  const [settingsValue, setSettingsValue] = React.useState([]);
 
-  // React.useEffect(() => {
-  //   const settingsList = getSettings?.reduce((prev, curr) => {
-  //     return [
-  //       ...prev,
-  //       {
-  //         id: curr.id,
-  //         value: settings
-  //           ?.map((el) => (el.setting_id === curr.id ? el.new_value : ""))
-  //           .filter((empty) => !!empty)
-  //           .toString(),
-  //         key: curr.key,
-  //         default_value: curr.default_value,
-  //         is_global: curr.is_global,
-  //         app: curr.app,
-  //       },
-  //     ];
-  //   }, []);
+  React.useEffect(() => {
+    const settingList = getSettings.map(({id, key, default_value}) => ({ id, key, default_value }))
 
-  //   dispatch(addUserSettings(settingsList));
-  //   dispatch(addUserSettings(settingsList));
-  // }, [isLoading]);
+    setSettingsValue(settingList)
+  }, [loadingGetSettings])
+
+  console.log(settingsValue);
+
+  const onChangeEventListener = (e) => {
+    const valueFromRedux = settings.find(item => item.id === e.target.id)
+    const newValueForRedux = [...settings]
+
+    if(valueFromRedux) {
+      dispatch(
+        addUserSettings(
+          [
+            ...newValueForRedux.filter(item => item.id !== e.target.id ),
+             { id: e.target.id, value: e.target.value }
+          ]
+        )
+      )
+    } else {
+      dispatch(
+        addUserSettings(
+          [...newValueForRedux, { id: e.target.id, value: e.target.value }]
+        )
+      )
+    }
+  }
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -67,7 +76,7 @@ const AddUserSettings = () => {
             <FiSearch className="w-12 text-gray" />
           </label>
 
-          {getSettings
+          {settingsValue
             ?.filter((el) =>
               el.key.toLowerCase().includes(searchValue.toLowerCase().trim())
             )
@@ -83,7 +92,9 @@ const AddUserSettings = () => {
                   type="text"
                   className={`bg-blackSecond  rounded px-3 py-2 focus-visible:outline-none border-none`}
                   name={item.key}
-                  id={item.key}
+                  id={item.id}
+                  onChange={onChangeEventListener}
+
                 />
                 <div className="group absolute right-5 bottom-3 cursor-pointer">
                   <Tooltip name={`Paste default value`} />
