@@ -20,12 +20,10 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
     e.preventDefault();
     await userLogout();
     toggleDrawer();
-    setTimeout(() => {
-      localStorage.removeItem("my-token");
-      localStorage.removeItem("user_id");
-      localStorage.removeItem("user_name");
-      navigate("/signin");
-    }, 300);
+    localStorage.removeItem("my-token");
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("user_name");
+    navigate("/signin");
   };
 
   return (

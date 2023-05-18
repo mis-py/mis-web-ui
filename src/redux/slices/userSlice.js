@@ -7,6 +7,7 @@ const initialState = {
   position: "",
   permissions: [],
   settings: [],
+  settingsLoaded: false,
 };
 
 export const userSlice = createSlice({
@@ -29,7 +30,18 @@ export const userSlice = createSlice({
       state.permissions = action.payload;
     },
     addUserSettings: (state, action) => {
-      state.settings = action.payload;
+      state.settings = state.settings.map((setting) => {
+        if (setting.setting_id === action.payload.setting_id) {
+          state.settingsLoaded = true;
+          return { ...setting, new_value: action.payload.new_value };
+        }
+        return setting;
+      });
+
+      if (!state.settingsLoaded) {
+        state.settings = [...state.settings, action.payload];
+      }
+      state.settingsLoaded = false;
     },
     resetUser: (state) => {
       state.username = "";
@@ -38,6 +50,7 @@ export const userSlice = createSlice({
       state.position = "";
       state.permissions = [];
       state.settings = [];
+      state.settingsLoaded = false;
     },
   },
 });

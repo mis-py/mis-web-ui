@@ -29,8 +29,8 @@ const Signin = () => {
     }
   }, [location]);
 
-  const onSubmit = (data) => {
-    axios({
+  const onSubmit = async (data) => {
+    await axios({
       method: "post",
       url: `${baseUrl}/auth/token`,
       data: qs.stringify(data),
@@ -38,7 +38,7 @@ const Signin = () => {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
       },
     })
-      .then(function (response) {
+      .then((response) => {
         if (response.status === 200) {
           const token = response.data.access_token;
           const user_id = response.data.user_id;
@@ -48,12 +48,12 @@ const Signin = () => {
           localStorage.setItem("user_name", user_name);
           axios({
             method: "get",
-            url: `${baseUrl}/`,
+            url: `/`,
             headers: {
               Authorization: `Bearer ${localStorage.getItem("my-token")}`,
             },
           })
-            .then(function (response) {
+            .then((response) => {
               if (response.status === 200) {
                 navigate("/");
               }

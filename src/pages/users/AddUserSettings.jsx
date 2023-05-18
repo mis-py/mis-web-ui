@@ -12,44 +12,75 @@ import { FiSearch } from "react-icons/fi";
 import { BiPaste } from "react-icons/bi";
 
 const AddUserSettings = () => {
+  const items = [
+    {
+      id: 1,
+      value: "",
+      key: "key1",
+      defaultValue: "bla bla1",
+    },
+    {
+      id: 2,
+      value: "",
+      key: "key2",
+      defaultValue: "tra ta2",
+    },
+    {
+      id: 3,
+      value: "",
+      key: "key3",
+      defaultValue: "chece ceh3",
+    },
+  ];
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const settings = useSelector((state) => state.user.settings);
-  const { data: getSettings = [], isLoading: loadingGetSettings } =
-    useGetSettingsQuery();
+  // const { data: getSettings = [], isLoading: loadingGetSettings } =
+  //   useGetSettingsQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
   const [settingsValue, setSettingsValue] = React.useState([]);
 
-  React.useEffect(() => {
-    const settingList = getSettings.map(({id, key, default_value}) => ({ id, key, default_value }))
-
-    setSettingsValue(settingList)
-  }, [loadingGetSettings])
-
-  console.log(settingsValue);
-
-  const onChangeEventListener = (e) => {
-    const valueFromRedux = settings.find(item => item.id === e.target.id)
-    const newValueForRedux = [...settings]
-
-    if(valueFromRedux) {
-      dispatch(
-        addUserSettings(
-          [
-            ...newValueForRedux.filter(item => item.id !== e.target.id ),
-             { id: e.target.id, value: e.target.value }
-          ]
-        )
-      )
-    } else {
-      dispatch(
-        addUserSettings(
-          [...newValueForRedux, { id: e.target.id, value: e.target.value }]
-        )
-      )
+  settings.map((el) => {
+    for (let _item in items) {
+      if (items[_item].id == el.setting_id) {
+        items[_item].value = el.new_value;
+        return;
+      }
     }
-  }
+  });
+
+  React.useEffect(() => {
+    setSettingsValue(items);
+
+    settings.map((item) => {
+      const newSettings = settingsValue.find((el) => el.id === item.id);
+
+      if (newSettings && !settingsValue.includes(newSettings)) {
+        setSettingsValue([...settingsValue, newSettings]);
+      }
+    });
+  }, [settings]);
+
+  const handleNameChange = (index, event) => {
+    const { value } = event.target;
+    setSettingsValue((prevItems) => {
+      const updatedItems = [...prevItems];
+      updatedItems[index].value = value;
+      return updatedItems;
+    });
+  };
+
+  const saveNewSettings = () => {
+    settingsValue.map((item) => {
+      if (item.value.trim().length !== 0) {
+        dispatch(
+          addUserSettings({ setting_id: item.id, new_value: item.value })
+        );
+      }
+    });
+  };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -93,8 +124,8 @@ const AddUserSettings = () => {
                   className={`bg-blackSecond  rounded px-3 py-2 focus-visible:outline-none border-none`}
                   name={item.key}
                   id={item.id}
-                  onChange={onChangeEventListener}
-
+                  value={item.value}
+                  onChange={(event) => handleNameChange(index, event)}
                 />
                 <div className="group absolute right-5 bottom-3 cursor-pointer">
                   <Tooltip name={`Paste default value`} />
@@ -106,7 +137,9 @@ const AddUserSettings = () => {
       </div>
 
       <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-        <button className="btn-primary">Save</button>
+        <button onClick={saveNewSettings} className="btn-primary">
+          Save
+        </button>
       </div>
     </div>
   );

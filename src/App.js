@@ -2,14 +2,9 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import PulseLoader from "react-spinners/PulseLoader";
-import Drawer, {
-  DrawerContainer,
-  MainContentContainer,
-} from "react-swipeable-drawer";
 
 import MainLayout from "layouts/MainLayout";
 import LoginLayout from "layouts/LoginLayout";
-import Sidebar from "components/Sidebar";
 import Signin from "pages/Signin";
 import Home from "pages/Home";
 import Users from "pages/users/index";
@@ -55,138 +50,83 @@ function App() {
   return (
     <div className="relative">
       <ToastContainer theme="dark" />
-      <Drawer position="left" size={80}>
-        {({
-          position,
-          swiping,
-          translation,
-          mainContentScroll,
-          toggleDrawer,
-          handleTouchStart,
-          handleTouchMove,
-          handleTouchEnd,
-        }) => (
-          <div>
-            <DrawerContainer
-              position={position}
-              size={100}
-              swiping={swiping}
-              translation={translation}
-              toggleDrawer={toggleDrawer}
-              handleTouchStart={handleTouchStart}
-              handleTouchMove={handleTouchMove}
-              handleTouchEnd={handleTouchEnd}
-              drawerContent={<Sidebar toggleDrawer={toggleDrawer} />}
+      <React.Suspense
+        fallback={
+          <PulseLoader
+            size={30}
+            cssOverride={{
+              height: "100vh",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            color="#757575"
+          />
+        }
+      >
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<Home />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/add-user" element={<AddUser />} />
+            <Route
+              path="/add-user/permissions"
+              element={<AddUserPermissions />}
             />
-            <MainContentContainer
-              translation={translation}
-              mainContentScroll={mainContentScroll}
-            >
-              <React.Suspense
-                fallback={
-                  <PulseLoader
-                    size={30}
-                    cssOverride={{
-                      height: "100vh",
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                    color="#757575"
-                  />
-                }
-              >
-                <Routes>
-                  <Route path="/" element={<MainLayout />}>
-                    <Route index element={<Home />} />
-                    <Route path="/users" element={<Users />} />
-                    <Route path="/add-user" element={<AddUser />} />
-                    <Route
-                      path="/add-user/permissions"
-                      element={<AddUserPermissions />}
-                    />
-                    <Route path="/users/:id" element={<EditUser />} />
-                    <Route
-                      path="/user/permissions/:id"
-                      element={<EditUserPermissions />}
-                    />
-                    <Route
-                      path="/add-user/settings"
-                      element={<AddUserSettings />}
-                    />
-                    <Route
-                      path="/user/settings/:id"
-                      element={<EditUserSettings />}
-                    />
-                    <Route path="/profile/:id" element={<ProfileUser />} />
-                    <Route path="/settings/:id" element={<SettingsUser />} />
-                    <Route path="/teams" element={<Teams />} />
-                    <Route path="/add-team" element={<AddTeam />} />
-                    <Route path="/teams/:id" element={<EditTeam />} />
-                    <Route path="/groups" element={<Groups />} />
-                    <Route path="/add-group" element={<AddGroup />} />
-                    <Route
-                      path="/group/members/:id"
-                      element={<EditMembersGroup />}
-                    />
-                    <Route
-                      path="/group/objects/:id"
-                      element={<EditObjectsGroup />}
-                    />
-                    <Route
-                      path="/team/permissions/:id"
-                      element={<EditTeamPermissions />}
-                    />
-                    <Route
-                      path="/team/members/:id"
-                      element={<EditTeamMembers />}
-                    />
-                    <Route
-                      path="/add-team/members"
-                      element={<AddTeamMembers />}
-                    />
-                    <Route
-                      path="/add-team/permissions"
-                      element={<AddTeamPermissions />}
-                    />
-                    <Route
-                      path="/team/settings/:id"
-                      element={<SettingsTeam />}
-                    />
-                    <Route path="/apps" element={<Apps />} />
-                    <Route path="/apps/clone" element={<CloneApp />} />
-                    <Route path="/apps/logs/:id" element={<LogsApp />} />
-                    <Route
-                      path="/apps/settings/:id"
-                      element={<SettingsApp />}
-                    />
-                    <Route
-                      path="/apps/settings/manage/:id"
-                      element={<ManageGroupApp />}
-                    />
-                    <Route
-                      path="/apps/settings/manage/members/:id"
-                      element={<ManageMembersApp />}
-                    />
-                    <Route path="/webcat" element={<Webcat />} />
-                    <Route path="/webcat/:id" element={<EditWebcat />} />
-                    <Route path="/tasks" element={<Tasks/>}/>
-                    <Route path="/consumers" element={<Consumers/>}/>
-                    <Route path="/timer" element={<Timer/>}/>
-                  </Route>
-                  <Route path="/signin" element={<LoginLayout />}>
-                    <Route index element={<Signin />} />
-                  </Route>
-                  <Route element={<NotFoundLayout />}>
-                    <Route path="*" element={<NotFound />} />
-                  </Route>
-                </Routes>
-              </React.Suspense>
-            </MainContentContainer>
-          </div>
-        )}
-      </Drawer>
+            <Route path="/users/:id" element={<EditUser />} />
+            <Route
+              path="/user/permissions/:id"
+              element={<EditUserPermissions />}
+            />
+            <Route path="/add-user/settings" element={<AddUserSettings />} />
+            <Route path="/user/settings/:id" element={<EditUserSettings />} />
+            <Route path="/profile/:id" element={<ProfileUser />} />
+            <Route path="/settings/:id" element={<SettingsUser />} />
+            <Route path="/teams" element={<Teams />} />
+            <Route path="/add-team" element={<AddTeam />} />
+            <Route path="/teams/:id" element={<EditTeam />} />
+            <Route path="/groups" element={<Groups />} />
+            <Route path="/add-group" element={<AddGroup />} />
+            <Route path="/group/members/:id" element={<EditMembersGroup />} />
+            <Route path="/group/objects/:id" element={<EditObjectsGroup />} />
+            <Route
+              path="/team/permissions/:id"
+              element={<EditTeamPermissions />}
+            />
+            <Route path="/team/members/:id" element={<EditTeamMembers />} />
+            <Route path="/add-team/members" element={<AddTeamMembers />} />
+            <Route
+              path="/add-team/permissions"
+              element={<AddTeamPermissions />}
+            />
+            <Route path="/team/settings/:id" element={<SettingsTeam />} />
+            <Route path="/apps" element={<Apps />} />
+            <Route path="/apps/clone" element={<CloneApp />} />
+            <Route path="/apps/logs/:id" element={<LogsApp />} />
+            <Route path="/apps/settings/:id" element={<SettingsApp />} />
+            <Route
+              path="/apps/settings/manage/:id"
+              element={<ManageGroupApp />}
+            />
+            <Route
+              path="/apps/settings/manage/members/:id"
+              element={<ManageMembersApp />}
+            />
+            <Route path="/webcat" element={<Webcat />} />
+            <Route path="/webcat/:id" element={<EditWebcat />} />
+            <Route path="/tasks" element={<Tasks />} />
+            <Route path="/consumers" element={<Consumers />} />
+            <Route path="/timer" element={<Timer />} />
+          </Route>
+          <Route path="/signin" element={<LoginLayout />}>
+            <Route index element={<Signin />} />
+          </Route>
+          <Route element={<NotFoundLayout />}>
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </React.Suspense>
     </div>
   );
 }

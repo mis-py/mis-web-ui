@@ -2,7 +2,11 @@ import React from "react";
 import useOutsideClick from "hooks/useOutsideClick";
 import PulseLoader from "react-spinners/PulseLoader";
 import { toast } from "react-toastify";
-import { useGetUsersQuery, useDeleteUserMutation } from "redux/index";
+import {
+  useGetUsersQuery,
+  useDeleteUserMutation,
+  useGetPermissionsUserIdQuery,
+} from "redux/index";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
@@ -23,6 +27,8 @@ const Users = () => {
     isLoading: loadingGetUser,
     error: errorGetUsers,
   } = useGetUsersQuery();
+  const { data: getPermissionsUser, isLoading: loadingPermissionsUser } =
+    useGetPermissionsUserIdQuery(localStorage.getItem("user_id"));
 
   const [deleteUser] = useDeleteUserMutation();
 
@@ -99,14 +105,22 @@ const Users = () => {
               />
             </div>
           </div>
-          <AdminWrapper>
+          {/* <AdminWrapper> */}
+          {!loadingPermissionsUser &&
+          getPermissionsUser &&
+          getPermissionsUser[0].permission.scope === "core:sudo" ? (
             <Link
               to="/add-user"
               className="px-3 flex items-center justify-center bg-blackSecond text-gray rounded-lg"
             >
               <FiUserPlus />
             </Link>
-          </AdminWrapper>
+          ) : false ? (
+            getPermissionsUser === undefined
+          ) : (
+            false
+          )}
+          {/* </AdminWrapper> */}
         </div>
 
         <h3 className="h3 mb-5">Users ({getUsers?.length})</h3>
@@ -141,14 +155,14 @@ const Users = () => {
                         : "opacity-0 invisible"
                     } duration-300 absolute top-1 w-[175px] z-10 right-1 bg-backGround shadow lg:top-3`}
                   >
-                    <AdminWrapper>
-                      <div
-                        onClick={(e) => navigate(`/users/${user.id}`)}
-                        className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
-                      >
-                        Edit
-                      </div>
-                    </AdminWrapper>
+                    {/* <AdminWrapper> */}
+                    <div
+                      onClick={(e) => navigate(`/users/${user.id}`)}
+                      className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                    >
+                      Edit
+                    </div>
+                    {/* </AdminWrapper> */}
                     <div
                       onClick={() => handleDeleteUser(user.id)}
                       className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
@@ -185,15 +199,15 @@ const Users = () => {
                         </div>
                       </div>
                     </div>
-                    <AdminWrapper>
-                      <BiDotsVerticalRounded
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleEdit(index);
-                        }}
-                        className="text-3xl text-gray cursor-pointer"
-                      />
-                    </AdminWrapper>
+                    {/* <AdminWrapper> */}
+                    <BiDotsVerticalRounded
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleEdit(index);
+                      }}
+                      className="text-3xl text-gray cursor-pointer"
+                    />
+                    {/* </AdminWrapper> */}
                   </div>
                 </div>
               ))}

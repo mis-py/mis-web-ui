@@ -75,7 +75,10 @@ const AddTeamPermissions = () => {
                     .includes(searchValue.toLowerCase().trim())
                 )
                 .map((item) => (
-                  <div key={item.id} className="flex flex-col w-full sm:w-[calc(50%_-_8px)]">
+                  <div
+                    key={item.id}
+                    className="flex flex-col w-full sm:w-[calc(50%_-_8px)]"
+                  >
                     {item.app.name}
                     <label
                       className={`${
