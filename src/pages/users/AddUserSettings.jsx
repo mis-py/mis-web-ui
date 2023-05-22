@@ -36,12 +36,6 @@ const AddUserSettings = () => {
     dispatch(addUserSettings({ id, value }));
   };
 
-  const handleInputDefaultValue = (e, id) => {
-    console.log(e.target);
-    // const value = e.target.value;
-    // dispatch(addUserSettings({ id, value }));
-  }
-
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
