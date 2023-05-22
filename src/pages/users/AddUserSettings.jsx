@@ -1,9 +1,14 @@
 import React from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetSettingsQuery } from "redux/index";
-import { addUserSettings } from "redux/slices/userSlice";
+import {
+  addUserSettings,
+  renderSettings,
+  addUserDefaultSettings,
+  resetSettings,
+} from "redux/slices/userSlice";
 
 import Tooltip from "components/Tooltip";
 
@@ -12,80 +17,39 @@ import { FiSearch } from "react-icons/fi";
 import { BiPaste } from "react-icons/bi";
 
 const AddUserSettings = () => {
-  const items = [
-    {
-      id: 1,
-      value: "",
-      key: "key1",
-      defaultValue: "bla bla1",
-    },
-    {
-      id: 2,
-      value: "",
-      key: "key2",
-      defaultValue: "tra ta2",
-    },
-    {
-      id: 3,
-      value: "",
-      key: "key3",
-      defaultValue: "chece ceh3",
-    },
-  ];
-
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const settings = useSelector((state) => state.user.settings);
-  // const { data: getSettings = [], isLoading: loadingGetSettings } =
-  //   useGetSettingsQuery();
+  const { data: getSettings = [], isLoading: loadingGetSettings } =
+    useGetSettingsQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
-  const [settingsValue, setSettingsValue] = React.useState([]);
-
-  settings.map((el) => {
-    for (let _item in items) {
-      if (items[_item].id == el.setting_id) {
-        items[_item].value = el.new_value;
-        return;
-      }
-    }
-  });
 
   React.useEffect(() => {
-    setSettingsValue(items);
+    if (settings.length === 0) {
+      dispatch(renderSettings(getSettings));
+    }
+  }, [loadingGetSettings]);
 
-    settings.map((item) => {
-      const newSettings = settingsValue.find((el) => el.id === item.id);
-
-      if (newSettings && !settingsValue.includes(newSettings)) {
-        setSettingsValue([...settingsValue, newSettings]);
-      }
-    });
-  }, [settings]);
-
-  const handleNameChange = (index, event) => {
-    const { value } = event.target;
-    setSettingsValue((prevItems) => {
-      const updatedItems = [...prevItems];
-      updatedItems[index].value = value;
-      return updatedItems;
-    });
+  const handleInputChange = (e, id) => {
+    const value = e.target.value;
+    dispatch(addUserSettings({ id, value }));
   };
 
-  const saveNewSettings = () => {
-    settingsValue.map((item) => {
-      if (item.value.trim().length !== 0) {
-        dispatch(
-          addUserSettings({ setting_id: item.id, new_value: item.value })
-        );
-      }
-    });
-  };
+  const handleInputDefaultValue = (e, id) => {
+    console.log(e.target);
+    // const value = e.target.value;
+    // dispatch(addUserSettings({ id, value }));
+  }
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
+        <Link
+          onClick={() => dispatch(resetSettings())}
+          to={-1}
+          className="flex items-center text-gray"
+        >
           <div className="flex mr-2">
             <IoIosArrowBack />
           </div>
@@ -107,7 +71,7 @@ const AddUserSettings = () => {
             <FiSearch className="w-12 text-gray" />
           </label>
 
-          {settingsValue
+          {settings
             ?.filter((el) =>
               el.key.toLowerCase().includes(searchValue.toLowerCase().trim())
             )
@@ -125,11 +89,11 @@ const AddUserSettings = () => {
                   name={item.key}
                   id={item.id}
                   value={item.value}
-                  onChange={(event) => handleNameChange(index, event)}
+                  onChange={(e) => handleInputChange(e, item.id)}
                 />
                 <div className="group absolute right-5 bottom-3 cursor-pointer">
                   <Tooltip name={`Paste default value`} />
-                  <BiPaste className="text-gray" />
+                  <BiPaste onClick={() => dispatch(addUserDefaultSettings(item))} className="text-gray" />
                 </div>
               </label>
             ))}
@@ -137,7 +101,13 @@ const AddUserSettings = () => {
       </div>
 
       <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-        <button onClick={saveNewSettings} className="btn-primary">
+        <button
+          onClick={() => {
+            navigate(-1);
+            toast.success("Settings have been saved");
+          }}
+          className="btn-primary"
+        >
           Save
         </button>
       </div>

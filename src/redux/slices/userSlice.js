@@ -7,7 +7,6 @@ const initialState = {
   position: "",
   permissions: [],
   settings: [],
-  settingsLoaded: false,
 };
 
 export const userSlice = createSlice({
@@ -29,19 +28,24 @@ export const userSlice = createSlice({
     addUserPermissions: (state, action) => {
       state.permissions = action.payload;
     },
+    renderSettings: (state, action) => {
+      state.settings = action.payload.map((item) => ({ ...item, value: "" }));
+    },
     addUserSettings: (state, action) => {
-      state.settings = state.settings.map((setting) => {
-        if (setting.setting_id === action.payload.setting_id) {
-          state.settingsLoaded = true;
-          return { ...setting, new_value: action.payload.new_value };
-        }
-        return setting;
-      });
-
-      if (!state.settingsLoaded) {
-        state.settings = [...state.settings, action.payload];
+      const { id, value } = action.payload;
+      const item = state.settings.find((obj) => obj.id === id);
+      if (item) {
+        item.value = value;
       }
-      state.settingsLoaded = false;
+    },
+    addUserDefaultSettings: (state, action) => {
+      const item = state.settings.find((obj) => obj.id === action.payload.id);
+      if (item) {
+        item.value = action.payload.default_value;
+      }
+    },
+    resetSettings: (state) => {
+      state.settings = [];
     },
     resetUser: (state) => {
       state.username = "";
@@ -50,7 +54,6 @@ export const userSlice = createSlice({
       state.position = "";
       state.permissions = [];
       state.settings = [];
-      state.settingsLoaded = false;
     },
   },
 });
@@ -61,8 +64,17 @@ export const {
   addUserTeam,
   addUserPosition,
   addUserPermissions,
+  renderSettings,
   addUserSettings,
+  addUserDefaultSettings,
+  resetSettings,
   resetUser,
 } = userSlice.actions;
 
 export default userSlice.reducer;
+
+export const selectMyArray = (state) => state.userSlice.settings;
+export const selectInputById = (id) => (state) => {
+  const item = state.userSlice.settings.find((obj) => obj.id === id);
+  return item ? item.value : "";
+};

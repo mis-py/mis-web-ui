@@ -164,7 +164,7 @@ const AddUser = () => {
             }}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Settings ({user.settings.length})
+            Settings ({user.settings.filter((el) => el.value !== "" && el).length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
         </div>
