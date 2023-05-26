@@ -5,6 +5,7 @@ import Drawer, {
   DrawerContainer,
   MainContentContainer,
 } from "react-swipeable-drawer";
+import axios from "axios";
 
 import { useGetPermissionsUserIdQuery } from "redux/index";
 
@@ -44,7 +45,6 @@ const MainLayout = () => {
   //     navigate("/");
   //   }
   // }, [location, loadingPermissionsUser]);
-
   return (
     <>
       <SidebarDesktop />

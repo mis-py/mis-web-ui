@@ -14,7 +14,7 @@ export const modulesApi = createApi({
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result) =>
@@ -31,7 +31,7 @@ export const modulesApi = createApi({
         method: "PUT",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Modules", id }],
@@ -42,7 +42,7 @@ export const modulesApi = createApi({
         method: "PUT",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Modules", id }],
@@ -54,7 +54,7 @@ export const modulesApi = createApi({
         credentials: "include",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Modules", id }],

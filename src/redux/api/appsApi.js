@@ -13,7 +13,7 @@ export const appsApi = createApi({
         url: `/modules/`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result) =>
@@ -30,7 +30,7 @@ export const appsApi = createApi({
         method: "POST",
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body,
       }),
@@ -42,7 +42,7 @@ export const appsApi = createApi({
         method: "POST",
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: rest,
       }),

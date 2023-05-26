@@ -13,7 +13,7 @@ export const teamsApi = createApi({
         url: `/teams/`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result) =>
@@ -34,7 +34,7 @@ export const teamsApi = createApi({
         method: "POST",
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body,
       }),
@@ -46,7 +46,7 @@ export const teamsApi = createApi({
         method: "PUT",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: rest,
       }),
@@ -58,7 +58,7 @@ export const teamsApi = createApi({
         method: "DELETE",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       invalidatesTags: [{ type: "Teams", id: "LIST" }],

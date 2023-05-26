@@ -14,7 +14,7 @@ export const permissionsApi = createApi({
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: ["Permissions"],
@@ -24,7 +24,7 @@ export const permissionsApi = createApi({
         url: `/permissions/user/${id}`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result, error, id) => [{ type: "Permissions", id }],
@@ -34,7 +34,7 @@ export const permissionsApi = createApi({
         url: `/permissions/team/${id}`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result, error, id) => [{ type: "Permissions", id }],
@@ -46,7 +46,7 @@ export const permissionsApi = createApi({
         credentials: "include",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: rest,
       }),
@@ -59,7 +59,7 @@ export const permissionsApi = createApi({
         credentials: "include",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: rest,
       }),

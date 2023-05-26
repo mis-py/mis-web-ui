@@ -10,12 +10,13 @@ import { modulesApi } from "./api/modulesApi";
 import { settingsApi } from "./api/settingsApi";
 
 //modules
-import {webcatApi} from "./api/modulesApi/webcatApi";
-import {consumersApi} from "./api/modulesApi/consumersApi";
-import {tasksApi} from "./api/modulesApi/tasksApi";
-import {timerApi} from "./api/modulesApi/timerApi";
+import { webcatApi } from "./api/modulesApi/webcatApi";
+import { consumersApi } from "./api/modulesApi/consumersApi";
+import { tasksApi } from "./api/modulesApi/tasksApi";
+import { timerApi } from "./api/modulesApi/timerApi";
 
 //slices
+import { authReducer } from "./slices/authSlice";
 import userSlice from "./slices/userSlice";
 import teamSlice from "./slices/teamSlice";
 import editTeamPermissionsSlice from "./slices/editTeamPermissionsSlice";
@@ -40,6 +41,7 @@ export const store = configureStore({
     [timerApi.reducerPath]: timerApi.reducer,
 
     //slices
+    auth: authReducer,
     user: userSlice,
     team: teamSlice,
     editTeamPermissions: editTeamPermissionsSlice,

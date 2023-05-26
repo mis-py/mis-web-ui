@@ -18,9 +18,9 @@ const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
 
   const handleLogOut = async (e) => {
     await userLogout();
-    localStorage.removeItem("my-token");
+    localStorage.removeItem("token");
     localStorage.removeItem("user_id");
-    localStorage.removeItem("user_name");
+    localStorage.removeItem("username");
     navigate("/signin");
   };
 

@@ -14,7 +14,7 @@ export const consumersApi = createApi({
                 method: "GET",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             providesTags: (result, error, id) => [{ type: "Consumers", id }],
@@ -25,7 +25,7 @@ export const consumersApi = createApi({
                 method: "POST",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             invalidatesTags: [{ type: "Consumers", id: "LIST" }],  
@@ -36,7 +36,7 @@ export const consumersApi = createApi({
                 method: "POST",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             invalidatesTags: [{ type: "Consumers", id: "LIST" }], 

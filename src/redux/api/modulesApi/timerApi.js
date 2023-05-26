@@ -14,7 +14,7 @@ export const timerApi = createApi({
         method: "POST",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body,
       }),

@@ -14,7 +14,7 @@ export const webcatApi = createApi({
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result, error, id) => [{ type: "Webcat", id }],
@@ -25,7 +25,7 @@ export const webcatApi = createApi({
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result, error, id) => [{ type: "Webcat", id }],
@@ -36,7 +36,7 @@ export const webcatApi = createApi({
         method: "POST",
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       invalidatesTags: [{ type: "Webcat", id: "LIST" }],
@@ -47,7 +47,7 @@ export const webcatApi = createApi({
         method: "POST",
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       invalidatesTags: [{ type: "Webcat", id: "LIST" }],

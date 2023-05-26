@@ -14,7 +14,7 @@ export const tasksApi = createApi({
                 method: "GET",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             providesTags: (result, error, id) => [{ type: "Tasks", id }],
@@ -25,7 +25,7 @@ export const tasksApi = createApi({
                 method: "POST",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }],  
@@ -36,7 +36,7 @@ export const tasksApi = createApi({
                 method: "POST",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }], 
@@ -47,7 +47,7 @@ export const tasksApi = createApi({
                 method: "POST",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }], 

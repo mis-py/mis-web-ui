@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import PulseLoader from "react-spinners/PulseLoader";
 
@@ -45,7 +45,17 @@ const Consumers = React.lazy(() => import("modules/consumers"));
 const Timer = React.lazy(() => import("modules/timer"));
 
 function App() {
-  // const { data: getModules = [] } = useGetModulesQuery();
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (localStorage.getItem("token") !== null) {
+      navigate("/");
+    } else {
+      localStorage.removeItem("user_id");
+      localStorage.removeItem("username");
+      navigate("/signin");
+    }
+  }, []);
 
   return (
     <div className="relative">

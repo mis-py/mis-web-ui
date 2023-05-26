@@ -14,7 +14,7 @@ export const settingsApi = createApi({
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result) =>
@@ -31,7 +31,7 @@ export const settingsApi = createApi({
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result) =>
@@ -48,7 +48,7 @@ export const settingsApi = createApi({
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result, error, id) => [{ type: "Settings", id }],
@@ -59,7 +59,7 @@ export const settingsApi = createApi({
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result, error, id) => [{ type: "Settings", id }],
@@ -70,7 +70,7 @@ export const settingsApi = createApi({
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result, error, id) => [{ type: "Settings", id }],
@@ -81,7 +81,7 @@ export const settingsApi = createApi({
         method: "PUT",
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: data.body,
       }),
@@ -93,7 +93,7 @@ export const settingsApi = createApi({
         method: "PUT",
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("my-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: data.body,
       }),

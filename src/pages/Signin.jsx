@@ -1,70 +1,47 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAuth, selectIsAuth } from "redux/slices/authSlice";
 import { toast } from "react-toastify";
-import axios from "axios";
-import qs from "qs";
 
 import { AiOutlineEye } from "react-icons/ai";
-
-import { baseUrl } from "config/variables";
 
 const Signin = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
+  const isAuth = useSelector(selectIsAuth);
   const [showPassword, setShowPassword] = React.useState("password");
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
-  } = useForm();
-
-  React.useEffect(() => {
-    if (
-      localStorage.getItem("my-token") !== null &&
-      location.pathname === "/singin"
-    ) {
-      navigate("/");
-    }
-  }, [location]);
+  } = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
 
   const onSubmit = async (data) => {
-    await axios({
-      method: "post",
-      url: `${baseUrl}/auth/token`,
-      data: qs.stringify(data),
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          const token = response.data.access_token;
-          const user_id = response.data.user_id;
-          const user_name = response.data.username;
-          localStorage.setItem("my-token", token);
-          localStorage.setItem("user_id", user_id);
-          localStorage.setItem("user_name", user_name);
-          axios({
-            method: "get",
-            url: `/`,
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("my-token")}`,
-            },
-          })
-            .then((response) => {
-              if (response.status === 200) {
-                navigate("/");
-              }
-            })
-            .catch(function (response) {});
-        }
-      })
-      .catch(function (response) {
-        toast.error("Incorrect login or password!");
-      });
+    const values = await dispatch(fetchAuth(data));
+
+    if (!values.payload) {
+      toast.error("Incorrect login or password!");
+    }
+
+    if (values.payload.access_token) {
+      window.localStorage.setItem("token", values.payload.access_token);
+      window.localStorage.setItem("user_id", values.payload.user_id);
+      window.localStorage.setItem("username", values.payload.username);
+    }
   };
+
+  if (isAuth) {
+    return <Navigate to="/" />;
+  }
 
   const toggleShowPassword = (e) => {
     e.preventDefault();
