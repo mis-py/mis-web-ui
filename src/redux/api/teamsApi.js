@@ -25,7 +25,13 @@ export const teamsApi = createApi({
           : [{ type: "Teams", id: "LIST" }],
     }),
     getTeamId: build.query({
-      query: (id) => `/teams/${id}`,
+      query: (id) => ({
+        url: `/teams/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }),
       providesTags: (result, error, id) => [{ type: "Teams", id }],
     }),
     addTeam: build.mutation({
