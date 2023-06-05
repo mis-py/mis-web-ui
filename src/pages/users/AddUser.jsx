@@ -73,6 +73,7 @@ const AddUser = () => {
           username: user.username,
           password: user.password,
           team_id: user.team === null ? null : user.team.value,
+          settings: user.settings.map((el) => el.value !== "" && {setting_id: el.id, new_value: el.value}).filter((item) => item)
         }).unwrap();
         navigate("/users");
         toast.success("Added new user");
@@ -126,7 +127,9 @@ const AddUser = () => {
               isClearable
               placeholder="The team is not selected"
               id="team"
-              value={user.team === null ? 0 : user.team}
+              value={
+                user.team === null ? 0 : user.team
+              }
               onChange={(choice) =>
                 dispatch(addUserTeam(choice !== null ? choice : null))
               }
@@ -164,7 +167,7 @@ const AddUser = () => {
             }}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Settings ({user.settings.filter((el) => el.value !== "" && el).length})
+            Settings ({user.settings.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
         </div>
