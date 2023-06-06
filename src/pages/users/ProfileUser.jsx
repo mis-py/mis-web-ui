@@ -14,7 +14,7 @@ import Tooltip from "components/Tooltip";
 
 import { BiPaste } from "react-icons/bi";
 import { IoIosArrowBack } from "react-icons/io";
-
+import USER from "assets/img/user.png";
 import { currentUserId } from "config/variables";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
@@ -98,7 +98,7 @@ const ProfileUser = () => {
 
         <img
           className="w-[64px] h-[64px]"
-          src={require("assets/img/user.png")}
+          src={USER}
           alt=""
         />
 

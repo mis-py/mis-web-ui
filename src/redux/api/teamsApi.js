@@ -29,6 +29,7 @@ export const teamsApi = createApi({
         url: `/teams/${id}`,
         method: "GET",
         headers: {
+          "content-type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
