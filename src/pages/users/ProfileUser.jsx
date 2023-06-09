@@ -32,8 +32,6 @@ const ProfileUser = () => {
 
   const [settingsValue, setSettingsValue] = React.useState([]);
 
-  console.log(settingsValue);
-
   React.useEffect(() => {
     if (!location.pathname.includes(currentUserId)) {
       navigate(`/profile/${currentUserId}`);
