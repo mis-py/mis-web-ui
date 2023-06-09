@@ -23,7 +23,8 @@ const AddUserPermissions = () => {
     navigate(-1);
     toast.success("User permissions saved");
   };
-
+  
+  
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
@@ -38,6 +39,7 @@ const AddUserPermissions = () => {
           <label
             className={`flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7`}
             htmlFor="search"
+            
           >
             <input
               className={`w-full bg-transparent border-none focus:shadow-none focus:ring-0 `}
@@ -67,18 +69,14 @@ const AddUserPermissions = () => {
                     .toLowerCase()
                     .includes(searchValue.toLowerCase().trim())
                 )
-                .map((item, index) => (
-                  <div
-                    key={item.id}
-                    className="flex flex-col w-full sm:w-[calc(50%_-_8px)]"
-                  >
-                    {item.app.name}
+                  .map((item, index) => (
                     <label
+                      key={item.id}
                       className={`${
                         checked.includes(item.scope)
                           ? "border-primary"
                           : "border-blackSecond"
-                      } flex border duration-300 items-center gap-2 rounded bg-blackSecond p-5 cursor-pointer text-gray body-2`}
+                      } flex border duration-300 items-center gap-2 rounded w-full bg-blackSecond p-5 cursor-pointer text-gray body-2 sm:w-[calc(50%_-_8px)]`}
                       htmlFor={item.name}
                     >
                       <input
@@ -87,8 +85,8 @@ const AddUserPermissions = () => {
                         id={item.name}
                         checked={
                           checked.length === []
-                            ? setChecked([])
-                            : checked.includes(item.scope)
+                          ? setChecked ([])
+                          : checked.includes(item.scope)
                         }
                         onChange={(e) => {
                           if (e.target.checked) {
@@ -99,20 +97,22 @@ const AddUserPermissions = () => {
                             );
                           }
                         }}
-                        className="bg-transparent cursor-pointer 
-                        w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
+                        className="bg-transparent cursor-pointer
+    w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
                       />
                       {item.name} ({item.scope})
                     </label>
-                  </div>
-                ))}
+
+                  ))}
             </div>
           )}
         </form>
+        <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
+          <button onClick={handleUserPermissions} className="btn-primary">
+          Save
+        </button>
+        </div>
       </div>
-      <button onClick={handleUserPermissions} className="btn-primary">
-        Save
-      </button>
     </div>
   );
 };

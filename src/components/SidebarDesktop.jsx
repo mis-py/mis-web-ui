@@ -9,14 +9,22 @@ import { IoIosArrowForward } from "react-icons/io";
 import { RiAppsLine } from "react-icons/ri";
 
 import ProfilePopupDesktop from "components/ProfilePopupDesktop";
+import Notifications from "./Notifications";
 
 import { sidebar } from "config/variables";
+
 
 const SidebarDesktop = () => {
   const [userPopup, setUserPopup] = React.useState(false);
   const [showListApps, setShowListApps] = React.useState(false);
+  const [isPopupOpen, setIsPopupOpen] = React.useState(false);
+  const [notificationsCount, setNotificationsCount] = React.useState(0);
 
   const { data: getModules = [] } = useGetModulesQuery();
+  const handleButtonClick = () => {
+    setIsPopupOpen(!isPopupOpen);
+    setNotificationsCount(0);
+  };
 
   return (
     <>
@@ -38,13 +46,20 @@ const SidebarDesktop = () => {
                 />
               </div>
               <div className="flex gap-[10px]">
-                <button className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond">
-                  <FiBell />
-                </button>
+
+                <div className="flex">
+                  <button onClick={() => setIsPopupOpen(!isPopupOpen)} className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond">
+                    <FiBell />
+                  </button>
+                  <div className={`${isPopupOpen ? "flex" : "hidden"} absolute px-7 py-2 block text-gray duration-300 cursor-pointer bg-blackSecond hover:bg-blackSecond hover:text-primary`}>
+                    <Notifications isPopupOpen={isPopupOpen} setIsPopupOpen={setIsPopupOpen} notificationsCount={notificationsCount} setNotificationsCount={setNotificationsCount} className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"/>
+                  </div>
+                </div>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     setUserPopup(!userPopup);
+
                   }}
                   className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond"
                 >
@@ -90,9 +105,8 @@ const SidebarDesktop = () => {
               />
             </div>
             <div
-              className={`${
-                showListApps ? "opacity-100 visible" : "opacity-0 invisible"
-              } flex flex-col duration-300`}
+              className={`${showListApps ? "opacity-100 visible" : "opacity-0 invisible"
+                } flex flex-col duration-300`}
             >
               {getModules?.map(
                 (module) =>

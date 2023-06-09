@@ -55,7 +55,7 @@ const EditUserPermissions = () => {
             htmlFor="search"
           >
             <input
-              className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
+              className={`w-full bg-transparent border-none focus:shadow-none focus:ring-0`}
               type="search"
               placeholder="Enter permission name to search..."
               value={searchValue}
@@ -83,14 +83,11 @@ const EditUserPermissions = () => {
                     .includes(searchValue.toLowerCase().trim())
                 )
                 .map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex flex-col w-full sm:w-[calc(50%_-_8px)]"
-                  >
+                  <div key={item.id} className="flex flex-col w-full sm:w-[calc(50%_-_8px)]">
                     {item.app.name}
                     <label
                       className={`${
-                        checked.length && checked.includes(item.scope)
+                        checked.includes(item.scope)
                           ? "border-primary"
                           : "border-blackSecond"
                       } flex border duration-300 items-center gap-2 rounded bg-blackSecond p-5 cursor-pointer text-gray body-2`}
@@ -125,9 +122,12 @@ const EditUserPermissions = () => {
           )}
         </form>
       </div>
-      <button onClick={handleEditUserPermissions} className="btn-primary">
+      <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
+        <button onClick={handleEditUserPermissions} className="btn-primary">
         Save
       </button>
+      </div>
+
     </div>
   );
 };
