@@ -2,44 +2,44 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseUrl } from "config/variables";
 
 export const binomApi = createApi({
-    reducerPath: "binomApi",
-    tagTypes: ["binom"],
+    reducerPath: "binomDomainApi",
+    tagTypes: ["Binom"],
     baseQuery: fetchBaseQuery({
         baseUrl,
     }),
     endpoints: (build) => ({
-        endpointLead: build.query({
+        getBinomId: build.query({
             query: () => ({
-                url: `/binom_companion/lead`,
-                method: "POST",
+                url: `/binom_companion/domain/${id}`,
+                method: "GET",
                 headers: {
                     accept: "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
-            providesTags: (result, error, id) => [{ type: "Consumers", id }],
+            providesTags: (result, error, id) => [{ type: "binom", id }],
         }),
-        consumersPause: build.mutation({
+        updateBinomId: build.mutation({
             query: (tag) => ({
-                url: `/consumers/${tag}/pause`,
-                method: "POST",
+                url: `/binom_companion/domain/${id}`,
+                method: "PUT",
                 headers: {
                     accept: "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
-            invalidatesTags: [{ type: "Consumers", id: "LIST" }],  
+            invalidatesTags: [{ type: "binom", id: "LIST" }],  
         }),
-        consumersResume: build.mutation({
+        binomResume: build.mutation({
             query: (tag) => ({
-                url: `/consumers/${tag}/resume`,
+                url: `/binom/${tag}/resume`,
                 method: "POST",
                 headers: {
                     accept: "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
-            invalidatesTags: [{ type: "Consumers", id: "LIST" }], 
+            invalidatesTags: [{ type: "binom", id: "LIST" }], 
         }),
     }),
 
@@ -47,4 +47,4 @@ export const binomApi = createApi({
 
 export const {
     
-} = consumersApi;
+} = binomDomainApi;
