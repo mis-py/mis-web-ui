@@ -48,9 +48,7 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (localStorage.getItem("token") !== null) {
-      navigate("/");
-    } else {
+    if (localStorage.getItem("token") === null) {
       localStorage.removeItem("user_id");
       localStorage.removeItem("username");
       navigate("/signin");

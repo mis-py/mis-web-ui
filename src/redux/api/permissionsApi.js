@@ -1,20 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const permissionsApi = createApi({
   reducerPath: "permissionsApi",
   tagTypes: ["Permissions"],
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-  }),
+  baseQuery: rtkDefaultQuery,
   endpoints: (build) => ({
     getPermissions: build.query({
       query: () => ({
         url: `/permissions/`,
         method: "GET",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
       }),
       providesTags: ["Permissions"],
@@ -23,9 +20,6 @@ export const permissionsApi = createApi({
       query: (id) => ({
         url: `/permissions/user/${id}`,
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
       }),
       providesTags: (result, error, id) => [{ type: "Permissions", id }],
     }),
@@ -33,9 +27,6 @@ export const permissionsApi = createApi({
       query: (id) => ({
         url: `/permissions/team/${id}`,
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
       }),
       providesTags: (result, error, id) => [{ type: "Permissions", id }],
     }),
@@ -45,8 +36,7 @@ export const permissionsApi = createApi({
         method: "PUT",
         credentials: "include",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
         body: rest,
       }),
@@ -58,8 +48,7 @@ export const permissionsApi = createApi({
         method: "PUT",
         credentials: "include",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
         body: rest,
       }),

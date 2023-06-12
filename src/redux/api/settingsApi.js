@@ -1,12 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const settingsApi = createApi({
   reducerPath: "settingsApi",
   tagTypes: ["Settings"],
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-  }),
+  baseQuery: rtkDefaultQuery,
   endpoints: (build) => ({
     getSettings: build.query({
       query: () => ({
@@ -14,7 +12,6 @@ export const settingsApi = createApi({
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result) =>
@@ -31,7 +28,6 @@ export const settingsApi = createApi({
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       providesTags: (result) =>
@@ -47,8 +43,7 @@ export const settingsApi = createApi({
         url: `/settings/app/${id}`,
         method: "GET",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
       }),
       providesTags: (result, error, id) => [{ type: "Settings", id }],
@@ -58,8 +53,7 @@ export const settingsApi = createApi({
         url: `/settings/user/${id}`,
         method: "GET",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
       }),
       providesTags: (result, error, id) => [{ type: "Settings", id }],
@@ -69,8 +63,7 @@ export const settingsApi = createApi({
         url: `/settings/team/${id}`,
         method: "GET",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
       }),
       providesTags: (result, error, id) => [{ type: "Settings", id }],
@@ -80,8 +73,7 @@ export const settingsApi = createApi({
         url: `/settings/app/${data.id}`,
         method: "PUT",
         headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "content-type": "application/json"
         },
         body: data.body,
       }),
@@ -92,8 +84,7 @@ export const settingsApi = createApi({
         url: `/settings/user/${data.userId}`,
         method: "PUT",
         headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "content-type": "application/json"
         },
         body: data.body,
       }),
