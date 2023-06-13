@@ -1,20 +1,17 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+import { createApi} from "@reduxjs/toolkit/query/react";
+import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const timerApi = createApi({
   reducerPath: "timerApi",
   tagTypes: ["Timer"],
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-  }),
+  baseQuery: rtkDefaultQuery,
   endpoints: (build) => ({
     timerLead: build.mutation({
       query: (body) => ({
         url: `/timer/lead`,
         method: "POST",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
         body,
       }),

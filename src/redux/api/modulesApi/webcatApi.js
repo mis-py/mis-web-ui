@@ -1,20 +1,17 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+import { createApi} from "@reduxjs/toolkit/query/react";
+import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const webcatApi = createApi({
   reducerPath: "webcatApi",
   tagTypes: ["Webcat"],
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-  }),
+  baseQuery: rtkDefaultQuery,
   endpoints: (build) => ({
     getWebcat: build.query({
       query: (data) => ({
         url: `/webcat/${data}`,
         method: "GET",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
       }),
       providesTags: (result, error, id) => [{ type: "Webcat", id }],
@@ -24,8 +21,7 @@ export const webcatApi = createApi({
         url: `/webcat/${id}`,
         method: "GET",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
       }),
       providesTags: (result, error, id) => [{ type: "Webcat", id }],
@@ -35,8 +31,7 @@ export const webcatApi = createApi({
         url: "/webcat/update_thumbnails",
         method: "POST",
         headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "content-type": "application/json"
         },
       }),
       invalidatesTags: [{ type: "Webcat", id: "LIST" }],
@@ -47,7 +42,6 @@ export const webcatApi = createApi({
         method: "POST",
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       invalidatesTags: [{ type: "Webcat", id: "LIST" }],
