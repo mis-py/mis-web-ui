@@ -13,7 +13,7 @@ const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
     setUserPopup(false);
   };
 
-  React.useEffect(() => {setCurrProfileLink('/profile/' + localStorage.getItem("user_id"))}, [])
+  React.useEffect(() => {setCurrProfileLink('/profile/' + localStorage.getItem("user_id")); console.log("CRM")}, [])
 
   const refPopup = useOutsideClick(handleClickOutside);
 
@@ -37,7 +37,6 @@ const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
       <NavLink 
         className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
         to={currProfileLink}
-
       >
         <div className="duration-300 group-hover:text-primary">
           <FiUser />
