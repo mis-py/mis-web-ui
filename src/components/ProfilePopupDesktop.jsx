@@ -1,18 +1,19 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useUserLogoutMutation } from "redux/index";
 import { FiUser, FiSettings, FiLogOut } from "react-icons/fi";
 import useOutsideClick from "hooks/useOutsideClick";
 
-import { currentUserId } from "config/variables";
-
 const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
+  const [currProfileLink, setCurrProfileLink] = React.useState('/profile/');
   const navigate = useNavigate();
   const [userLogout] = useUserLogoutMutation();
 
   const handleClickOutside = () => {
     setUserPopup(false);
   };
+
+  React.useEffect(() => {setCurrProfileLink('/profile/' + localStorage.getItem("user_id"))}, [])
 
   const refPopup = useOutsideClick(handleClickOutside);
 
@@ -33,19 +34,27 @@ const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
       } absolute duration-300 right-5 w-[175px] top-16`}
     >
       <ul>
-        <button
+      <NavLink 
+        className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
+        to={currProfileLink}
+
+      >
+        <div className="duration-300 group-hover:text-primary">
+          <FiUser />
+        </div>
+        <h3 className="py-3 duration-300 group-hover:text-primary">
+          Profile
+        </h3>
+      </NavLink>
+
+        {/* <button
           onClick={() => {
-            navigate(`/profile/${currentUserId}`);
+            navigate(`/profile/${currId}`);
           }}
-          className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
+          
         >
-          <div className="duration-300 group-hover:text-primary">
-            <FiUser />
-          </div>
-          <h3 className="py-3 duration-300 group-hover:text-primary">
-            Profile
-          </h3>
-        </button>
+
+        </button> */}
         <button
           onClick={() => {
             navigate(`/settings/${localStorage.getItem("user_id")}`);

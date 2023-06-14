@@ -15,11 +15,13 @@ import Tooltip from "components/Tooltip";
 import { BiPaste } from "react-icons/bi";
 import { IoIosArrowBack } from "react-icons/io";
 import USER from "assets/img/user.png";
-import { currentUserId } from "config/variables";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 const ProfileUser = () => {
+
+  // const [currentUserId, setCurrentUserId] = React.useState(0);
+
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -32,9 +34,11 @@ const ProfileUser = () => {
 
   const [settingsValue, setSettingsValue] = React.useState([]);
 
+  // React.useEffect(() => {setCurrentUserId(localStorage.getItem("user_id"))}, [])
+
   React.useEffect(() => {
-    if (!location.pathname.includes(currentUserId)) {
-      navigate(`/profile/${currentUserId}`);
+    if (!location.pathname.includes(localStorage.getItem("user_id"))) {
+      navigate(`/profile/${localStorage.getItem("user_id")}`);
     }
 
     const userSettings = getSettings?.reduce((prev, curr) => {

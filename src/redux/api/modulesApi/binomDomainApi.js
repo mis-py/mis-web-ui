@@ -1,12 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const binomApi = createApi({
     reducerPath: "binomDomainApi",
     tagTypes: ["Binom"],
-    baseQuery: fetchBaseQuery({
-        baseUrl,
-    }),
+    baseQuery: rtkDefaultQuery,
     endpoints: (build) => ({
         getBinomId: build.query({
             query: () => ({
@@ -14,7 +12,6 @@ export const binomApi = createApi({
                 method: "GET",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             providesTags: (result, error, id) => [{ type: "binom", id }],
@@ -25,7 +22,6 @@ export const binomApi = createApi({
                 method: "PUT",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             invalidatesTags: [{ type: "binom", id: "LIST" }],  
@@ -36,7 +32,6 @@ export const binomApi = createApi({
                 method: "POST",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             invalidatesTags: [{ type: "binom", id: "LIST" }], 
