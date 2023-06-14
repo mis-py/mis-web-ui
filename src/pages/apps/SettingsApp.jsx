@@ -119,6 +119,8 @@ const SettingsApp = () => {
             </div>
             <span>back</span>
           </Link>
+          {
+            id !== '1' &&
           <AdminWrapper>
             <button
               onClick={handleDeleteApp}
@@ -127,6 +129,7 @@ const SettingsApp = () => {
               <BsTrash />
             </button>
           </AdminWrapper>
+          }
         </div>
         <AdminWrapper>
           <h4 className="text-2xl font-bold mb-5">General settings</h4>

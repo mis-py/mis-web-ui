@@ -22,6 +22,7 @@ import teamSlice from "./slices/teamSlice";
 import editTeamPermissionsSlice from "./slices/editTeamPermissionsSlice";
 import editTeamMembersSlice from "./slices/editTeamMembersSlice";
 import membersSlice from "./slices/membersSlice";
+import { logsApi } from "./api/logsApi";
 
 export const store = configureStore({
   reducer: {
@@ -33,6 +34,7 @@ export const store = configureStore({
     [groupsApi.reducerPath]: groupsApi.reducer,
     [modulesApi.reducerPath]: modulesApi.reducer,
     [settingsApi.reducerPath]: settingsApi.reducer,
+    [logsApi.reducerPath]: logsApi.reducer,
 
     //modules
     [webcatApi.reducerPath]: webcatApi.reducer,

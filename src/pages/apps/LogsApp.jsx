@@ -1,15 +1,24 @@
 import React from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import Terminal, { ColorMode, TerminalOutput } from "react-terminal-ui";
+import { useGetLogsQuery } from "redux/index";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
 const LogsApp = () => {
+
+const params = useParams();
+
   const navigate = useNavigate();
+  const { data: getLogs, isLoading: loadingGetLogs } = useGetLogsQuery();
   const [terminalLineData, setTerminalLineData] = React.useState([
-    // <TerminalOutput>Welcome to the App name logs</TerminalOutput>,
+    <TerminalOutput>Welcome to the App name logs</TerminalOutput>,
   ]);
+
+  React.useEffect(() =>{
+    console.log(params);
+  })
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
