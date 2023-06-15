@@ -19,9 +19,14 @@ import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 
-import { currentUserId } from "config/variables";
-
 const SettingsApp = () => {
+
+  const [currentUserId, setCurrentUserId] = React.useState(0);
+
+  React.useEffect(() => {
+    setCurrentUserId(localStorage.getItem("user_id"))
+  }, [])
+
   const navigate = useNavigate();
   const { id } = useParams();
   const [active, setActive] = React.useState(false);
@@ -33,7 +38,7 @@ const SettingsApp = () => {
   const { data: getSettingsAppId, isLoading: loadingGetSettingsAppId } =
     useGetSettingsAppIdQuery(id);
   const { data: getSettingsUserId = [], isLoading: loadingGetSettingsUserId } =
-    useGetSettingsUserIdQuery(currentUserId);
+    useGetSettingsUserIdQuery(localStorage.getItem("user_id"));
   const [unloadAppModules] = useUnloadAppModulesMutation();
   const [startApp] = useStartAppMutation();
   const [stopApp] = useStopAppMutation();
@@ -102,7 +107,7 @@ const SettingsApp = () => {
     }
     if (newLocalSettings !== 0) {
       await settingUserSet({
-        currentUserId,
+        currentUserId: localStorage.getItem("user_id"),
         body: Object.values(newLocalSettings),
       }).unwrap();
     }
