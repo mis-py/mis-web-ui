@@ -1,12 +1,17 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetSettingsQuery } from "redux/index";
+import {
+  useGetSettingsQuery,
+  useGetUserSettingsIdQuery,
+  useSettingUserSetMutation,
+} from "redux/index";
 import {
   addUserSettings,
   addUserDefaultSettings,
-  renderSettings
+  renderSettings,
 } from "redux/slices/userSlice";
+import { toast } from "react-toastify";
 
 import Tooltip from "components/Tooltip";
 
@@ -16,18 +21,53 @@ import { BiPaste } from "react-icons/bi";
 
 const EditUserSettings = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { id } = useParams();
   const settings = useSelector((state) => state.user.settings);
   const { data: getSettings = [], isLoading: loadingGetSettings } =
     useGetSettingsQuery();
+  const { data: getUserSettings = [], isLoading: loadingUserSettings } =
+    useGetUserSettingsIdQuery(id);
+  const [editUserSettingsSet] = useSettingUserSetMutation();
 
   const [searchValue, setSearchValue] = React.useState("");
+  const [settingType, setSettingType] = React.useState("local");
+
+  const handleSaveUser = async (e) => {
+    e.preventDefault();
+    // if (!errorSaveUser) {
+      if (settings.value === 0) {
+        toast.error("Name too short");
+      // } else if (user.password < 5) {
+        // toast.error("The password is too short");
+      } else {
+        // await addUser({
+          // username: user.username,
+          // password: user.password,
+          // team_id: user.team === null ? null : user.team.value,
+        //   // settings: user.settings.map((el) => el.value !== "" && {setting_id: el.id, new_value: el.value}).filter((item) => item)
+        // }).unwrap();
+        // navigate("/users");
+        // toast.success("Added new user");
+      }
+    // }
+  };
 
   React.useEffect(() => {
-    if (settings.length === 0) {
-      dispatch(renderSettings(getSettings));
-    }
-  }, [loadingGetSettings]);
+      let test = getSettings.map((setting) => {
+        const userSetting = getUserSettings.find((userSetting) => userSetting.id === setting.id);
+      
+        if (userSetting) {
+          return {
+            ...setting,
+            value: userSetting.value,
+          };
+        }
+      
+        return setting;
+      });
+
+      dispatch(renderSettings(test));
+  }, [loadingGetSettings, loadingUserSettings]);
 
   const handleInputChange = (e, id) => {
     const value = e.target.value;
@@ -59,43 +99,90 @@ const EditUserSettings = () => {
             <FiSearch className="w-12 text-gray" />
           </label>
 
+          <div className="flex justify-end gap-4 mb-8">
+            <p
+              className={`${
+                settingType === "local" ? "text-primary" : ""
+              } cursor-pointer`}
+              onClick={() => setSettingType("local")}
+            >
+              Local settings
+            </p>
+            <p>/</p>
+            <p
+              className={`${
+                settingType === "global" ? "text-primary" : ""
+              } cursor-pointer`}
+              onClick={() => setSettingType("global")}
+            >
+              Global settings
+            </p>
+          </div>
+
           {settings
             ?.filter((el) =>
               el.key.toLowerCase().includes(searchValue.toLowerCase().trim())
             )
-            ?.map(
-              (item, index) =>
-                item.is_global && (
-                  <label
-                    key={item.id}
-                    className={`flex flex-col gap-1 mb-4 relative`}
-                    htmlFor={item.key}
-                  >
-                    {item.key}
-                    <input
-                      autoComplete="off"
-                      type="text"
-                      className={`bg-blackSecond  rounded px-3 py-2 focus-visible:outline-none border-none`}
-                      name={item.key}
-                      id={item.id}
-                      value={item.value}
-                      onChange={(e) => handleInputChange(e, item.id)}
+            ?.map((item, index) =>
+              settingType === "local" && !item.is_global ? (
+                <label
+                  key={item.id}
+                  className={`flex flex-col gap-1 mb-4 relative`}
+                  htmlFor={item.key}
+                >
+                  {`${item.key} ( ${item.app.name} )`}
+                  <input
+                    autoComplete="off"
+                    type="text"
+                    className={`bg-blackSecond  rounded px-3 py-2 focus-visible:outline-none border-none`}
+                    name={item.key}
+                    id={item.id}
+                    value={item.value}
+                    onChange={(e) => handleInputChange(e, item.id)}
+                  />
+                  <div className="group absolute right-5 bottom-3 cursor-pointer">
+                    <Tooltip name={`Paste default value`} />
+                    <BiPaste
+                      onClick={() => dispatch(addUserDefaultSettings(item))}
+                      className="text-gray"
                     />
-                    <div className="group absolute right-5 bottom-3 cursor-pointer">
-                      <Tooltip name={`Paste default value`} />
-                      <BiPaste
-                        onClick={() => dispatch(addUserDefaultSettings(item))}
-                        className="text-gray"
-                      />
-                    </div>
-                  </label>
-                )
+                  </div>
+                </label>
+              ) : settingType === "global" && item.is_global ? (
+                <label
+                  key={item.id}
+                  className={`flex flex-col gap-1 mb-4 relative`}
+                  htmlFor={item.key}
+                >
+                  {`${item.key} ( ${item.app.name} )`}
+                  <input
+                    autoComplete="off"
+                    type="text"
+                    className={`bg-blackSecond  rounded px-3 py-2 focus-visible:outline-none border-none`}
+                    name={item.key}
+                    id={item.id}
+                    value={item.value}
+                    onChange={(e) => handleInputChange(e, item.id)}
+                  />
+                  <div className="group absolute right-5 bottom-3 cursor-pointer">
+                    <Tooltip name={`Paste default value`} />
+                    <BiPaste
+                      onClick={() => dispatch(addUserDefaultSettings(item))}
+                      className="text-gray"
+                    />
+                  </div>
+                </label>
+              ) : (
+                false
+              )
             )}
         </form>
       </div>
 
       <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-        <button className="btn-primary">Save</button>
+        <button onClick={editUserSettingsSet} className="btn-primary">
+          Save
+        </button>
       </div>
     </div>
   );

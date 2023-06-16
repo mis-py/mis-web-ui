@@ -11,6 +11,7 @@ import {
   useStopAppMutation,
   useSettingAppSetMutation,
   useSettingUserSetMutation,
+  useGetSettingsQuery
 } from "redux/index";
 
 import AdminWrapper from "config/AdminWrapper";
@@ -20,6 +21,8 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 
 const SettingsApp = () => {
+
+  const { refetch } = useGetSettingsQuery();
 
   const [currentUserId, setCurrentUserId] = React.useState(0);
 
@@ -45,6 +48,8 @@ const SettingsApp = () => {
   const [settingAppSet] = useSettingAppSetMutation();
   const [settingUserSet] = useSettingUserSetMutation();
 
+
+
   React.useEffect(() => {
     if (!loadingGetSettingsAppId && getSettingsAppId?.enabled) {
       setActive(true);
@@ -66,12 +71,14 @@ const SettingsApp = () => {
   }, [loadingGetSettingsUserId]);
 
   const handleChange = async (nextChecked) => {
+// refetch().then(() => {})    
     if (nextChecked) {
       await startApp(id).unwrap();
       setActive(nextChecked);
     } else {
       await stopApp(id).unwrap();
       setActive(nextChecked);
+
     }
   };
 

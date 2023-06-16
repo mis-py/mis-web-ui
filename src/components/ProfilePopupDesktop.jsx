@@ -13,7 +13,7 @@ const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
     setUserPopup(false);
   };
 
-  React.useEffect(() => {setCurrProfileLink('/profile/' + localStorage.getItem("user_id")); console.log("CRM")}, [])
+  React.useEffect(() => {setCurrProfileLink('/profile/' + localStorage.getItem("user_id"))}, [])
 
   const refPopup = useOutsideClick(handleClickOutside);
 
