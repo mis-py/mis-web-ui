@@ -19,12 +19,14 @@ const Apps = () => {
     data: getApps = [],
     isLoading: loadingApps,
     error: errorApps,
+    refetch,
   } = useGetAppsQuery();
 
   React.useEffect(() => {
     if (errorApps) {
       toast.error("No apps found");
     }
+    refetch();
   }, [errorApps]);
 
   return (
@@ -105,10 +107,10 @@ const Apps = () => {
                       />
                       {/* <AdminWrapper>
                         </AdminWrapper> */}
-                        <AiOutlineSetting
-                          onClick={() => navigate(`/apps/settings/${app.id}`)}
-                          className="text-2xl text-gray cursor-pointer"
-                        />
+                      <AiOutlineSetting
+                        onClick={() => navigate(`/apps/settings/${app.id}`)}
+                        className="text-2xl text-gray cursor-pointer"
+                      />
                     </div>
                   </div>
 

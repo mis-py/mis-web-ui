@@ -7,7 +7,7 @@ export const baseUrl = `${
   process.env.NODE_ENV === "development" ? "http://dev.ng.lan/api" : "http://dev.ng.lan/api"
 }`;
 
-export const currentUserId = window.localStorage.getItem("user_id");
+export const currentUserId = localStorage.getItem("user_id");
 
 export const sidebar = [
   { icon: <BiUser />, title: "Users", url: "/users" },

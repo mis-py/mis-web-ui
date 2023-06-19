@@ -1,15 +1,16 @@
 import React from "react";
 import { useGetPermissionsUserIdQuery } from "redux/index";
+import { currentUserId } from "config/variables";
 
 const AdminWrapper = ({ children }) => {
-  const { data = [], isLoading } = useGetPermissionsUserIdQuery(localStorage.getItem("user_id"));
+  const { data = [], isLoading } = useGetPermissionsUserIdQuery(
+    localStorage.getItem("user_id")
+  );
 
-  if (
-    !isLoading &&
-    data.length !== 0 &&
-    data[0].permission.scope === "core:sudo"
-  ) {
+  if (!isLoading && data && data[0].permission.scope === "core:sudo") {
     return <>{children}</>;
+  } else if (data === []) {
+    return false;
   } else {
     return false;
   }
