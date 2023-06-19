@@ -1,4 +1,4 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const permissionsApi = createApi({

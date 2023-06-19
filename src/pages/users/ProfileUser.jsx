@@ -15,13 +15,11 @@ import Tooltip from "components/Tooltip";
 import { BiPaste } from "react-icons/bi";
 import { IoIosArrowBack } from "react-icons/io";
 import USER from "assets/img/user.png";
+import { currentUserId } from "config/variables";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 const ProfileUser = () => {
-
-  // const [currentUserId, setCurrentUserId] = React.useState(0);
-
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,11 +32,9 @@ const ProfileUser = () => {
 
   const [settingsValue, setSettingsValue] = React.useState([]);
 
-  // React.useEffect(() => {setCurrentUserId(localStorage.getItem("user_id"))}, [])
-
   React.useEffect(() => {
-    if (!location.pathname.includes(localStorage.getItem("user_id"))) {
-      navigate(`/profile/${localStorage.getItem("user_id")}`);
+    if (!location.pathname.includes(currentUserId)) {
+      navigate(`/profile/${currentUserId}`);
     }
 
     const userSettings = getSettings?.reduce((prev, curr) => {
@@ -59,7 +55,7 @@ const ProfileUser = () => {
     }, []);
 
     setSettingsValue(userSettings);
-  }, [loadingSettings, ]);
+  }, [loadingSettings, getUserId]);
 
   // const handleDeleteUser = async (e) => {
   //   e.preventDefault();
@@ -107,68 +103,59 @@ const ProfileUser = () => {
         <form className="mt-7">
           <label className="flex flex-col gap-1 mb-4" htmlFor="username">
             Username
-          <span className="bg-blackSecond text-gray rounded px-3 py-2 border-none border-0 focus-visible:outline-none">{getUserId && getUserId?.username}</span>
-
-            {/* <input
+            <input
               className="bg-blackSecond text-gray rounded px-3 py-2 border-none border-0 focus-visible:outline-none"
               type="text"
               id="username"
               value={getUserId && getUserId?.username}
               readOnly
-            /> */}
+            />
           </label>
 
           <label htmlFor="team">
             Team
-            <span className="body-2 text-gray mb-4 block">
-              {getUserId.team === null || getUserId.team === undefined || getUserId.team.name === undefined ? "No team" : getUserId.team.name}
-            </span>
+            <h3 className="body-2 text-gray mb-4">
+              {getUserId.team === null ? "No team" : getUserId.team}
+            </h3>
           </label>
           <label htmlFor="position">
             Position
-            <span className="block body-2 text-gray">
+            <h3 className="body-2 text-gray">
               {getUserId?.position === null
                 ? "Position name none"
                 : getUserId?.position}
-            </span>
+            </h3>
           </label>
         </form>
         <h3 className="text-2xl font-bold mt-7 mb-5">Settings</h3>
         <form>
           <h1 className="h3 mb-5">Local settings</h1>
           {settingsValue?.map(
-            (item) => {
-              if (item.value === undefined) {
-                item.value = "";
-              }
-
-              if (!item.is_global) {
-                  return (
-                    <label
-                      key={item.id}
-                      className={`flex flex-col gap-1 mb-4 relative`}
-                      htmlFor={item.key}
-                    >
-                      {item.key}
-                      <input
-                        autoComplete="off"
-                        type="text"
-                        className={`bg-blackSecond  rounded px-3 py-2 focus-visible:outline-none border-none`}
-                        name={item.key}
-                        id={item.key}
-                        value={item.value}
-                        onChange={(e) =>
-                          setSettingsValue([...settingsValue, { ...item, value: e.target.value }])
-                        }
-                      />
-                      <div className="group absolute right-5 bottom-3 cursor-pointer">
-                        <Tooltip name={`Paste default value`} />
-                        <BiPaste className="text-gray" />
-                      </div>
-                    </label>
-                  );
-              }
-            }
+            (item, index) =>
+              !item.is_global && (
+                <label
+                  key={item.id}
+                  className={`flex flex-col gap-1 mb-4 relative`}
+                  htmlFor={item.key}
+                >
+                  {item.key}
+                  <input
+                    autoComplete="off"
+                    type="text"
+                    className={`bg-blackSecond  rounded px-3 py-2 focus-visible:outline-none border-none`}
+                    name={item.key}
+                    id={item.key}
+                    value={item.value}
+                    onChange={(e) =>
+                      setSettingsValue([...settingsValue, {...item, value: e.target.value }])
+                    }
+                  />
+                  <div className="group absolute right-5 bottom-3 cursor-pointer">
+                    <Tooltip name={`Paste default value`} />
+                    <BiPaste className="text-gray" />
+                  </div>
+                </label>
+              )
           )}
         </form>
       </div>

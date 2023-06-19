@@ -1,6 +1,5 @@
 import React from "react";
 import { useGetPermissionsUserIdQuery } from "redux/index";
-import { currentUserId } from "config/variables";
 
 const AdminWrapper = ({ children }) => {
   const { data = [], isLoading } = useGetPermissionsUserIdQuery(

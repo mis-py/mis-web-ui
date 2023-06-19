@@ -77,20 +77,18 @@ export const settingsApi = createApi({
         },
         body: data.body,
       }),
-      invalidatesTags: ["Settings"],
+      invalidatesTags: ["Setting"],
     }),
     settingUserSet: build.mutation({
-      query: (data) => {
-        return {
-          url: `/settings/user/${data.userId}`,
-          method: "PUT",
-          headers: {
-            "content-type": "application/json"
-          },
-          body: data.settings,
-        }
-      },
-      invalidatesTags: ["Settings"],
+      query: (data) => ({
+        url: `/settings/user/${data.userId}`,
+        method: "PUT",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: data.body,
+      }),
+      invalidatesTags: ["Setting"],
     }),
   }),
 });
