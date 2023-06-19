@@ -121,7 +121,7 @@ const ProfileUser = () => {
           <label htmlFor="team">
             Team
             <span className="body-2 text-gray mb-4 block">
-              {getUserId.team === undefined || getUserId.team.name === undefined ? "No team" : getUserId.team.name}
+              {getUserId.team === null || getUserId.team === undefined || getUserId.team.name === undefined ? "No team" : getUserId.team.name}
             </span>
           </label>
           <label htmlFor="position">
