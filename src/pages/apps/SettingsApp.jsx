@@ -22,7 +22,7 @@ import { BsTrash } from "react-icons/bs";
 
 const SettingsApp = () => {
 
-  const { refetch } = useGetSettingsQuery();
+  // const { refetch } = useGetSettingsQuery();
 
   const [currentUserId, setCurrentUserId] = React.useState(0);
 
@@ -41,7 +41,7 @@ const SettingsApp = () => {
   const {
     data: getSettingsAppId,
     isLoading: loadingGetSettingsAppId,
-    refetch,
+    refetch
   } = useGetSettingsAppIdQuery(id);
   const { data: getSettingsUserId = [], isLoading: loadingGetSettingsUserId } =
     useGetSettingsUserIdQuery(localStorage.getItem("user_id"));
@@ -75,7 +75,6 @@ const SettingsApp = () => {
   }, [loadingGetSettingsUserId]);
 
   const handleChange = async (nextChecked) => {
-// refetch().then(() => {})    
     if (nextChecked) {
       await startApp(id).unwrap();
       setActive(nextChecked);
