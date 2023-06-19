@@ -60,7 +60,6 @@ const AddUser = () => {
       label: item.name,
     };
   });
-
   const handleAddUser = async (e) => {
     e.preventDefault();
     if (!errorAddUser) {

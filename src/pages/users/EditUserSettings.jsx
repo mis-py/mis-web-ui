@@ -21,6 +21,7 @@ import { BiPaste } from "react-icons/bi";
 
 const EditUserSettings = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
   const settings = useSelector((state) => state.user.settings);
   const { data: getSettings = [], isLoading: loadingGetSettings } =
@@ -34,39 +35,43 @@ const EditUserSettings = () => {
 
   const handleSaveUser = async (e) => {
     e.preventDefault();
-    // if (!errorSaveUser) {
-      if (settings.value === 0) {
-        toast.error("Name too short");
-      // } else if (user.password < 5) {
-        // toast.error("The password is too short");
-      } else {
-        // await addUser({
-          // username: user.username,
-          // password: user.password,
-          // team_id: user.team === null ? null : user.team.value,
-        //   // settings: user.settings.map((el) => el.value !== "" && {setting_id: el.id, new_value: el.value}).filter((item) => item)
-        // }).unwrap();
-        // navigate("/users");
-        // toast.success("Added new user");
+
+    let dataSettings = settings.reduce(function (result, item) {
+      if (item.value !== "") {
+        result.push({ setting_id: item.id, new_value: item.value });
       }
-    // }
+      return result;
+    }, []);
+
+    if (editUserSettingsSet === 0 || dataSettings.length === 0) {
+      toast.error("Enter new settings");
+    }
+
+    await editUserSettingsSet({
+      userId: id,
+      settings: dataSettings,
+    });
+    navigate(`/users/${id}`);
+    toast.success("Added new settings");
   };
 
   React.useEffect(() => {
-      let test = getSettings.map((setting) => {
-        const userSetting = getUserSettings.find((userSetting) => userSetting.id === setting.id);
-      
-        if (userSetting) {
-          return {
-            ...setting,
-            value: userSetting.value,
-          };
-        }
-      
-        return setting;
-      });
+    let test = getSettings.map((setting) => {
+      const userSetting = getUserSettings.find(
+        (userSetting) => userSetting.id === setting.id
+      );
 
-      dispatch(renderSettings(test));
+      if (userSetting) {
+        return {
+          ...setting,
+          value: userSetting.value,
+        };
+      }
+
+      return setting;
+    });
+
+    dispatch(renderSettings(test));
   }, [loadingGetSettings, loadingUserSettings]);
 
   const handleInputChange = (e, id) => {
@@ -140,13 +145,17 @@ const EditUserSettings = () => {
                     value={item.value}
                     onChange={(e) => handleInputChange(e, item.id)}
                   />
-                  <div className="group absolute right-5 bottom-3 cursor-pointer">
-                    <Tooltip name={`Paste default value`} />
-                    <BiPaste
-                      onClick={() => dispatch(addUserDefaultSettings(item))}
-                      className="text-gray"
-                    />
-                  </div>
+                  {item.default_value !== null ? (
+                    <div className="group absolute right-5 bottom-3 cursor-pointer">
+                      <Tooltip name={`Paste default value`} />
+                      <BiPaste
+                        onClick={() => dispatch(addUserDefaultSettings(item))}
+                        className="text-gray"
+                      />
+                    </div>
+                  ) : (
+                    false
+                  )}
                 </label>
               ) : settingType === "global" && item.is_global ? (
                 <label
@@ -164,13 +173,16 @@ const EditUserSettings = () => {
                     value={item.value}
                     onChange={(e) => handleInputChange(e, item.id)}
                   />
+                  {item.default_value !== null ?(
                   <div className="group absolute right-5 bottom-3 cursor-pointer">
                     <Tooltip name={`Paste default value`} />
                     <BiPaste
                       onClick={() => dispatch(addUserDefaultSettings(item))}
                       className="text-gray"
                     />
-                  </div>
+                  </div>):(
+                    false
+                  )}
                 </label>
               ) : (
                 false
@@ -180,7 +192,7 @@ const EditUserSettings = () => {
       </div>
 
       <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-        <button onClick={editUserSettingsSet} className="btn-primary">
+        <button onClick={handleSaveUser} className="btn-primary">
           Save
         </button>
       </div>

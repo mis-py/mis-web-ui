@@ -108,13 +108,17 @@ const AddUserSettings = () => {
                     value={item.value}
                     onChange={(e) => handleInputChange(e, item.id)}
                   />
-                  <div className="group absolute right-5 bottom-3 cursor-pointer">
+                  {item.default_value !== null ?(
+                   <div className="group absolute right-5 bottom-3 cursor-pointer">
                     <Tooltip name={`Paste default value`} />
                     <BiPaste
                       onClick={() => dispatch(addUserDefaultSettings(item))}
                       className="text-gray"
                     />
-                  </div>
+                  </div> 
+                  ):(
+                    false
+                  )}
                 </label>
               ) : settingType === "global" && item.is_global ? (
                 <label
@@ -132,13 +136,18 @@ const AddUserSettings = () => {
                     value={item.value}
                     onChange={(e) => handleInputChange(e, item.id)}
                   />
-                  <div className="group absolute right-5 bottom-3 cursor-pointer">
+                  {item.default_value !== null ?(
+                   <div className="group absolute right-5 bottom-3 cursor-pointer">
                     <Tooltip name={`Paste default value`} />
                     <BiPaste
                       onClick={() => dispatch(addUserDefaultSettings(item))}
                       className="text-gray"
                     />
-                  </div>
+                  </div> 
+                  ):(
+                    false
+                  )}
+                  
                 </label>
               ) : (
                 false
