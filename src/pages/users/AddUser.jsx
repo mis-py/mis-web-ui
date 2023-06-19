@@ -73,7 +73,8 @@ const AddUser = () => {
           username: user.username,
           password: user.password,
           team_id: user.team === null ? null : user.team.value,
-          settings: user.settings.map((el) => el.value !== "" && {setting_id: el.id, new_value: el.value}).filter((item) => item)
+          settings: user.settings.map((el) => el.value !== ""  && {setting_id: el.id, new_value: !!el.value && el.value}).filter((item) => item),
+          po
         }).unwrap();
         navigate("/users");
         toast.success("Added new user");

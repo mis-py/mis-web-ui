@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useNavigate, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAuth, selectIsAuth } from "redux/slices/authSlice";
@@ -8,8 +8,6 @@ import { toast } from "react-toastify";
 import { AiOutlineEye } from "react-icons/ai";
 
 const Signin = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
   const [showPassword, setShowPassword] = React.useState("password");

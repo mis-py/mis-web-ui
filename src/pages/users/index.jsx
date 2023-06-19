@@ -105,22 +105,22 @@ const Users = () => {
               />
             </div>
           </div>
-          {/* <AdminWrapper> */}
-          {!loadingPermissionsUser &&
+          <AdminWrapper>
+          {/* {!loadingPermissionsUser &&
           getPermissionsUser &&
           getPermissionsUser[0].permission.scope === "core:sudo" ? (
+            ) : false ? (
+               getPermissionsUser === undefined
+             ) : (
+               false
+             )} */}
             <Link
               to="/add-user"
               className="px-3 flex items-center justify-center bg-blackSecond text-gray rounded-lg"
             >
               <FiUserPlus />
             </Link>
-          ) : false ? (
-            getPermissionsUser === undefined
-          ) : (
-            false
-          )}
-          {/* </AdminWrapper> */}
+          </AdminWrapper>
         </div>
 
         <h3 className="h3 mb-5">Users ({getUsers?.length})</h3>

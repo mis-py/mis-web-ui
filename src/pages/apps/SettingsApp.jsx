@@ -30,10 +30,13 @@ const SettingsApp = () => {
   const [formLocalValue, setFormLocalValue] = React.useState([]);
   const [newLocalSettings, setNewLocalSettings] = React.useState({});
 
-  const { data: getSettingsAppId, isLoading: loadingGetSettingsAppId } =
-    useGetSettingsAppIdQuery(id);
+  const {
+    data: getSettingsAppId,
+    isLoading: loadingGetSettingsAppId,
+    refetch,
+  } = useGetSettingsAppIdQuery(id);
   const { data: getSettingsUserId = [], isLoading: loadingGetSettingsUserId } =
-    useGetSettingsUserIdQuery(currentUserId);
+    useGetSettingsUserIdQuery(localStorage.getItem("user_id"));
   const [unloadAppModules] = useUnloadAppModulesMutation();
   const [startApp] = useStartAppMutation();
   const [stopApp] = useStopAppMutation();
@@ -41,6 +44,7 @@ const SettingsApp = () => {
   const [settingUserSet] = useSettingUserSetMutation();
 
   React.useEffect(() => {
+    refetch();
     if (!loadingGetSettingsAppId && getSettingsAppId?.enabled) {
       setActive(true);
     } else {
@@ -68,6 +72,7 @@ const SettingsApp = () => {
       await stopApp(id).unwrap();
       setActive(nextChecked);
     }
+    refetch();
   };
 
   const handleDeleteApp = (e) => {
