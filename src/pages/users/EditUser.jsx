@@ -13,10 +13,13 @@ import {
   addUserName,
   addUserPassword,
   addUserTeam,
+  addUserPosition,
 } from "redux/slices/userSlice";
 
+import Input from "components/Input";
+import ButtonDark from "components/ButtonDark";
+
 import { IoIosArrowBack } from "react-icons/io";
-import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const customStyles = {
   option: (provided, state) => ({
@@ -55,7 +58,8 @@ const EditUser = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const { data: getUserId = [], isLoading } = useGetUserIdQuery(id);
+  const { data: getUserId = [], isLoading: loadingGetUserId } =
+    useGetUserIdQuery(id);
   const { data: dataGetTeams = [] } = useGetTeamsQuery();
   const { data: getPermissionsUserId = [] } = useGetPermissionsUserIdQuery(id);
   const [editUser] = useEditUserMutation();
@@ -68,24 +72,27 @@ const EditUser = () => {
   });
 
   React.useEffect(() => {
-    if (!isLoading) {
-      dispatch(addUserName(getUserId?.username));
+    if (!loadingGetUserId) {
+      dispatch(addUserName(getUserId.username));
       dispatch(
         addUserTeam(
-          getUserId?.team === null
+          getUserId.team === null
             ? null
-            : { value: getUserId?.team.id, label: getUserId?.team.name }
+            : { value: getUserId.team.id, label: getUserId.team.name }
         )
       );
+      dispatch(addUserPosition(getUserId.position));
     }
-  }, [isLoading]);
+  }, [loadingGetUserId]);
 
   const handleEditUser = async (e) => {
     e.preventDefault();
     await editUser({
       id,
+      username: user.username,
       team_id: user.team === null ? null : user.team.value,
       new_password: user.password ? user.password : "",
+      position: user.position,
     }).unwrap();
     navigate("/users");
     toast.success("User updated");
@@ -103,63 +110,57 @@ const EditUser = () => {
         <h3 className="h3 mt-5">Editing Profile</h3>
 
         <form className="my-7">
-          <label className="flex flex-col gap-1 mb-4" htmlFor="username">
-            Username
-            <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-              type="text"
-              id="username"
-              autoComplete="off"
-              value={user.username}
-              readOnly
-            />
-          </label>
-
-          <label className="flex flex-col gap-1 mb-4" htmlFor="new-password">
-            Password
-            <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-              type="password"
-              id="new-password"
-              placeholder="Enter a password"
-              autoComplete="off"
-              value={user.password}
-              onChange={(e) => dispatch(addUserPassword(e.target.value))}
-            />
-          </label>
-          <label htmlFor="team">
+          <Input
+            label={"Username"}
+            type={"text"}
+            id={"username"}
+            value={user.username}
+            changeValue={(e) => dispatch(addUserName(e.target.value))}
+          />
+          <Input
+            label={"Password"}
+            type={"password"}
+            id={"new-password"}
+            placeholder={"Enter a new password"}
+            value={user.password}
+            changeValue={(e) => dispatch(addUserPassword(e.target.value))}
+          />
+          <label className="flex flex-col gap-1 mb-4" htmlFor="team">
             Team
             <Select
               isClearable
               options={options}
               styles={customStyles}
-              placeholder="No team"
+              placeholder={user.team === null && "No team"}
               value={user.team}
               onChange={(choice) =>
                 dispatch(addUserTeam(choice !== null ? choice : null))
               }
             />
           </label>
+          <Input
+            label={"Job position"}
+            type={"text"}
+            id={"job-position"}
+            placeholder={user.position === "" ? "No position" : user.position}
+            value={user.position}
+            changeValue={(e) => dispatch(addUserPosition(e.target.value))}
+          />
         </form>
       </div>
 
       <div className="flex flex-col gap-3">
         <div className="flex gap-3">
-          <button
-            onClick={() => navigate(`/user/permissions/${id}`)}
-            className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
-          >
-            Permissions ({getPermissionsUserId?.length}
-            )
-            <AiOutlinePlusCircle className="text-xl" />
-          </button>
-          <button
-            onClick={() => navigate(`/user/settings/${id}`)}
-            className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
-          >
-            Settings ({getUserId.settings?.length})
-            <AiOutlinePlusCircle className="text-xl" />
-          </button>
+          <ButtonDark
+            name={"Permissions"}
+            length={getPermissionsUserId?.length}
+            to={`/user/permissions/${id}`}
+          />
+          <ButtonDark
+            name={"Settings"}
+            length={getUserId.settings?.length}
+            to={`/user/settings/${id}`}
+          />
         </div>
         <button onClick={handleEditUser} className="btn-primary">
           Save

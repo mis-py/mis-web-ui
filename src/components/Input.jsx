@@ -1,6 +1,6 @@
 import React from "react";
 
-const Input = ({ label, type, id, placeholder, value, changeValue }) => {
+const Input = ({ label, type, id, placeholder, value, changeValue, readOnly }) => {
   return (
     <label className="flex flex-col gap-1 mb-4" htmlFor="username">
       {label}
@@ -12,6 +12,7 @@ const Input = ({ label, type, id, placeholder, value, changeValue }) => {
         autoComplete="off"
         value={value}
         onChange={changeValue}
+        readOnly={readOnly}
       />
     </label>
   );

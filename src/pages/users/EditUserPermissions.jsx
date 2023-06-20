@@ -8,26 +8,29 @@ import {
 import { toast } from "react-toastify";
 import PulseLoader from "react-spinners/PulseLoader";
 
+import SearchInput from "components/SearchInput";
+
 import { IoIosArrowBack } from "react-icons/io";
-import { FiSearch } from "react-icons/fi";
 
 const EditUserPermissions = () => {
   const { id } = useParams();
-  const { data: dataPermissions = [], isLoading: loadingPermissions } =
-    useGetPermissionsQuery();
-  const { data: dataPermissionsUserId = [] } = useGetPermissionsUserIdQuery(id);
-  const [editUserPermission] = useEditUserPermissionMutation();
-
   const [searchValue, setSearchValue] = React.useState("");
   const [checked, setChecked] = React.useState([]);
+  const { data: getPermissions = [], isLoading: loadingPermissions } =
+    useGetPermissionsQuery();
+  const {
+    data: getPermissionsUserId = [],
+    isLoading: loadingPermissionsUserId,
+  } = useGetPermissionsUserIdQuery(id);
+  const [editUserPermission] = useEditUserPermissionMutation();
 
   React.useEffect(() => {
-    if (dataPermissionsUserId?.length) {
-      setChecked(dataPermissionsUserId?.map((it) => it.permission.scope));
-    } else if (!dataPermissionsUserId?.length) {
+    if (!loadingPermissionsUserId) {
+      setChecked(getPermissionsUserId.map((it) => it.permission.scope));
+    } else if (!getPermissionsUserId.length) {
       setChecked(false);
     }
-  }, [dataPermissionsUserId]);
+  }, [loadingPermissionsUserId]);
 
   const handleEditUserPermissions = async (e) => {
     e.preventDefault();
@@ -50,19 +53,11 @@ const EditUserPermissions = () => {
         </Link>
         <h3 className="h3 mt-5">Manage permissions</h3>
         <form className="my-4">
-          <label
-            className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
-            htmlFor="search"
-          >
-            <input
-              className={`w-full bg-transparent border-none focus:shadow-none focus:ring-0`}
-              type="search"
-              placeholder="Enter permission name to search..."
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-            />
-            <FiSearch className="w-12 text-gray" />
-          </label>
+          <SearchInput
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            placeholder={"Enter permission name to search..."}
+          />
 
           {loadingPermissions ? (
             <PulseLoader
@@ -76,47 +71,45 @@ const EditUserPermissions = () => {
             />
           ) : (
             <div className="flex flex-wrap gap-4">
-              {dataPermissions
+              {getPermissions
                 ?.filter((el) =>
                   el.name
                     .toLowerCase()
                     .includes(searchValue.toLowerCase().trim())
                 )
                 .map((item) => (
-                  <div key={item.id} className="flex flex-col w-full sm:w-[calc(50%_-_8px)]">
-                    {item.app.name}
-                    <label
-                      className={`${
-                        checked.includes(item.scope)
-                          ? "border-primary"
-                          : "border-blackSecond"
-                      } flex border duration-300 items-center gap-2 rounded bg-blackSecond p-5 cursor-pointer text-gray body-2`}
-                      htmlFor={item.name}
-                    >
-                      <input
-                        type="checkbox"
-                        name={item.name}
-                        id={item.name}
-                        checked={
-                          !checked.length
-                            ? setChecked([""])
-                            : checked.includes(item.scope)
+                  <label
+                  key={item.id}
+                    className={`${
+                      checked.includes(item.scope)
+                        ? "border-primary"
+                        : "border-blackSecond"
+                    } flex border duration-300 items-center gap-2 rounded w-full bg-blackSecond p-5 cursor-pointer text-gray body-2 sm:w-[calc(50%_-_8px)]`}
+                    htmlFor={item.name}
+                  >
+                    <input
+                      type="checkbox"
+                      name={item.name}
+                      id={item.name}
+                      checked={
+                        !checked.length
+                          ? setChecked([""])
+                          : checked.includes(item.scope)
+                      }
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setChecked([...checked, item.scope]);
+                        } else {
+                          setChecked(
+                            checked.filter((obj) => obj !== item.scope)
+                          );
                         }
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setChecked([...checked, item.scope]);
-                          } else {
-                            setChecked(
-                              checked.filter((obj) => obj !== item.scope)
-                            );
-                          }
-                        }}
-                        className="bg-transparent cursor-pointer 
-                        w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
-                      />
-                      {item.name} ({item.scope})
-                    </label>
-                  </div>
+                      }}
+                      className="bg-transparent cursor-pointer
+    w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
+                    />
+                    {item.name} ({item.scope})
+                  </label>
                 ))}
             </div>
           )}
@@ -124,10 +117,9 @@ const EditUserPermissions = () => {
       </div>
       <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
         <button onClick={handleEditUserPermissions} className="btn-primary">
-        Save
-      </button>
+          Save
+        </button>
       </div>
-
     </div>
   );
 };
