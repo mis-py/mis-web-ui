@@ -1,16 +1,16 @@
 import React from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGetPermissionsQuery } from "redux/index";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserPermissions } from "redux/slices/userSlice";
 import { toast } from "react-toastify";
 import PulseLoader from "react-spinners/PulseLoader";
 
+import SearchInput from "components/SearchInput";
+
 import { IoIosArrowBack } from "react-icons/io";
-import { FiSearch } from "react-icons/fi";
 
 const AddUserPermissions = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const permissions = useSelector((state) => state.user.permissions);
   const [searchValue, setSearchValue] = React.useState("");
@@ -20,11 +20,9 @@ const AddUserPermissions = () => {
 
   const handleUserPermissions = () => {
     dispatch(addUserPermissions(checked));
-    navigate(-1);
     toast.success("User permissions saved");
   };
-  
-  
+
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
@@ -36,21 +34,11 @@ const AddUserPermissions = () => {
         </Link>
         <h3 className="h3 mt-5">Manage permissions</h3>
         <form className="my-4">
-          <label
-            className={`flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7`}
-            htmlFor="search"
-            
-          >
-            <input
-              className={`w-full bg-transparent border-none focus:shadow-none focus:ring-0 `}
-              type="search"
-              placeholder="Enter permission name to search..."
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-            />
-            <FiSearch className="w-12 text-gray" />
-          </label>
-
+          <SearchInput
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            placeholder={"Enter permission name to search..."}
+          />
           {loadingPermissions ? (
             <PulseLoader
               size={15}
@@ -69,48 +57,47 @@ const AddUserPermissions = () => {
                     .toLowerCase()
                     .includes(searchValue.toLowerCase().trim())
                 )
-                  .map((item, index) => (
-                    <label
-                      key={item.id}
-                      className={`${
-                        checked.includes(item.scope)
-                          ? "border-primary"
-                          : "border-blackSecond"
-                      } flex border duration-300 items-center gap-2 rounded w-full bg-blackSecond p-5 cursor-pointer text-gray body-2 sm:w-[calc(50%_-_8px)]`}
-                      htmlFor={item.name}
-                    >
-                      <input
-                        type="checkbox"
-                        name={item.name}
-                        id={item.name}
-                        checked={
-                          checked.length === []
-                          ? setChecked ([])
+                .map((item) => (
+                  <label
+                    key={item.id}
+                    className={`${
+                      checked.includes(item.scope)
+                        ? "border-primary"
+                        : "border-blackSecond"
+                    } flex border duration-300 items-center gap-2 rounded w-full bg-blackSecond p-5 cursor-pointer text-gray body-2 sm:w-[calc(50%_-_8px)]`}
+                    htmlFor={item.name}
+                  >
+                    <input
+                      type="checkbox"
+                      name={item.name}
+                      id={item.name}
+                      checked={
+                        checked.length === []
+                          ? setChecked([])
                           : checked.includes(item.scope)
+                      }
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setChecked([...checked, item.scope]);
+                        } else {
+                          setChecked(
+                            checked.filter((obj) => obj !== item.scope)
+                          );
                         }
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setChecked([...checked, item.scope]);
-                          } else {
-                            setChecked(
-                              checked.filter((obj) => obj !== item.scope)
-                            );
-                          }
-                        }}
-                        className="bg-transparent cursor-pointer
+                      }}
+                      className="bg-transparent cursor-pointer
     w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
-                      />
-                      {item.name} ({item.scope})
-                    </label>
-
-                  ))}
+                    />
+                    {item.name} ({item.scope})
+                  </label>
+                ))}
             </div>
           )}
         </form>
         <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
           <button onClick={handleUserPermissions} className="btn-primary">
-          Save
-        </button>
+            Save
+          </button>
         </div>
       </div>
     </div>

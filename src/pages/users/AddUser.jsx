@@ -11,8 +11,10 @@ import {
 import { useAddUserMutation, useGetTeamsQuery } from "redux/index";
 import { toast } from "react-toastify";
 
+import Input from "components/Input";
+import ButtonDark from "components/ButtonDark";
+
 import { IoIosArrowBack } from "react-icons/io";
-import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const customStyles = {
   option: (provided, state) => ({
@@ -52,7 +54,7 @@ const AddUser = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const { data: getTeams = [] } = useGetTeamsQuery();
-  const [addUser, { error: errorAddUser }] = useAddUserMutation();
+  const [addUser] = useAddUserMutation();
 
   const options = getTeams?.map((item) => {
     return {
@@ -63,21 +65,29 @@ const AddUser = () => {
 
   const handleAddUser = async (e) => {
     e.preventDefault();
-    if (!errorAddUser) {
-      if (user.username < 1) {
-        toast.error("Name too short");
-      } else if (user.password < 5) {
-        toast.error("The password is too short");
-      } else {
-        await addUser({
-          username: user.username,
-          password: user.password,
-          team_id: user.team === null ? null : user.team.value,
-          settings: user.settings.map((el) => el.value !== ""  && {setting_id: el.id, new_value: !!el.value && el.value}).filter((item) => item),
-        }).unwrap();
-        navigate("/users");
-        toast.success("Added new user");
-      }
+    if (user.username < 1) {
+      toast.error("Name too short");
+    } else if (user.password < 5) {
+      toast.error("The password is too short");
+    } else {
+      await addUser({
+        username: user.username,
+        password: user.password,
+        team_id: user.team === null ? null : user.team.value,
+        position: user.position,
+        permissions: user.permissions,
+        settings: user.settings
+          .map(
+            (el) =>
+              el.value !== "" && {
+                setting_id: el.id,
+                new_value: !!el.value && el.value,
+              }
+          )
+          .filter((item) => item),
+      }).unwrap();
+      navigate("/users");
+      toast.success("Added new user");
     }
   };
 
@@ -93,32 +103,22 @@ const AddUser = () => {
         <h3 className="h3 mt-5">New user</h3>
 
         <form className="my-7">
-          <label className="flex flex-col gap-1 mb-4" htmlFor="username">
-            Username
-            <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-              type="text"
-              id="username"
-              placeholder="Enter a name"
-              autoComplete="off"
-              value={user.username}
-              onChange={(e) => dispatch(addUserName(e.target.value))}
-            />
-          </label>
-
-          <label className="flex flex-col gap-1 mb-4" htmlFor="password">
-            Password
-            <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-              type="password"
-              id="password"
-              placeholder="Enter a password"
-              autoComplete="off"
-              value={user.password}
-              onChange={(e) => dispatch(addUserPassword(e.target.value))}
-            />
-          </label>
-
+          <Input
+            label={"Username"}
+            type={"text"}
+            id={"username"}
+            placeholder={"Enter a name"}
+            value={user.username}
+            changeValue={(e) => dispatch(addUserName(e.target.value))}
+          />
+          <Input
+            label={"Password"}
+            type={"password"}
+            id={"password"}
+            placeholder={"Enter a password"}
+            value={user.password}
+            changeValue={(e) => dispatch(addUserPassword(e.target.value))}
+          />
           <label className="flex flex-col gap-1 mb-4" htmlFor="team">
             Team
             <Select
@@ -127,49 +127,34 @@ const AddUser = () => {
               isClearable
               placeholder="The team is not selected"
               id="team"
-              value={
-                user.team === null ? 0 : user.team
-              }
+              value={user.team === null ? 0 : user.team}
               onChange={(choice) =>
                 dispatch(addUserTeam(choice !== null ? choice : null))
               }
             />
           </label>
-
-          <label className="flex flex-col gap-1 mb-4" htmlFor="job-position">
-            Job position
-            <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-              type="text"
-              id="job-position"
-              placeholder="Enter position"
-              autoComplete="off"
-              value={user.position}
-              onChange={(e) => dispatch(addUserPosition(e.target.value))}
-            />
-          </label>
+          <Input
+            label={"Job position"}
+            type={"text"}
+            id={"job-position"}
+            placeholder={"Enter position"}
+            value={user.position}
+            changeValue={(e) => dispatch(addUserPosition(e.target.value))}
+          />
         </form>
       </div>
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
-          <button
-            onClick={() => {
-              navigate(`/add-user/permissions`);
-            }}
-            className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
-          >
-            Permissions ({user.permissions.length})
-            <AiOutlinePlusCircle className="text-xl" />
-          </button>
-          <button
-            onClick={() => {
-              navigate(`/add-user/settings`);
-            }}
-            className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
-          >
-            Settings ({user.settings.length})
-            <AiOutlinePlusCircle className="text-xl" />
-          </button>
+          <ButtonDark
+            name={"Permissions"}
+            length={user.permissions.length}
+            to={"/add-user/permissions"}
+          />
+          <ButtonDark
+            name={"Settings"}
+            length={user.settings.filter((el) => el.value !== "").length}
+            to={"/add-user/settings"}
+          />
         </div>
         <button onClick={handleAddUser} className="btn-primary">
           Add user
