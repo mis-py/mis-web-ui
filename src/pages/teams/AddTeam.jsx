@@ -77,6 +77,15 @@ const AddTeam = () => {
             Members ({team.members.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
+          {/* <button
+            onClick={() => {
+              navigate(`/add-team/settings`);
+            }}
+            className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
+          >
+            Settings ({team.settings.length})
+            <AiOutlinePlusCircle className="text-xl" />
+          </button> */}
         </div>
         <button onClick={handleAddUser} className="btn-primary">
           Create a team

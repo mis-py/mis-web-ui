@@ -138,12 +138,12 @@ const Teams = () => {
                         : "opacity-0 invisible"
                     } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-3`}
                   >
-                    <Link
+                    {/* <Link
                       className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
                       to="/teams"
                     >
                       Granting privileges
-                    </Link>
+                    </Link> */}
                     <div
                       onClick={() => navigate(`/teams/${team.id}`)}
                       className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
