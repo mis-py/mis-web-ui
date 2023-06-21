@@ -31,6 +31,13 @@ export const userSlice = createSlice({
     renderSettings: (state, action) => {
       state.settings = action.payload.map((item) => ({ ...item, value: "" }));
     },
+    renderEditSettings: (state, action) => {
+      state.settings = state.settings.map((obj1) => {
+        const matchingObj = action.payload.find((obj2) => obj2.id === obj1.id);
+        const value = matchingObj ? matchingObj.value : "";
+        return {...obj1, value};
+      });
+    },
     addUserSettings: (state, action) => {
       const { id, value } = action.payload;
       const item = state.settings.find((obj) => obj.id === id);
@@ -65,6 +72,7 @@ export const {
   addUserPosition,
   addUserPermissions,
   renderSettings,
+  renderEditSettings,
   addUserSettings,
   addUserDefaultSettings,
   resetSettings,
