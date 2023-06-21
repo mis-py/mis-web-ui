@@ -1,37 +1,61 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetSettingsQuery } from "redux/index";
+import {
+  useGetSettingsQuery,
+  useGetSettingsUserIdQuery,
+  useSettingUserSetMutation,
+} from "redux/index";
 import {
   addUserSettings,
   addUserDefaultSettings,
-  renderSettings
+  renderSettings,
+  renderEditSettings,
 } from "redux/slices/userSlice";
 
 import Tooltip from "components/Tooltip";
+import SearchInput from "components/SearchInput";
 
 import { IoIosArrowBack } from "react-icons/io";
-import { FiSearch } from "react-icons/fi";
 import { BiPaste } from "react-icons/bi";
 
 const EditUserSettings = () => {
+  const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const settings = useSelector((state) => state.user.settings);
-  const { data: getSettings = [], isLoading: loadingGetSettings } =
-    useGetSettingsQuery();
-
   const [searchValue, setSearchValue] = React.useState("");
+  const { data: getSettings = [], isLoading: loadingSettings } =
+    useGetSettingsQuery();
+  const { data: getSettingsUserId, isLoading: loadingSettingsUserId } =
+    useGetSettingsUserIdQuery(id);
+  const [editUserSettings] = useSettingUserSetMutation();
 
   React.useEffect(() => {
-    if (settings.length === 0) {
+    if (!loadingSettings) {
       dispatch(renderSettings(getSettings));
+      if (!loadingSettingsUserId) {
+        dispatch(renderEditSettings(getSettingsUserId));
+      }
     }
-  }, [loadingGetSettings]);
+  }, [loadingSettings, loadingSettingsUserId]);
 
   const handleInputChange = (e, id) => {
     const value = e.target.value;
     dispatch(addUserSettings({ id, value }));
+  };
+
+  const handleEditUserSettings = async (e) => {
+    e.preventDefault();
+    // await editUserSettings({
+    //   id,
+    //   body: settings
+    //     .filter(
+    //       (el) => el.value !== "" && { setting_id: el.id, new_value: el.value }
+    //     )
+    //     .map((item) => {
+    //       return { setting_id: item.id, new_value: item.value };
+    //     }),
+    // }).unwrap();
   };
 
   return (
@@ -45,33 +69,25 @@ const EditUserSettings = () => {
         </Link>
         <h3 className="h3 mt-5">Settings</h3>
         <form className="my-4 pb-[50px]">
-          <label
-            className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
-            htmlFor="search"
-          >
-            <input
-              className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
-              type="search"
-              placeholder="Enter setting name to search..."
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-            />
-            <FiSearch className="w-12 text-gray" />
-          </label>
+          <SearchInput
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            placeholder={"Enter setting name to search..."}
+          />
 
           {settings
             ?.filter((el) =>
               el.key.toLowerCase().includes(searchValue.toLowerCase().trim())
             )
             ?.map(
-              (item, index) =>
-                item.is_global && (
+              (item) =>
+                !item.is_global && (
                   <label
                     key={item.id}
                     className={`flex flex-col gap-1 mb-4 relative`}
                     htmlFor={item.key}
                   >
-                    {item.key}
+                    {`${item.key} ( ${item.app.name} )`}
                     <input
                       autoComplete="off"
                       type="text"
@@ -81,13 +97,15 @@ const EditUserSettings = () => {
                       value={item.value}
                       onChange={(e) => handleInputChange(e, item.id)}
                     />
-                    <div className="group absolute right-5 bottom-3 cursor-pointer">
-                      <Tooltip name={`Paste default value`} />
-                      <BiPaste
-                        onClick={() => dispatch(addUserDefaultSettings(item))}
-                        className="text-gray"
-                      />
-                    </div>
+                    {item.default_value !== null && (
+                      <div className="group absolute right-5 bottom-3 cursor-pointer">
+                        <Tooltip name={`Paste default value`} />
+                        <BiPaste
+                          onClick={() => dispatch(addUserDefaultSettings(item))}
+                          className="text-gray"
+                        />
+                      </div>
+                    )}
                   </label>
                 )
             )}
@@ -95,7 +113,9 @@ const EditUserSettings = () => {
       </div>
 
       <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-        <button className="btn-primary">Save</button>
+        <button onClick={handleEditUserSettings} className="btn-primary">
+          Save
+        </button>
       </div>
     </div>
   );
