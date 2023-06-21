@@ -10,11 +10,10 @@ import {
   resetSettings,
 } from "redux/slices/userSlice";
 
-import Tooltip from "components/Tooltip";
 import SearchInput from "components/SearchInput";
+import Input from "components/Input";
 
 import { IoIosArrowBack } from "react-icons/io";
-import { BiPaste } from "react-icons/bi";
 
 const AddUserSettings = () => {
   const dispatch = useDispatch();
@@ -65,31 +64,19 @@ const AddUserSettings = () => {
             ?.map(
               (item) =>
                 !item.is_global && (
-                  <label
+                  <Input
+                    label={`${item.key} ( ${item.app.name} )`}
                     key={item.id}
-                    className={`flex flex-col gap-1 mb-4 relative`}
-                    htmlFor={item.key}
-                  >
-                    {`${item.key} ( ${item.app.name} )`}
-                    <input
-                      autoComplete="off"
-                      type="text"
-                      className={`bg-blackSecond  rounded px-3 py-2 focus-visible:outline-none border-none`}
-                      name={item.key}
-                      id={item.id}
-                      value={item.value}
-                      onChange={(e) => handleInputChange(e, item.id)}
-                    />
-                    {item.default_value !== null && (
-                      <div className="group absolute right-5 bottom-3 cursor-pointer">
-                        <Tooltip name={`Paste default value`} />
-                        <BiPaste
-                          onClick={() => dispatch(addUserDefaultSettings(item))}
-                          className="text-gray"
-                        />
-                      </div>
-                    )}
-                  </label>
+                    className="relative"
+                    id={item.key}
+                    type="text"
+                    autoComplete="off"
+                    changeValue={(e) => handleInputChange(e, item.id)}
+                    value={item.value}
+                    name={item.key}
+                    hasDefault={item.default_value !== null}
+                    setDefault={() => dispatch(addUserDefaultSettings(item))}
+                  />
                 )
             )}
         </form>

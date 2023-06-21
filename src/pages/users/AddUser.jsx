@@ -107,6 +107,7 @@ const AddUser = () => {
             label={"Username"}
             type={"text"}
             id={"username"}
+            autoComplete="off"
             placeholder={"Enter a name"}
             value={user.username}
             changeValue={(e) => dispatch(addUserName(e.target.value))}
@@ -115,6 +116,7 @@ const AddUser = () => {
             label={"Password"}
             type={"password"}
             id={"password"}
+            autoComplete="off"
             placeholder={"Enter a password"}
             value={user.password}
             changeValue={(e) => dispatch(addUserPassword(e.target.value))}
