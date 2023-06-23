@@ -1,61 +1,81 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useGetSettingsQuery,
-  useGetSettingsUserIdQuery,
+  useGetUserSettingsIdQuery,
   useSettingUserSetMutation,
 } from "redux/index";
 import {
   addUserSettings,
   addUserDefaultSettings,
   renderSettings,
-  renderEditSettings,
 } from "redux/slices/userSlice";
+import { toast } from "react-toastify";
 
 import Tooltip from "components/Tooltip";
-import SearchInput from "components/SearchInput";
 
 import { IoIosArrowBack } from "react-icons/io";
+import { FiSearch } from "react-icons/fi";
 import { BiPaste } from "react-icons/bi";
 
 const EditUserSettings = () => {
-  const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
   const settings = useSelector((state) => state.user.settings);
-  const [searchValue, setSearchValue] = React.useState("");
-  const { data: getSettings = [], isLoading: loadingSettings } =
+  const { data: getSettings = [], isLoading: loadingGetSettings } =
     useGetSettingsQuery();
-  const { data: getSettingsUserId, isLoading: loadingSettingsUserId } =
-    useGetSettingsUserIdQuery(id);
-  const [editUserSettings] = useSettingUserSetMutation();
+  const { data: getUserSettings = [], isLoading: loadingUserSettings } =
+    useGetUserSettingsIdQuery(id);
+  const [editUserSettingsSet] = useSettingUserSetMutation();
+
+  const [searchValue, setSearchValue] = React.useState("");
+
+  const handleSaveUser = async (e) => {
+    e.preventDefault();
+
+    let dataSettings = settings.reduce(function (result, item) {
+      if (item.value !== "") {
+        result.push({ setting_id: item.id, new_value: item.value });
+      }
+      return result;
+    }, []);
+
+    if (editUserSettingsSet === 0 || dataSettings.length === 0) {
+      toast.error("Enter new settings");
+    }
+
+    await editUserSettingsSet({
+      userId: id,
+      settings: dataSettings,
+    });
+    navigate(`/users/${id}`);
+    toast.success("Added new settings");
+  };
 
   React.useEffect(() => {
-    if (!loadingSettings) {
-      dispatch(renderSettings(getSettings));
-      if (!loadingSettingsUserId) {
-        dispatch(renderEditSettings(getSettingsUserId));
-      }
-    }
-  }, [loadingSettings, loadingSettingsUserId]);
+    // let test = getSettings.map((setting) => {
+    //   const userSetting = getUserSettings.find(
+    //     (userSetting) => userSetting.id === setting.id
+    //   );
+
+    //   if (userSetting) {
+    //     return {
+    //       ...setting,
+    //       value: userSetting.value,
+    //     };
+    //   }
+
+    //   return setting;
+    // });
+
+    // dispatch(renderSettings(test));
+  }, [loadingGetSettings, loadingUserSettings]);
 
   const handleInputChange = (e, id) => {
     const value = e.target.value;
     dispatch(addUserSettings({ id, value }));
-  };
-
-  const handleEditUserSettings = async (e) => {
-    e.preventDefault();
-    // await editUserSettings({
-    //   id,
-    //   body: settings
-    //     .filter(
-    //       (el) => el.value !== "" && { setting_id: el.id, new_value: el.value }
-    //     )
-    //     .map((item) => {
-    //       return { setting_id: item.id, new_value: item.value };
-    //     }),
-    // }).unwrap();
   };
 
   return (
@@ -69,11 +89,19 @@ const EditUserSettings = () => {
         </Link>
         <h3 className="h3 mt-5">Settings</h3>
         <form className="my-4 pb-[50px]">
-          <SearchInput
-            searchValue={searchValue}
-            setSearchValue={setSearchValue}
-            placeholder={"Enter setting name to search..."}
-          />
+          <label
+            className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
+            htmlFor="search"
+          >
+            <input
+              className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
+              type="search"
+              placeholder="Enter setting name to search..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
+            <FiSearch className="w-12 text-gray" />
+          </label>
 
           {settings
             ?.filter((el) =>
@@ -97,7 +125,7 @@ const EditUserSettings = () => {
                       value={item.value}
                       onChange={(e) => handleInputChange(e, item.id)}
                     />
-                    {item.default_value !== null && (
+                    {item.default_value !== null ? (
                       <div className="group absolute right-5 bottom-3 cursor-pointer">
                         <Tooltip name={`Paste default value`} />
                         <BiPaste
@@ -105,6 +133,8 @@ const EditUserSettings = () => {
                           className="text-gray"
                         />
                       </div>
+                    ) : (
+                      false
                     )}
                   </label>
                 )
@@ -113,7 +143,7 @@ const EditUserSettings = () => {
       </div>
 
       <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-        <button onClick={handleEditUserSettings} className="btn-primary">
+        <button onClick={handleSaveUser} className="btn-primary">
           Save
         </button>
       </div>
