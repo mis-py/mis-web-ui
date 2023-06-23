@@ -8,7 +8,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 
-const SettingsTeam = () => {
+const EditTeamSettings = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data: getTeamSettings } = useGetSettingsTeamIdQuery(id);
@@ -80,4 +80,4 @@ const SettingsTeam = () => {
   );
 };
 
-export default SettingsTeam;
+export default EditTeamSettings;
