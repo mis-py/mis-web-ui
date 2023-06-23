@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
+import Input from "components/Input"
+
 const AddTeam = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -43,18 +45,16 @@ const AddTeam = () => {
         <h3 className="h3 mt-5">New team</h3>
 
         <form className="my-7">
-          <label className="flex flex-col gap-1 mb-4" htmlFor="name">
-            Team name
-            <input
-              className="bg-blackSecond text-gray rounded border-none border-0 px-3 py-2 focus-visible:outline-none"
-              type="text"
-              id="name"
-              placeholder="Enter a name"
-              autoComplete="off"
-              value={team.name}
-              onChange={(e) => dispatch(addTeamName(e.target.value))}
-            />
-          </label>
+          <Input
+          label={"Team name"}
+          type={"text"}
+          id={"name"}
+          autoComplete="off"
+          placeholder="Enter a name"
+          value={team.name}
+          changeValue={(e) => dispatch(addTeamName(e.target.value))}
+          />
+            {/* Team name */}
         </form>
       </div>
       <div className="flex flex-col gap-3">

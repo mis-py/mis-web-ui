@@ -10,6 +10,8 @@ import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from "react-icons/ai";
 import { FiSearch } from "react-icons/fi";
 
+import Input from "components/Input";
+
 const AddGroup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -69,20 +71,15 @@ const AddGroup = () => {
         <h3 className="h3 mt-5">New group</h3>
 
         <form className="my-7">
-          <label className="flex flex-col gap-1 mb-4" htmlFor="name">
-            Group name
-            <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-              type="text"
-              id="name"
-              placeholder="Enter a group name"
-              autoComplete="off"
-              value={formValue.name}
-              onChange={(e) =>
-                setFormValue({ ...formValue, name: e.target.value })
-              }
-            />
-          </label>
+          <Input 
+          label={"Group name"}
+          type="text"
+          id="name"
+          placeholder="Enter a group name"
+          autoComplete="off"
+          value={formValue.name}
+          changeValue={(e) => setFormValue({ ...formValue, name: e.target.value })}
+          />
         </form>
 
         {loadingUsers ? (
