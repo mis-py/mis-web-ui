@@ -7,7 +7,7 @@ import PulseLoader from "react-spinners/PulseLoader";
 import AdminWrapper from "config/AdminWrapper";
 
 import { FiSearch } from "react-icons/fi";
-import { IoIosArrowDown } from "react-icons/io";
+import ListItemWrapper from "../../components/common/ListItemWrapper";
 import { AiOutlinePlus, AiOutlineSetting } from "react-icons/ai";
 import { CgFileDocument } from "react-icons/cg";
 
@@ -84,55 +84,52 @@ const Apps = () => {
                 el.name.toLowerCase().includes(serchValue.toLowerCase().trim())
               )
               .map((app, index) => (
-                <div
-                  key={app.id}
-                  className="flex flex-col relative bg-blackSecond p-6 rounded"
-                >
-                  <div className="flex justify-between items-center pb-2 border-b border-backGround">
-                    <div className="flex">
-                      <img
-                        className="w-[56px] h-[56px] rounded-full mr-3"
-                        src={require("assets/img/app.png")}
-                        alt=""
-                      />
-                      <div className="flex flex-col">
-                        <h4>{app.name}</h4>
-                        <h5 className="text-gray text-xs">Category</h5>
+                  <ListItemWrapper key={app.id}>
+                    <div className="flex justify-between items-center pb-2 border-b border-backGround">
+                      <div className="flex">
+                        <img
+                            className="w-[56px] h-[56px] rounded-full mr-3"
+                            src={require("assets/img/app.png")}
+                            alt=""
+                        />
+                        <div className="flex flex-col">
+                          <h4>{app.name}</h4>
+                          <h5 className="text-gray text-xs">Category</h5>
+                        </div>
+                      </div>
+                      <div className="flex gap-3">
+                        <CgFileDocument
+                            onClick={() => navigate(`/apps/logs/${app.id}`)}
+                            className="text-2xl text-gray cursor-pointer"
+                        />
+                        {/* <AdminWrapper>
+                        </AdminWrapper> */}
+                        <AiOutlineSetting
+                            onClick={() => navigate(`/apps/settings/${app.id}`)}
+                            className="text-2xl text-gray cursor-pointer"
+                        />
                       </div>
                     </div>
-                    <div className="flex gap-3">
-                      <CgFileDocument
-                        onClick={() => navigate(`/apps/logs/${app.id}`)}
-                        className="text-2xl text-gray cursor-pointer"
-                      />
-                      {/* <AdminWrapper>
-                        </AdminWrapper> */}
-                      <AiOutlineSetting
-                        onClick={() => navigate(`/apps/settings/${app.id}`)}
-                        className="text-2xl text-gray cursor-pointer"
-                      />
-                    </div>
-                  </div>
 
-                  <div className={`duration-300 flex flex-col pt-4 gap-2`}>
-                    <div className="flex justify-between">
-                      <h3>Status:</h3>
-                      <p className="text-gray">
-                        {app.enabled ? "Healthy" : "Unhealthy"}
-                      </p>
+                    <div className={`duration-300 flex flex-col pt-4 gap-2`}>
+                      <div className="flex justify-between">
+                        <h3>Status:</h3>
+                        <p className="text-gray">
+                          {app.enabled ? "Healthy" : "Unhealthy"}
+                        </p>
+                      </div>
+                      <div className="flex justify-between">
+                        <h3>Is active:</h3>
+                        <p
+                            className={`${
+                                app.enabled ? "text-success" : "text-danger"
+                            }`}
+                        >
+                          {app.enabled ? "Enabled" : "Disabled"}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                      <h3>Is active:</h3>
-                      <p
-                        className={`${
-                          app.enabled ? "text-success" : "text-danger"
-                        }`}
-                      >
-                        {app.enabled ? "Enabled" : "Disabled"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                  </ListItemWrapper>
               ))}
           </div>
         )}
