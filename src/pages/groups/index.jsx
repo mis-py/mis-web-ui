@@ -183,12 +183,12 @@ const Groups = () => {
                     </div>
                     <div className={`duration-300 flex flex-col pt-4`}>
                       <p className="pb-4">Members of the department:</p>
-                      <div className="flex pl-1">
+                      <div className="flex">
                         {group.users.length ? (
                             group.users.map((item) => (
                                 <div
                                     key={item.id}
-                                    className="group cursor-pointer shadow -ml-1 relative"
+                                    className="group cursor-pointer shadow relative"
                                 >
                                   <img
                                       className="w-[35px] h-[35px]"

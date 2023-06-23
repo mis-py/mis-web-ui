@@ -68,11 +68,11 @@ const EditUser = () => {
             />
           </label>
 
-          <div className="flex pl-1">
+          <div className="flex">
             {getTeamId.users?.map((item) => (
               <div
                 key={item.id}
-                className="group cursor-pointer shadow -ml-1 relative"
+                className="group cursor-pointer shadow relative"
               >
                 <img
                   className="w-[35px] h-[35px]"
