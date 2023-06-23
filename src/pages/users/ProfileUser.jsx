@@ -13,8 +13,9 @@ import {
 import Tooltip from "components/Tooltip";
 
 import { BiPaste } from "react-icons/bi";
+import Input from "components/Input"
 import { IoIosArrowBack } from "react-icons/io";
-
+import USER from "assets/img/user.png";
 import { currentUserId } from "config/variables";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
@@ -31,8 +32,6 @@ const ProfileUser = () => {
   const [userLogout] = useUserLogoutMutation();
 
   const [settingsValue, setSettingsValue] = React.useState([]);
-
-  console.log(settingsValue);
 
   React.useEffect(() => {
     if (!location.pathname.includes(currentUserId)) {
@@ -98,65 +97,61 @@ const ProfileUser = () => {
 
         <img
           className="w-[64px] h-[64px]"
-          src={require("assets/img/user.png")}
+          src={USER}
           alt=""
         />
 
         <form className="mt-7">
-          <label className="flex flex-col gap-1 mb-4" htmlFor="username">
-            Username
-            <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 border-none border-0 focus-visible:outline-none"
-              type="text"
-              id="username"
-              value={getUserId && getUserId?.username}
-              readOnly
-            />
-          </label>
+          <Input 
+          label={"Username"}
+          type={"text"}
+          id={"username"}
+          autoComplete="off"
+          value={getUserId && (getUserId.username === undefined ? "" : getUserId.username)}
+          readOnly
+          />
 
           <label htmlFor="team">
             Team
-            <h3 className="body-2 text-gray mb-4">
-              {getUserId.team === null ? "No team" : getUserId.team}
-            </h3>
+            <span className="block body-2 text-gray mb-4">
+              {getUserId.team === null || getUserId.team === undefined || getUserId.team.name === undefined
+                ? "No team"
+                : getUserId.team.name
+                }
+            </span>
           </label>
           <label htmlFor="position">
             Position
-            <h3 className="body-2 text-gray">
+            <span className="block body-2 text-gray">
               {getUserId?.position === null
                 ? "Position name none"
                 : getUserId?.position}
-            </h3>
+            </span>
           </label>
         </form>
         <h3 className="text-2xl font-bold mt-7 mb-5">Settings</h3>
         <form>
           <h1 className="h3 mb-5">Local settings</h1>
           {settingsValue?.map(
-            (item, index) =>
+            (item) =>
               !item.is_global && (
-                <label
+                <Input
+                  label={item.key}
                   key={item.id}
-                  className={`flex flex-col gap-1 mb-4 relative`}
-                  htmlFor={item.key}
-                >
-                  {item.key}
-                  <input
-                    autoComplete="off"
-                    type="text"
-                    className={`bg-blackSecond  rounded px-3 py-2 focus-visible:outline-none border-none`}
-                    name={item.key}
-                    id={item.key}
-                    value={item.value}
-                    onChange={(e) =>
-                      setSettingsValue([...settingsValue, {...item, value: e.target.value }])
-                    }
-                  />
-                  <div className="group absolute right-5 bottom-3 cursor-pointer">
-                    <Tooltip name={`Paste default value`} />
-                    <BiPaste className="text-gray" />
-                  </div>
-                </label>
+                  className="relative"
+                  id={item.key}
+                  type="text"
+                  autoComplete="off"
+                  value={item.value}
+                  name={item.key}
+                  changeValue={(e) => setSettingsValue([...settingsValue, {...item, value: e.target.value}])}
+                  hasDefault={item.default_value !== null}
+                />
+                //   {/* <div className="group absolute right-5 bottom-3 cursor-pointer">
+                //     <Tooltip name={`Paste default value`} />
+                //     <BiPaste className="text-gray" />
+                //   </div>
+                // </label> */}
               )
           )}
         </form>

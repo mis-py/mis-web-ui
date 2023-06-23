@@ -18,6 +18,18 @@ const AddTeamMembers = () => {
 
   const [searchValue, setSearchValue] = React.useState("");
 
+  const [filteredUsers, setFilteredUsers] = React.useState([]);
+
+  React.useEffect(() => {
+    setFilteredUsers(getUsers
+        ?.filter((el) =>
+            el.username
+                .toLowerCase()
+                .includes(searchValue.toLowerCase().trim())
+            && el.team === null
+        ))
+  }, [searchValue, loadingUsers]);
+
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {
       dispatch(addTeamMembers(id));
@@ -64,14 +76,7 @@ const AddTeamMembers = () => {
           />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
-            {getUsers
-              ?.filter((el) =>
-                el.username
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase().trim())
-              )
-              .filter((noteam) => noteam.team === null)
-              .map((user) => (
+            {filteredUsers.length ? filteredUsers.map((user) => (
                 <div
                   key={user.id}
                   className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
@@ -111,7 +116,9 @@ const AddTeamMembers = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+              )) : (
+                <h2>No users without teams</h2>
+            )}
           </div>
         )}
       </div>

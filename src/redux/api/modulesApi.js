@@ -1,20 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const modulesApi = createApi({
   reducerPath: "modulesApi",
   tagTypes: ["Modules"],
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-  }),
+  baseQuery: rtkDefaultQuery,
   endpoints: (build) => ({
     getModules: build.query({
       query: () => ({
         url: `/modules/`,
         method: "GET",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
       }),
       providesTags: (result) =>
@@ -30,8 +27,7 @@ export const modulesApi = createApi({
         url: `/modules/${id}/unload`,
         method: "PUT",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Modules", id }],
@@ -41,8 +37,7 @@ export const modulesApi = createApi({
         url: `/modules/${id}/start`,
         method: "PUT",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Modules", id }],
@@ -53,8 +48,7 @@ export const modulesApi = createApi({
         method: "PUT",
         credentials: "include",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Modules", id }],

@@ -24,16 +24,23 @@ import { currentUserId } from "config/variables";
 const SettingsApp = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const isCoreApp = parseInt(id) === 1;
+
   const [active, setActive] = React.useState(false);
   const [formGlobalValue, setFormGlobalValue] = React.useState([]);
   const [newGlobalSettings, setNewGlobalSettings] = React.useState({});
   const [formLocalValue, setFormLocalValue] = React.useState([]);
   const [newLocalSettings, setNewLocalSettings] = React.useState({});
 
-  const { data: getSettingsAppId, isLoading: loadingGetSettingsAppId } =
-    useGetSettingsAppIdQuery(id);
+  const {
+    data: getSettingsAppId,
+    isLoading: loadingGetSettingsAppId,
+    refetch,
+  } = useGetSettingsAppIdQuery(id, {skip: isCoreApp});
+
   const { data: getSettingsUserId = [], isLoading: loadingGetSettingsUserId } =
-    useGetSettingsUserIdQuery(currentUserId);
+    useGetSettingsUserIdQuery(localStorage.getItem("user_id"));
   const [unloadAppModules] = useUnloadAppModulesMutation();
   const [startApp] = useStartAppMutation();
   const [stopApp] = useStopAppMutation();
@@ -41,6 +48,7 @@ const SettingsApp = () => {
   const [settingUserSet] = useSettingUserSetMutation();
 
   React.useEffect(() => {
+    refetch();
     if (!loadingGetSettingsAppId && getSettingsAppId?.enabled) {
       setActive(true);
     } else {
@@ -68,6 +76,7 @@ const SettingsApp = () => {
       await stopApp(id).unwrap();
       setActive(nextChecked);
     }
+    refetch();
   };
 
   const handleDeleteApp = (e) => {
@@ -119,21 +128,22 @@ const SettingsApp = () => {
             </div>
             <span>back</span>
           </Link>
-          <AdminWrapper>
+          {!isCoreApp && <AdminWrapper>
             <button
               onClick={handleDeleteApp}
               className="bg-danger rounded-lg p-3 cursor-pointer text-white flex text-bold"
             >
               <BsTrash />
             </button>
-          </AdminWrapper>
+          </AdminWrapper>}
         </div>
         <AdminWrapper>
           <h4 className="text-2xl font-bold mb-5">General settings</h4>
-          <div className="flex items-center gap-3 mb-5">
-            <Switch onChange={handleChange} checked={active} />
-            <p>Enable app</p>
-          </div>
+          {!isCoreApp && <div className="flex items-center gap-3 mb-5">
+                  <Switch onChange={handleChange} checked={active} />
+                  <p>Enable app</p>
+                </div>
+          }
           {formGlobalValue.length !== 0 && (
             <h1 className="text-2xl font-bold">Global settings</h1>
           )}

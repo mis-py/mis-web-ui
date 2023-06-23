@@ -24,9 +24,6 @@ const SettingsUser = () => {
     setNewFormValue(settingsList);
   }, [loadingSettings]);
 
-  console.log(newFormValue);
-  console.log(getSettings);
-
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">

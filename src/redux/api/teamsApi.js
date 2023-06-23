@@ -1,20 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const teamsApi = createApi({
   reducerPath: "teamsApi",
   tagTypes: ["Teams"],
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-  }),
+  baseQuery: rtkDefaultQuery,
   endpoints: (build) => ({
     getTeams: build.query({
       query: () => ({
         url: `/teams/`,
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
       }),
       providesTags: (result) =>
         result
@@ -25,7 +20,13 @@ export const teamsApi = createApi({
           : [{ type: "Teams", id: "LIST" }],
     }),
     getTeamId: build.query({
-      query: (id) => `/teams/${id}`,
+      query: (id) => ({
+        url: `/teams/${id}`,
+        method: "GET",
+        headers: {
+          "content-type": "application/json"
+        },
+      }),
       providesTags: (result, error, id) => [{ type: "Teams", id }],
     }),
     addTeam: build.mutation({
@@ -33,8 +34,7 @@ export const teamsApi = createApi({
         url: "/teams/create",
         method: "POST",
         headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "content-type": "application/json"
         },
         body,
       }),
@@ -45,8 +45,7 @@ export const teamsApi = createApi({
         url: `/teams/${id}`,
         method: "PUT",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
         body: rest,
       }),
@@ -57,8 +56,7 @@ export const teamsApi = createApi({
         url: `/teams/${id}`,
         method: "DELETE",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
       }),
       invalidatesTags: [{ type: "Teams", id: "LIST" }],

@@ -9,6 +9,7 @@ import {
 } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
 import { addMembers, deleteMembers } from "redux/slices/membersSlice";
+import USER from "assets/img/user.png";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -113,7 +114,7 @@ const EditMembersGroup = () => {
                         <div className="flex items-center gap-4">
                           <img
                             className="w-[56px] h-[56px]"
-                            src={require("assets/img/user.png")}
+                            src={USER}
                             alt=""
                           />
                           <div className="flex flex-col">

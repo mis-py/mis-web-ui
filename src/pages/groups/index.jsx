@@ -14,6 +14,7 @@ import AdminWrapper from "config/AdminWrapper";
 import { FiSearch } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
+import ListItemWrapper from "../../components/common/ListItemWrapper";
 
 const Groups = () => {
   const navigate = useNavigate();
@@ -126,86 +127,83 @@ const Groups = () => {
                 el.name.toLowerCase().includes(serchValue.toLowerCase().trim())
               )
               .map((group, index) => (
-                <div
-                  key={group.id}
-                  className="flex flex-col relative bg-blackSecond p-6 rounded lg:pt-6 lg:px-6"
-                >
-                  <div
-                    ref={refPopup}
-                    className={`${
-                      showEdit === index
-                        ? "opacity-100 visible"
-                        : "opacity-0 invisible"
-                    } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-3`}
-                  >
+                  <ListItemWrapper key={group.id} className="lg:pt-6 lg:px-6">
                     <div
-                      onClick={() => navigate(`/group/members/${group.id}`)}
-                      className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                        ref={refPopup}
+                        className={`${
+                            showEdit === index
+                                ? "opacity-100 visible"
+                                : "opacity-0 invisible"
+                        } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-3`}
                     >
-                      Manage members
-                    </div>
+                      <div
+                          onClick={() => navigate(`/group/members/${group.id}`)}
+                          className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                      >
+                        Manage members
+                      </div>
 
-                    <div
-                      onClick={() => navigate(`/group/objects/${group.id}`)}
-                      className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
-                    >
-                      Manage objects
-                    </div>
+                      <div
+                          onClick={() => navigate(`/group/objects/${group.id}`)}
+                          className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                      >
+                        Manage objects
+                      </div>
 
-                    <div
-                      onClick={() => handleDeleteGroup(group.id)}
-                      className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
-                    >
-                      Remove
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b border-backGround">
-                    <div className="flex items-center gap-4">
-                      <img
-                        className="w-[56px] h-[56px]"
-                        src={require("assets/img/groups.png")}
-                        alt=""
-                      />
-                      <div className="flex flex-col">
-                        <h5 className="text-gray text-xs">
-                          Name of the department:
-                        </h5>
-                        <h4>{group.name}</h4>
+                      <div
+                          onClick={() => handleDeleteGroup(group.id)}
+                          className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                      >
+                        Remove
                       </div>
                     </div>
-                    <AdminWrapper>
-                      <BiDotsVerticalRounded
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleEdit(index);
-                        }}
-                        className="text-3xl text-gray cursor-pointer"
-                      />
-                    </AdminWrapper>
-                  </div>
-                  <div className={`duration-300 flex flex-col pt-4`}>
-                    <p className="pb-4">Members of the department:</p>
-                    <div className="flex pl-1">
-                      {group.users.length ? (
-                        group.users.map((item) => (
-                          <div
-                            key={item.id}
-                            className="group cursor-pointer shadow -ml-1 relative"
-                          >
-                            <img
-                              className="w-[35px] h-[35px]"
-                              src={require("assets/img/user.png")}
-                              alt=""
-                            />
-                            <Tooltip name={item.username} />
-                          </div>
-                        ))
-                      ) : (
-                        <p className="text-danger">NO USERS</p>
-                      )}
+                    <div className="flex justify-between items-center pb-2 border-b border-backGround">
+                      <div className="flex items-center gap-4">
+                        <img
+                            className="w-[56px] h-[56px]"
+                            src={require("assets/img/groups.png")}
+                            alt=""
+                        />
+                        <div className="flex flex-col">
+                          <h5 className="text-gray text-xs">
+                            Name of the department:
+                          </h5>
+                          <h4>{group.name}</h4>
+                        </div>
+                      </div>
+                      <AdminWrapper>
+                        <BiDotsVerticalRounded
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleEdit(index);
+                            }}
+                            className="text-3xl text-gray cursor-pointer"
+                        />
+                      </AdminWrapper>
                     </div>
-                  </div>
-                </div>
+                    <div className={`duration-300 flex flex-col pt-4`}>
+                      <p className="pb-4">Members of the department:</p>
+                      <div className="flex pl-1">
+                        {group.users.length ? (
+                            group.users.map((item) => (
+                                <div
+                                    key={item.id}
+                                    className="group cursor-pointer shadow -ml-1 relative"
+                                >
+                                  <img
+                                      className="w-[35px] h-[35px]"
+                                      src={require("assets/img/user.png")}
+                                      alt=""
+                                  />
+                                  <Tooltip name={item.username} />
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-danger">NO USERS</p>
+                        )}
+                      </div>
+                    </div>
+                  </ListItemWrapper>
               ))}
           </div>
         )}
