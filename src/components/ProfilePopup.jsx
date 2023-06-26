@@ -37,7 +37,7 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
       <ul>
         <button
           onClick={() => {
-            navigate(`/profile/${currentUserId}`);
+            navigate(`/profile/${localStorage.getItem('user_id')}`);
             toggleDrawer();
           }}
           className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
@@ -45,9 +45,9 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
           <div className="duration-300 group-hover:text-primary">
             <FiUser />
           </div>
-          <h3 className="py-3 duration-300 group-hover:text-primary">
+          <span className="py-3 duration-300 group-hover:text-primary">
             Profile
-          </h3>
+          </span>
         </button>
         <button
           onClick={() => {
@@ -59,9 +59,9 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
           <div className="duration-300 group-hover:text-primary">
             <FiSettings />
           </div>
-          <h3 className="py-3 duration-300 group-hover:text-primary">
+          <span className="py-3 duration-300 group-hover:text-primary">
             Settings
-          </h3>
+          </span>
         </button>
         <button
           onClick={handleLogOut}
@@ -70,9 +70,9 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
           <div className="duration-300 group-hover:text-primary">
             <FiLogOut />
           </div>
-          <h3 className="py-3 duration-300 group-hover:text-primary">
+          <span className="py-3 duration-300 group-hover:text-primary">
             Log out
-          </h3>
+          </span>
         </button>
       </ul>
     </div>

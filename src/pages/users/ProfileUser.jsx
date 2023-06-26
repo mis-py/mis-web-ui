@@ -34,8 +34,8 @@ const ProfileUser = () => {
   const [settingsValue, setSettingsValue] = React.useState([]);
 
   React.useEffect(() => {
-    if (!location.pathname.includes(currentUserId)) {
-      navigate(`/profile/${currentUserId}`);
+    if (!location.pathname.includes(localStorage.getItem("user_id"))) {
+      navigate(`/profile/${localStorage.getItem("user_id")}`);
     }
 
     const userSettings = getSettings?.reduce((prev, curr) => {
@@ -56,7 +56,20 @@ const ProfileUser = () => {
     }, []);
 
     setSettingsValue(userSettings);
-  }, [loadingSettings, getUserId]);
+  }, [loadingSettings, loadingUserId]);
+
+  const handleSettingsChange = async (e, item) => {
+    const newSettings = settingsValue.map(valueItem => {
+      if (valueItem.id !== item.id) {
+        return valueItem;
+      }
+
+      valueItem.value = e.target.value;
+      return valueItem;
+    });
+
+    setSettingsValue(newSettings);
+  };
 
   // const handleDeleteUser = async (e) => {
   //   e.preventDefault();
@@ -103,9 +116,9 @@ const ProfileUser = () => {
 
         <form className="mt-7">
           <Input 
-          label={"Username"}
-          type={"text"}
-          id={"username"}
+          label="Username"
+          type="text"
+          id="username"
           autoComplete="off"
           value={getUserId && (getUserId.username === undefined ? "" : getUserId.username)}
           readOnly
@@ -144,7 +157,7 @@ const ProfileUser = () => {
                   autoComplete="off"
                   value={item.value}
                   name={item.key}
-                  changeValue={(e) => setSettingsValue([...settingsValue, {...item, value: e.target.value}])}
+                  changeValue={(e) => handleSettingsChange(e, item)}
                   hasDefault={item.default_value !== null}
                 />
                 //   {/* <div className="group absolute right-5 bottom-3 cursor-pointer">
