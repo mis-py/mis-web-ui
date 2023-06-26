@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import PulseLoader from "react-spinners/PulseLoader";
 
 import SearchInput from "components/SearchInput";
+import PermissionLabel from "components/permissions/PermissionLabel";
 
 import { IoIosArrowBack } from "react-icons/io";
 
@@ -58,38 +59,24 @@ const AddUserPermissions = () => {
                     .includes(searchValue.toLowerCase().trim())
                 )
                 .map((item) => (
-                  <label
-                    key={item.id}
-                    className={`${
-                      checked.includes(item.scope)
-                        ? "border-primary"
-                        : "border-blackSecond"
-                    } flex border duration-300 items-center gap-2 rounded w-full bg-blackSecond p-5 cursor-pointer text-gray body-2 sm:w-[calc(50%_-_8px)]`}
-                    htmlFor={item.name}
-                  >
-                    <input
-                      type="checkbox"
-                      name={item.name}
-                      id={item.name}
+                    <PermissionLabel
+                      key={item.id}
+                      item={item}
                       checked={
                         checked.length === []
-                          ? setChecked([])
-                          : checked.includes(item.scope)
+                            ? setChecked([])
+                            : checked.includes(item.scope)
                       }
                       onChange={(e) => {
                         if (e.target.checked) {
                           setChecked([...checked, item.scope]);
                         } else {
                           setChecked(
-                            checked.filter((obj) => obj !== item.scope)
+                              checked.filter((obj) => obj !== item.scope)
                           );
                         }
                       }}
-                      className="bg-transparent cursor-pointer
-    w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
                     />
-                    {item.name} ({item.scope})
-                  </label>
                 ))}
             </div>
           )}

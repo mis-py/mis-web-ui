@@ -4,8 +4,6 @@ import { useUserLogoutMutation } from "redux/index";
 import { FiUser, FiSettings, FiLogOut } from "react-icons/fi";
 import useOutsideClick from "hooks/useOutsideClick";
 
-import { currentUserId } from "config/variables";
-
 const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
   const navigate = useNavigate();
   const [userLogout] = useUserLogoutMutation();
