@@ -104,10 +104,11 @@ const Apps = () => {
                         />
                         {/* <AdminWrapper>
                         </AdminWrapper> */}
+                        {app.is_editable === true &&
                         <AiOutlineSetting
                             onClick={() => navigate(`/apps/settings/${app.id}`)}
                             className="text-2xl text-gray cursor-pointer"
-                        />
+                        />}
                       </div>
                     </div>
 

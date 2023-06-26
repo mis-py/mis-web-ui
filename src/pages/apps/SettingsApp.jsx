@@ -25,8 +25,6 @@ const SettingsApp = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const isCoreApp = parseInt(id) === 1;
-
   const [active, setActive] = React.useState(false);
   const [formGlobalValue, setFormGlobalValue] = React.useState([]);
   const [newGlobalSettings, setNewGlobalSettings] = React.useState({});
@@ -37,7 +35,7 @@ const SettingsApp = () => {
     data: getSettingsAppId,
     isLoading: loadingGetSettingsAppId,
     refetch,
-  } = useGetSettingsAppIdQuery(id, {skip: isCoreApp});
+  } = useGetSettingsAppIdQuery(id);
 
   const { data: getSettingsUserId = [], isLoading: loadingGetSettingsUserId } =
     useGetSettingsUserIdQuery(localStorage.getItem("user_id"));
@@ -128,22 +126,22 @@ const SettingsApp = () => {
             </div>
             <span>back</span>
           </Link>
-          {!isCoreApp && <AdminWrapper>
+          <AdminWrapper>
             <button
               onClick={handleDeleteApp}
               className="bg-danger rounded-lg p-3 cursor-pointer text-white flex text-bold"
             >
               <BsTrash />
             </button>
-          </AdminWrapper>}
+          </AdminWrapper>
         </div>
         <AdminWrapper>
           <h4 className="text-2xl font-bold mb-5">General settings</h4>
-          {!isCoreApp && <div className="flex items-center gap-3 mb-5">
+          <div className="flex items-center gap-3 mb-5">
                   <Switch onChange={handleChange} checked={active} />
                   <p>Enable app</p>
                 </div>
-          }
+
           {formGlobalValue.length !== 0 && (
             <h1 className="text-2xl font-bold">Global settings</h1>
           )}
