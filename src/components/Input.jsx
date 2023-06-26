@@ -19,12 +19,12 @@ const Input = ({
     setDefault
   }) => {
   return (
-    <label className={`flex flex-col gap-1 mb-4 ${className}`} htmlFor={id}>
+    <label className={`flex flex-col gap-1 mb-4 ${className === undefined ? "" : className}`.trim()} htmlFor={id}>
       {label}
       
       <input
         name={name}
-        className={`bg-blackSecond rounded px-3 py-2 focus-visible:outline-none border-none ${inputClassName}`}
+        className={`bg-blackSecond rounded px-3 py-2 focus-visible:outline-none border-none ${inputClassName === undefined ? "" : inputClassName}`.trim()}
         type={type}
         id={id}
         placeholder={placeholder}
