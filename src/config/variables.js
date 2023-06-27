@@ -4,8 +4,8 @@ import { AiOutlineAppstore } from "react-icons/ai";
 import { MdGroups } from "react-icons/md";
 
 export const baseUrl = `${
-  // process.env.NODE_ENV === "development" ? "http://localhost:8000/api" : "/api"
-  "http://dev.ng.lan/api"
+  process.env.NODE_ENV === "development" ? "http://localhost:8000/api" : "/api"
+  // "http://dev.ng.lan/api"
 }`;
 
 export const currentUserId = localStorage.getItem("user_id");

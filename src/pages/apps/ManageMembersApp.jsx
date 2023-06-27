@@ -93,8 +93,10 @@ const ManageMembersApp = () => {
                     .includes(searchValue.toLowerCase().trim())
                 )
                 .map((user) =>
-                  user.team === null ||
-                  user.team.name === getDataTeamId.name ? (
+                  user.team === null
+                  || user.team === undefined
+                  || user.team.name === getDataTeamId.name
+                      ? (
                     <div
                       key={user.id}
                       className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
@@ -135,7 +137,7 @@ const ManageMembersApp = () => {
                       </div>
                     </div>
                   ) : (
-                    false
+                    ""
                   )
                 )}
           </div>
