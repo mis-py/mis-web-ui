@@ -107,12 +107,12 @@ const SettingsApp = () => {
         body: Object.values(newGlobalSettings),
       }).unwrap();
     }
-    if (newLocalSettings !== 0) {
-      await settingUserSet({
-        currentUserId,
-        body: Object.values(newLocalSettings),
-      }).unwrap();
-    }
+    // if (newLocalSettings !== 0) {
+    //   await settingUserSet({
+    //     currentUserId,
+    //     body: Object.values(newLocalSettings),
+    //   }).unwrap();
+    // }
     toast.success("Settings updated");
   };
 

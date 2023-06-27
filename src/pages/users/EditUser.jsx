@@ -114,15 +114,15 @@ const EditUser = () => {
             label={"Username"}
             type={"text"}
             id={"username"}
-            value={user.username}
+            value={user.username === null ? "" : user.username}
             changeValue={(e) => dispatch(addUserName(e.target.value))}
           />
           <Input
-            label={"Password"}
-            type={"password"}
-            id={"new-password"}
-            placeholder={"Enter a new password"}
-            value={user.password}
+            label="Password"
+            type="password"
+            id="new-password"
+            placeholder="Enter a new password"
+            value={user.password === null ? "" : user.password}
             changeValue={(e) => dispatch(addUserPassword(e.target.value))}
           />
           <label className="flex flex-col gap-1 mb-4" htmlFor="team">
@@ -132,7 +132,7 @@ const EditUser = () => {
               options={options}
               styles={customStyles}
               placeholder={user.team === null && "No team"}
-              value={user.team}
+              value={user.team === null ? "" : user.team}
               onChange={(choice) =>
                 dispatch(addUserTeam(choice !== null ? choice : null))
               }
@@ -143,7 +143,7 @@ const EditUser = () => {
             type={"text"}
             id={"job-position"}
             placeholder={user.position === "" ? "No position" : user.position}
-            value={user.position}
+            value={user.position === null ? "" : user.position}
             changeValue={(e) => dispatch(addUserPosition(e.target.value))}
           />
         </form>

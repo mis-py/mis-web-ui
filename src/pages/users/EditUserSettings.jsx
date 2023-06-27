@@ -17,7 +17,8 @@ import Tooltip from "components/Tooltip";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
-import { BiPaste } from "react-icons/bi";
+
+import Input from "components/Input";
 
 const EditUserSettings = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,11 @@ const EditUserSettings = () => {
     e.preventDefault();
 
     let dataSettings = settings.reduce(function (result, item) {
-      if (item.value !== "") {
+      const userSetting = getUserSettings.find(
+          (userSetting) => userSetting.setting.id === item.id
+      );
+
+      if (item.value !== "" || (userSetting !== undefined && userSetting.value.length)) {
         result.push({ setting_id: item.id, new_value: item.value });
       }
       return result;
@@ -47,17 +52,23 @@ const EditUserSettings = () => {
     }
 
     await editUserSettingsSet({
-      userId: id,
-      settings: dataSettings,
+      id: id,
+      body: dataSettings,
+    }).then((data) => {
+      if (data.error !== undefined && data.error.data.message !== undefined) {
+        console.error(data.error.data.message);
+        toast.error("Settings were not saved");
+      } else {
+        navigate(`/users/${id}`);
+        toast.success("Added new settings");
+      }
     });
-    navigate(`/users/${id}`);
-    toast.success("Added new settings");
   };
 
   React.useEffect(() => {
     let test = getSettings.map((setting) => {
       const userSetting = getUserSettings.find(
-        (userSetting) => userSetting.id === setting.id
+        (userSetting) => userSetting.setting.id === setting.id
       );
 
       if (userSetting) {
@@ -110,33 +121,19 @@ const EditUserSettings = () => {
             ?.map(
               (item) =>
                 !item.is_global && (
-                  <label
-                    key={item.id}
-                    className={`flex flex-col gap-1 mb-4 relative`}
-                    htmlFor={item.key}
-                  >
-                    {`${item.key} ( ${item.app.name} )`}
-                    <input
-                      autoComplete="off"
+                  <Input
+                      key={item.id}
+                      className="relative"
+                      label={`${item.key} ( ${item.app.name} )`}
+                      id={`${item.key}-${item.app.name}`.toLowerCase()}
                       type="text"
-                      className={`bg-blackSecond  rounded px-3 py-2 focus-visible:outline-none border-none`}
+                      autoComplete="off"
+                      changeValue={(e) => handleInputChange(e, item.id)}
+                      value={item.value === undefined ? "" : item.value}
                       name={item.key}
-                      id={item.id}
-                      value={item.value}
-                      onChange={(e) => handleInputChange(e, item.id)}
-                    />
-                    {item.default_value !== null ? (
-                      <div className="group absolute right-5 bottom-3 cursor-pointer">
-                        <Tooltip name={`Paste default value`} />
-                        <BiPaste
-                          onClick={() => dispatch(addUserDefaultSettings(item))}
-                          className="text-gray"
-                        />
-                      </div>
-                    ) : (
-                      false
-                    )}
-                  </label>
+                      hasDefault={item.default_value !== null}
+                      setDefault={() => dispatch(addUserDefaultSettings(item))}
+                  />
                 )
             )}
         </form>
