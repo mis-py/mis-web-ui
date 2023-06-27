@@ -55,22 +55,22 @@ const EditUserSettings = () => {
   };
 
   React.useEffect(() => {
-    // let test = getSettings.map((setting) => {
-    //   const userSetting = getUserSettings.find(
-    //     (userSetting) => userSetting.id === setting.id
-    //   );
+    let test = getSettings.map((setting) => {
+      const userSetting = getUserSettings.find(
+        (userSetting) => userSetting.id === setting.id
+      );
 
-    //   if (userSetting) {
-    //     return {
-    //       ...setting,
-    //       value: userSetting.value,
-    //     };
-    //   }
+      if (userSetting) {
+        return {
+          ...setting,
+          value: userSetting.value,
+        };
+      }
 
-    //   return setting;
-    // });
+      return setting;
+    });
 
-    // dispatch(renderSettings(test));
+    dispatch(renderSettings(test));
   }, [loadingGetSettings, loadingUserSettings]);
 
   const handleInputChange = (e, id) => {
