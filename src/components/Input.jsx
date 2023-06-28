@@ -29,7 +29,7 @@ const Input = ({
         id={id}
         placeholder={placeholder}
         autoComplete="off"
-        value={value}
+        value={value === undefined ? "" : value}
         onChange={changeValue}
         readOnly={readOnly}
       />

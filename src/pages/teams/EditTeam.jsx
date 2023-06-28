@@ -63,7 +63,7 @@ const EditUser = () => {
               id="teamname"
               name="teamname"
               autoComplete="off"
-              value={team.name}
+              value={team.name === undefined ? "" : team.name}
               onChange={(e) => dispatch(addTeamName(e.target.value))}
             />
           </label>
