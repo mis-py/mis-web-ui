@@ -1,42 +1,36 @@
 import React from "react";
-import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
-import { confirmAlert } from "react-confirm-alert";
-import { addUserSettings } from "redux/slices/userSlice";
+import { Link } from "react-router-dom";
+
 import {
-  useDeleteUserMutation,
-  useGetUserIdQuery,
-  useUserLogoutMutation,
+  useGetMeQuery,
   useGetSettingsQuery,
 } from "redux/index";
 
-import Tooltip from "components/Tooltip";
 
-import { BiPaste } from "react-icons/bi";
 import Input from "components/Input"
 import { IoIosArrowBack } from "react-icons/io";
 import USER from "assets/img/user.png";
-import { currentUserId } from "config/variables";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
-
 const ProfileUser = () => {
-  const { id } = useParams();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { data: getUserId = [], isLoading: loadingUserId } =
-    useGetUserIdQuery(id);
+
+  const { data: getUserId = [], isLoading: loadingUserId } = useGetMeQuery();
   const { data: getSettings = [], isLoading: loadingSettings } =
     useGetSettingsQuery();
-  const [deleteUser] = useDeleteUserMutation();
-  const [userLogout] = useUserLogoutMutation();
 
   const [settingsValue, setSettingsValue] = React.useState([]);
 
+  const setDefaultSetting = function(item) {
+    setSettingsValue(settingsValue.map((settingValue) => {
+      if (settingValue.id === item.id) {
+        settingValue.value = settingValue.default_value;
+      }
+
+      return settingValue;
+    }));
+  };
+
   React.useEffect(() => {
-    if (!location.pathname.includes(localStorage.getItem("user_id"))) {
-      navigate(`/profile/${localStorage.getItem("user_id")}`);
-    }
 
     const userSettings = getSettings?.reduce((prev, curr) => {
       return [
@@ -70,32 +64,6 @@ const ProfileUser = () => {
 
     setSettingsValue(newSettings);
   };
-
-  // const handleDeleteUser = async (e) => {
-  //   e.preventDefault();
-  //   confirmAlert({
-  //     title: "Delete profile",
-  //     message: "Are you sure you want to delete your profile?",
-  //     buttons: [
-  //       {
-  //         label: "Yes",
-  //         onClick: async () => {
-  //           await deleteUser(id);
-  //           await userLogout();
-  //           localStorage.removeItem("my-token");
-  //           localStorage.removeItem("user_id");
-  //           localStorage.removeItem("user_name");
-  //           navigate("/signin");
-  //           toast.success("Profile deleted");
-  //         },
-  //       },
-  //       {
-  //         label: "No",
-  //       },
-  //     ],
-  //     overlayClassName: "bg-blackSecond/70",
-  //   });
-  // };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -158,13 +126,9 @@ const ProfileUser = () => {
                   value={item.value}
                   name={item.key}
                   changeValue={(e) => handleSettingsChange(e, item)}
-                  hasDefault={item.default_value !== null}
+                  hasDefault={item.default_value !== null && item.default_value.length !== 0}
+                  setDefault={() => setDefaultSetting(item)}
                 />
-                //   {/* <div className="group absolute right-5 bottom-3 cursor-pointer">
-                //     <Tooltip name={`Paste default value`} />
-                //     <BiPaste className="text-gray" />
-                //   </div>
-                // </label> */}
               )
           )}
         </form>

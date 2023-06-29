@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const permissionsApi = createApi({
@@ -29,6 +29,9 @@ export const permissionsApi = createApi({
         method: "GET",
       }),
       providesTags: () => [{ type: "Permissions" }],
+      forceRefetch() {
+        return localStorage.getItem('user_id') === null;
+      },
     }),
     getPermissionsTeamId: build.query({
       query: (id) => ({
