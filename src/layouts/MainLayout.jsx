@@ -14,11 +14,11 @@ import Sidebar from "components/Sidebar";
 import { currentUserId } from "config/variables";
 
 const MainLayout = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const { data: getPermissionsUser = [], isLoading: loadingPermissionsUser } =
-    useGetPermissionsUserIdQuery(localStorage.getItem("user_id"));
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  //
+  // const { data: getPermissionsUser = [], isLoading: loadingPermissionsUser } =
+  //   useGetPermissionsUserIdQuery(localStorage.getItem("user_id"));
 
   // React.useEffect(() => {
   //   const linksAdmin = [

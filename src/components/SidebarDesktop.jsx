@@ -12,7 +12,7 @@ import ProfilePopupDesktop from "components/ProfilePopupDesktop";
 import Notifications from "./Notifications";
 
 import { sidebar } from "config/variables";
-
+import AdminWrapper from "config/AdminWrapper";
 
 const SidebarDesktop = () => {
   const [userPopup, setUserPopup] = React.useState(false);
@@ -70,25 +70,28 @@ const SidebarDesktop = () => {
           </div>
 
           <ul>
+            <AdminWrapper>
             {sidebar.map((link) => (
-              <NavLink
-                className={({ isActive }) =>
-                  isActive
-                    ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
-                    : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
-                }
-                to={link.url}
-                key={link.title}
-              >
-                <div className="duration-300 group-hover:text-primary">
-                  {link.icon}
-                </div>
-                <h3 className="py-3 duration-300 group-hover:text-primary">
-                  {link.title}
-                </h3>
-              </NavLink>
+              <li key={link.title}>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive
+                      ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
+                      : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
+                  }
+                  to={link.url}
+                >
+                  <div className="duration-300 group-hover:text-primary">
+                    {link.icon}
+                  </div>
+                  <h3 className="py-3 duration-300 group-hover:text-primary">
+                    {link.title}
+                  </h3>
+                </NavLink>
+              </li>
             ))}
-            <div
+            </AdminWrapper>
+            <li
               className={`flex items-center justify-between px-5 gap-3 duration-300 group cursor-pointer hover:bg-blackSecond`}
               onClick={() => setShowListApps(!showListApps)}
             >
@@ -103,8 +106,8 @@ const SidebarDesktop = () => {
               <IoIosArrowForward
                 className={`${showListApps ? "rotate-90" : ""} duration-300`}
               />
-            </div>
-            <div
+            </li>
+            <li
               className={`${showListApps ? "opacity-100 visible" : "opacity-0 invisible"
                 } flex flex-col duration-300`}
             >
@@ -129,7 +132,7 @@ const SidebarDesktop = () => {
                     </NavLink>
                   )
               )}
-            </div>
+            </li>
           </ul>
         </div>
       </div>

@@ -23,6 +23,13 @@ export const permissionsApi = createApi({
       }),
       providesTags: (result, error, id) => [{ type: "Permissions", id }],
     }),
+    getMyPermissions: build.query({
+      query: () => ({
+        url: "/permissions/my",
+        method: "GET",
+      }),
+      providesTags: () => [{ type: "Permissions" }],
+    }),
     getPermissionsTeamId: build.query({
       query: (id) => ({
         url: `/permissions/team/${id}`,
@@ -60,6 +67,7 @@ export const permissionsApi = createApi({
 export const {
   useGetPermissionsQuery,
   useGetPermissionsUserIdQuery,
+  useGetMyPermissionsQuery,
   useEditUserPermissionMutation,
   useGetPermissionsTeamIdQuery,
   useEditTeamPermissionMutation,
