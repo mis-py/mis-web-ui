@@ -173,10 +173,10 @@ const Teams = () => {
                       </div>
                       <AdminWrapper>
                         <div className="flex gap-3 items-center">
-                          <AiOutlineSetting
-                              onClick={() => navigate(`/team/settings/${team.id}`)}
-                              className="text-2xl text-gray cursor-pointer"
-                          />
+                          {/*<AiOutlineSetting*/}
+                          {/*    onClick={() => navigate(`/team/settings/${team.id}`)}*/}
+                          {/*    className="text-2xl text-gray cursor-pointer"*/}
+                          {/*/>*/}
                           <BiDotsVerticalRounded
                               onClick={(e) => {
                                 e.stopPropagation();

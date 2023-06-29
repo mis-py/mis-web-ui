@@ -10,7 +10,6 @@
     "static/media/app.png": "/static/media/app.png",
     "static/media/logo.png": "/static/media/logo.png",
     "static/media/user.png": "/static/media/user.png",
-    "static/media/ellipse.png": "/static/media/ellipse.png",
     "index.html": "/index.html"
   },
   "entrypoints": [

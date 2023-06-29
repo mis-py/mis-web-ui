@@ -16,12 +16,16 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
 
   const handleLogOut = async (e) => {
     e.preventDefault();
-    await userLogout();
-    toggleDrawer();
-    localStorage.removeItem("my-token");
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("user_name");
-    navigate("/signin");
+    await userLogout().then(() => {
+      toggleDrawer();
+      localStorage.removeItem("my-token");
+      localStorage.removeItem("user_id");
+      localStorage.removeItem("user_name");
+
+      // setTimeout(() => {
+        navigate("/signin");
+      // }, 100);
+    });
   };
 
   return (

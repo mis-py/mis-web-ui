@@ -26,6 +26,13 @@ export const usersApi = createApi({
       }),
       providesTags: (result, error, id) => [{ type: "Users", id }],
     }),
+    getMe: build.query({
+      query: () => ({
+        url: `/users/me`,
+        method: "GET"
+      }),
+      providesTags: () => [{ type: "Users" }],
+    }),
     addUser: build.mutation({
       query: (body) => ({
         url: "/users/create",
@@ -73,6 +80,7 @@ export const usersApi = createApi({
 
 export const {
   useGetUsersQuery,
+  useGetMeQuery,
   useGetUserIdQuery,
   useAddUserMutation,
   useEditUserMutation,
