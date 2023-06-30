@@ -52,7 +52,7 @@ const GroupListItem = (props) => {
     };
 
     return (
-        <ListItemWrapper  className="lg:pt-6 lg:px-6">
+        <ListItemWrapper className="lg:pt-6 lg:px-6">
             <div
                 ref={refPopup}
                 className={`${
