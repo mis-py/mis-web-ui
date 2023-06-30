@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
+
 import {
   useGetGroupIdUsersQuery,
   useGetUsersQuery,
@@ -14,6 +14,7 @@ import USER from "assets/img/user.png";
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const EditMembersGroup = () => {
   const navigate = useNavigate();
@@ -76,15 +77,7 @@ const EditMembersGroup = () => {
           </label>
         </form>
         {loadingDataUsers ? (
-          <PulseLoader
-            size={15}
-            cssOverride={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            color="#757575"
-          />
+          <SpinnerLoader />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
             {getDataUsers

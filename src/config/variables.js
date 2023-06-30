@@ -1,5 +1,5 @@
 import { FiUsers } from "react-icons/fi";
-import { BiUser } from "react-icons/bi";
+import {BiTask, BiUser} from "react-icons/bi";
 import { AiOutlineAppstore } from "react-icons/ai";
 import { MdGroups } from "react-icons/md";
 
@@ -14,9 +14,6 @@ export const sidebar = [
   { icon: <BiUser />, title: "Users", url: "/users" },
   { icon: <FiUsers />, title: "Teams", url: "/teams" },
   { icon: <MdGroups />, title: "Groups", url: "/groups" },
-  {
-    icon: <AiOutlineAppstore />,
-    title: "Applications",
-    url: "/apps",
-  },
+  { icon: <AiOutlineAppstore />, title: "Applications", url: "/apps", },
+  { icon: <BiTask />, title: "Tasks", url: "/tasks", },
 ];

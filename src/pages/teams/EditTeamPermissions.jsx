@@ -5,19 +5,17 @@ import {
   useGetPermissionsTeamIdQuery,
   useEditTeamPermissionMutation,
 } from "redux/index";
-import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
+
 import PermissionLabel from "components/permissions/PermissionLabel";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const EditTeamPermissions = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { id } = useParams();
-  const permissions = useSelector((state) => state.team.permissions);
   const [checked, setChecked] = React.useState([]);
   const [editTeamPermission] = useEditTeamPermissionMutation();
   const { data: dataPermissions = [], isLoading: loadingDataPermissions } =
@@ -69,15 +67,7 @@ const EditTeamPermissions = () => {
           </label>
 
           {loadingDataPermissions ? (
-            <PulseLoader
-              size={15}
-              cssOverride={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-              color="#757575"
-            />
+            <SpinnerLoader />
           ) : (
             <div className="flex flex-col gap-4">
               {dataPermissions &&

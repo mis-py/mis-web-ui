@@ -1,6 +1,5 @@
 import React from "react";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
 
 import { useGetGroupsQuery } from "redux/index";
 import { deleteMembersAll } from "redux/slices/membersSlice";
@@ -14,6 +13,7 @@ import { FiSearch } from "react-icons/fi";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 
 import GroupListItem from "../../components/groups/GroupListItem";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const Groups = () => {
   const dispatch = useDispatch();
@@ -72,15 +72,7 @@ const Groups = () => {
 
         <h3 className="h3 mb-5">Groups ({getGroups?.length})</h3>
         {loadingGroup ? (
-          <PulseLoader
-            size={15}
-            cssOverride={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            color="#757575"
-          />
+          <SpinnerLoader />
         ) : (
           <div className="flex flex-col gap-4">
             {getGroups

@@ -1,26 +1,23 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useGetGroupsQuery, useGetPermissionsUserIdQuery } from "../../redux";
+import { useNavigate } from "react-router-dom";
+import { useGetGroupsQuery } from "../../redux";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
-import useOutsideClick from "../../hooks/useOutsideClick";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
 import GroupListItem from "../../components/groups/GroupListItem";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const ManageGroupApp = () => {
   const navigate = useNavigate();
-  // const { id } = useParams();
+
   const {
     data: getGroups = [],
     isLoading: loadingGroups,
     error: errorGroups,
   } = useGetGroupsQuery();
-  // const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-  //   localStorage.getItem("user_id")
-  // );
+
   const [searchValue, setSearchValue] = React.useState("");
 
   React.useEffect(() => {
@@ -56,15 +53,7 @@ const ManageGroupApp = () => {
           </label>
         </form>
         {loadingGroups ? (
-          <PulseLoader
-            size={15}
-            cssOverride={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            color="#757575"
-          />
+          <SpinnerLoader />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
             {getGroups &&

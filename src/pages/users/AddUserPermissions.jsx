@@ -4,12 +4,12 @@ import { useGetPermissionsQuery } from "redux/index";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserPermissions } from "redux/slices/userSlice";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
 
 import SearchInput from "components/SearchInput";
 import PermissionLabel from "components/permissions/PermissionLabel";
 
 import { IoIosArrowBack } from "react-icons/io";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const AddUserPermissions = () => {
   const dispatch = useDispatch();
@@ -41,15 +41,7 @@ const AddUserPermissions = () => {
             placeholder={"Enter permission name to search..."}
           />
           {loadingPermissions ? (
-            <PulseLoader
-              size={15}
-              cssOverride={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-              color="#757575"
-            />
+            <SpinnerLoader />
           ) : (
             <div className="flex flex-wrap gap-4">
               {getPermissions

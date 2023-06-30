@@ -6,10 +6,10 @@ import {
   useEditObjectsGroupMutation,
 } from "redux/index";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const EditObjectsGroup = () => {
   const navigate = useNavigate();
@@ -84,15 +84,7 @@ const EditObjectsGroup = () => {
           </h2>
 
           {loadingGroupsObjects ? (
-            <PulseLoader
-              size={15}
-              cssOverride={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-              color="#757575"
-            />
+            <SpinnerLoader />
           ) : (
             <div className="flex flex-wrap gap-4">
               {getGroupsObjects &&

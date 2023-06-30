@@ -54,7 +54,7 @@ const Signin = () => {
 
   return (
     <div className="flex flex-col relative z-20 justify-center h-screen py-7 px-5 bg-backGround overflow-hidden lg:z-40">
-      <div className="absolute bottom-0 left-0 h-[60%] w-[120%] rounded-t-[35%]" style={{background:"#1D1D1D",transform:"translateX(-10%)"}}></div>
+      <div className="absolute bottom-0 left-0 h-[55%] w-[120%] rounded-t-[35%]" style={{background:"#1D1D1D",transform:"translateX(-10%)"}}></div>
 
       <img
         className="w-[192px] mx-auto mb-[104px] z-10"
