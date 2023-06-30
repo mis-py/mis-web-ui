@@ -13,7 +13,7 @@ import AdminWrapper from "config/AdminWrapper";
 
 import { FiSearch } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { AiOutlineUsergroupAdd, AiOutlineSetting } from "react-icons/ai";
+import { AiOutlineUsergroupAdd } from "react-icons/ai";
 
 import ListItemWrapper from "../../components/common/ListItemWrapper";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
@@ -130,12 +130,6 @@ const Teams = () => {
                                 : "opacity-0 invisible"
                         } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-3`}
                     >
-                      {/* <Link
-                      className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
-                      to="/teams"
-                    >
-                      Granting privileges
-                    </Link> */}
                       <div
                           onClick={() => navigate(`/teams/${team.id}`)}
                           className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
@@ -158,9 +152,9 @@ const Teams = () => {
                             alt=""
                         />
                         <div className="flex flex-col">
-                          <h5 className="text-gray text-xs">
+                          <div className="text-gray text-xs">
                             Name of the department:
-                          </h5>
+                          </div>
                           <h4>{team.name}</h4>
                         </div>
                       </div>
