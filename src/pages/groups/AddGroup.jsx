@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useGetUsersQuery, useAddGroupMutation } from "redux/index";
 import { addMembers, deleteMembers } from "redux/slices/membersSlice";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from "react-icons/ai";
 import { FiSearch } from "react-icons/fi";
 
 import Input from "components/Input";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const AddGroup = () => {
   const navigate = useNavigate();
@@ -83,15 +83,7 @@ const AddGroup = () => {
         </form>
 
         {loadingUsers ? (
-          <PulseLoader
-            size={15}
-            cssOverride={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            color="#757575"
-          />
+          <SpinnerLoader />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
             <div className="flex flex-col">

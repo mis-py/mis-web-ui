@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetTeamIdQuery, useGetUsersQuery } from "../../redux";
 import { useDispatch, useSelector } from "react-redux";
-import PulseLoader from "react-spinners/PulseLoader";
+
 import {
   addMembers,
   deleteMembers,
@@ -13,6 +13,7 @@ import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 
 import UserImg from "../../assets/img/user.png";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const ManageMembersApp = () => {
   const navigate = useNavigate();
@@ -74,15 +75,7 @@ const ManageMembersApp = () => {
           </label>
         </form>
         {loadingDataUsers ? (
-          <PulseLoader
-            size={15}
-            cssOverride={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            color="#757575"
-          />
+          <SpinnerLoader />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
             {getDataUsers &&

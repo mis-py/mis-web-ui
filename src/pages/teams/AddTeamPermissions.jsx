@@ -1,6 +1,5 @@
 import React from "react";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
 import { useNavigate, Link } from "react-router-dom";
 import { useGetPermissionsQuery } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +8,7 @@ import { addTeamPermissions } from "redux/slices/teamSlice";
 import { IoIosArrowBack } from "react-icons/io";
 import PermissionLabel from "components/permissions/PermissionLabel";
 import { FiSearch } from "react-icons/fi";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const AddTeamPermissions = () => {
   const navigate = useNavigate();
@@ -58,15 +58,7 @@ const AddTeamPermissions = () => {
           </label>
 
           {loadingPermissions ? (
-            <PulseLoader
-              size={15}
-              cssOverride={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-              color="#757575"
-            />
+            <SpinnerLoader />
           ) : (
             <div className="flex flex-wrap gap-4">
               {getPermissions

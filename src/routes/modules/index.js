@@ -14,10 +14,10 @@ export const moduleRoutes = [
     path: "/webcat/:id",
     element: <EditWebcat />,
   },
-  {
-    path: "/tasks",
-    element: <Tasks />,
-  },
+  // {
+  //   path: "/tasks",
+  //   element: <Tasks />,
+  // },
   {
     path: "/consumers",
     element: <Consumers />,

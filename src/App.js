@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
+import SpinnerLoader from "components/common/SpinnerLoader";
 
 import MainLayout from "layouts/MainLayout";
 import LoginLayout from "layouts/LoginLayout";
@@ -14,6 +14,7 @@ import { teamRoutes } from "routes/teams";
 import { groupRoutes } from "routes/groups";
 import { appRoutes } from "routes/apps";
 import { moduleRoutes } from "routes/modules";
+import { taskRoutes } from "routes/tasks";
 
 function App() {
   const navigate = useNavigate();
@@ -31,57 +32,27 @@ function App() {
       <ToastContainer theme="dark" />
       <React.Suspense
         fallback={
-          <PulseLoader
+          <SpinnerLoader
             size={30}
             cssOverride={{
               height: "100vh",
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
               alignItems: "center",
             }}
-            color="#757575"
           />
         }
       >
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
-            {userRoutes.map((route, index) => (
-              <Route
-                key={`${route.path}_${index}`}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-            {teamRoutes.map((route, index) => (
-              <Route
-                key={`${route.path}_${index}`}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-            {groupRoutes.map((route, index) => (
-              <Route
-                key={`${route.path}_${index}`}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-            {appRoutes.map((route, index) => (
-              <Route
-                key={`${route.path}_${index}`}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-            {moduleRoutes.map((route, index) => (
-              <Route
-                key={`${route.path}_${index}`}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
+              {userRoutes
+                  .concat(teamRoutes, groupRoutes, appRoutes, moduleRoutes, taskRoutes)
+                  .map((route, index) => (
+                  <Route
+                      key={`${route.path}_${index}`}
+                      path={route.path}
+                      element={route.element}
+                  />
+              ))}
           </Route>
           <Route path="/signin" element={<LoginLayout />}>
             <Route index element={<Signin />} />
@@ -96,3 +67,8 @@ function App() {
 }
 
 export default App;
+// {userRoutes
+//     .concat(teamRoutes, groupRoutes, appRoutes, moduleRoutes, taskRoutes)
+//     .map((route, index) => (
+
+//     ))}

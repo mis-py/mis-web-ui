@@ -1,8 +1,9 @@
 import React from 'react'
-import PulseLoader from "react-spinners/PulseLoader";
+
 import { useConsumersResumeMutation } from 'redux/index';
 import { useGetConsumersQuery } from 'redux/index'
 import { useConsumersPauseMutation } from 'redux/index'
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const Consumers = () => {
   const { data: getConsumers, isLoading: loadingGetConsumers } = useGetConsumersQuery();
@@ -27,15 +28,7 @@ const Consumers = () => {
       <div className="container px-5 py-24 mx-auto">
         {
           loadingGetConsumers ? (
-            <PulseLoader
-              size={15}
-              cssOverride={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-              color="#757575"
-            />
+            <SpinnerLoader />
           ) :
             getConsumers?.timer.map((item) => (
               <div key={item.consumer_tag} className="py-8 flex flex-wrap border-b border-white md:flex-nowrap">

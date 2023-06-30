@@ -1,5 +1,5 @@
 import React from "react";
-import PulseLoader from "react-spinners/PulseLoader";
+import SpinnerLoader from "components/common/SpinnerLoader";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { resetUser } from "redux/slices/userSlice";
@@ -18,15 +18,7 @@ const UserList = ({ searchValue, getUsers, loadingGetUser, errorGetUsers }) => {
   }, [errorGetUsers, searchValue]);
 
   return loadingGetUser ? (
-    <PulseLoader
-      size={15}
-      cssOverride={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-      }}
-      color="#757575"
-    />
+    <SpinnerLoader />
   ) : (
     <div className="flex flex-col gap-4">
       {getUsers

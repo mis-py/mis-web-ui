@@ -6,12 +6,12 @@ import {
   useEditUserPermissionMutation,
 } from "redux/index";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
 
 import SearchInput from "components/SearchInput";
 import PermissionLabel from "components/permissions/PermissionLabel";
 
 import { IoIosArrowBack } from "react-icons/io";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const EditUserPermissions = () => {
   const { id } = useParams();
@@ -61,15 +61,7 @@ const EditUserPermissions = () => {
           />
 
           {loadingPermissions ? (
-            <PulseLoader
-              size={15}
-              cssOverride={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-              color="#757575"
-            />
+            <SpinnerLoader />
           ) : (
             <div className="flex flex-wrap gap-4">
               {getPermissions

@@ -1,6 +1,6 @@
 import React from "react";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
+
 import { confirmAlert } from "react-confirm-alert";
 import { useGetTeamsQuery, useDeleteTeamMutation } from "redux/index";
 import { resetTeam } from "redux/slices/teamSlice";
@@ -16,6 +16,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { AiOutlineUsergroupAdd, AiOutlineSetting } from "react-icons/ai";
 
 import ListItemWrapper from "../../components/common/ListItemWrapper";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const Teams = () => {
   const navigate = useNavigate();
@@ -112,15 +113,7 @@ const Teams = () => {
 
         <h3 className="h3 mb-5">Teams ({getTeams?.length})</h3>
         {loadingGetTeams ? (
-          <PulseLoader
-            size={15}
-            cssOverride={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            color="#757575"
-          />
+          <SpinnerLoader />
         ) : (
           <div className="flex flex-col gap-4">
             {getTeams

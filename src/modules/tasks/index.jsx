@@ -1,18 +1,15 @@
 import React from 'react'
-import PulseLoader from "react-spinners/PulseLoader";
 import { useTasksResumeMutation } from 'redux/index';
 import { useGetTasksQuery } from 'redux/index';
 import { useTasksPauseMutation } from 'redux/index';
 import { useTasksRescheduleMutation } from 'redux/index';
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const Tasks = () => {
   const { data: getTasks, isLoading: loadingGetTasks } = useGetTasksQuery();
   const [tasksPause] = useTasksPauseMutation();
   const [tasksResume] = useTasksResumeMutation();
   const [tasksReschedule] = useTasksRescheduleMutation();
-
-  
-
   const PauseMutation = async (e, id) => {
     e.preventDefault();
     if (getTasks) {
@@ -37,15 +34,7 @@ const Tasks = () => {
       <div className="container px-5 py-24 mx-auto">
         {
           loadingGetTasks ? (
-            <PulseLoader
-              size={15}
-              cssOverride={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-              color="#757575"
-            />
+            <SpinnerLoader />
           ) :
             getTasks?.timer.map((item) => (
               <div key={item.id} className="py-8 flex flex-wrap border-b border-white md:flex-nowrap">
