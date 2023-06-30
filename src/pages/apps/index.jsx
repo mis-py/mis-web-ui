@@ -39,7 +39,7 @@ const Apps = () => {
               className={`${
                 showSearch
                   ? "rounded-l-lg text-primary"
-                  : "rounded-lg text-gray"
+                  : "rounded-l-lg text-gray"
               } flex justify-center duration-300 items-center px-3 h-[32px] bg-blackSecond`}
             >
               <FiSearch />
