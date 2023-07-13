@@ -61,6 +61,17 @@ export const teamsApi = createApi({
       }),
       invalidatesTags: [{ type: "Teams", id: "LIST" }],
     }),
+    editTeamMembers: build.mutation({
+      query: ({ id, members }) => ({
+        url: `/teams/${id}/users`,
+        method: "PUT",
+        headers: {
+          accept: "application/json",
+        },
+        body: members,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Teams", id }],
+    }),
   }),
 });
 
@@ -70,4 +81,5 @@ export const {
   useAddTeamMutation,
   useEditTeamMutation,
   useDeleteTeamMutation,
+  useEditTeamMembersMutation,
 } = teamsApi;
