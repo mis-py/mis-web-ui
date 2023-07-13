@@ -17,13 +17,16 @@ export const membersSlice = createSlice({
         state.members.splice(myIndex, 1);
       }
     },
+    setMembers: (state, action) => {
+      state.members = action.payload;
+    },
     deleteMembersAll: (state) => {
       state.members = [];
     },
   },
 });
 
-export const { addMembers, deleteMembers, deleteMembersAll } =
+export const { addMembers, deleteMembers, deleteMembersAll, setMembers } =
   membersSlice.actions;
 
 export default membersSlice.reducer;

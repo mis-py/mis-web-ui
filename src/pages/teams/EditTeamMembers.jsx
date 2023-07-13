@@ -6,7 +6,11 @@ import {
   useGetUsersQuery
 } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
-import { addTeamMembers, deleteTeamMembers } from "redux/slices/teamSlice";
+import {
+  addTeamMembers,
+  deleteTeamMembers,
+  setTeamMembers,
+} from "redux/slices/teamSlice";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -20,11 +24,21 @@ const EditTeamMembers = () => {
   const { id } = useParams();
   const members = useSelector((state) => state.team.members);
   const [searchValue, setSearchValue] = React.useState("");
-  const { data: getTeamId, refetch: refetchTeamData, isLoading: isTeamDataLoading } = useGetTeamIdQuery(id);
+  const { data: getTeamId, isLoading: isTeamDataLoading } = useGetTeamIdQuery(id);
   const { data: getDataUsers, isLoading: loadingDataUsers } =
     useGetUsersQuery();
 
   const [ editTeamMembers ] = useEditTeamMembersMutation();
+
+  React.useEffect(() => {
+    let userIds = [];
+
+    if (!(getTeamId === undefined || getTeamId.users === undefined || getTeamId.users.length === 0)) {
+      userIds = getTeamId.users.map(user => user.id);
+    }
+
+    dispatch(setTeamMembers(userIds));
+  }, [isTeamDataLoading]);
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {
@@ -41,9 +55,10 @@ const EditTeamMembers = () => {
         if (data.data === undefined || data.data !== true) {
           toast.error("Error on team members updating");
         } else {
-          refetchTeamData();
-          navigate(`/teams/${id}`);
-          toast.success("Team members updating");
+          // refetchTeamData().then(() => {
+            navigate(`/teams/${id}`);
+            toast.success("Team members updating");
+          // });
         }
       });
     }

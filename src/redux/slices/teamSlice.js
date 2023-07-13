@@ -25,6 +25,9 @@ export const teamSlice = createSlice({
         state.members.splice(myIndex, 1);
       }
     },
+    setTeamMembers: (state, action) => {
+      state.members = action.payload;
+    },
     resetTeam: (state) => {
       state.name = "";
       state.permissions = [];
@@ -39,6 +42,7 @@ export const {
   addTeamMembers,
   deleteTeamMembers,
   resetTeam,
+  setTeamMembers,
 } = teamSlice.actions;
 
 export default teamSlice.reducer;
