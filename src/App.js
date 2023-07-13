@@ -7,7 +7,7 @@ import MainLayout from "layouts/MainLayout";
 import LoginLayout from "layouts/LoginLayout";
 import Signin from "pages/Signin";
 import Home from "pages/Home";
-import NotFoundLayout from "layouts/NotFoundLayout";
+
 import NotFound from "pages/NotFound";
 import { userRoutes } from "routes/users";
 import { teamRoutes } from "routes/teams";
@@ -57,7 +57,7 @@ function App() {
           <Route path="/signin" element={<LoginLayout />}>
             <Route index element={<Signin />} />
           </Route>
-          <Route element={<NotFoundLayout />}>
+          <Route element={<MainLayout />}>
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
