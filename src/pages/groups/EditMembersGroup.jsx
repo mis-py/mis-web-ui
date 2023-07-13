@@ -8,7 +8,7 @@ import {
   useEditGroupMembersMutation,
 } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
-import { addMembers, deleteMembers } from "redux/slices/membersSlice";
+import { addMembers, deleteMembers, setMembers } from "redux/slices/membersSlice";
 import USER from "assets/img/user.png";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -24,14 +24,14 @@ const EditMembersGroup = () => {
   const [searchValue, setSearchValue] = React.useState("");
   const { data: getDataUsers, isLoading: loadingDataUsers } =
     useGetUsersQuery();
-  const { data: getGroupIdUsers } = useGetGroupIdUsersQuery(id);
+  const { data: getGroupIdUsers, refetch: refetchMembers, isLoading: isGroupIdUsersLoading } = useGetGroupIdUsersQuery(id);
   const [editGroupMembers] = useEditGroupMembersMutation();
 
   React.useEffect(() => {
     if (getGroupIdUsers) {
-      getGroupIdUsers.map((user) => dispatch(addMembers(user.id)));
+      dispatch(setMembers(getGroupIdUsers.map((user) => user.id)));
     }
-  }, [getGroupIdUsers]);
+  }, [isGroupIdUsersLoading]);
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {
@@ -44,10 +44,13 @@ const EditMembersGroup = () => {
   const handleEditGroupMembers = async (e) => {
     e.preventDefault();
     if (members) {
-      await editGroupMembers({ id, rest: members }).unwrap();
+      await editGroupMembers({ id, rest: members }).then(() => {
+        refetchMembers().then(() => {
+          navigate("/groups");
+          toast.success("Group members updating");
+        });
+      });
     }
-    navigate("/groups");
-    toast.success("Group members updating");
   };
 
   return (
