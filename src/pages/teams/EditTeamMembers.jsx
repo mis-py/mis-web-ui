@@ -1,6 +1,10 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetTeamIdQuery, useGetUsersQuery } from "redux/index";
+import {
+  useEditTeamMembersMutation,
+  useGetTeamIdQuery,
+  useGetUsersQuery
+} from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
 import { addTeamMembers, deleteTeamMembers } from "redux/slices/teamSlice";
 
@@ -8,6 +12,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
+import { toast } from "react-toastify";
 
 const EditTeamMembers = () => {
   const navigate = useNavigate();
@@ -15,15 +20,32 @@ const EditTeamMembers = () => {
   const { id } = useParams();
   const members = useSelector((state) => state.team.members);
   const [searchValue, setSearchValue] = React.useState("");
-  const { data: getTeamId } = useGetTeamIdQuery(id);
+  const { data: getTeamId, refetch: refetchTeamData, isLoading: isTeamDataLoading } = useGetTeamIdQuery(id);
   const { data: getDataUsers, isLoading: loadingDataUsers } =
     useGetUsersQuery();
+
+  const [ editTeamMembers ] = useEditTeamMembersMutation();
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {
       dispatch(addTeamMembers(id));
     } else {
       dispatch(deleteTeamMembers(id));
+    }
+  };
+
+  const handleEditTeamMembers = async (e) => {
+    e.preventDefault();
+    if (members) {
+      await editTeamMembers({ id, members }).then((data) => {
+        if (data.data === undefined || data.data !== true) {
+          toast.error("Error on team members updating");
+        } else {
+          refetchTeamData();
+          navigate(`/teams/${id}`);
+          toast.success("Team members updating");
+        }
+      });
     }
   };
 
@@ -53,7 +75,7 @@ const EditTeamMembers = () => {
             <FiSearch className="w-12 text-gray" />
           </label>
         </form>
-        {loadingDataUsers ? (
+        {loadingDataUsers || isTeamDataLoading ? (
           <SpinnerLoader />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
@@ -86,7 +108,8 @@ const EditTeamMembers = () => {
                             <img
                               className="w-[56px] h-[56px]"
                               src={require("assets/img/user.png")}
-                              alt=""
+                              alt={user.username}
+                              title={user.username}
                             />
                             <div className="flex flex-col">
                               <h5 className="text-white mb-[10px]">
@@ -105,14 +128,14 @@ const EditTeamMembers = () => {
                     </div>
                   </div>
                 ) : (
-                  false
+                  <></>
                 )
               )}
           </div>
         )}
       </div>
       <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-        <button onClick={() => navigate(-1)} className="btn-primary">
+        <button onClick={handleEditTeamMembers} className="btn-primary">
           Save
         </button>
       </div>

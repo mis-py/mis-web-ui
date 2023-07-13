@@ -14,7 +14,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 
 import TeamUsersShortList from "../../components/teams/TeamUsersShortList";
 
-const EditUser = () => {
+const EditTeam = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -87,7 +87,7 @@ const EditUser = () => {
             onClick={() => navigate(`/team/members/${id}`)}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Members ({team.members?.length})
+            Members ({getTeamId.users?.length})
             <AiOutlinePlusCircle className="text-xl" />
           </button>
         </div>
@@ -99,4 +99,4 @@ const EditUser = () => {
   );
 };
 
-export default EditUser;
+export default EditTeam;
