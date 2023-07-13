@@ -9,6 +9,7 @@ import AdminWrapper from "../../config/AdminWrapper";
 import {BiDotsVerticalRounded} from "react-icons/bi";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import Tooltip from "../Tooltip";
+import TeamUsersShortList from "../teams/TeamUsersShortList";
 
 const GroupListItem = (props) => {
     const navigate = useNavigate();
@@ -111,26 +112,10 @@ const GroupListItem = (props) => {
 
             <div className="duration-300 flex flex-col pt-4">
                 <p className="pb-4">Members of the department:</p>
-                <div className="flex">
-                    {props.group.users.length ? (
-                        props.group.users.map((item) => (
-                            <div
-                                key={item.id}
-                                className="group cursor-pointer shadow relative"
-                            >
-                                <img
-                                    className="w-[35px] h-[35px]"
-                                    src={require("assets/img/user.png")}
-                                    alt={item.username}
-                                    title={item.username}
-                                />
-                                <Tooltip name={item.username} />
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-danger">NO USERS</p>
-                    )}
-                </div>
+                {props.group.users !== undefined && Array.isArray(props.group.users) && <TeamUsersShortList
+                    users={props.group.users}
+                    team={props.group.id}
+                />}
             </div>
 
             {props.children}

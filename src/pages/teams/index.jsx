@@ -18,6 +18,8 @@ import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import ListItemWrapper from "../../components/common/ListItemWrapper";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 
+import TeamUsersShortList from "../../components/teams/TeamUsersShortList";
+
 const Teams = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -176,25 +178,10 @@ const Teams = () => {
                     </div>
                     <div className={`duration-300 flex flex-col pt-3`}>
                       <p className="mb-2">Members of the department:</p>
-                      <div className="flex">
-                        {team.users.length ? (
-                            team.users.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="group cursor-pointer shadow relative"
-                                >
-                                  <img
-                                      className="w-[35px] h-[35px]"
-                                      src={require("assets/img/user.png")}
-                                      alt=""
-                                  />
-                                  <Tooltip name={item.username} />
-                                </div>
-                            ))
-                        ) : (
-                            <p className="text-danger">No users</p>
-                        )}
-                      </div>
+                      {team.users !== undefined && Array.isArray(team.users) && <TeamUsersShortList
+                        users={team.users}
+                        team={team.id}
+                      />}
                     </div>
                   </ListItemWrapper>
               ))}

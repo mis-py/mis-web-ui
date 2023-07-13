@@ -10,9 +10,10 @@ import ListItemWrapper from "../../components/common/ListItemWrapper";
 import { AiOutlinePlus, AiOutlineSetting } from "react-icons/ai";
 import { CgFileDocument } from "react-icons/cg";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
+import TeamUsersShortList from "../../components/teams/TeamUsersShortList";
 
 const Apps = () => {
-  const navigate = useNavigate();
+
   const [showSearch, setShowSearch] = React.useState(false);
   const [serchValue, setSearchValue] = React.useState("");
   const {
@@ -82,7 +83,7 @@ const Apps = () => {
                         <img
                             className="w-[56px] h-[56px] rounded-full mr-3"
                             src={require("assets/img/app.png")}
-                            alt=""
+                            alt={app.name}
                         />
                         <div className="flex flex-col">
                           <h4>{app.name}</h4>
@@ -90,17 +91,19 @@ const Apps = () => {
                         </div>
                       </div>
                       <div className="flex gap-3">
-                        <CgFileDocument
-                            onClick={() => navigate(`/apps/logs/${app.id}`)}
-                            className="text-2xl text-gray cursor-pointer"
-                        />
-                        {/* <AdminWrapper>
-                        </AdminWrapper> */}
+                        <Link to={`/apps/logs/${app.id}`}>
+                          <CgFileDocument
+                              className="text-2xl text-gray cursor-pointer"
+                          />
+                        </Link>
+
                         {(app.is_editable === true || app.is_editable === undefined) &&
-                        <AiOutlineSetting
-                            onClick={() => navigate(`/apps/settings/${app.id}`)}
-                            className="text-2xl text-gray cursor-pointer"
-                        />}
+                          <Link to={`/apps/settings/${app.id}`}>
+                            <AiOutlineSetting
+                                className="text-2xl text-gray cursor-pointer"
+                            />
+                          </Link>
+                        }
                       </div>
                     </div>
 

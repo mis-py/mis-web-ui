@@ -14,7 +14,7 @@ const Signin = () => {
 
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors },
     handleSubmit,
   } = useForm({
     defaultValues: {
@@ -30,7 +30,7 @@ const Signin = () => {
       toast.error("Incorrect login or password!");
     }
 
-    if (values.payload.access_token) {
+    if (values.payload !== undefined && values.payload.access_token !== undefined) {
       window.localStorage.setItem("token", values.payload.access_token);
       window.localStorage.setItem("user_id", values.payload.user_id);
       window.localStorage.setItem("username", values.payload.username);
