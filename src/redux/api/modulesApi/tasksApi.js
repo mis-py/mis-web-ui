@@ -19,6 +19,17 @@ export const tasksApi = createApi({
             }),
             providesTags: (result, error, id) => [{ type: "Tasks", id }],
         }),
+        getTasksJobs: build.query({
+            query: () => ({
+                url: `/tasks/jobs`,
+                method: "GET",
+                headers: {
+                    accept: "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            }),
+            providesTags: (result, error, id) => [{ type: "Tasks", id }],
+        }),
         tasksPause: build.mutation({
             query: (id) => ({
                 url: `/tasks/${id}/pause`,
@@ -51,17 +62,6 @@ export const tasksApi = createApi({
                 },
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }], 
-        }),
-        getTasksJobs: build.query({
-            query: () => ({
-                url: `/tasks/jobs`,
-                method: "GET",
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            }),
-            providesTags: (result, error, id) => [{ type: "Tasks", id }],
         }),
         tasksJobsAdd: build.mutation({
             query: (id) => ({
