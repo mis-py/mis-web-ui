@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
-import Tooltip from "components/Tooltip";
+import TeamUsersShortList from "../../components/teams/TeamUsersShortList";
 
 const EditUser = () => {
   const { id } = useParams();
@@ -68,21 +68,10 @@ const EditUser = () => {
             />
           </label>
 
-          <div className="flex">
-            {getTeamId.users?.map((item) => (
-              <div
-                key={item.id}
-                className="group cursor-pointer shadow relative"
-              >
-                <img
-                  className="w-[35px] h-[35px]"
-                  src={require("assets/img/user.png")}
-                  alt=""
-                />
-                <Tooltip name={item.username} />
-              </div>
-            ))}
-          </div>
+          {getTeamId.users !== undefined && Array.isArray(getTeamId.users) && <TeamUsersShortList
+              users={getTeamId.users}
+              team={team.id}
+          />}
         </form>
       </div>
       <div className="flex flex-col gap-3">
