@@ -10,6 +10,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
+import PageHeader from "../../components/common/PageHeader";
 
 const AddTeamMembers = () => {
   const navigate = useNavigate();
@@ -42,13 +43,9 @@ const AddTeamMembers = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between relative">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5 mb-6">Manage members</h3>
+        <PageHeader
+          header="Manage members"
+        />
         <h3 className="mb-1">Search for member</h3>
         <form>
           <label

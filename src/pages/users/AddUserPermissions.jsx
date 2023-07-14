@@ -10,6 +10,7 @@ import PermissionLabel from "components/permissions/PermissionLabel";
 
 import { IoIosArrowBack } from "react-icons/io";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
+import PageHeader from "../../components/common/PageHeader";
 
 const AddUserPermissions = () => {
   const dispatch = useDispatch();
@@ -27,13 +28,9 @@ const AddUserPermissions = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5">Manage permissions</h3>
+        <PageHeader
+          header="Manage permissions"
+        />
         <form className="my-4">
           <SearchInput
             searchValue={searchValue}

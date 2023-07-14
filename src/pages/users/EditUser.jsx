@@ -20,6 +20,7 @@ import Input from "components/Input";
 import ButtonDark from "components/ButtonDark";
 
 import { IoIosArrowBack } from "react-icons/io";
+import PageHeader from "../../components/common/PageHeader";
 
 const customStyles = {
   option: (provided, state) => ({
@@ -101,14 +102,9 @@ const EditUser = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5">Editing Profile</h3>
-
+        <PageHeader
+          header="Editing Profile"
+        />
         <form className="my-7">
           <Input
             label={"Username"}

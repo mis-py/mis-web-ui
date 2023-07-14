@@ -9,7 +9,7 @@ const PageHeader = (props) => {
                 <div className="flex mr-2">
                     <IoIosArrowBack />
                 </div>
-                <div>Back</div>
+                <div>back</div>
             </Link>
             <h1 className="h3 mt-5 mb-6">{props.header}</h1>
         </>

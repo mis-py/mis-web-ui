@@ -10,6 +10,7 @@ import {
 import Input from "components/Input"
 import { IoIosArrowBack } from "react-icons/io";
 import USER from "assets/img/user.png";
+import PageHeader from "../../components/common/PageHeader";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
 const ProfileUser = () => {
@@ -68,14 +69,9 @@ const ProfileUser = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col pb-[60px]">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 my-5">Profile</h3>
-
+        <PageHeader
+          header="Profile"
+        />
         <img
           className="w-[64px] h-[64px]"
           src={USER}
