@@ -12,7 +12,7 @@ import {
   setTeamMembers,
 } from "redux/slices/teamSlice";
 
-import { IoIosArrowBack } from "react-icons/io";
+import PageHeader from "../../components/common/PageHeader";
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
@@ -67,14 +67,10 @@ const EditTeamMembers = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray cursor-pointer">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <div onClick={() => navigate(-1)}>back</div>
-        </div>
-        <h3 className="h3 mt-5 mb-6">Manage members</h3>
-        <h3 className="mb-1">Search for member</h3>
+        <PageHeader
+          header="Manage members"
+        />
+        <div className="mb-1">Search for member</div>
         <form>
           <label
             className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
