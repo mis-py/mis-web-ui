@@ -11,6 +11,7 @@ import { FiSearch } from "react-icons/fi";
 
 import Input from "components/Input";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
+import PageHeader from "../../components/common/PageHeader";
 
 const AddGroup = () => {
   const navigate = useNavigate();
@@ -62,14 +63,9 @@ const AddGroup = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5">New group</h3>
-
+        <PageHeader
+          header="New group"
+        />
         <form className="my-7">
           <Input 
           label={"Group name"}
