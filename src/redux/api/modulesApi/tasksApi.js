@@ -1,21 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const tasksApi = createApi({
     reducerPath: "tasksApi",
     tagTypes: ["Tasks"],
-    baseQuery: fetchBaseQuery({
-        baseUrl,
-    }),
+    baseQuery: rtkDefaultQuery,
     endpoints: (build) => ({
         getTasks: build.query({
             query: () => ({
                 url: `/tasks/`,
                 method: "GET",
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
             }),
             providesTags: (result, error, id) => [{ type: "Tasks", id }],
         }),
@@ -23,10 +17,6 @@ export const tasksApi = createApi({
             query: () => ({
                 url: `/tasks/jobs`,
                 method: "GET",
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
             }),
             providesTags: (result, error, id) => [{ type: "Tasks", id }],
         }),
@@ -34,10 +24,6 @@ export const tasksApi = createApi({
             query: (id) => ({
                 url: `/tasks/${id}/pause`,
                 method: "POST",
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }],  
         }),
@@ -45,10 +31,6 @@ export const tasksApi = createApi({
             query: (id) => ({
                 url: `/tasks/${id}/resume`,
                 method: "POST",
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }], 
         }),
@@ -56,10 +38,6 @@ export const tasksApi = createApi({
             query: (id) => ({
                 url: `/tasks/${id}/reschedule`,
                 method: "POST",
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }], 
         }),
@@ -67,10 +45,6 @@ export const tasksApi = createApi({
             query: (id) => ({
                 url: `/tasks/${id}/add-job`,
                 method: "POST",
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }], 
         }),

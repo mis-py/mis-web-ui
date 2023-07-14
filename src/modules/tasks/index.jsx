@@ -3,6 +3,7 @@ import { useTasksResumeMutation } from 'redux/index';
 import { useGetTasksQuery } from 'redux/index';
 import { useTasksPauseMutation } from 'redux/index';
 import { useTasksRescheduleMutation } from 'redux/index';
+import { useTasksJobsAddMutation } from 'redux/index';
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import ListItemWrapper from "../../components/common/ListItemWrapper";
 
@@ -48,6 +49,7 @@ const Tasks = () => {
                   key={item.id}
                 >
                   <div className="flex justify-between items-center pb-3 border-b border-backGround">
+                    
                     <div className="flex flex-col gap-4">
                       <div className="flex flex-col">
                         <div className="text-gray text-xs">
@@ -68,6 +70,26 @@ const Tasks = () => {
                         <h4>{item.type}</h4>
                       </div>
                     </div>
+                    <div className="flex flex-col divide-y-2 divide-gray-100">
+                      <div className="flex flex-col py-2 md:flex-nowrap">
+                        <button onClick={(e) => PauseMutation(e, item.id)} 
+                          className="flex my-8 mx-auto text-white bg-primary border-0 py-2 px-8 focus:outline-none rounded text-lg">
+                          Pause
+                        </button>
+                        <button onClick={(e) => ResumeMutation(e, item.id)} 
+                          className="flex mx-auto text-white bg-primary border-0 py-2 px-8 focus:outline-none rounded text-lg">
+                          Resume
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-nowrap justify-between items-center pb-3 border-b border-backGround">
+                    <div className="flex gap-4">
+                      <div className="text-gray text-xs">
+                        Choose an interval:
+
+                      </div>
+                    </div>                
                   </div>
                 </ListItemWrapper>
                 ));
@@ -86,13 +108,7 @@ const Tasks = () => {
 {/*<div className="md:flex-grow">*/}
 {/*  <h2 className="text-2xl font-medium text-gray-900 title-font mb-2 pl-96">{item.name}</h2>*/}
 {/*  <p className="leading-relaxed pl-96 pb-14">{item.next_run_time}</p>*/}
-{/*  <div className="-my-5 divide-y-2 divide-gray-100">*/}
-{/*    <div className="py-8 flex flex-wrap md:flex-nowrap">*/}
-{/*      <button onClick={(e) => PauseMutation(e, item.id)} className="flex mx-auto text-white bg-primary border-0 py-2 px-8 focus:outline-none rounded text-lg">Pause</button>*/}
-{/*      <button onClick={(e) => ResumeMutation(e, item.id)} className="flex mx-auto text-white bg-primary border-0 py-2 px-8 focus:outline-none rounded text-lg">Resume</button>*/}
-{/*      <button onClick={(e) => RescheduleMutation(e, item.id)} className="flex mx-auto text-white bg-primary border-0 py-2 px-8 focus:outline-none rounded text-lg">Reschedule</button>*/}
-{/*    </div>*/}
-{/*  </div>*/}
+
 {/*</div>*/}
 
 export default Tasks
