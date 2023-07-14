@@ -8,6 +8,7 @@ import { FiSearch } from "react-icons/fi";
 
 import GroupListItem from "../../components/groups/GroupListItem";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
+import PageHeader from "../../components/common/PageHeader";
 
 const ManageGroupApp = () => {
   const navigate = useNavigate();
@@ -29,13 +30,9 @@ const ManageGroupApp = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray cursor-pointer">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <div onClick={() => navigate(-1)}>back</div>
-        </div>
-        <h3 className="h3 mt-5 mb-6">Manage groups</h3>
+        <PageHeader
+          header="Manage groups"
+        />
         <h3 className="mb-1">Search for groups</h3>
         <form>
           <label

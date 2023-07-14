@@ -9,6 +9,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
 import Input from "components/Input"
+import PageHeader from "../../components/common/PageHeader";
 
 const AddTeam = () => {
   const navigate = useNavigate();
@@ -36,14 +37,9 @@ const AddTeam = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5">New team</h3>
-
+        <PageHeader
+          header="New team"
+        />
         <form className="my-7">
           <Input
           label={"Team name"}

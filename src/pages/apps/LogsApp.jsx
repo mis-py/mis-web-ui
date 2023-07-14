@@ -4,6 +4,7 @@ import Terminal, { ColorMode, TerminalOutput } from "react-terminal-ui";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
+import PageHeader from "../../components/common/PageHeader";
 
 const LogsApp = () => {
   const navigate = useNavigate();
@@ -14,13 +15,9 @@ const LogsApp = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5">App name logs</h3>
+        <PageHeader
+          header="App name logs"
+        />
         <form className="my-4">
           <label
             className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"

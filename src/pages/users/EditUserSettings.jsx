@@ -19,6 +19,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
 import Input from "components/Input";
+import PageHeader from "../../components/common/PageHeader";
 
 const EditUserSettings = () => {
   const dispatch = useDispatch();
@@ -92,13 +93,9 @@ const EditUserSettings = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5">Settings</h3>
+        <PageHeader
+          header="Settings"
+        />
         <form className="my-4 pb-[50px]">
           <label
             className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
