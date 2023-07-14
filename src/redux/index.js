@@ -6,6 +6,7 @@ export * from "./api/appsApi";
 export * from "./api/groupsApi";
 export * from "./api/modulesApi";
 export * from "./api/settingsApi";
+export * from "./api/logsApi";
 
 //modules
 export * from "./api/modulesApi/webcatApi";

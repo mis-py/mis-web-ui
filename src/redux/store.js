@@ -8,6 +8,7 @@ import { appsApi } from "./api/appsApi";
 import { groupsApi } from "./api/groupsApi";
 import { modulesApi } from "./api/modulesApi";
 import { settingsApi } from "./api/settingsApi";
+import { logsApi } from "./api/logsApi";
 
 //modules
 import { webcatApi } from "./api/modulesApi/webcatApi";
@@ -33,6 +34,7 @@ export const store = configureStore({
     [groupsApi.reducerPath]: groupsApi.reducer,
     [modulesApi.reducerPath]: modulesApi.reducer,
     [settingsApi.reducerPath]: settingsApi.reducer,
+    [logsApi.reducerPath]: logsApi.reducer,
 
     //modules
     [webcatApi.reducerPath]: webcatApi.reducer,
@@ -58,6 +60,7 @@ export const store = configureStore({
       groupsApi.middleware,
       modulesApi.middleware,
       settingsApi.middleware,
+      logsApi.middleware,
 
       //modules
       webcatApi.middleware,

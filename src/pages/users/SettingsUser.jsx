@@ -11,7 +11,7 @@ const SettingsUser = () => {
     useGetSettingsQuery();
 
   const [searchInput, setSearchInput] = React.useState("");
-  const [formValue, setFormValue] = React.useState([]);
+  const [, setFormValue] = React.useState([]);
   const [newFormValue, setNewFormValue] = React.useState([]);
 
   React.useEffect(() => {

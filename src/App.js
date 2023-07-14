@@ -25,7 +25,7 @@ function App() {
       localStorage.removeItem("username");
       navigate("/signin");
     }
-  }, []);
+  });
 
   return (
     <div className="relative">
