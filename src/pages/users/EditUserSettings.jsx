@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useGetSettingsQuery,
@@ -13,9 +13,6 @@ import {
 } from "redux/slices/userSlice";
 import { toast } from "react-toastify";
 
-import Tooltip from "components/Tooltip";
-
-import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
 import Input from "components/Input";
@@ -27,9 +24,9 @@ const EditUserSettings = () => {
   const { id } = useParams();
   const settings = useSelector((state) => state.user.settings);
   const { data: getSettings = [], isLoading: loadingGetSettings } =
-    useGetSettingsQuery();
+      useGetSettingsQuery();
   const { data: getUserSettings = [], isLoading: loadingUserSettings } =
-    useGetUserSettingsIdQuery(id);
+      useGetUserSettingsIdQuery(id);
   const [editUserSettingsSet] = useSettingUserSetMutation();
 
   const [searchValue, setSearchValue] = React.useState("");
@@ -69,7 +66,7 @@ const EditUserSettings = () => {
   React.useEffect(() => {
     let test = getSettings.map((setting) => {
       const userSetting = getUserSettings.find(
-        (userSetting) => userSetting.setting.id === setting.id
+          (userSetting) => userSetting.setting.id === setting.id
       );
 
       if (userSetting) {
@@ -91,57 +88,57 @@ const EditUserSettings = () => {
   };
 
   return (
-    <div className="py-6 min-h-screen h-full flex flex-col justify-between">
-      <div className="flex flex-col">
-        <PageHeader
-          header="Settings"
-        />
-        <form className="my-4 pb-[50px]">
-          <label
-            className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
-            htmlFor="search"
-          >
-            <input
-              className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
-              type="search"
-              placeholder="Enter setting name to search..."
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-            />
-            <FiSearch className="w-12 text-gray" />
-          </label>
+      <div className="py-6 min-h-screen h-full flex flex-col justify-between">
+        <div className="flex flex-col">
+          <PageHeader
+              header="Settings"
+          />
+          <form className="my-4 pb-[50px]">
+            <label
+                className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
+                htmlFor="search"
+            >
+              <input
+                  className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
+                  type="search"
+                  placeholder="Enter setting name to search..."
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+              />
+              <FiSearch className="w-12 text-gray" />
+            </label>
 
-          {settings
-            ?.filter((el) =>
-              el.key.toLowerCase().includes(searchValue.toLowerCase().trim())
-            )
-            ?.map(
-              (item) =>
-                !item.is_global && (
-                  <Input
-                      key={item.id}
-                      className="relative"
-                      label={`${item.key} ( ${item.app.name} )`}
-                      id={`${item.key}-${item.app.name}`.toLowerCase()}
-                      type="text"
-                      autoComplete="off"
-                      changeValue={(e) => handleInputChange(e, item.id)}
-                      value={item.value === undefined ? "" : item.value}
-                      name={item.key}
-                      hasDefault={item.default_value !== null && item.default_value.length}
-                      setDefault={() => dispatch(addUserDefaultSettings(item))}
-                  />
+            {settings
+                ?.filter((el) =>
+                    el.key.toLowerCase().includes(searchValue.toLowerCase().trim())
                 )
-            )}
-        </form>
-      </div>
+                ?.map(
+                    (item) =>
+                        !item.is_global && (
+                            <Input
+                                key={item.id}
+                                className="relative"
+                                label={`${item.key} ( ${item.app.name} )`}
+                                id={`${item.key}-${item.app.name}`.toLowerCase()}
+                                type="text"
+                                autoComplete="off"
+                                changeValue={(e) => handleInputChange(e, item.id)}
+                                value={item.value === undefined ? "" : item.value}
+                                name={item.key}
+                                hasDefault={item.default_value !== null && item.default_value.length}
+                                setDefault={() => dispatch(addUserDefaultSettings(item))}
+                            />
+                        )
+                )}
+          </form>
+        </div>
 
-      <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-        <button onClick={handleSaveUser} className="btn-primary">
-          Save
-        </button>
+        <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
+          <button onClick={handleSaveUser} className="btn-primary">
+            Save
+          </button>
+        </div>
       </div>
-    </div>
   );
 };
 

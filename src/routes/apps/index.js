@@ -1,5 +1,5 @@
 import Apps from "pages/apps";
-import CloneApp from "pages/apps/CloneApp";
+// import CloneApp from "pages/apps/CloneApp";
 import LogsApp from "pages/apps/LogsApp";
 import SettingsApp from "pages/apps/SettingsApp";
 import ManageGroupApp from "pages/apps/ManageGroupApp";
@@ -10,10 +10,10 @@ export const appRoutes = [
     path: "/apps",
     element: <Apps />,
   },
-  {
-    path: "/apps/clone",
-    element: <CloneApp />,
-  },
+  // {
+  //   path: "/apps/clone",
+  //   element: <CloneApp />,
+  // },
   {
     path: "/apps/logs/:id",
     element: <LogsApp />,

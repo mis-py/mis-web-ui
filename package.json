@@ -75,7 +75,7 @@
     "webpack-manifest-plugin": "^4.0.2",
     "workbox-webpack-plugin": "^6.4.1",
     "react-js-cron": "^4.0.0",
-    "antd": "^4.17.2"
+    "antd": "^5.5.0"
   },
   "scripts": {
     "start": "node scripts/start.js",
