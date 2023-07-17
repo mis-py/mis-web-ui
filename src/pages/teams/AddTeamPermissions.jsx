@@ -1,11 +1,10 @@
 import React from "react";
 import { toast } from "react-toastify";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGetPermissionsQuery } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
 import { addTeamPermissions } from "redux/slices/teamSlice";
 
-import { IoIosArrowBack } from "react-icons/io";
 import PermissionLabel from "components/permissions/PermissionLabel";
 import { FiSearch } from "react-icons/fi";
 import SpinnerLoader from "../../components/common/SpinnerLoader";

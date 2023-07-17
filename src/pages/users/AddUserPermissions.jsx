@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { useGetPermissionsQuery } from "redux/index";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserPermissions } from "redux/slices/userSlice";
@@ -8,7 +7,6 @@ import { toast } from "react-toastify";
 import SearchInput from "components/SearchInput";
 import PermissionLabel from "components/permissions/PermissionLabel";
 
-import { IoIosArrowBack } from "react-icons/io";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import PageHeader from "../../components/common/PageHeader";
 

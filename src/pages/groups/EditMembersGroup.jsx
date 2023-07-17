@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addMembers, deleteMembers, setMembers } from "redux/slices/membersSlice";
 import USER from "assets/img/user.png";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import SpinnerLoader from "../../components/common/SpinnerLoader";

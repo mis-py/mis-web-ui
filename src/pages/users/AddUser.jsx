@@ -1,6 +1,6 @@
 import React from "react";
 import Select from "react-select";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addUserName,
@@ -14,7 +14,6 @@ import { toast } from "react-toastify";
 import Input from "components/Input";
 import ButtonDark from "components/ButtonDark";
 
-import { IoIosArrowBack } from "react-icons/io";
 import PageHeader from "../../components/common/PageHeader";
 
 const customStyles = {

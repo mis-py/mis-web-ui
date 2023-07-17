@@ -7,7 +7,6 @@ import {
 } from "redux/index";
 import { toast } from "react-toastify";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import PageHeader from "../../components/common/PageHeader";

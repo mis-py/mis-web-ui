@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Select from "react-select";
 import {
@@ -8,7 +8,6 @@ import {
   useCloneAppNameMutation,
 } from "redux/index";
 
-import { IoIosArrowBack } from "react-icons/io";
 import PageHeader from "../../components/common/PageHeader";
 
 const customStyles = {

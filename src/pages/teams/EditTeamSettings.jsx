@@ -1,12 +1,12 @@
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // import Switch from "react-switch";
 import { toast } from "react-toastify";
 import { useGetSettingsTeamIdQuery } from "../../redux";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
+import PageHeader from "components/common/PageHeader";
 
 const EditTeamSettings = () => {
   const navigate = useNavigate();
@@ -16,16 +16,9 @@ const EditTeamSettings = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center justify-between text-gray">
-          <div className="flex">
-            <div className="flex items-center mr-2">
-              <IoIosArrowBack />
-            </div>
-            <Link to="/teams">back</Link>
-          </div>
-        </div>
-
-        <h3 className="h3 my-4">Team name settings</h3>
+        <PageHeader
+          header="Team name settings"
+        />
         <h4 className="text-gray mb-5">General settings</h4>
 
         {/* <AdminWrapper>

@@ -11,7 +11,6 @@ import {
 } from "redux/slices/teamSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
 import TeamUsersShortList from "../../components/teams/TeamUsersShortList";
