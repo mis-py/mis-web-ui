@@ -19,6 +19,19 @@ export const appsApi = createApi({
             ]
           : [{ type: "Apps", id: "LIST" }],
     }),
+    getAppById: build.query({
+      query: (id) => ({
+        url: `/modules/${id}`,
+        method: "GET",
+      }),
+      providesTags: (result) =>
+          result
+              ? [
+                ({ type: "Apps", id: result.id }),
+                { type: "Apps", id: "LIST" },
+              ]
+              : [{ type: "Apps", id: "LIST" }],
+    }),
     cloneApp: build.mutation({
       query: (body) => ({
         url: "/modules/install",
@@ -45,7 +58,8 @@ export const appsApi = createApi({
 });
 
 export const { 
-  useGetAppsQuery, 
+  useGetAppsQuery,
+  useGetAppByIdQuery,
   useCloneAppMutation, 
   useCloneAppNameMutation 
 } = appsApi;

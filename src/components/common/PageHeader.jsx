@@ -11,7 +11,7 @@ const PageHeader = (props) => {
                 </div>
                 <div>back</div>
             </Link>
-            <h1 className="h3 mt-5 mb-6">{props.header}</h1>
+            <h1 className={`h3 mt-5 mb-6 ${props.headerClass}`.trim()}>{props.header}</h1>
         </>
     );
 };
