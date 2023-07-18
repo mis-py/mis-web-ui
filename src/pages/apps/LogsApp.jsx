@@ -5,6 +5,8 @@ import { useGetAppLogsQuery, useGetAppByIdQuery } from "redux/index";
 
 import {useParams} from "react-router-dom";
 
+import LogItem from "components/logs/LogItem";
+
 const LogsApp = () => {
 
   const { id } = useParams();
@@ -29,7 +31,23 @@ const LogsApp = () => {
         />
 
         <pre className="whitespace-break-spaces">
-          {terminalValue}
+        {terminalValue !== undefined && terminalValue.split("\n").map(item => {
+          if (item.trim().length === 0) {
+            return;
+          }
+
+          try {
+          const data = JSON.parse(item);
+            console.log(data)
+          return <LogItem
+                    key={`log-item-${data.record.line}-${data.record.level.name}-${data.record.elapsed.seconds}`}
+                    logData={data}
+                  />;
+          } catch(e) {
+            const rand = Math.random();
+            return (<p className="mb-2" key={`log-item-text-${rand}`}>{item}</p>);
+          }
+        })}
         </pre>
 
         {/*<ReactTerminal*/}
