@@ -17,6 +17,8 @@ const LogItem = (props) => {
                     ? "bg-danger"
                     : props.logData.record.level.name === "INFO"
                     ? "bg-disabled"
+                    : props.logData.record.level.name === "ERROR"
+                    ? "bg-dangerEasy"
                     : ""
                 }
             `.trim()}></div>

@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const notificationsApiApi = createApi({
@@ -13,6 +13,16 @@ export const notificationsApiApi = createApi({
             }),
             providesTags: (result, error, id) => [{ type: "Notifications", id }],
         }),
+        getMyNotifications: build.query({
+            query: () => ({
+              url: "/notifications/routing_keys/my",
+              method: "GET",
+            }),
+            providesTags: () => [{ type: "Notifications" }],
+            forceRefetch() {
+              return localStorage.getItem('user_id') === null;
+            },
+          }),
     }),
 
 });

@@ -1,4 +1,4 @@
-import React from 'react'
+import React ,{useState} from 'react'
 import { useTasksResumeMutation } from 'redux/index';
 import { useGetTasksQuery } from 'redux/index';
 import { useTasksPauseMutation } from 'redux/index';
@@ -6,12 +6,15 @@ import { useTasksRescheduleMutation } from 'redux/index';
 import { useTasksJobsAddMutation } from 'redux/index';
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import ListItemWrapper from "../../components/common/ListItemWrapper";
+import { Cron } from 'react-js-cron'
+import 'react-js-cron/dist/styles.css'
 
 const Tasks = () => {
   const { data: getTasks, isLoading: loadingGetTasks } = useGetTasksQuery();
   const [tasksPause] = useTasksPauseMutation();
   const [tasksResume] = useTasksResumeMutation();
   const [tasksReschedule] = useTasksRescheduleMutation();
+  
   const PauseMutation = async (e, id) => {
     e.preventDefault();
     if (getTasks) {
@@ -24,12 +27,37 @@ const Tasks = () => {
       await tasksResume(id).unwrap();
     }
   };
-  const RescheduleMutation = async (e, id) => {
+  const RescheduleMutation = async (e, id, cronString) => {
     e.preventDefault();
     if (getTasks) {
     }
-    await tasksReschedule(id).unwrap();
+    await tasksReschedule({id, cron: cronString}).unwrap();
   };
+  
+  const initialValue = localStorage.getItem('cronValue') || '';
+  const [inputValue, setInputValue] = useState(initialValue);
+  const [cronValue, setCronValue] = useState(initialValue);
+
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setInputValue(value);
+    setCronValue(value);
+  };
+
+  const handleCronChange = (value) => {
+    setCronValue(value);
+    setInputValue(value);
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    // const finalValue = isValidInput(inputValue) ? inputValue : cronValue;
+  };
+
+  // const isValidInput = (value) => {
+  //   return value === 'valid';
+  // };
+
 
   return (
       <div className="py-6">
@@ -83,14 +111,44 @@ const Tasks = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-nowrap justify-between items-center pb-3 border-b border-backGround">
-                    <div className="flex gap-4">
-                      <div className="text-gray text-xs">
-                        Choose an interval:
-
-                      </div>
-                    </div>                
+                  <div className="flex flex-col pb-3 border-b border-backGround">
+                  <div className="flex flex-col gap-4">
+                    <div className="text-gray py-2 flex flex-col">
+                      <label className="pb-3 text-xs">Choose an interval:</label>
+                      <Cron value={cronValue} setValue={handleCronChange} /> 
+                    </div>
                   </div>
+                  <div className="flex flex-col gap-4">
+                    <form onSubmit={handleFormSubmit}>
+                      <div className="text-gray text-xs pb-3 flex flex-col">
+                        <label className="pb-3">Choose an interval:</label>
+                        {/* {isValidInput(inputValue) ? (
+                          <select
+                            className="!border-primary pt-2 rounded"
+                            value={inputValue}
+                            onChange={handleInputChange}
+                          >
+                            <option value="">Select an option</option>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                          </select>
+                        ) : ( */}
+                          <input
+                            className="!border-primary rounded"
+                            type="text"
+                            placeholder="* * * * *"
+                            maxLength={25}
+                            value={inputValue}
+                            onChange={handleInputChange}
+                          />
+                        {/* )} */}
+                      </div>
+                      <button onClick={(e) => RescheduleMutation(e, item.id, inputValue)} className="btn-primary">
+                        Save
+                      </button>
+                    </form>
+                  </div>
+                </div>
                 </ListItemWrapper>
                 ));
               })}

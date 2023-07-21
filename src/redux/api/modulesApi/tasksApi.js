@@ -35,11 +35,15 @@ export const tasksApi = createApi({
             invalidatesTags: [{ type: "Tasks", id: "LIST" }], 
         }),
         tasksReschedule: build.mutation({
-            query: (id) => ({
-                url: `/tasks/${id}/reschedule`,
+            query: (data) => ({
+                url: `/tasks/${data.id}/reschedule`,
                 method: "POST",
+                body :{
+                    // interval: 0,
+                    cron: data.cron
+                },
             }),
-            invalidatesTags: [{ type: "Tasks", id: "LIST" }], 
+            invalidatesTags: ["Tasks"], 
         }),
         tasksJobsAdd: build.mutation({
             query: (id) => ({
