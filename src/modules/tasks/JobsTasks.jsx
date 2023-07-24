@@ -10,6 +10,8 @@ import { useParams } from 'react-router-dom';
 import 'react-js-cron/dist/styles.css'
 import PageHeader from "../../components/common/PageHeader";
 import { toast } from "react-toastify";
+import {BiPauseCircle} from "react-icons/bi";
+import {BiPlayCircle} from "react-icons/bi"
 
 const Jobs = () => {
     const { id } = useParams();
@@ -111,15 +113,13 @@ const Jobs = () => {
                         </div>
                       </div>
                       <div className="flex flex-col divide-y-2 divide-gray-100">
-                        <div className="flex flex-col py-2 md:flex-nowrap">
-                          <button onClick={(e) => PauseMutation(e, item.id)} 
-                            className="flex my-8 mx-auto text-white bg-primary border-0 py-2 px-8 focus:outline-none rounded text-lg">
-                            Pause
-                          </button>
-                          <button onClick={(e) => ResumeMutation(e, item.id)} 
-                            className="flex mx-auto text-white bg-primary border-0 py-2 px-8 focus:outline-none rounded text-lg">
-                            Resume
-                          </button>
+                        <div className="flex flex-col py-2 my-2 md:flex-nowrap">
+                          <BiPauseCircle onClick={(e) => PauseMutation(e, item.id)} 
+                            className={`text-4xl ${item.status === 'paused' ? 'text-primary' : 'text-gray'} cursor-pointer`}
+                          />
+                          <BiPlayCircle onClick={(e) => ResumeMutation(e, item.id)} 
+                            className={`text-4xl ${item.status !== 'paused' ? 'text-primary' : 'text-gray'} cursor-pointer`}
+                          />
                         </div>
                       </div>
                     </div>

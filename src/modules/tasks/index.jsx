@@ -4,7 +4,7 @@ import { useGetTasksQuery } from 'redux/index';
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import ListItemWrapper from "../../components/common/ListItemWrapper";
 import useOutsideClick from "hooks/useOutsideClick";
-import { BiDotsVerticalRounded } from "react-icons/bi";
+import { CgFileDocument } from "react-icons/cg";
 
 const Tasks = () => {
   const { data: getTasks, isLoading: loadingGetTasks } = useGetTasksQuery();
@@ -118,20 +118,15 @@ const Tasks = () => {
                                 : "opacity-0 invisible"
                         } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-3`}
                     >
-                      <Link to={`/tasks/jobs/${item.id}`}
-                          className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
-                      >
-                        Jobs
+                      <Link to={`/tasks/jobs/${item.id}`}>
+                        <CgFileDocument
+                            className="text-3xl text-gray cursor-pointer"
+                        />
+
                       </Link>
                     </div>
                     </div>
-                    <BiDotsVerticalRounded
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                toggleJobs(item);
-                              }}
-                              className="text-3xl text-gray cursor-pointer"
-                          />
+                    
                   </div>
                   {/* <div className="flex flex-col pb-3 border-b border-backGround">
                   <div className="flex flex-col gap-4">
