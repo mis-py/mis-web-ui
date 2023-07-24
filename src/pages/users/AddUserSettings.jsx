@@ -1,7 +1,7 @@
 import React from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGetSettingsQuery } from "redux/index";
 import {
   addUserSettings,
@@ -13,7 +13,6 @@ import {
 import SearchInput from "components/SearchInput";
 import Input from "components/Input";
 
-import { IoIosArrowBack } from "react-icons/io";
 import PageHeader from "../../components/common/PageHeader";
 
 const AddUserSettings = () => {

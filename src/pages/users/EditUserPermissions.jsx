@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   useGetPermissionsQuery,
   useGetPermissionsUserIdQuery,
@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 import SearchInput from "components/SearchInput";
 import PermissionLabel from "components/permissions/PermissionLabel";
 
-import { IoIosArrowBack } from "react-icons/io";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import PageHeader from "../../components/common/PageHeader";
 

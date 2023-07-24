@@ -13,33 +13,39 @@ export const tasksApi = createApi({
             }),
             providesTags: (result, error, id) => [{ type: "Tasks", id }],
         }),
-        getTasksJobs: build.query({
-            query: () => ({
-                url: `/tasks/jobs`,
-                method: "GET",
-            }),
+        getJobs: build.query({
+            query: (id) => {
+                return {
+                    url: `/tasks/jobs?task_id=${id}`,
+                    method: "GET",
+                }
+            },
             providesTags: (result, error, id) => [{ type: "Tasks", id }],
         }),
-        tasksPause: build.mutation({
+        jobsPause: build.mutation({
             query: (id) => ({
                 url: `/tasks/${id}/pause`,
                 method: "POST",
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }],  
         }),
-        tasksResume: build.mutation({
+        jobsResume: build.mutation({
             query: (id) => ({
                 url: `/tasks/${id}/resume`,
                 method: "POST",
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }], 
         }),
-        tasksReschedule: build.mutation({
-            query: (id) => ({
-                url: `/tasks/${id}/reschedule`,
+        jobsReschedule: build.mutation({
+            query: (data) => ({
+                url: `/tasks/${data.id}/reschedule`,
                 method: "POST",
+                body :{
+                    // interval: 0,
+                    cron: data.cron
+                },
             }),
-            invalidatesTags: [{ type: "Tasks", id: "LIST" }], 
+            invalidatesTags: ["Tasks"], 
         }),
         tasksJobsAdd: build.mutation({
             query: (id) => ({
@@ -54,9 +60,9 @@ export const tasksApi = createApi({
 
 export const {
     useGetTasksQuery,
-    useTasksPauseMutation,
-    useTasksResumeMutation,
-    useTasksRescheduleMutation,
-    useGetTasksJobsQuery,
+    useJobsPauseMutation,
+    useJobsResumeMutation,
+    useJobsRescheduleMutation,
+    useGetJobsQuery,
     useTasksJobsAddMutation,
 } = tasksApi;

@@ -1,12 +1,11 @@
 import React from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { useGetUsersQuery } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
 import { addTeamMembers, deleteTeamMembers } from "redux/slices/teamSlice";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import SpinnerLoader from "../../components/common/SpinnerLoader";

@@ -8,7 +8,6 @@ import {
   deleteMembers,
 } from "../../redux/slices/editTeamMembersSlice";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 

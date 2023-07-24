@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Switch from "react-switch";
 import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
@@ -15,11 +15,11 @@ import {
 
 import AdminWrapper from "config/AdminWrapper";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 
 import { currentUserId } from "config/variables";
+import PageHeader from "../../components/common/PageHeader";
 
 const SettingsApp = () => {
   const navigate = useNavigate();
@@ -120,12 +120,7 @@ const SettingsApp = () => {
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
         <div className="flex items-center justify-between text-gray">
-          <Link to={-1} className="flex items-center text-gray mb-5">
-            <div className="flex mr-2">
-              <IoIosArrowBack />
-            </div>
-            <span>back</span>
-          </Link>
+          <PageHeader/>
           <AdminWrapper>
             <button
               onClick={handleDeleteApp}

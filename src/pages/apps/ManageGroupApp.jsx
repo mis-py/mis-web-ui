@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useGetGroupsQuery } from "../../redux";
 import { toast } from "react-toastify";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
 import GroupListItem from "../../components/groups/GroupListItem";

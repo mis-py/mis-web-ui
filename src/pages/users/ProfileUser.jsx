@@ -3,9 +3,10 @@ import React from "react";
 import {
   useGetMeQuery,
   useGetSettingsQuery,
+  useSettingUserSetMutation,
 } from "redux/index";
-
-
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Input from "components/Input"
 import USER from "assets/img/user.png";
 import PageHeader from "../../components/common/PageHeader";
@@ -18,8 +19,9 @@ const ProfileUser = () => {
   const { data: getSettings = [], isLoading: loadingSettings } =
       useGetSettingsQuery();
 
+  const [editUserSettingsSet] = useSettingUserSetMutation();
   const [settingsValue, setSettingsValue] = React.useState([]);
-
+  const { id } = useParams();
   const setDefaultSetting = function(item) {
     setSettingsValue(settingsValue.map((settingValue) => {
       if (settingValue.id === item.id) {
@@ -63,6 +65,26 @@ const ProfileUser = () => {
     });
 
     setSettingsValue(newSettings);
+  };
+
+  const handleSaveUser = async (e) => {
+    e.preventDefault();
+    
+    let dataSettings = settingsValue.map(function (item) {
+        return { setting_id: item.id, new_value: item.value };
+    });
+// ToDo
+    await editUserSettingsSet({
+      id: id,
+      body: dataSettings,
+    }).then((data) => {
+      if (data.error !== undefined && data.error.data.message !== undefined) {
+        console.error(data.error.data.message);
+        toast.error("Settings were not saved");
+      } else {
+        toast.success("Settings was saved");
+      }
+    });
   };
 
   return (
@@ -129,7 +151,7 @@ const ProfileUser = () => {
           </form>
         </div>
         <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-          <button className="btn-primary">Save</button>
+          <button onClick={handleSaveUser} className="btn-primary">Save</button>
         </div>
       </div>
   );

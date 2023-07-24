@@ -1,5 +1,5 @@
 import Tasks from "modules/tasks";
-// import AddGroup from "pages/groups/AddGroup";
+import Jobs from "modules/tasks/JobsTasks";
 // import EditMembersGroup from "pages/groups/EditMembersGroup";
 // import EditObjectsGroup from "pages/groups/EditObjectsGroup";
 
@@ -9,10 +9,10 @@ export const taskRoutes = [
     element: <Tasks />,
   },
 
-  // {
-  //   path: "/add-group",
-  //   element: <AddGroup />,
-  // },
+  {
+    path: "/tasks/jobs/:id",
+    element: <Jobs />,
+  },
   // {
   //   path: "/group/members/:id",
   //   element: <EditMembersGroup />,

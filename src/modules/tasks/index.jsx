@@ -1,35 +1,74 @@
-import React from 'react'
-import { useTasksResumeMutation } from 'redux/index';
+import React from 'react';
+import {Link} from 'react-router-dom';
 import { useGetTasksQuery } from 'redux/index';
-import { useTasksPauseMutation } from 'redux/index';
-import { useTasksRescheduleMutation } from 'redux/index';
-import { useTasksJobsAddMutation } from 'redux/index';
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import ListItemWrapper from "../../components/common/ListItemWrapper";
+import useOutsideClick from "hooks/useOutsideClick";
+import { BiDotsVerticalRounded } from "react-icons/bi";
 
 const Tasks = () => {
   const { data: getTasks, isLoading: loadingGetTasks } = useGetTasksQuery();
-  const [tasksPause] = useTasksPauseMutation();
-  const [tasksResume] = useTasksResumeMutation();
-  const [tasksReschedule] = useTasksRescheduleMutation();
-  const PauseMutation = async (e, id) => {
-    e.preventDefault();
-    if (getTasks) {
-      await tasksPause(id).unwrap();
-    }
+  // const [jobsPause] = useJobsPauseMutation();
+  // const [jobsResume] = useJobsResumeMutation();
+  // const [jobsReschedule] = useJobsRescheduleMutation();
+  const [showJobs, setShowJobs] = React.useState(false);
+  
+  const handleClickOutside = () => {
+    setShowJobs(false);
   };
-  const ResumeMutation = async (e, id) => {
-    e.preventDefault();
-    if (getTasks) {
-      await tasksResume(id).unwrap();
+
+  const refPopup = useOutsideClick(handleClickOutside);
+  
+  const toggleJobs = (index) => {
+    if (showJobs === index) {
+      setShowJobs(false);
+      return;
     }
+    setShowJobs(index);
   };
-  const RescheduleMutation = async (e, id) => {
-    e.preventDefault();
-    if (getTasks) {
-    }
-    await tasksReschedule(id).unwrap();
-  };
+  // const PauseMutation = async (e, id) => {
+  //   e.preventDefault();
+  //   if (getTasks) {
+  //     await jobsPause(id).unwrap();
+  //   }
+  // };
+  // const ResumeMutation = async (e, id) => {
+  //   e.preventDefault();
+  //   if (getTasks) {
+  //     await jobsResume(id).unwrap();
+  //   }
+  // };
+  // const RescheduleMutation = async (e, id, cronString) => {
+  //   e.preventDefault();
+  //   if (getTasks) {
+  //   }
+  //   await jobsReschedule({id, cron: cronString}).unwrap();
+  // };
+  
+  // const initialValue = localStorage.getItem('cronValue') || '';
+  // const [inputValue, setInputValue] = useState(initialValue);
+  // const [cronValue, setCronValue] = useState(initialValue);
+
+  // const handleInputChange = (event) => {
+  //   const value = event.target.value;
+  //   setInputValue(value);
+  //   setCronValue(value);
+  // };
+
+  // const handleCronChange = (value) => {
+  //   setCronValue(value);
+  //   setInputValue(value);
+  // };
+
+  // const handleFormSubmit = (event) => {
+  //   event.preventDefault();
+    // const finalValue = isValidInput(inputValue) ? inputValue : cronValue;
+  // };
+
+  // const isValidInput = (value) => {
+  //   return value === 'valid';
+  // };
+
 
   return (
       <div className="py-6">
@@ -48,7 +87,7 @@ const Tasks = () => {
                 <ListItemWrapper
                   key={item.id}
                 >
-                  <div className="flex justify-between items-center pb-3 border-b border-backGround">
+                  <div className="flex justify-between gap-4 pb-3 border-b border-backGround">
                     
                     <div className="flex flex-col gap-4">
                       <div className="flex flex-col">
@@ -70,27 +109,68 @@ const Tasks = () => {
                         <h4>{item.type}</h4>
                       </div>
                     </div>
-                    <div className="flex flex-col divide-y-2 divide-gray-100">
-                      <div className="flex flex-col py-2 md:flex-nowrap">
-                        <button onClick={(e) => PauseMutation(e, item.id)} 
-                          className="flex my-8 mx-auto text-white bg-primary border-0 py-2 px-8 focus:outline-none rounded text-lg">
-                          Pause
-                        </button>
-                        <button onClick={(e) => ResumeMutation(e, item.id)} 
-                          className="flex mx-auto text-white bg-primary border-0 py-2 px-8 focus:outline-none rounded text-lg">
-                          Resume
-                        </button>
-                      </div>
+                    <div className="flex">
+                    <div
+                        ref={refPopup}
+                        className={`${
+                            showJobs === item
+                                ? "opacity-100 visible"
+                                : "opacity-0 invisible"
+                        } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-3`}
+                    >
+                      <Link to={`/tasks/jobs/${item.id}`}
+                          className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                      >
+                        Jobs
+                      </Link>
+                    </div>
+                    </div>
+                    <BiDotsVerticalRounded
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleJobs(item);
+                              }}
+                              className="text-3xl text-gray cursor-pointer"
+                          />
+                  </div>
+                  {/* <div className="flex flex-col pb-3 border-b border-backGround">
+                  <div className="flex flex-col gap-4">
+                    <div className="text-gray py-2 flex flex-col">
+                      <label className="pb-3 text-xs">Choose an interval:</label>
+                      <Cron value={cronValue} setValue={handleCronChange} /> 
                     </div>
                   </div>
-                  <div className="flex flex-nowrap justify-between items-center pb-3 border-b border-backGround">
-                    <div className="flex gap-4">
-                      <div className="text-gray text-xs">
-                        Choose an interval:
-
-                      </div>
-                    </div>                
+                  <div className="flex flex-col gap-4">
+                    <form onSubmit={handleFormSubmit}>
+                      <div className="text-gray text-xs pb-3 flex flex-col">
+                        <label className="pb-3">Choose an interval:</label>
+                        {/* {isValidInput(inputValue) ? (
+                          <select
+                            className="!border-primary pt-2 rounded"
+                            value={inputValue}
+                            onChange={handleInputChange}
+                          >
+                            <option value="">Select an option</option>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                          </select>
+                        ) : ( */}
+                          {/* <input
+                            className="!border-primary rounded"
+                            type="text"
+                            placeholder="* * * * *"
+                            maxLength={25}
+                            value={inputValue}
+                            onChange={handleInputChange}
+                          /> */}
+                        {/* )} */}
+                      {/* </div>
+                      <button onClick={(e) => RescheduleMutation(e, item.id, inputValue)} className="btn-primary">
+                        Save
+                      </button> */}
+                    {/* </form>
                   </div>
+                </div> */} 
                 </ListItemWrapper>
                 ));
               })}
