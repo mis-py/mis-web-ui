@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import SpinnerLoader from "components/common/SpinnerLoader";
 
@@ -18,12 +18,16 @@ import { taskRoutes } from "routes/tasks";
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   React.useEffect(() => {
     if (localStorage.getItem("token") === null) {
       localStorage.removeItem("user_id");
       localStorage.removeItem("username");
-      navigate("/signin");
+
+      if (location.pathname !== '/signin') {
+          navigate("/signin");
+      }
     }
   });
 
