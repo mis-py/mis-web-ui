@@ -7,6 +7,9 @@ import SpinnerLoader from "../../components/common/SpinnerLoader";
 import ListItemWrapper from 'components/common/ListItemWrapper';
 import { Cron } from 'react-js-cron';
 import { useParams } from 'react-router-dom';
+import 'react-js-cron/dist/styles.css'
+import PageHeader from "../../components/common/PageHeader";
+import { toast } from "react-toastify";
 
 const Jobs = () => {
     const { id } = useParams();
@@ -29,9 +32,18 @@ const Jobs = () => {
       };
       const RescheduleMutation = async (e, id, cronString) => {
         e.preventDefault();
-        if (getJobs) {
+
+        if (cronString.length < 9) {
+            toast.error("Please enter valid value into input");
+        } else {
+            await jobsReschedule({id, cron: cronString}).then(({ data }) => {
+                if (data.error === undefined) {
+                    toast.success("Task was rescheduled");
+                } else {
+                    toast.error(data.error);
+                }
+            });
         }
-        await jobsReschedule({id, cron: cronString}).unwrap();
       };
 
       const initialValue = localStorage.getItem('cronValue') || '';
@@ -61,8 +73,10 @@ const Jobs = () => {
       return (
         <div className="py-6">
           <div className="flex flex-col">
-  
-          <h3 className="h3 mb-5">Jobs ({getJobs === undefined ? 0 : getJobs.length })</h3>
+
+          <PageHeader
+              header={`Jobs (${getJobs === undefined ? 0 : getJobs.length})`}
+          />
           {
             loadingGetJobs ? (
               <SpinnerLoader />
@@ -113,9 +127,7 @@ const Jobs = () => {
                     <div className="flex flex-col gap-4">
                       <div className="text-gray w-full py-2 flex flex-wrap">
                         <label className="pb-3 w-full text-xs">Choose an interval:</label>
-                        <div className="flex flex-col">
-                          <Cron value={cronValue} setValue={handleCronChange} className='flex' /> 
-                        </div>
+                        <Cron value={cronValue} setValue={handleCronChange} />
                       </div>
                     </div>
                     <div className="flex flex-col gap-4">
