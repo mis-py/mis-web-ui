@@ -112,17 +112,16 @@ const Tasks = () => {
                     <div className="flex">
                     <div
                         ref={refPopup}
-                        className={`${
-                            showJobs === item
-                                ? "opacity-100 visible"
-                                : "opacity-0 invisible"
-                        } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-3`}
+                        // className={`${
+                        //     showJobs === item
+                        //         ? "opacity-0 invisible"
+                        //         : "opacity-100 visible"
+                        // } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-3`}
                     >
                       <Link to={`/tasks/jobs/${item.id}`}>
                         <CgFileDocument
                             className="text-3xl text-gray cursor-pointer"
                         />
-
                       </Link>
                     </div>
                     </div>

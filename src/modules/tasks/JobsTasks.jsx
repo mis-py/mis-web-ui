@@ -48,29 +48,59 @@ const Jobs = () => {
         }
       };
 
-      const initialValue = localStorage.getItem('cronValue') || '';
-      const [inputValue, setInputValue] = useState(initialValue);
-      const [cronValue, setCronValue] = useState(initialValue);
+      const [cronValues, setCronValues] = React.useState({});
+      const [statusValues, setStatusValues] = React.useState({});
 
-      const handleInputChange = (event) => {
-        const value = event.target.value;
-        setInputValue(value);
-        setCronValue(value);
+      React.useEffect(() => {
+        if (getJobs !== undefined) {
+          let statuses = {};
+          let cron = {};
+          getJobs.map((job) => {
+            statuses[job.id] = job.status;
+
+            if (job.trigger.type === "cron") {
+              cron[job.id] = job.trigger.value;
+            } else {
+              cron[job.id] = "";
+            }
+          });
+
+          setCronValues(cron);
+          setStatusValues(statuses);
+        }
+      }, [loadingGetJobs]);
+
+      const handleCronChange = (id, value) => {
+        let crons = {};
+        getJobs.map((job) => {
+          if (job.id === id) {
+            crons[job.id] = value;
+          } else {
+            crons[job.id] = cronValues[id];
+          }
+        });
+
+        setCronValues(crons);
       };
 
-      const handleCronChange = (value) => {
-        setCronValue(value);
-        setInputValue(value);
+      const handleStatusChange = (id, status) => {
+        let statuses = {};
+
+        getJobs.map((job) => {
+          if (job.id === id) {
+            statuses[job.id] = status;
+          } else {
+            statuses[job.id] = job.status;
+          }
+        });
+
+        setStatusValues(statuses);
       };
 
       const handleFormSubmit = (event) => {
         event.preventDefault();
         // const finalValue = isValidInput(inputValue) ? inputValue : cronValue;
       };
-
-      // const isValidInput = (value) => {
-      //   return value === 'valid';
-      // };p;
 
       return (
         <div className="py-6">
@@ -97,28 +127,28 @@ const Jobs = () => {
                           <div className="text-gray text-xs">
                             Jobs identifier:
                           </div>
-                          <h4>{item.id}</h4>
+                          <div>{item.id}</div>
                         </div>
                         <div className="flex flex-col">
                           <div className="text-gray text-xs">
                             Name of jobs:
                           </div>
-                          <h4>{item.name}</h4>
+                          <div>{item.name}</div>
                         </div>
                         <div className="flex flex-col">
                           <div className="text-gray text-xs">
                             Job status:
                           </div>
-                          <h4>{item.status}</h4>
+                          <div>{statusValues[item.id]}</div>
                         </div>
                       </div>
                       <div className="flex flex-col divide-y-2 divide-gray-100">
                         <div className="flex flex-col py-2 my-2 md:flex-nowrap">
-                          <BiPauseCircle onClick={(e) => PauseMutation(e, item.id)} 
-                            className={`text-4xl ${item.status === 'paused' ? 'text-primary' : 'text-gray'} cursor-pointer`}
+                          <BiPauseCircle onClick={(e) => { PauseMutation(e, item.id); handleStatusChange(item.id, "paused") }} 
+                            className={`text-4xl ${statusValues[item.id] === 'paused' ? 'text-primary' : 'text-gray'} cursor-pointer`}
                           />
-                          <BiPlayCircle onClick={(e) => ResumeMutation(e, item.id)} 
-                            className={`text-4xl ${item.status !== 'paused' ? 'text-primary' : 'text-gray'} cursor-pointer`}
+                          <BiPlayCircle onClick={(e) => { ResumeMutation(e, item.id); handleStatusChange(item.id, "running") }}
+                            className={`text-4xl ${statusValues[item.id] === 'running' ? 'text-primary' : 'text-gray'} cursor-pointer`}
                           />
                         </div>
                       </div>
@@ -127,7 +157,7 @@ const Jobs = () => {
                     <div className="flex flex-col gap-4">
                       <div className="text-gray w-full py-2 flex flex-wrap">
                         <label className="pb-3 w-full text-xs">Choose an interval:</label>
-                        <Cron value={cronValue} setValue={handleCronChange} />
+                        <Cron value={cronValues[item.id]} setValue={(value) => handleCronChange(item.id, value)} />
                       </div>
                     </div>
                     <div className="flex flex-col gap-4">
@@ -149,12 +179,12 @@ const Jobs = () => {
                               type="text"
                               placeholder="* * * * *"
                               maxLength={25}
-                              value={inputValue}
-                              onChange={handleInputChange}
+                              value={cronValues[item.id] === undefined ? "" : cronValues[item.id]}
+                              onChange={(e) => {handleCronChange(item.id, e.target.value)}}
                             />
                           
                         </div>
-                        <button onClick={(e) => RescheduleMutation(e, item.id, inputValue)} className="btn-primary">
+                        <button onClick={(e) => RescheduleMutation(e, item.id, cronValues[item.id])} className="btn-primary">
                           Save
                         </button>
                       </form>
