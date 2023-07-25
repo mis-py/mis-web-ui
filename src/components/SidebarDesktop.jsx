@@ -99,9 +99,9 @@ const SidebarDesktop = () => {
                 <div className="duration-300 group-hover:text-primary">
                   <AiOutlineAppstoreAdd />
                 </div>
-                <h3 className="py-3 duration-300 group-hover:text-primary">
+                <div className="py-3 duration-300 group-hover:text-primary">
                   List Apps
-                </h3>
+                </div>
               </div>
               <IoIosArrowForward
                 className={`${showListApps ? "rotate-90" : ""} duration-300`}

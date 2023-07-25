@@ -13,7 +13,7 @@ import { userRoutes } from "routes/users";
 import { teamRoutes } from "routes/teams";
 import { groupRoutes } from "routes/groups";
 import { appRoutes } from "routes/apps";
-import { moduleRoutes } from "routes/modules";
+import useModuleRoutes from "routes/modules";
 import { taskRoutes } from "routes/tasks";
 
 import { useSelector } from 'react-redux';
@@ -24,6 +24,7 @@ function App() {
   const location = useLocation();
 
   const isLoading = useSelector(state => state.loading);
+  const modulesList = useModuleRoutes();
 
   React.useEffect(() => {
     if (localStorage.getItem("token") === null) {
@@ -55,7 +56,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
               {userRoutes
-                  .concat(teamRoutes, groupRoutes, appRoutes, moduleRoutes, taskRoutes)
+                  .concat(teamRoutes, groupRoutes, appRoutes, modulesList, taskRoutes)
                   .map((route, index) => (
                   <Route
                       key={`${route.path}_${index}`}
