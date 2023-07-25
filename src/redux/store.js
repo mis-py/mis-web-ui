@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
 
 //api
 import { usersApi } from "./api/usersApi";
@@ -23,6 +23,24 @@ import teamSlice from "./slices/teamSlice";
 import editTeamPermissionsSlice from "./slices/editTeamPermissionsSlice";
 import editTeamMembersSlice from "./slices/editTeamMembersSlice";
 import membersSlice from "./slices/membersSlice";
+import { startLoading, stopLoading } from './slices/loadingSlice';
+import loadingReducer from './slices/loadingSlice';
+
+const mutationLoadingMiddleware = ({ dispatch }) => next => action => {
+    if (~action.type.indexOf("executeMutation")) {
+        if (isPending(action)) {
+            dispatch(startLoading());
+        }
+
+        if (isFulfilled(action) || isRejected(action)) {
+            // setTimeout(() => {
+                dispatch(stopLoading());
+            // }, 1000);
+        }
+    }
+
+    next(action);
+};
 
 export const store = configureStore({
   reducer: {
@@ -49,6 +67,7 @@ export const store = configureStore({
     editTeamPermissions: editTeamPermissionsSlice,
     editTeamMembers: editTeamMembersSlice,
     membersList: membersSlice,
+    loading: loadingReducer,
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware({}).concat([
@@ -67,5 +86,6 @@ export const store = configureStore({
       consumersApi.middleware,
       tasksApi.middleware,
       timerApi.middleware,
+      mutationLoadingMiddleware,
     ]),
 });

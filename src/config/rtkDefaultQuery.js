@@ -18,6 +18,6 @@ const rtkDefaultQuery = async (args, api, extraOptions) => {
     }
 
     return result;
-  };
+};
 
-  export default rtkDefaultQuery;
+export default rtkDefaultQuery;

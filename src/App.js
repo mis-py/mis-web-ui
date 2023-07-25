@@ -16,9 +16,14 @@ import { appRoutes } from "routes/apps";
 import { moduleRoutes } from "routes/modules";
 import { taskRoutes } from "routes/tasks";
 
+import { useSelector } from 'react-redux';
+import LoadingOverlay from "./components/common/LoadingOverlay";
+
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const isLoading = useSelector(state => state.loading);
 
   React.useEffect(() => {
     if (localStorage.getItem("token") === null) {
@@ -33,6 +38,7 @@ function App() {
 
   return (
     <div className="relative">
+      {isLoading && <LoadingOverlay />}
       <ToastContainer theme="dark" />
       <React.Suspense
         fallback={
