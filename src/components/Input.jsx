@@ -19,7 +19,7 @@ const Input = ({
     setDefault
   }) => {
   return (
-    <label className={`flex flex-col gap-1 mb-4 ${className === undefined ? "" : className}`.trim()} htmlFor={id}>
+    <label className={`flex flex-col gap-1 mb-4 ${hasDefault ? "relative" : ""} ${className === undefined ? "" : className}`.trim()} htmlFor={id}>
       {label}
       
       <input

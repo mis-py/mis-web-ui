@@ -90,6 +90,17 @@ export const settingsApi = createApi({
       }),
       invalidatesTags: ["Settings"],
     }),
+    settingsTeamSet: build.mutation({
+      query: (data) => ({
+        url: `/settings/team/${data.id}`,
+        method: "PUT",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: data.settings,
+      }),
+      invalidatesTags: ["Settings"],
+    }),
   }),
 });
 
@@ -101,4 +112,5 @@ export const {
   useGetSettingsTeamIdQuery,
   useSettingAppSetMutation,
   useSettingUserSetMutation,
+  useSettingsTeamSetMutation,
 } = settingsApi;

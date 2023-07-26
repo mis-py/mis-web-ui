@@ -64,7 +64,7 @@ const EditUserSettings = () => {
   };
 
   React.useEffect(() => {
-    let test = getSettings.map((setting) => {
+    let _settings = getSettings.map((setting) => {
       const userSetting = getUserSettings.find(
           (userSetting) => userSetting.setting.id === setting.id
       );
@@ -79,7 +79,7 @@ const EditUserSettings = () => {
       return setting;
     });
 
-    dispatch(renderSettings(test));
+    dispatch(renderSettings(_settings));
   }, [loadingGetSettings, loadingUserSettings]);
 
   const handleInputChange = (e, id) => {
@@ -117,7 +117,6 @@ const EditUserSettings = () => {
                         !item.is_global && (
                             <Input
                                 key={item.id}
-                                className="relative"
                                 label={`${item.key} ( ${item.app.name} )`}
                                 id={`${item.key}-${item.app.name}`.toLowerCase()}
                                 type="text"

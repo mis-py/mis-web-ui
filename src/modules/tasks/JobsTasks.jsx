@@ -116,7 +116,7 @@ const Jobs = () => {
               (<div className="flex flex-col gap-4">
 
 
-                {getJobs.map((item) => (
+                {getJobs !== undefined && getJobs.map((item) => (
                   <ListItemWrapper
                     key={item.id}
                   >
