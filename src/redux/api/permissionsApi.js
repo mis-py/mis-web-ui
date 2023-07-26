@@ -1,10 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import rtkDefaultQuery from "config/rtkDefaultQuery";
+import RtkDefaultQuery from "config/RtkDefaultQuery";
 
 export const permissionsApi = createApi({
   reducerPath: "permissionsApi",
   tagTypes: ["Permissions"],
-  baseQuery: rtkDefaultQuery,
+  baseQuery: RtkDefaultQuery,
   endpoints: (build) => ({
     getPermissions: build.query({
       query: () => ({

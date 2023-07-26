@@ -1,10 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import rtkDefaultQuery from "config/rtkDefaultQuery";
+import RtkDefaultQuery from "config/RtkDefaultQuery";
 
 export const tasksApi = createApi({
     reducerPath: "tasksApi",
     tagTypes: ["Tasks"],
-    baseQuery: rtkDefaultQuery,
+    baseQuery: RtkDefaultQuery,
     endpoints: (build) => ({
         getTasks: build.query({
             query: () => ({

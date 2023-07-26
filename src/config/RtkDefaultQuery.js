@@ -9,15 +9,18 @@ const baseQuery = fetchBaseQuery({
     },
 });
 
-const rtkDefaultQuery = async (args, api, extraOptions) => {
+const RtkDefaultQuery = async (args, api, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions);
 
     if (result.error !== undefined && result.error.status === 401) {
       localStorage.removeItem('token');
-      window.location.reload();
+
+      if (window.location.pathname !== '/signin') {
+          window.location.reload();
+      }
     }
 
     return result;
 };
 
-export default rtkDefaultQuery;
+export default RtkDefaultQuery;
