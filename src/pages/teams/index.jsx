@@ -13,7 +13,7 @@ import AdminWrapper from "config/AdminWrapper";
 
 import { FiSearch } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { AiOutlineUsergroupAdd } from "react-icons/ai";
+import { AiOutlineUsergroupAdd, AiOutlineSetting } from "react-icons/ai";
 
 import ListItemWrapper from "../../components/common/ListItemWrapper";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
@@ -132,13 +132,11 @@ const Teams = () => {
                                 : "opacity-0 invisible"
                         } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-3`}
                     >
-                      <div
-                          onClick={() => navigate(`/teams/${team.id}`)}
-                          className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                      <Link to={`/teams/${team.id}`}
+                            className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
                       >
                         Editing
-                      </div>
-
+                      </Link>
                       <div
                           onClick={() => handleDeleteTeam(team.id)}
                           className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
@@ -162,10 +160,12 @@ const Teams = () => {
                       </div>
                       <AdminWrapper>
                         <div className="flex gap-3 items-center">
-                          {/*<AiOutlineSetting*/}
-                          {/*    onClick={() => navigate(`/team/settings/${team.id}`)}*/}
-                          {/*    className="text-2xl text-gray cursor-pointer"*/}
-                          {/*/>*/}
+                          <Link to={`/team/settings/${team.id}`}>
+                            <AiOutlineSetting
+                                className="text-2xl text-gray cursor-pointer"
+                            />
+                          </Link>
+
                           <BiDotsVerticalRounded
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -176,7 +176,7 @@ const Teams = () => {
                         </div>
                       </AdminWrapper>
                     </div>
-                    <div className={`duration-300 flex flex-col pt-3`}>
+                    <div className="duration-300 flex flex-col pt-3">
                       <p className="mb-2">Members of the department:</p>
                       {team.users !== undefined && Array.isArray(team.users) && <TeamUsersShortList
                         users={team.users}
