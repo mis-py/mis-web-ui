@@ -1,9 +1,9 @@
 import React from 'react'
 
-import defaultBinomValue from "./binomFormValue";
+// import defaultBinomValue from "./binomFormValue";
 
 const Binom = () => {
-    const [formValue, setFormValue] = React.useState(defaultBinomValue)
+    // const [formValue, setFormValue] = React.useState(defaultBinomValue)
 
   return (
     <>

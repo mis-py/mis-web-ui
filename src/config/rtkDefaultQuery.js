@@ -14,7 +14,10 @@ const rtkDefaultQuery = async (args, api, extraOptions) => {
 
     if (result.error !== undefined && result.error.status === 401) {
       localStorage.removeItem('token');
-      window.location.reload();
+
+      if (window.location.pathname !== '/signin') {
+          window.location.reload();
+      }
     }
 
     return result;
