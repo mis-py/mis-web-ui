@@ -1,10 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import rtkDefaultQuery from "config/rtkDefaultQuery";
+import RtkDefaultQuery from "config/RtkDefaultQuery";
 
 export const teamsApi = createApi({
   reducerPath: "teamsApi",
   tagTypes: ["Teams"],
-  baseQuery: rtkDefaultQuery,
+  baseQuery: RtkDefaultQuery,
   endpoints: (build) => ({
     getTeams: build.query({
       query: () => ({

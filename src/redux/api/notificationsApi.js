@@ -1,10 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import rtkDefaultQuery from "config/rtkDefaultQuery";
+import RtkDefaultQuery from "config/RtkDefaultQuery";
 
 export const notificationsApiApi = createApi({
     reducerPath: "notificationsApi",
     tagTypes: ["Notifications"],
-    baseQuery: rtkDefaultQuery,
+    baseQuery: RtkDefaultQuery,
     endpoints: (build) => ({
         getNotifications: build.query({
             query: () => ({

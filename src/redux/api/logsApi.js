@@ -1,10 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import rtkDefaultQuery from "config/rtkDefaultQuery";
+import RtkDefaultQuery from "config/RtkDefaultQuery";
 
 export const logsApi = createApi({
   reducerPath: "logsApi",
   tagTypes: ["Logs"],
-  baseQuery: rtkDefaultQuery,
+  baseQuery: RtkDefaultQuery,
   endpoints: (build) => ({
     getAppLogs: build.query({
       query: ({ id, date, hour, display }) => {

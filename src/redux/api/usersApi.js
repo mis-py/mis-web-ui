@@ -1,10 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import rtkDefaultQuery from "config/rtkDefaultQuery";
+import RtkDefaultQuery from "config/RtkDefaultQuery";
 
 export const usersApi = createApi({
   reducerPath: "usersApi",
   tagTypes: ["Users"],
-  baseQuery: rtkDefaultQuery,
+  baseQuery: RtkDefaultQuery,
   endpoints: (build) => ({
     getUsers: build.query({
       query: () => ({

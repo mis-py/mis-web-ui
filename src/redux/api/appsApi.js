@@ -1,10 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import rtkDefaultQuery from "config/rtkDefaultQuery";
+import RtkDefaultQuery from "config/RtkDefaultQuery";
 
 export const appsApi = createApi({
   reducerPath: "appsApi",
   tagTypes: ["Apps"],
-  baseQuery: rtkDefaultQuery,
+  baseQuery: RtkDefaultQuery,
   endpoints: (build) => ({
     getApps: build.query({
       query: () => ({
