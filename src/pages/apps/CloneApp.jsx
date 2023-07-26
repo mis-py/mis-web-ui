@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Select from "react-select";
 import {
@@ -8,7 +8,7 @@ import {
   useCloneAppNameMutation,
 } from "redux/index";
 
-import { IoIosArrowBack } from "react-icons/io";
+import PageHeader from "../../components/common/PageHeader";
 
 const customStyles = {
   option: (provided, state) => ({
@@ -90,14 +90,9 @@ const CloneApp = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5">Clone app</h3>
-
+        <PageHeader
+          header="Clone app"
+        />
         <form className="my-7">
           <label className="flex flex-col gap-1 mb-4" htmlFor="url">
             Url

@@ -1,14 +1,15 @@
 import React from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
+
 import { useGetUsersQuery } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
 import { addTeamMembers, deleteTeamMembers } from "redux/slices/teamSlice";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
+import PageHeader from "../../components/common/PageHeader";
 
 const AddTeamMembers = () => {
   const navigate = useNavigate();
@@ -17,6 +18,18 @@ const AddTeamMembers = () => {
   const { data: getUsers = [], isLoading: loadingUsers } = useGetUsersQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
+
+  const [filteredUsers, setFilteredUsers] = React.useState([]);
+
+  React.useEffect(() => {
+    setFilteredUsers(getUsers
+        ?.filter((el) =>
+            el.username
+                .toLowerCase()
+                .includes(searchValue.toLowerCase().trim())
+            && el.team === null
+        ))
+  }, [searchValue, loadingUsers]);
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {
@@ -29,13 +42,9 @@ const AddTeamMembers = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between relative">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5 mb-6">Manage members</h3>
+        <PageHeader
+          header="Manage members"
+        />
         <h3 className="mb-1">Search for member</h3>
         <form>
           <label
@@ -53,25 +62,10 @@ const AddTeamMembers = () => {
           </label>
         </form>
         {loadingUsers ? (
-          <PulseLoader
-            size={15}
-            cssOverride={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            color="#757575"
-          />
+          <SpinnerLoader />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
-            {getUsers
-              ?.filter((el) =>
-                el.username
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase().trim())
-              )
-              .filter((noteam) => noteam.team === null)
-              .map((user) => (
+            {filteredUsers.length ? filteredUsers.map((user) => (
                 <div
                   key={user.id}
                   className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
@@ -111,7 +105,9 @@ const AddTeamMembers = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+              )) : (
+                <h2>No users without teams</h2>
+            )}
           </div>
         )}
       </div>

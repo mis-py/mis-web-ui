@@ -1,20 +1,15 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const usersApi = createApi({
   reducerPath: "usersApi",
   tagTypes: ["Users"],
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-  }),
+  baseQuery: rtkDefaultQuery,
   endpoints: (build) => ({
     getUsers: build.query({
       query: () => ({
         url: `/users/`,
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        method: "GET"
       }),
       providesTags: (result) =>
         result
@@ -27,12 +22,16 @@ export const usersApi = createApi({
     getUserId: build.query({
       query: (id) => ({
         url: `/users/${id}`,
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        method: "GET"
       }),
       providesTags: (result, error, id) => [{ type: "Users", id }],
+    }),
+    getMe: build.query({
+      query: () => ({
+        url: `/users/me`,
+        method: "GET"
+      }),
+      providesTags: () => [{ type: "Users" }],
     }),
     addUser: build.mutation({
       query: (body) => ({
@@ -40,7 +39,6 @@ export const usersApi = createApi({
         method: "POST",
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body,
       }),
@@ -52,7 +50,6 @@ export const usersApi = createApi({
         method: "PUT",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: rest,
       }),
@@ -64,7 +61,6 @@ export const usersApi = createApi({
         method: "DELETE",
         headers: {
           accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
@@ -75,7 +71,6 @@ export const usersApi = createApi({
         method: "POST",
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
@@ -85,6 +80,7 @@ export const usersApi = createApi({
 
 export const {
   useGetUsersQuery,
+  useGetMeQuery,
   useGetUserIdQuery,
   useAddUserMutation,
   useEditUserMutation,

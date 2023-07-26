@@ -2,29 +2,32 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetAppsQuery } from "redux/index";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
 
 import AdminWrapper from "config/AdminWrapper";
 
 import { FiSearch } from "react-icons/fi";
-import { IoIosArrowDown } from "react-icons/io";
+import ListItemWrapper from "../../components/common/ListItemWrapper";
 import { AiOutlinePlus, AiOutlineSetting } from "react-icons/ai";
 import { CgFileDocument } from "react-icons/cg";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
+import TeamUsersShortList from "../../components/teams/TeamUsersShortList";
 
 const Apps = () => {
-  const navigate = useNavigate();
+
   const [showSearch, setShowSearch] = React.useState(false);
   const [serchValue, setSearchValue] = React.useState("");
   const {
     data: getApps = [],
     isLoading: loadingApps,
     error: errorApps,
+    refetch,
   } = useGetAppsQuery();
 
   React.useEffect(() => {
     if (errorApps) {
       toast.error("No apps found");
     }
+    refetch();
   }, [errorApps]);
 
   return (
@@ -37,7 +40,7 @@ const Apps = () => {
               className={`${
                 showSearch
                   ? "rounded-l-lg text-primary"
-                  : "rounded-lg text-gray"
+                  : "rounded-l-lg text-gray"
               } flex justify-center duration-300 items-center px-3 h-[32px] bg-blackSecond`}
             >
               <FiSearch />
@@ -66,15 +69,7 @@ const Apps = () => {
 
         <h3 className="h3 mb-5">Applications ({getApps?.length})</h3>
         {loadingApps ? (
-          <PulseLoader
-            size={15}
-            cssOverride={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            color="#757575"
-          />
+          <SpinnerLoader />
         ) : (
           <div className="flex flex-col gap-4">
             {getApps
@@ -82,55 +77,55 @@ const Apps = () => {
                 el.name.toLowerCase().includes(serchValue.toLowerCase().trim())
               )
               .map((app, index) => (
-                <div
-                  key={app.id}
-                  className="flex flex-col relative bg-blackSecond p-6 rounded"
-                >
-                  <div className="flex justify-between items-center pb-2 border-b border-backGround">
-                    <div className="flex">
-                      <img
-                        className="w-[56px] h-[56px] rounded-full mr-3"
-                        src={require("assets/img/app.png")}
-                        alt=""
-                      />
-                      <div className="flex flex-col">
-                        <h4>{app.name}</h4>
-                        <h5 className="text-gray text-xs">Category</h5>
+                  <ListItemWrapper key={app.id}>
+                    <div className="flex justify-between items-center pb-2 border-b border-backGround">
+                      <div className="flex">
+                        <img
+                            className="w-[56px] h-[56px] rounded-full mr-3"
+                            src={require("assets/img/app.png")}
+                            alt={app.name}
+                        />
+                        <div className="flex flex-col">
+                          <h4>{app.name}</h4>
+                          <h5 className="text-gray text-xs">Category</h5>
+                        </div>
+                      </div>
+                      <div className="flex gap-3">
+                        <Link to={`/apps/logs/${app.id}`}>
+                          <CgFileDocument
+                              className="text-2xl text-gray cursor-pointer"
+                          />
+                        </Link>
+
+                        {(app.is_editable === true || app.is_editable === undefined) &&
+                          <Link to={`/apps/settings/${app.id}`}>
+                            <AiOutlineSetting
+                                className="text-2xl text-gray cursor-pointer"
+                            />
+                          </Link>
+                        }
                       </div>
                     </div>
-                    <div className="flex gap-3">
-                      <CgFileDocument
-                        onClick={() => navigate(`/apps/logs/${app.id}`)}
-                        className="text-2xl text-gray cursor-pointer"
-                      />
-                      {/* <AdminWrapper>
-                        </AdminWrapper> */}
-                        <AiOutlineSetting
-                          onClick={() => navigate(`/apps/settings/${app.id}`)}
-                          className="text-2xl text-gray cursor-pointer"
-                        />
-                    </div>
-                  </div>
 
-                  <div className={`duration-300 flex flex-col pt-4 gap-2`}>
-                    <div className="flex justify-between">
-                      <h3>Status:</h3>
-                      <p className="text-gray">
-                        {app.enabled ? "Healthy" : "Unhealthy"}
-                      </p>
+                    <div className={`duration-300 flex flex-col pt-4 gap-2`}>
+                      <div className="flex justify-between">
+                        <h3>Status:</h3>
+                        <p className="text-gray">
+                          {app.enabled ? "Healthy" : "Unhealthy"}
+                        </p>
+                      </div>
+                      <div className="flex justify-between">
+                        <h3>Is active:</h3>
+                        <p
+                            className={`${
+                                app.enabled ? "text-success" : "text-danger"
+                            }`}
+                        >
+                          {app.enabled ? "Enabled" : "Disabled"}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                      <h3>Is active:</h3>
-                      <p
-                        className={`${
-                          app.enabled ? "text-success" : "text-danger"
-                        }`}
-                      >
-                        {app.enabled ? "Enabled" : "Disabled"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                  </ListItemWrapper>
               ))}
           </div>
         )}

@@ -1,20 +1,17 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const permissionsApi = createApi({
   reducerPath: "permissionsApi",
   tagTypes: ["Permissions"],
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-  }),
+  baseQuery: rtkDefaultQuery,
   endpoints: (build) => ({
     getPermissions: build.query({
       query: () => ({
         url: `/permissions/`,
         method: "GET",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
       }),
       providesTags: ["Permissions"],
@@ -23,19 +20,23 @@ export const permissionsApi = createApi({
       query: (id) => ({
         url: `/permissions/user/${id}`,
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
       }),
       providesTags: (result, error, id) => [{ type: "Permissions", id }],
+    }),
+    getMyPermissions: build.query({
+      query: () => ({
+        url: "/permissions/my",
+        method: "GET",
+      }),
+      providesTags: () => [{ type: "Permissions" }],
+      forceRefetch() {
+        return localStorage.getItem('user_id') === null;
+      },
     }),
     getPermissionsTeamId: build.query({
       query: (id) => ({
         url: `/permissions/team/${id}`,
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
       }),
       providesTags: (result, error, id) => [{ type: "Permissions", id }],
     }),
@@ -45,8 +46,7 @@ export const permissionsApi = createApi({
         method: "PUT",
         credentials: "include",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
         body: rest,
       }),
@@ -58,8 +58,7 @@ export const permissionsApi = createApi({
         method: "PUT",
         credentials: "include",
         headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          accept: "application/json"
         },
         body: rest,
       }),
@@ -71,6 +70,7 @@ export const permissionsApi = createApi({
 export const {
   useGetPermissionsQuery,
   useGetPermissionsUserIdQuery,
+  useGetMyPermissionsQuery,
   useEditUserPermissionMutation,
   useGetPermissionsTeamIdQuery,
   useEditTeamPermissionMutation,

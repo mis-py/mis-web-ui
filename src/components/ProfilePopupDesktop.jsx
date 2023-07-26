@@ -1,10 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserLogoutMutation } from "redux/index";
-import { FiUser, FiSettings, FiLogOut } from "react-icons/fi";
+import { FiUser, FiLogOut } from "react-icons/fi";
 import useOutsideClick from "hooks/useOutsideClick";
-
-import { currentUserId } from "config/variables";
 
 const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
   const navigate = useNavigate();
@@ -35,29 +33,16 @@ const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
       <ul>
         <button
           onClick={() => {
-            navigate(`/profile/${currentUserId}`);
+            navigate(`/profile/${localStorage.getItem('user_id')}`);
           }}
           className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
         >
           <div className="duration-300 group-hover:text-primary">
             <FiUser />
           </div>
-          <h3 className="py-3 duration-300 group-hover:text-primary">
+          <span className="py-3 duration-300 group-hover:text-primary">
             Profile
-          </h3>
-        </button>
-        <button
-          onClick={() => {
-            navigate(`/settings/${localStorage.getItem("user_id")}`);
-          }}
-          className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
-        >
-          <div className="duration-300 group-hover:text-primary">
-            <FiSettings />
-          </div>
-          <h3 className="py-3 duration-300 group-hover:text-primary">
-            Settings
-          </h3>
+          </span>
         </button>
         <button
           onClick={handleLogOut}
@@ -66,9 +51,9 @@ const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
           <div className="duration-300 group-hover:text-primary">
             <FiLogOut />
           </div>
-          <h3 className="py-3 duration-300 group-hover:text-primary">
+          <span className="py-3 duration-300 group-hover:text-primary">
             Log out
-          </h3>
+          </span>
         </button>
       </ul>
     </div>

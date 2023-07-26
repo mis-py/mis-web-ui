@@ -6,15 +6,17 @@ import {
   addTeamName,
   addTeamPermissions,
   addTeamMembers,
+  deleteTeamMembers,
+  setTeamMembers,
 } from "redux/slices/teamSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
-import Tooltip from "components/Tooltip";
+import TeamUsersShortList from "../../components/teams/TeamUsersShortList";
+import PageHeader from "../../components/common/PageHeader";
 
-const EditUser = () => {
+const EditTeam = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -24,11 +26,13 @@ const EditUser = () => {
   const [editTeam] = useEditTeamMutation();
 
   React.useEffect(() => {
-    dispatch(addTeamName(getTeamId?.name));
-    getTeamId.users?.map((user) =>
-      !team.members.includes(user.id) ? dispatch(addTeamMembers(user.id)) : null
-    );
-    dispatch(addTeamPermissions(getTeamId?.permissions));
+    let userIds = [];
+
+    if (!(getTeamId === undefined || getTeamId.users === undefined || getTeamId.users.length === 0)) {
+      userIds = getTeamId.users.map(user => user.id);
+    }
+
+    dispatch(setTeamMembers(userIds));
   }, [loadingTeamId]);
 
   const handleEditTeam = async (e) => {
@@ -38,22 +42,18 @@ const EditUser = () => {
       name: "",
       permissions: team.permissions,
       users_ids: team.members,
-    }).unwrap();
-    navigate("/teams");
-    toast.success("Team updating");
+    }).then(() => {
+      navigate("/teams");
+      toast.success("Team updating");
+    });
   };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5">Editing Team</h3>
-
+        <PageHeader
+          header="Editing Team"
+        />
         <form className="my-7">
           <label className="flex flex-col gap-1 mb-4" htmlFor="teamname">
             Team name
@@ -63,44 +63,33 @@ const EditUser = () => {
               id="teamname"
               name="teamname"
               autoComplete="off"
-              value={team.name}
+              value={team.name === undefined ? "" : team.name}
               onChange={(e) => dispatch(addTeamName(e.target.value))}
             />
           </label>
 
-          <div className="flex pl-1">
-            {getTeamId.users?.map((item) => (
-              <div
-                key={item.id}
-                className="group cursor-pointer shadow -ml-1 relative"
-              >
-                <img
-                  className="w-[35px] h-[35px]"
-                  src={require("assets/img/user.png")}
-                  alt=""
-                />
-                <Tooltip name={item.username} />
-              </div>
-            ))}
-          </div>
+          {getTeamId.users !== undefined && Array.isArray(getTeamId.users) && <TeamUsersShortList
+              users={getTeamId.users}
+              team={team.id}
+          />}
         </form>
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex justify-between items-center gap-6">
-          <button
-            onClick={() => navigate(`/team/permissions/${id}`)}
+          <Link
+            to={`/team/permissions/${id}`}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
             Permissions ({team.permissions?.length})
             <AiOutlinePlusCircle className="text-xl" />
-          </button>
-          <button
-            onClick={() => navigate(`/team/members/${id}`)}
+          </Link>
+          <Link
+            to={`/team/members/${id}`}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Members ({team.members?.length})
+            Members ({getTeamId.users?.length})
             <AiOutlinePlusCircle className="text-xl" />
-          </button>
+          </Link>
         </div>
         <button onClick={handleEditTeam} className="btn-primary">
           Save
@@ -110,4 +99,4 @@ const EditUser = () => {
   );
 };
 
-export default EditUser;
+export default EditTeam;

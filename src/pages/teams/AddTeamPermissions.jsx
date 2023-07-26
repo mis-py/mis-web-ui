@@ -1,13 +1,14 @@
 import React from "react";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGetPermissionsQuery } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
 import { addTeamPermissions } from "redux/slices/teamSlice";
 
-import { IoIosArrowBack } from "react-icons/io";
+import PermissionLabel from "components/permissions/PermissionLabel";
 import { FiSearch } from "react-icons/fi";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
+import PageHeader from "../../components/common/PageHeader";
 
 const AddTeamPermissions = () => {
   const navigate = useNavigate();
@@ -34,13 +35,9 @@ const AddTeamPermissions = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5">Manage permissions</h3>
+        <PageHeader
+          header="Manage permissions"
+        />
         <form className="my-4">
           <label
             className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
@@ -57,15 +54,7 @@ const AddTeamPermissions = () => {
           </label>
 
           {loadingPermissions ? (
-            <PulseLoader
-              size={15}
-              cssOverride={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-              color="#757575"
-            />
+            <SpinnerLoader />
           ) : (
             <div className="flex flex-wrap gap-4">
               {getPermissions
@@ -75,43 +64,25 @@ const AddTeamPermissions = () => {
                     .includes(searchValue.toLowerCase().trim())
                 )
                 .map((item) => (
-                  <div
+                  <PermissionLabel
                     key={item.id}
                     className="flex flex-col w-full sm:w-[calc(50%_-_8px)]"
-                  >
-                    {item.app.name}
-                    <label
-                      className={`${
-                        checked.includes(item.id)
-                          ? "border-primary"
-                          : "border-blackSecond"
-                      } flex border duration-300 items-center gap-2 rounded bg-blackSecond p-5 cursor-pointer text-gray body-2`}
-                      htmlFor={item.name}
-                    >
-                      <input
-                        type="checkbox"
-                        name={item.name}
-                        id={item.name}
-                        checked={
-                          !checked.length
-                            ? setChecked([""])
-                            : checked.includes(item.scope)
-                        }
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setChecked([...checked, item.scope]);
-                          } else {
-                            setChecked(
-                              checked.filter((obj) => obj !== item.scope)
-                            );
+                    item={item}
+                    checked={
+                            !checked.length
+                              ? setChecked([""])
+                              : checked.includes(item.scope)
                           }
-                        }}
-                        className="bg-transparent cursor-pointer 
-                        w-5 h-5 border border-primary focus:ring-offset-0 !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none active:!outline-none focus-visible:!outline-none rounded"
-                      />
-                      {item.name} ({item.scope})
-                    </label>
-                  </div>
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setChecked([...checked, item.scope]);
+                            } else {
+                              setChecked(
+                                checked.filter((obj) => obj !== item.scope)
+                              );
+                            }
+                      }}
+                  />
                 ))}
             </div>
           )}

@@ -1,8 +1,7 @@
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import { IoIosArrowBack } from "react-icons/io";
-import { AiOutlinePlusCircle } from "react-icons/ai";
+import { useNavigate, useParams } from "react-router-dom";
+
+import PageHeader from "components/common/PageHeader";
 const EditWebcat = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -14,13 +13,9 @@ const EditWebcat = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5">Editing Webcatalog</h3>
+        <PageHeader
+          header="Editing Webcatalog"
+        />
         <form className="my-7">
           <label className="flex flex-col gap-1 mb-4" htmlFor="name">
             Name

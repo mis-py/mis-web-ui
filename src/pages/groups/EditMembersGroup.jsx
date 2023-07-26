@@ -1,18 +1,20 @@
 import React from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
+
 import {
   useGetGroupIdUsersQuery,
   useGetUsersQuery,
   useEditGroupMembersMutation,
 } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
-import { addMembers, deleteMembers } from "redux/slices/membersSlice";
+import { addMembers, deleteMembers, setMembers } from "redux/slices/membersSlice";
+import USER from "assets/img/user.png";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
+import PageHeader from "../../components/common/PageHeader";
 
 const EditMembersGroup = () => {
   const navigate = useNavigate();
@@ -22,14 +24,14 @@ const EditMembersGroup = () => {
   const [searchValue, setSearchValue] = React.useState("");
   const { data: getDataUsers, isLoading: loadingDataUsers } =
     useGetUsersQuery();
-  const { data: getGroupIdUsers } = useGetGroupIdUsersQuery(id);
+  const { data: getGroupIdUsers, refetch: refetchMembers, isLoading: isGroupIdUsersLoading } = useGetGroupIdUsersQuery(id);
   const [editGroupMembers] = useEditGroupMembersMutation();
 
   React.useEffect(() => {
     if (getGroupIdUsers) {
-      getGroupIdUsers.map((user) => dispatch(addMembers(user.id)));
+      dispatch(setMembers(getGroupIdUsers.map((user) => user.id)));
     }
-  }, [getGroupIdUsers]);
+  }, [isGroupIdUsersLoading]);
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {
@@ -42,22 +44,21 @@ const EditMembersGroup = () => {
   const handleEditGroupMembers = async (e) => {
     e.preventDefault();
     if (members) {
-      await editGroupMembers({ id, rest: members }).unwrap();
+      await editGroupMembers({ id, rest: members }).then(() => {
+        refetchMembers().then(() => {
+          navigate("/groups");
+          toast.success("Group members updating");
+        });
+      });
     }
-    navigate("/groups");
-    toast.success("Group members updating");
   };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5 mb-6">Manage members</h3>
+        <PageHeader
+          header="Manage members"
+        />
         <h3 className="mb-1">Search for member</h3>
         <form>
           <label
@@ -75,15 +76,7 @@ const EditMembersGroup = () => {
           </label>
         </form>
         {loadingDataUsers ? (
-          <PulseLoader
-            size={15}
-            cssOverride={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            color="#757575"
-          />
+          <SpinnerLoader />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
             {getDataUsers
@@ -113,7 +106,7 @@ const EditMembersGroup = () => {
                         <div className="flex items-center gap-4">
                           <img
                             className="w-[56px] h-[56px]"
-                            src={require("assets/img/user.png")}
+                            src={USER}
                             alt=""
                           />
                           <div className="flex flex-col">

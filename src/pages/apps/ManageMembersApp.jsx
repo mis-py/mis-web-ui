@@ -2,17 +2,18 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetTeamIdQuery, useGetUsersQuery } from "../../redux";
 import { useDispatch, useSelector } from "react-redux";
-import PulseLoader from "react-spinners/PulseLoader";
+
 import {
   addMembers,
   deleteMembers,
 } from "../../redux/slices/editTeamMembersSlice";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 
 import UserImg from "../../assets/img/user.png";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
+import PageHeader from "../../components/common/PageHeader";
 
 const ManageMembersApp = () => {
   const navigate = useNavigate();
@@ -50,13 +51,9 @@ const ManageMembersApp = () => {
       className="py-6 min-h-screen h-full flex flex-col justify-between"
     >
       <div className="flex flex-col">
-        <div className="flex items-center text-gray cursor-pointer">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <div onClick={() => navigate(-1)}>back</div>
-        </div>
-        <h3 className="h3 mt-5 mb-6">Manage members</h3>
+        <PageHeader
+        header="Manage members"
+        />
         <h3 className="mb-1">Search for member</h3>
         <form>
           <label
@@ -74,15 +71,7 @@ const ManageMembersApp = () => {
           </label>
         </form>
         {loadingDataUsers ? (
-          <PulseLoader
-            size={15}
-            cssOverride={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            color="#757575"
-          />
+          <SpinnerLoader />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
             {getDataUsers &&
@@ -93,8 +82,10 @@ const ManageMembersApp = () => {
                     .includes(searchValue.toLowerCase().trim())
                 )
                 .map((user) =>
-                  user.team === null ||
-                  user.team.name === getDataTeamId.name ? (
+                  user.team === null
+                  || user.team === undefined
+                  || user.team.name === getDataTeamId.name
+                      ? (
                     <div
                       key={user.id}
                       className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
@@ -135,7 +126,7 @@ const ManageMembersApp = () => {
                       </div>
                     </div>
                   ) : (
-                    false
+                    ""
                   )
                 )}
           </div>

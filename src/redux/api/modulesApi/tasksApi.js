@@ -1,54 +1,56 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const tasksApi = createApi({
     reducerPath: "tasksApi",
     tagTypes: ["Tasks"],
-    baseQuery: fetchBaseQuery({
-        baseUrl,
-    }),
+    baseQuery: rtkDefaultQuery,
     endpoints: (build) => ({
         getTasks: build.query({
             query: () => ({
                 url: `/tasks/`,
                 method: "GET",
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
             }),
             providesTags: (result, error, id) => [{ type: "Tasks", id }],
         }),
-        tasksPause: build.mutation({
+        getJobs: build.query({
+            query: (id) => {
+                return {
+                    url: `/tasks/jobs?task_id=${id}`,
+                    method: "GET",
+                }
+            },
+            providesTags: (result, error, id) => [{ type: "Tasks", id }],
+        }),
+        jobsPause: build.mutation({
             query: (id) => ({
                 url: `/tasks/${id}/pause`,
                 method: "POST",
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }],  
         }),
-        tasksResume: build.mutation({
+        jobsResume: build.mutation({
             query: (id) => ({
                 url: `/tasks/${id}/resume`,
                 method: "POST",
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }], 
         }),
-        tasksReschedule: build.mutation({
-            query: (id) => ({
-                url: `/tasks/${id}/reschedule`,
+        jobsReschedule: build.mutation({
+            query: (data) => ({
+                url: `/tasks/${data.id}/reschedule`,
                 method: "POST",
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                body :{
+                    // interval: 0,
+                    cron: data.cron
                 },
+            }),
+            invalidatesTags: ["Tasks"], 
+        }),
+        tasksJobsAdd: build.mutation({
+            query: (id) => ({
+                url: `/tasks/${id}/add-job`,
+                method: "POST",
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }], 
         }),
@@ -58,7 +60,9 @@ export const tasksApi = createApi({
 
 export const {
     useGetTasksQuery,
-    useTasksPauseMutation,
-    useTasksResumeMutation,
-    useTasksRescheduleMutation,
+    useJobsPauseMutation,
+    useJobsResumeMutation,
+    useJobsRescheduleMutation,
+    useGetJobsQuery,
+    useTasksJobsAddMutation,
 } = tasksApi;

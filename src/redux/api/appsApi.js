@@ -1,20 +1,15 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import rtkDefaultQuery from "config/rtkDefaultQuery";
 
 export const appsApi = createApi({
   reducerPath: "appsApi",
   tagTypes: ["Apps"],
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-  }),
+  baseQuery: rtkDefaultQuery,
   endpoints: (build) => ({
     getApps: build.query({
       query: () => ({
         url: `/modules/`,
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
       }),
       providesTags: (result) =>
         result
@@ -24,13 +19,25 @@ export const appsApi = createApi({
             ]
           : [{ type: "Apps", id: "LIST" }],
     }),
+    getAppById: build.query({
+      query: (id) => ({
+        url: `/modules/${id}`,
+        method: "GET",
+      }),
+      providesTags: (result) =>
+          result
+              ? [
+                ({ type: "Apps", id: result.id }),
+                { type: "Apps", id: "LIST" },
+              ]
+              : [{ type: "Apps", id: "LIST" }],
+    }),
     cloneApp: build.mutation({
       query: (body) => ({
         url: "/modules/install",
         method: "POST",
         headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "content-type": "application/json"
         },
         body,
       }),
@@ -41,8 +48,7 @@ export const appsApi = createApi({
         url: `/modules/install/${name}`,
         method: "POST",
         headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "content-type": "application/json"
         },
         body: rest,
       }),
@@ -51,5 +57,9 @@ export const appsApi = createApi({
   }),
 });
 
-export const { useGetAppsQuery, useCloneAppMutation, useCloneAppNameMutation } =
-  appsApi;
+export const { 
+  useGetAppsQuery,
+  useGetAppByIdQuery,
+  useCloneAppMutation, 
+  useCloneAppNameMutation 
+} = appsApi;

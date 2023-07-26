@@ -1,14 +1,16 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetUsersQuery, useAddGroupMutation } from "redux/index";
 import { addMembers, deleteMembers } from "redux/slices/membersSlice";
 import { toast } from "react-toastify";
-import PulseLoader from "react-spinners/PulseLoader";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from "react-icons/ai";
 import { FiSearch } from "react-icons/fi";
+
+import Input from "components/Input";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
+import PageHeader from "../../components/common/PageHeader";
 
 const AddGroup = () => {
   const navigate = useNavigate();
@@ -60,41 +62,23 @@ const AddGroup = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <Link to={-1} className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <span>back</span>
-        </Link>
-        <h3 className="h3 mt-5">New group</h3>
-
+        <PageHeader
+          header="New group"
+        />
         <form className="my-7">
-          <label className="flex flex-col gap-1 mb-4" htmlFor="name">
-            Group name
-            <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-              type="text"
-              id="name"
-              placeholder="Enter a group name"
-              autoComplete="off"
-              value={formValue.name}
-              onChange={(e) =>
-                setFormValue({ ...formValue, name: e.target.value })
-              }
-            />
-          </label>
+          <Input 
+          label={"Group name"}
+          type="text"
+          id="name"
+          placeholder="Enter a group name"
+          autoComplete="off"
+          value={formValue.name}
+          changeValue={(e) => setFormValue({ ...formValue, name: e.target.value })}
+          />
         </form>
 
         {loadingUsers ? (
-          <PulseLoader
-            size={15}
-            cssOverride={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            color="#757575"
-          />
+          <SpinnerLoader />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
             <div className="flex flex-col">

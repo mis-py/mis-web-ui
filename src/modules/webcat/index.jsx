@@ -1,9 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import PulseLoader from "react-spinners/PulseLoader";
+
 import {
   useGetWebcatQuery,
-  useGetWebcatIdQuery,
   useUpdateThumbnailsMutation,
   useUpdateThumbnailsIdMutation,
 } from "redux/index";
@@ -14,6 +13,7 @@ import Tooltip from "components/Tooltip";
 import { FiSearch, FiDownload, FiEdit, FiEye } from "react-icons/fi";
 import { BiFilterAlt } from "react-icons/bi";
 import { BsArrowRepeat } from "react-icons/bs";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const Webcat = () => {
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ const Webcat = () => {
                 className={`${
                   showSearch
                     ? "rounded-l-lg text-primary"
-                    : "rounded-lg text-gray"
+                    : "rounded-l-lg text-gray"
                 } flex justify-center duration-300 items-center px-3 h-[32px] bg-blackSecond`}
               >
                 <FiSearch />
@@ -103,15 +103,7 @@ const Webcat = () => {
           </div>
           <div className="flex flex-wrap gap-4">
             {loadingWebcat ? (
-              <PulseLoader
-                size={15}
-                cssOverride={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-                color="#757575"
-              />
+              <SpinnerLoader />
             ) : (
               getWebcat.landings
                 ?.filter(

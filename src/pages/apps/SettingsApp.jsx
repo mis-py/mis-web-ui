@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Switch from "react-switch";
 import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
@@ -15,25 +15,30 @@ import {
 
 import AdminWrapper from "config/AdminWrapper";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 
 import { currentUserId } from "config/variables";
+import PageHeader from "../../components/common/PageHeader";
 
 const SettingsApp = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+
   const [active, setActive] = React.useState(false);
   const [formGlobalValue, setFormGlobalValue] = React.useState([]);
   const [newGlobalSettings, setNewGlobalSettings] = React.useState({});
   const [formLocalValue, setFormLocalValue] = React.useState([]);
   const [newLocalSettings, setNewLocalSettings] = React.useState({});
 
-  const { data: getSettingsAppId, isLoading: loadingGetSettingsAppId } =
-    useGetSettingsAppIdQuery(id);
+  const {
+    data: getSettingsAppId,
+    isLoading: loadingGetSettingsAppId,
+    refetch,
+  } = useGetSettingsAppIdQuery(id);
+
   const { data: getSettingsUserId = [], isLoading: loadingGetSettingsUserId } =
-    useGetSettingsUserIdQuery(currentUserId);
+    useGetSettingsUserIdQuery(localStorage.getItem("user_id"));
   const [unloadAppModules] = useUnloadAppModulesMutation();
   const [startApp] = useStartAppMutation();
   const [stopApp] = useStopAppMutation();
@@ -41,6 +46,7 @@ const SettingsApp = () => {
   const [settingUserSet] = useSettingUserSetMutation();
 
   React.useEffect(() => {
+    refetch();
     if (!loadingGetSettingsAppId && getSettingsAppId?.enabled) {
       setActive(true);
     } else {
@@ -68,6 +74,7 @@ const SettingsApp = () => {
       await stopApp(id).unwrap();
       setActive(nextChecked);
     }
+    refetch();
   };
 
   const handleDeleteApp = (e) => {
@@ -100,12 +107,12 @@ const SettingsApp = () => {
         body: Object.values(newGlobalSettings),
       }).unwrap();
     }
-    if (newLocalSettings !== 0) {
-      await settingUserSet({
-        currentUserId,
-        body: Object.values(newLocalSettings),
-      }).unwrap();
-    }
+    // if (newLocalSettings !== 0) {
+    //   await settingUserSet({
+    //     currentUserId,
+    //     body: Object.values(newLocalSettings),
+    //   }).unwrap();
+    // }
     toast.success("Settings updated");
   };
 
@@ -113,12 +120,7 @@ const SettingsApp = () => {
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
         <div className="flex items-center justify-between text-gray">
-          <Link to={-1} className="flex items-center text-gray mb-5">
-            <div className="flex mr-2">
-              <IoIosArrowBack />
-            </div>
-            <span>back</span>
-          </Link>
+          <PageHeader/>
           <AdminWrapper>
             <button
               onClick={handleDeleteApp}
@@ -131,9 +133,10 @@ const SettingsApp = () => {
         <AdminWrapper>
           <h4 className="text-2xl font-bold mb-5">General settings</h4>
           <div className="flex items-center gap-3 mb-5">
-            <Switch onChange={handleChange} checked={active} />
-            <p>Enable app</p>
-          </div>
+                  <Switch onChange={handleChange} checked={active} />
+                  <p>Enable app</p>
+                </div>
+
           {formGlobalValue.length !== 0 && (
             <h1 className="text-2xl font-bold">Global settings</h1>
           )}
