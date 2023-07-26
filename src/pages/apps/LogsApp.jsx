@@ -30,17 +30,19 @@ const LogsApp = () => {
           headerClass="capitalize-first"
         />
 
+        <button onClick={() => {refetchLogs()}}>Reload</button>
+
         <pre className="whitespace-break-spaces">
-        {terminalValue !== undefined && terminalValue.split("\n").map(item => {
+        {terminalValue !== undefined && terminalValue.split("\n").reverse().map(item => {
           if (item.trim().length === 0) {
             return;
           }
 
           try {
           const data = JSON.parse(item);
-            console.log(data)
+
           return <LogItem
-                    key={`log-item-${data.record.line}-${data.record.level.name}-${data.record.elapsed.seconds}`}
+                    key={`log-item-${data.record.line}-${data.record.level.name}-${data.record.elapsed.seconds}-${data.record.message.replace(" ", "-")}`}
                     logData={data}
                   />;
           } catch(e) {
@@ -49,14 +51,6 @@ const LogsApp = () => {
           }
         })}
         </pre>
-
-        {/*<ReactTerminal*/}
-        {/*    commands={{}}*/}
-        {/*    enableInput={false}*/}
-        {/*    showControlBar={false}*/}
-        {/*    prompt={terminalValue}*/}
-        {/*    theme="dark"*/}
-        {/*/>*/}
       </div>
     </div>
   );
