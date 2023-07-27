@@ -48,8 +48,8 @@ export const tasksApi = createApi({
             invalidatesTags: ["Tasks"], 
         }),
         tasksJobsAdd: build.mutation({
-            query: (id) => ({
-                url: `/tasks/${id}/add-job`,
+            query: (data) => ({
+                url: `/tasks/${data.id}/add-job`,
                 method: "POST",
             }),
             invalidatesTags: [{ type: "Tasks", id: "LIST" }], 
