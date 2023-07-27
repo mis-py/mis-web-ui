@@ -18,6 +18,7 @@ import { taskRoutes } from "routes/tasks";
 
 import { useSelector } from 'react-redux';
 import LoadingOverlay from "./components/common/LoadingOverlay";
+import { consumersRoutes } from "routes/consumers";
 
 function App() {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
               {userRoutes
-                  .concat(teamRoutes, groupRoutes, appRoutes, modulesList, taskRoutes)
+                  .concat(teamRoutes, groupRoutes, appRoutes, modulesList, taskRoutes, consumersRoutes)
                   .map((route, index) => (
                   <Route
                       key={`${route.path}_${index}`}

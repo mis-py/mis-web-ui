@@ -1,57 +1,132 @@
 import React from 'react'
-
+import ListItemWrapper from 'components/common/ListItemWrapper';
 import { useConsumersResumeMutation } from 'redux/index';
 import { useGetConsumersQuery } from 'redux/index'
 import { useConsumersPauseMutation } from 'redux/index'
 import SpinnerLoader from "../../components/common/SpinnerLoader";
+import {BiPauseCircle} from "react-icons/bi";
+import {BiPlayCircle} from "react-icons/bi";
 
 const Consumers = () => {
   const { data: getConsumers, isLoading: loadingGetConsumers } = useGetConsumersQuery();
   const [consumersPause] = useConsumersPauseMutation();
   const [consumersResume] = useConsumersResumeMutation();
 
-  const PauseMutation = async (e) => {
+  const PauseMutation = async (e, tag) => {
     e.preventDefault();
     if (getConsumers) {
-      await consumersPause().unwrap();
+      await consumersPause(tag).unwrap();
     }
   };
-  const ResumeMutation = async (e) => {
+  const ResumeMutation = async (e, tag) => {
     e.preventDefault();
     if (getConsumers) {
-      await consumersResume().unwrap();
+      await consumersResume(tag).unwrap();
     }
   };
 
+  const [statusValues, setStatusValues] = React.useState({});
+
+  React.useEffect(() => {
+    if (getConsumers === undefined) {
+      return;
+    }
+
+    let statuses = {};
+
+    Object.entries(getConsumers).map((data) => {
+      const [title, consumers] = data;
+
+      consumers.map(consumer => {
+        statuses[title + "-" + consumer.consumer_tag] = consumer.status;
+      });
+    });
+
+    setStatusValues(statuses);
+  }, [loadingGetConsumers])
+
+  const handleStatusChange = (consumer_tag, status) => {
+    let statuses = {};
+
+    Object.entries(getConsumers).map((data) => {
+      const [title, consumers] = data;
+
+      consumers.map(consumer => {
+        if (consumer.consumer_tag === consumer_tag) {
+          statuses[title + "-" + consumer.consumer_tag] = status;
+        } else {
+          statuses[title + "-" + consumer.consumer_tag] = consumer.status;
+        }
+      });
+    });
+
+    setStatusValues(statuses);
+  };
+
   return (
-      <></>
-    // <section className="text-gray-600 body-font overflow-hidden">
-    //   <div className="container px-5 py-24 mx-auto">
-    //     {
-    //       loadingGetConsumers ? (
-    //         <SpinnerLoader />
-    //       ) :
-    //         getConsumers?.timer.map((item) => (
-    //           <div key={item.consumer_tag} className="py-8 flex flex-wrap border-b border-white md:flex-nowrap">
-    //             <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-    //               <span className="font-semibold title-font text-gray-700">{item.consumer_tag}</span>
-    //               <span className="mt-1 text-gray-500 text-sm">12 Jun 2019</span>
-    //             </div>
-    //             <div className="md:flex-grow">
-    //               <h2 className="text-2xl font-medium text-gray-900 title-font mb-2">{item.queue}</h2>
-    //               <p className="leading-relaxed">{item.receiver}</p>
-    //               <div className="-my-5 divide-y-2 divide-gray-100">
-    //               <div className="py-8 flex flex-wrap md:flex-nowrap">
-    //                 <button onClick={PauseMutation} className="flex mx-auto text-white bg-primary border-0 py-2 px-8 focus:outline-none rounded text-lg">Pause</button>
-    //                 <button onClick={ResumeMutation} className="flex mx-auto text-white bg-primary border-0 py-2 px-8 focus:outline-none rounded text-lg">Resume</button>
-    //               </div>
-    //               </div>
-    //             </div>
-    //           </div>
-    //         ))
-    //     }
-    //   </div>
-    // </section>
+      // <></>
+    <div className="py-6">
+      <div className="flex flex-col">
+
+      <h3 className="h3 mb-5">Consumers ({Object.values(getConsumers === undefined ? {} : getConsumers).reduce((acc, array) => acc + array.length, 0)})</h3>
+        {
+          loadingGetConsumers ? (
+            <SpinnerLoader />
+          ) :
+          (<div className="flex flex-col gap-4">
+              {Object.entries(getConsumers).map((moduleConsumersList) => {
+                const [groupTitle, consumersList] = moduleConsumersList;
+
+                return consumersList.map( item => (
+                <ListItemWrapper
+                  key={item.consumer_tag}
+                >
+                  <div className="flex justify-between gap-4 pb-3 border-b border-backGround">
+                    
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-col">
+                        <div className="text-gray text-xs">
+                          Tag of consumer:
+                        </div>
+                        <h4>{item.consumer_tag}</h4>
+                      </div>
+                      <div className="flex flex-col">
+                        <div className="text-gray text-xs">
+                          Queue:
+                        </div>
+                        <h4>{item.queue}</h4>
+                      </div>
+                      <div className="flex flex-col">
+                        <div className="text-gray text-xs">
+                          Receiver:
+                        </div>
+                        <h4>{item.receiver}</h4>
+                      </div>
+                      <div className="flex flex-col">
+                          <div className="text-gray text-xs">
+                            Consumer status:
+                          </div>
+                          <div>{ statusValues[groupTitle + "-" + item.consumer_tag] }</div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col divide-y-2 divide-gray-100">
+                        <div className="flex flex-col">
+                          <BiPauseCircle onClick={(e) => { PauseMutation(e, item.consumer_tag); handleStatusChange(item.consumer_tag, "paused") }} 
+                            className={`text-4xl ${statusValues[groupTitle + "-" + item.consumer_tag] === 'paused' ? 'text-primary' : 'text-gray'} cursor-pointer  mb-3`}
+                          />
+                          <BiPlayCircle onClick={(e) => { ResumeMutation(e, item.consumer_tag); handleStatusChange(item.consumer_tag, "running") }}
+                            className={`text-4xl ${statusValues[groupTitle + "-" + item.consumer_tag] === 'running' ? 'text-primary' : 'text-gray'} cursor-pointer`}
+                          />
+                        </div>
+                    </div>
+                    </div>
+                </ListItemWrapper>
+                ));
+              })}
+            </div>)
+        }
+      </div>
+    </div>
   )
 }
 
