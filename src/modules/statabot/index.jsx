@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom';
 import UserList from "components/users/UserList";
 import ButtonDark from "components/ButtonDark";
 
-console.log(111);
-
 const Statabot = () => {
     const [searchValue, setSearchValue] = React.useState("");
     const {
