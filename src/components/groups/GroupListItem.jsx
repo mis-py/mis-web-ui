@@ -1,7 +1,7 @@
 import React from "react";
 
 import ListItemWrapper from "../../components/common/ListItemWrapper";
-import {useNavigate} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
 import {toast} from "react-toastify";
 import { useDeleteGroupMutation } from "redux/index";
@@ -62,19 +62,17 @@ const GroupListItem = (props) => {
                         : "opacity-0 invisible"
                 } duration-300 absolute top-12 z-10 right-1 bg-backGround shadow lg:top-3`}
             >
-                <div
-                    onClick={() => navigate(`/group/members/${props.group.id}`)}
-                    className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                <Link to={`/group/members/${props.group.id}`}
+                      className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
                 >
                     Manage members
-                </div>
+                </Link>
 
-                <div
-                    onClick={() => navigate(`/group/objects/${props.group.id}`)}
-                    className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
+                <Link to={`/group/objects/${props.group.id}`}
+                      className="px-7 py-2 block text-gray duration-300 cursor-pointer hover:bg-blackSecond hover:text-primary"
                 >
                     Manage objects
-                </div>
+                </Link>
 
                 <div
                     onClick={() => handleDeleteGroup(props.group.id)}
