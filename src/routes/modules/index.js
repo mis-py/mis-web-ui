@@ -31,7 +31,6 @@ const useModuleRoutes = () => {
         obj.element = <Binom />;
       }
 
-
       modules.push(obj);
     });
 

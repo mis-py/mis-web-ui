@@ -21,6 +21,7 @@ const EditTeam = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const team = useSelector((state) => state.team);
+
   const { data: getTeamId = [], isLoading: loadingTeamId } =
     useGetTeamIdQuery(id);
   const [editTeam] = useEditTeamMutation();
@@ -52,7 +53,7 @@ const EditTeam = () => {
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
         <PageHeader
-          header="Editing Team"
+          header={`Editing ${getTeamId === undefined ? "" : getTeamId.name} team`}
         />
         <form className="my-7">
           <label className="flex flex-col gap-1 mb-4" htmlFor="teamname">
