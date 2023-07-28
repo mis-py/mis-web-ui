@@ -4,6 +4,7 @@ const initialState = {
   name: "",
   permissions: [],
   members: [],
+  settings: [],
 };
 
 export const teamSlice = createSlice({
