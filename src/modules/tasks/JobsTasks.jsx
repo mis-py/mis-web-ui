@@ -120,7 +120,7 @@ const Jobs = () => {
                   <ListItemWrapper
                     key={item.id}
                   >
-                    <div className="flex justify-between items-center pb-3 border-b border-backGround">
+                    <div className="flex justify-between pb-3 border-b border-backGround">
                       
                       <div className="flex flex-col gap-4">
                         <div className="flex flex-col">
@@ -143,9 +143,9 @@ const Jobs = () => {
                         </div>
                       </div>
                       <div className="flex flex-col divide-y-2 divide-gray-100">
-                        <div className="flex flex-col py-2 my-2 md:flex-nowrap">
+                        <div className="flex flex-col">
                           <BiPauseCircle onClick={(e) => { PauseMutation(e, item.id); handleStatusChange(item.id, "paused") }} 
-                            className={`text-4xl ${statusValues[item.id] === 'paused' ? 'text-primary' : 'text-gray'} cursor-pointer`}
+                            className={`text-4xl ${statusValues[item.id] === 'paused' ? 'text-primary' : 'text-gray'} cursor-pointer mb-3`}
                           />
                           <BiPlayCircle onClick={(e) => { ResumeMutation(e, item.id); handleStatusChange(item.id, "running") }}
                             className={`text-4xl ${statusValues[item.id] === 'running' ? 'text-primary' : 'text-gray'} cursor-pointer`}

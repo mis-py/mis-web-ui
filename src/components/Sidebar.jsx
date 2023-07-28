@@ -9,7 +9,6 @@ import { FiUser } from "react-icons/fi";
 import { AiOutlineAppstoreAdd } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { RiAppsLine } from "react-icons/ri";
-
 import { sidebar } from "config/variables";
 
 const Sidebar = ({ toggleDrawer }) => {
@@ -62,9 +61,9 @@ const Sidebar = ({ toggleDrawer }) => {
                 <div className="duration-300 group-hover:text-primary">
                   {link.icon}
                 </div>
-                <h3 className="py-3 duration-300 group-hover:text-primary">
+                <div className="py-3 duration-300 group-hover:text-primary">
                   {link.title}
-                </h3>
+                </div>
               </NavLink>
             ))}
             <div
@@ -75,9 +74,9 @@ const Sidebar = ({ toggleDrawer }) => {
                 <div className="duration-300 group-hover:text-primary">
                   <AiOutlineAppstoreAdd />
                 </div>
-                <h3 className="py-3 duration-300 group-hover:text-primary">
+                <div className="py-3 duration-300 group-hover:text-primary">
                   List Apps
-                </h3>
+                </div>
               </div>
               <IoIosArrowForward
                 className={`${showListApps ? "rotate-90" : ""} duration-300`}
@@ -103,9 +102,9 @@ const Sidebar = ({ toggleDrawer }) => {
                       <div className="duration-300 group-hover:text-primary">
                         <RiAppsLine />
                       </div>
-                      <h3 className="py-3 duration-300 group-hover:text-primary">
+                      <div className="py-3 duration-300 group-hover:text-primary">
                         {firstUppercase(module.name)}
-                      </h3>
+                      </div>
                     </NavLink>
                   )
               )}

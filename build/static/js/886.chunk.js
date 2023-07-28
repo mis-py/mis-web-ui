@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkexodus_crm=self.webpackChunkexodus_crm||[]).push([[886],{4886:function(a,e,u){u.r(e);u(4165),u(5861);var n=u(9439),r=(u(7313),u(3026)),s=(u(507),u(6417));e.default=function(){var a=(0,r.VY)(),e=(a.data,a.isLoading,(0,r.Gh)()),u=((0,n.Z)(e,1)[0],(0,r.a_)());(0,n.Z)(u,1)[0];return(0,s.jsx)(s.Fragment,{})}}}]);

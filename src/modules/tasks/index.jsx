@@ -1,12 +1,39 @@
 import React from 'react';
+import { confirmAlert } from "react-confirm-alert";
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useGetTasksQuery } from 'redux/index';
+import { useGetJobsQuery } from 'redux/index';
+import { useTasksJobsAddMutation } from 'redux/index';
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import ListItemWrapper from "../../components/common/ListItemWrapper";
 import { CgFileDocument } from "react-icons/cg";
+import {BiAddToQueue} from "react-icons/bi";
 
 const Tasks = () => {
-  const { data: getTasks, isLoading: loadingGetTasks } = useGetTasksQuery();
+  const { data: getTasks, isLoading: loadingGetTasks, refetch: refetchTasks } = useGetTasksQuery();
+  const [ addjob ] = useTasksJobsAddMutation();
+
+  const handleAddJobs = async (id, task_name) => {
+    confirmAlert({
+      title: "Add job",
+      message: `Are you sure you want to add new job for ${task_name}?`,
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            await addjob(id);
+            <Link to={`/tasks/jobs/${id}`}/>
+            refetchTasks();
+          },
+        },
+        {
+          label: "No",
+        },
+      ],
+      overlayClassName: "bg-blackSecond/70",
+    });
+  };
 
   return (
       <div className="py-6">
@@ -18,7 +45,7 @@ const Tasks = () => {
             <SpinnerLoader />
           ) :
             (<div className="flex flex-col gap-4">
-              { getTasks!== undefined && Object.entries(getTasks).map((moduleTaskList) => {
+              {Object.entries(getTasks).map((moduleTaskList) => {
                 const [, taskList] = moduleTaskList;
 
                 return taskList.map(item => (
@@ -47,15 +74,18 @@ const Tasks = () => {
                         <h4>{item.type}</h4>
                       </div>
                     </div>
-                    <div className="flex">
-                      <Link to={`/tasks/jobs/${item.id}`}>
-                        <CgFileDocument
-                            className="text-3xl text-gray cursor-pointer"
-                        />
-                      </Link>
+                    <div className="flex flex-col">
+                      {item.is_has_jobs ? (
+                        <Link to={`/tasks/jobs/${item.id}`}>
+                          <CgFileDocument className="text-3xl text-gray cursor-pointer mb-3" />
+                        </Link>
+                      ) : null}
+                      {item.is_available_add_job ? (
+                      <BiAddToQueue onClick={() => { handleAddJobs(item.id, item.id) }}
+                        className="text-3xl text-gray cursor-pointer"
+                      />) : null}
                     </div>
-                    
-                  </div>
+                    </div>
                 </ListItemWrapper>
                 ));
               })}
@@ -65,5 +95,6 @@ const Tasks = () => {
     </div>
   )
 }
+
 
 export default Tasks
