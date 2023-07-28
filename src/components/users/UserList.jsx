@@ -6,7 +6,7 @@ import { resetUser } from "redux/slices/userSlice";
 
 import UserItem from "./UserItem";
 
-const UserList = ({ searchValue, getUsers, loadingGetUser, errorGetUsers }) => {
+const UserList = ({ searchValue, getUsers, loadingGetUser, errorGetUsers, dots }) => {
   const dispatch = useDispatch();
   const [showEdit, setShowEdit] = React.useState(false);
 
@@ -29,6 +29,7 @@ const UserList = ({ searchValue, getUsers, loadingGetUser, errorGetUsers }) => {
           <UserItem
             key={user.id}
             user={user}
+            dots={dots}
             index={index}
             showEdit={showEdit}
             setShowEdit={setShowEdit}

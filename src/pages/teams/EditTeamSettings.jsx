@@ -15,14 +15,14 @@ import Input from "../../components/Input";
 
 const EditTeamSettings = () => {
   const { id } = useParams();
-
+   const navigate = useNavigate();  
   const { data: teamData } = useGetTeamIdQuery(id);
   const { data: teamSettings, isLoading: teamSettingsLoading } = useGetSettingsTeamIdQuery(id);
   const { data: allSettings, isLoading: allSettingsLoading } = useGetSettingsQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
   const [formValues, setFormValues] = React.useState([]);
-
+ 
   const [editTeamSettingsSet] = useSettingsTeamSetMutation();
 
   React.useEffect(() => {
@@ -93,6 +93,7 @@ const EditTeamSettings = () => {
         }).then((res) => {
             if (res.data === null) {
                 toast.success("Team settings were updated");
+                navigate(-1);
             } else {
                 toast.error(res.error.data.message);
             }

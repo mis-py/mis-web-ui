@@ -9,7 +9,7 @@ import AdminWrapper from "config/AdminWrapper";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
-const UserItem = ({ user, index, showEdit, setShowEdit }) => {
+const UserItem = ({ user, index, showEdit, setShowEdit, dots }) => {
   const navigate = useNavigate();
   const [deleteUser] = useDeleteUserMutation();
 
@@ -101,15 +101,17 @@ const UserItem = ({ user, index, showEdit, setShowEdit }) => {
             </div>
           </div>
         </div>
-        <AdminWrapper>
-          <BiDotsVerticalRounded
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleEdit(index);
-            }}
-            className="text-3xl text-gray cursor-pointer"
-          />
-        </AdminWrapper>
+        {dots && (
+          <AdminWrapper>
+            <BiDotsVerticalRounded
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleEdit(index);
+              }}
+              className="text-3xl text-gray cursor-pointer"
+            />
+          </AdminWrapper>
+        )}
       </div>
     </div>
   );
