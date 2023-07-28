@@ -43,6 +43,7 @@ const Users = () => {
           getUsers={getUsers}
           loadingGetUser={loadingGetUser}
           errorGetUsers={errorGetUsers}
+          dots={true}
         />
       </div>
     </div>
