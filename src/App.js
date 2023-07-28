@@ -24,19 +24,21 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
+    React.useEffect(() => {
+        if (localStorage.getItem("token") === null) {
+            localStorage.removeItem("user_id");
+            localStorage.removeItem("username");
+
+            if (location.pathname !== '/signin') {
+                setTimeout(() => {
+                    navigate("/signin");
+                }, 200);
+            }
+        }
+    });
+
   const isLoading = useSelector(state => state.loading);
   const modulesList = useModuleRoutes();
-
-  React.useEffect(() => {
-    if (localStorage.getItem("token") === null) {
-      localStorage.removeItem("user_id");
-      localStorage.removeItem("username");
-
-      if (location.pathname !== '/signin') {
-          navigate("/signin");
-      }
-    }
-  });
 
   return (
     <div className="relative">

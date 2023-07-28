@@ -15,11 +15,12 @@ const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
   const refPopup = useOutsideClick(handleClickOutside);
 
   const handleLogOut = async (e) => {
-    await userLogout();
-    localStorage.removeItem("token");
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("username");
-    navigate("/signin");
+    await userLogout().then(() => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user_id");
+      localStorage.removeItem("username");
+      window.location.reload();
+    });
   };
 
   return (

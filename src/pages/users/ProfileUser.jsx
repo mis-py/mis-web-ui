@@ -73,16 +73,18 @@ const ProfileUser = () => {
     let dataSettings = settingsValue.map(function (item) {
         return { setting_id: item.id, new_value: item.value };
     });
-// ToDo
+
     await editUserSettingsSet({
       id: id,
       body: dataSettings,
     }).then((data) => {
-      if (data.error !== undefined && data.error.data.message !== undefined) {
-        console.error(data.error.data.message);
+      if (data.error !== undefined && (data.error.data.message !== undefined || data.error.data.detail !== undefined)) {
+        console.error(data.error.data.message === undefined
+                        ? data.error.data.detail
+                        : data.error.data.message);
         toast.error("Settings were not saved");
       } else {
-        toast.success("Settings was saved");
+        toast.success("Settings were saved");
       }
     });
   };

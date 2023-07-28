@@ -1,5 +1,7 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseUrl } from "./variables";
+import { Navigate } from "react-router-dom";
+import React from "react";
 
 const baseQuery = fetchBaseQuery({
     baseUrl,
@@ -16,7 +18,7 @@ const RtkDefaultQuery = async (args, api, extraOptions) => {
       localStorage.removeItem('token');
 
       if (window.location.pathname !== '/signin') {
-          window.location.reload();
+          return <Navigate to="/signin" />;
       }
     }
 

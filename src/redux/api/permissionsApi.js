@@ -29,9 +29,6 @@ export const permissionsApi = createApi({
         method: "GET",
       }),
       providesTags: () => [{ type: "Permissions" }],
-      forceRefetch() {
-        return localStorage.getItem('user_id') === null;
-      },
     }),
     getPermissionsTeamId: build.query({
       query: (id) => ({

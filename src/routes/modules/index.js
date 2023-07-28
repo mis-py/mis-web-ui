@@ -4,14 +4,12 @@ import Statabot from "modules/statabot";
 
 const Webcat = React.lazy(() => import("modules/webcat"));
 const EditWebcat = React.lazy(() => import("modules/webcat/EditWebcat"));
-// const Statabot = React.lazy(() => import("modules/statabot/index.jsx"));
 const Binom = React.lazy(() => import("modules/binom/index.jsx"))
 
-// const Consumers = React.lazy(() => import("modules/consumers"));
-// const Timer = React.lazy(() => import("modules/timer"));
-
 const useModuleRoutes = () => {
-  const { data: getModules = [], isLoading } = useGetModulesQuery();
+  const { data: getModules = [], isLoading } = useGetModulesQuery(null, {
+        skip: window.localStorage.getItem("token") === null,
+      });
   const [moduleRouteList, setModuleRouteList] = React.useState([]);
 
   React.useEffect(() => {
@@ -42,22 +40,3 @@ const useModuleRoutes = () => {
 };
 
 export default useModuleRoutes;
-
-// export const moduleRoutes = [
-//   {
-//     path: `/${module.name}`,
-//     element: <Webcat />,
-//   },
-//   {
-//     path: "/webcat/:id",
-//     element: <EditWebcat />,
-//   },
-//   {
-//     path: "/consumers",
-//     element: <Consumers />,
-//   },
-//   {
-//     path: "/timer",
-//     element: <Timer />,
-//   },
-// ];
