@@ -29,10 +29,16 @@ const EditTeam = () => {
   React.useEffect(() => {
     let userIds = [];
 
-    if (!(getTeamId === undefined || getTeamId.users === undefined || getTeamId.users.length === 0)) {
-      userIds = getTeamId.users.map(user => user.id);
+    if (
+      !(
+        getTeamId === undefined ||
+        getTeamId.users === undefined ||
+        getTeamId.users.length === 0
+      )
+    ) {
+      userIds = getTeamId.users.map((user) => user.id);
     }
-
+    dispatch(addTeamName(getTeamId.name));
     dispatch(setTeamMembers(userIds));
   }, [loadingTeamId]);
 
@@ -40,9 +46,10 @@ const EditTeam = () => {
     e.preventDefault();
     await editTeam({
       id,
-      name: "",
+      name: team.name,
       permissions: team.permissions,
       users_ids: team.members,
+      settings: team.settings,
     }).then(() => {
       navigate("/teams");
       toast.success("Team updating");
@@ -53,7 +60,9 @@ const EditTeam = () => {
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
         <PageHeader
-          header={`Editing ${getTeamId === undefined ? "" : getTeamId.name} team`}
+          header={`Editing ${
+            getTeamId === undefined ? "" : getTeamId.name
+          } team`}
         />
         <form className="my-7">
           <label className="flex flex-col gap-1 mb-4" htmlFor="teamname">
@@ -69,10 +78,9 @@ const EditTeam = () => {
             />
           </label>
 
-          {getTeamId.users !== undefined && Array.isArray(getTeamId.users) && <TeamUsersShortList
-              users={getTeamId.users}
-              team={team.id}
-          />}
+          {getTeamId.users !== undefined && Array.isArray(getTeamId.users) && (
+            <TeamUsersShortList users={getTeamId.users} team={team.id} />
+          )}
         </form>
       </div>
       <div className="flex flex-col gap-3">
