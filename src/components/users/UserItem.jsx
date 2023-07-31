@@ -9,9 +9,11 @@ import AdminWrapper from "config/AdminWrapper";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
-const UserItem = ({ user, index, showEdit, setShowEdit, dots }) => {
+const UserItem = ({ user, index, showEdit, setShowEdit, dots, ...props }) => {
   const navigate = useNavigate();
   const [deleteUser] = useDeleteUserMutation();
+
+  const AdditionalActions = props.additional_actions || (() => <div />);
 
   const handleClickOutside = () => {
     setShowEdit(false);
@@ -84,19 +86,20 @@ const UserItem = ({ user, index, showEdit, setShowEdit, dots }) => {
                 alt=""
               />
               <div className="flex flex-col">
-                <h5 className="text-white mb-[10px]">{user.username}</h5>
-                <h4
+                <div className="text-white mb-[10px]">{user.username}</div>
+                <div
                   className={`${
                     user.team === null ? "text-danger" : "text-gray"
                   } text-xs mb-[6px]`}
                 >
                   {user.team === null ? "No team" : user.team.name}
-                </h4>
-                <h4 className="text-gray text-xs">
+                </div>
+                <div className="text-gray text-xs">
                   {user.position === null
                     ? "Position name none"
                     : user.position}
-                </h4>
+                </div>
+                <AdditionalActions user={user} />
               </div>
             </div>
           </div>

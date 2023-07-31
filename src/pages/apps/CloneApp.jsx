@@ -1,11 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Select from "react-select";
 import {
-  useCloneAppMutation,
-  useGetModulesQuery,
-  useCloneAppNameMutation,
+  useCloneAppMutation
 } from "redux/index";
 
 import PageHeader from "../../components/common/PageHeader";
@@ -49,26 +46,8 @@ const CloneApp = () => {
     url: "",
     branch: "",
   });
-  // const [formValueName, setFormValueName] = React.useState({
-  //   id: 0,
-  //   name: "",
-  //   enabled: true,
-  // });
 
-  // const { data: getModules = [] } = useGetModulesQuery();
   const [cloneApp] = useCloneAppMutation();
-  // const [cloneAppName] = useCloneAppNameMutation();
-
-  // const options = getModules?.map((item, index) => {
-  //   if (!item.enabled) {
-  //     return {
-  //       value: item.name,
-  //       label: item.name,
-  //       id: item.id,
-  //       enabled: true,
-  //     };
-  //   }
-  // });
 
   const handleCloneApp = async (e) => {
     e.preventDefault();
@@ -79,12 +58,6 @@ const CloneApp = () => {
       navigate("/apps");
       toast.success("Added new app");
     }
-
-    // if (formValueName.name !== "") {
-    //   await cloneAppName({ name: formValueName.name, ...formValueName });
-    //   navigate("/apps");
-    //   toast.success("Added new app");
-    // }
   };
 
   return (
