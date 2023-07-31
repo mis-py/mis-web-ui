@@ -6,6 +6,7 @@ import { useConsumersPauseMutation } from 'redux/index'
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import {BiPauseCircle} from "react-icons/bi";
 import {BiPlayCircle} from "react-icons/bi";
+import PageHeader from "../../components/common/PageHeader";
 
 const Consumers = () => {
   const { data: getConsumers, isLoading: loadingGetConsumers } = useGetConsumersQuery();
@@ -68,7 +69,11 @@ const Consumers = () => {
     <div className="py-6">
       <div className="flex flex-col">
 
-      <h3 className="h3 mb-5">Consumers ({Object.values(getConsumers === undefined ? {} : getConsumers).reduce((acc, array) => acc + array.length, 0)})</h3>
+        <PageHeader
+            header={`Consumers (${Object.values(getConsumers === undefined ? {} : getConsumers).reduce((acc, array) => acc + array.length, 0)})`}
+            showBack={false}
+        />
+
         {
           loadingGetConsumers ? (
             <SpinnerLoader />
