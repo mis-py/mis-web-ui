@@ -5,6 +5,7 @@ import Statabot from "modules/statabot";
 const Webcat = React.lazy(() => import("modules/webcat"));
 const EditWebcat = React.lazy(() => import("modules/webcat/EditWebcat"));
 const Binom = React.lazy(() => import("modules/binom/index.jsx"))
+const AutoAdmin = React.lazy(() => import("modules/auto_admin/index.jsx"))
 
 const useModuleRoutes = () => {
   const { data: getModules = [], isLoading } = useGetModulesQuery(null, {
@@ -27,6 +28,8 @@ const useModuleRoutes = () => {
         obj.element = <Statabot />;
       } else if (item.name === 'binom_companation') {
         obj.element = <Binom />;
+      } else if (item.name === 'auto_admin') {
+        obj.element = <AutoAdmin />;
       }
 
       modules.push(obj);

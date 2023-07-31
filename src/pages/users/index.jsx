@@ -5,6 +5,7 @@ import { useGetUsersQuery } from "redux/index";
 import AdminWrapper from "config/AdminWrapper";
 import SearchInputBtn from "components/SearchInputBtn";
 import UserList from "components/users/UserList";
+import PageHeader from "../../components/common/PageHeader";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
 
@@ -37,7 +38,11 @@ const Users = () => {
           </AdminWrapper>
         </div>
 
-        <h3 className="h3 mb-5">Users ({getUsers?.length})</h3>
+        <PageHeader
+          header={`Users (${getUsers?.length})`}
+          showBack={false}
+        />
+
         <UserList
           searchValue={searchValue}
           getUsers={getUsers}
