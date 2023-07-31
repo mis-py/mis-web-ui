@@ -1,9 +1,7 @@
 import React from "react";
-import SpinnerLoader from "../../components/common/SpinnerLoader";
 import { useGetUsersQuery } from "redux/index";
-import { Link } from "react-router-dom";
 import UserList from "components/users/UserList";
-import ButtonDark from "components/ButtonDark";
+import UserStatabotStatus from "./UserStatabotStatus";
 
 const Statabot = () => {
   const [searchValue, setSearchValue] = React.useState("");
@@ -23,6 +21,7 @@ const Statabot = () => {
           loadingGetUser={loadingGetUser}
           errorGetUsers={errorGetUsers}
           dots={false}
+          additional_actions={UserStatabotStatus}
         />
       </div>
     </div>

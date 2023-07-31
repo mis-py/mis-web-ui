@@ -6,9 +6,11 @@ import { resetUser } from "redux/slices/userSlice";
 
 import UserItem from "./UserItem";
 
-const UserList = ({ searchValue, getUsers, loadingGetUser, errorGetUsers, dots }) => {
+const UserList = ({ searchValue, getUsers, loadingGetUser, errorGetUsers, dots, ...props }) => {
   const dispatch = useDispatch();
   const [showEdit, setShowEdit] = React.useState(false);
+
+  const AdditionalActions = props.additional_actions || (() => <div />);
 
   React.useEffect(() => {
     dispatch(resetUser());
@@ -33,6 +35,7 @@ const UserList = ({ searchValue, getUsers, loadingGetUser, errorGetUsers, dots }
             index={index}
             showEdit={showEdit}
             setShowEdit={setShowEdit}
+            additional_actions={AdditionalActions}
           />
         ))}
     </div>

@@ -66,7 +66,7 @@ const Sidebar = ({ toggleDrawer }) => {
                 </div>
               </NavLink>
             ))}
-            <div
+            {getModules?.length && <div
               className={`flex items-center justify-between px-5 gap-3 duration-300 group cursor-pointer hover:bg-blackSecond`}
               onClick={() => setShowListApps(!showListApps)}
             >
@@ -81,13 +81,13 @@ const Sidebar = ({ toggleDrawer }) => {
               <IoIosArrowForward
                 className={`${showListApps ? "rotate-90" : ""} duration-300`}
               />
-            </div>
-            <div
+            </div>}
+            {getModules?.length && <div
               className={`${
                 showListApps ? "opacity-100 visible" : "opacity-0 invisible"
               } flex flex-col duration-300`}
             >
-              {getModules?.map(
+              {getModules.map(
                 (module) =>
                   module.enabled && (
                     <NavLink
@@ -108,7 +108,7 @@ const Sidebar = ({ toggleDrawer }) => {
                     </NavLink>
                   )
               )}
-            </div>
+            </div>}
           </ul>
         </div>
       </div>

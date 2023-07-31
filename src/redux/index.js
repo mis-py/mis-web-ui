@@ -13,3 +13,4 @@ export * from "./api/modulesApi/webcatApi";
 export * from "./api/modulesApi/consumersApi";
 export * from "./api/modulesApi/tasksApi";
 export * from "./api/modulesApi/timerApi";
+export * from "./api/modulesApi/statabotApi";

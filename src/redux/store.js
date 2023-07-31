@@ -15,6 +15,7 @@ import { webcatApi } from "./api/modulesApi/webcatApi";
 import { consumersApi } from "./api/modulesApi/consumersApi";
 import { tasksApi } from "./api/modulesApi/tasksApi";
 import { timerApi } from "./api/modulesApi/timerApi";
+import { statabotApi } from "./api/modulesApi/statabotApi";
 
 //slices
 import { authReducer } from "./slices/authSlice";
@@ -59,6 +60,7 @@ export const store = configureStore({
     [consumersApi.reducerPath]: consumersApi.reducer,
     [tasksApi.reducerPath]: tasksApi.reducer,
     [timerApi.reducerPath]: timerApi.reducer,
+    [statabotApi.reducerPath]: statabotApi.reducer,
 
     //slices
     auth: authReducer,
@@ -86,6 +88,8 @@ export const store = configureStore({
       consumersApi.middleware,
       tasksApi.middleware,
       timerApi.middleware,
+      statabotApi.middleware,
+
       mutationLoadingMiddleware,
     ]),
 });

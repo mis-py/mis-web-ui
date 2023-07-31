@@ -110,17 +110,14 @@ const EditMembersGroup = () => {
                             alt=""
                           />
                           <div className="flex flex-col">
-                            <h5 className="text-white mb-[10px]">
+                            <div className="text-white mb-[10px]">
                               {user.username}
-                            </h5>
-                            <h4 className={`text-xs mb-[6px] text-gray`}>
+                            </div>
+                            <div className={`text-xs mb-[6px] text-gray`}>
                               {user.position === null
                                 ? "Position name none"
                                 : user.position}
-                            </h4>
-                            <h4 className="text-gray text-xs">
-                              Added: 10.10.2000
-                            </h4>
+                            </div>
                           </div>
                         </div>
                       </div>
