@@ -19,7 +19,7 @@ const DomainManagement = (props) => {
                 <UserSelector
                     labelClass="md:w-[150px]"
                     teamId={team === null ? null : team.value}
-                    user={user}
+                    user={user === null || user.label === undefined ? null : user}
                     placeholder={(user === null || user.label === undefined) && "No user"}
                     onChange={(choice) => setUser(choice)}
                 />
