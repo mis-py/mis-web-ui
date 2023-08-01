@@ -7,10 +7,25 @@ export const usersApi = createApi({
   baseQuery: RtkDefaultQuery,
   endpoints: (build) => ({
     getUsers: build.query({
-      query: () => ({
-        url: `/users/`,
-        method: "GET"
-      }),
+      query: (params) => {
+        let url = `/users/`;
+        let queryParams = [];
+
+        if (params !== undefined) {
+          if (params.team_id !== undefined && params.team_id !== null) {
+            queryParams.push(`team_id=${params.team_id}`);
+          }
+        }
+
+        if (queryParams.length) {
+          url += `?${queryParams.join("&")}`;
+        }
+
+        return {
+          url: url,
+          method: "GET"
+        };
+      },
       providesTags: (result) =>
         result
           ? [

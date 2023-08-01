@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from "react-select";
 import {
-    useGetTeamsQuery
+    useGetUsersQuery
 } from "redux/index";
 
 const customStyles = {
@@ -36,29 +36,35 @@ const customStyles = {
     }),
 };
 
-const TeamSelector = (props) => {
-    const { data: teamsList = [] } = useGetTeamsQuery();
-
-    const options = teamsList?.map((item) => {
-        return {
-            value: item.id,
-            label: item.name,
-        };
+const UserSelector = (props) => {
+    const { data: usersList = [], isLoading } = useGetUsersQuery({
+        team_id: props.teamId
     });
 
+    const [options, setOptions] = React.useState([]);
+    React.useEffect(() => {
+        setOptions(usersList?.map((item) => {
+            return {
+                value: item.id,
+                label: item.username,
+            };
+        }));
+    }, [usersList])
+
+
     return (
-        <label className={`flex flex-col gap-1 mb-4 ${props.labelClass === undefined ? "" : props.labelClass}`.trim()} htmlFor="team">
-            Team
+        <label className={`flex flex-col gap-1 mb-4 ${props.labelClass === undefined ? "" : props.labelClass}`.trim()} htmlFor="user">
+            User
             <Select
                 isClearable
                 options={options}
                 styles={customStyles}
                 placeholder={props.placeholder === null ? "" : props.placeholder}
-                value={props.team === null || props.team === undefined ? "" : props.team}
+                value={props.user === null ? "" : props.user}
                 onChange={props.onChange}
             />
         </label>
     );
 };
 
-export default TeamSelector;
+export default UserSelector;
