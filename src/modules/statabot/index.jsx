@@ -2,6 +2,7 @@ import React from "react";
 import { useGetUsersQuery } from "redux/index";
 import UserList from "components/users/UserList";
 import UserStatabotStatus from "./UserStatabotStatus";
+import PageHeader from "../../components/common/PageHeader";
 
 const Statabot = () => {
   const [searchValue, setSearchValue] = React.useState("");
@@ -14,7 +15,11 @@ const Statabot = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <h3 className="h3 mb-5">Statabot ({getUsers?.length})</h3>
+        <PageHeader
+            header={`Statabot (${getUsers?.length})`}
+            showBack={false}
+        />
+
         <UserList
           searchValue={searchValue}
           getUsers={getUsers}

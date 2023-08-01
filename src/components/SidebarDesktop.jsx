@@ -13,6 +13,7 @@ import Notifications from "./Notifications";
 
 import { sidebar } from "config/variables";
 import AdminWrapper from "config/AdminWrapper";
+import SidebarStyles from "../assets/css/components/Sidebar.module.css";
 
 const SidebarDesktop = () => {
   const [userPopup, setUserPopup] = React.useState(false);
@@ -69,7 +70,7 @@ const SidebarDesktop = () => {
             </div>
           </div>
 
-          <ul>
+          <ul className={`${SidebarStyles.sidebar} overflow-auto`}>
             <AdminWrapper>
             {sidebar.map((link) => (
               <li key={link.title}>
@@ -108,7 +109,7 @@ const SidebarDesktop = () => {
               />
             </li>
             <li
-              className={`${showListApps ? "opacity-100 visible" : "opacity-0 invisible"
+              className={`${showListApps ? "opacity-100 visible" : "h-0 opacity-0 invisible"
                 } flex flex-col duration-300`}
             >
               {getModules?.map(
