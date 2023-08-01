@@ -26,7 +26,7 @@ const useModuleRoutes = () => {
         obj.element = <EditWebcat />;
       } else if (item.name === 'statabot') {
         obj.element = <Statabot />;
-      } else if (item.name === 'binom_companation') {
+      } else if (item.name === 'binom_companion') {
         obj.element = <Binom />;
       } else if (item.name === 'auto_admin') {
         obj.element = <AutoAdmin />;
