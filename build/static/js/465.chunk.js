@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkexodus_crm=self.webpackChunkexodus_crm||[]).push([[465],{4465:function(e,s,c){c.r(s);c(7313);var n=c(5779),a=c(6417);s.default=function(){return(0,a.jsx)("div",{className:"py-6",children:(0,a.jsx)("div",{className:"flex flex-col",children:(0,a.jsx)(n.Z,{header:"Binom companion",showBack:!1})})})}}}]);
