@@ -1,1 +1,1 @@
-"use strict";(self.webpackChunkexodus_crm=self.webpackChunkexodus_crm||[]).push([[465],{4465:function(e,u,n){n.r(u);n(7313);var r=n(6417);u.default=function(){return(0,r.jsx)(r.Fragment,{children:"asd"})}}}]);
+"use strict";(self.webpackChunkexodus_crm=self.webpackChunkexodus_crm||[]).push([[465],{4465:function(e,s,c){c.r(s);c(7313);var n=c(5779),a=c(6417);s.default=function(){return(0,a.jsx)("div",{className:"py-6",children:(0,a.jsx)("div",{className:"flex flex-col",children:(0,a.jsx)(n.Z,{header:"Binom companion",showBack:!1})})})}}}]);
