@@ -1,6 +1,7 @@
 import React from "react";
 import TeamSelector from "../common/TeamSelector";
 import UserSelector from "../common/UserSelector";
+import Input from "../Input";
 
 const DomainManagement = (props) => {
     const [team, setTeam] = React.useState({});
@@ -24,6 +25,14 @@ const DomainManagement = (props) => {
                     onChange={(choice) => setUser(choice)}
                 />
             </div>
+
+            <Input
+                label="Balance"
+                id="team_balance"
+                placeholder={team === null || team.label === undefined ? "Team balance" : `${team.label} balance`}
+                type="number"
+                readOnly={true}
+            />
         </div>
     );
 };
