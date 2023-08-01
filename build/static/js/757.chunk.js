@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkexodus_crm=self.webpackChunkexodus_crm||[]).push([[757],{5757:function(e,s,c){c.r(s);c(7313);var a=c(5779),u=c(6417);s.default=function(){return(0,u.jsx)("div",{className:"py-6",children:(0,u.jsx)("div",{className:"flex flex-col",children:(0,u.jsx)(a.Z,{header:"Auto admin",showBack:!1})})})}}}]);
