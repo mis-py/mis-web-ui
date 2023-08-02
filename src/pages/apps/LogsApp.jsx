@@ -20,7 +20,7 @@ const LogsApp = () => {
   React.useEffect(() => {
     setTerminalValue(appLogs);
     setAppData(applicationData);
-  }, [isLogsLoading, isAppDataLoading]);
+  }, [isLogsLoading, isAppDataLoading, appLogs, applicationData]);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -33,7 +33,7 @@ const LogsApp = () => {
         <button onClick={() => {refetchLogs()}}>Reload</button>
 
         <pre className="whitespace-break-spaces">
-        {terminalValue !== undefined && terminalValue.split("\n").reverse().map(item => {
+        {terminalValue !== undefined && terminalValue.split("\n").reverse().forEach(item => {
           if (item.trim().length === 0) {
             return;
           }

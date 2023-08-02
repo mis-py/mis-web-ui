@@ -10,15 +10,12 @@ import {
   useStartAppMutation,
   useStopAppMutation,
   useSettingAppSetMutation,
-  useSettingUserSetMutation,
 } from "redux/index";
 
 import AdminWrapper from "config/AdminWrapper";
 
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
-
-import { currentUserId } from "config/variables";
 import PageHeader from "../../components/common/PageHeader";
 
 const SettingsApp = () => {
@@ -43,7 +40,6 @@ const SettingsApp = () => {
   const [startApp] = useStartAppMutation();
   const [stopApp] = useStopAppMutation();
   const [settingAppSet] = useSettingAppSetMutation();
-  const [settingUserSet] = useSettingUserSetMutation();
 
   React.useEffect(() => {
     refetch();
@@ -52,19 +48,23 @@ const SettingsApp = () => {
     } else {
       setActive(false);
     }
-
-    !loadingGetSettingsAppId &&
-      getSettingsAppId?.settings.map((setting) => {
+  
+    if (!loadingGetSettingsAppId) {
+      getSettingsAppId?.settings.forEach((setting) => {
         setFormGlobalValue((formGlobalValue) => [...formGlobalValue, setting]);
       });
-  }, [loadingGetSettingsAppId]);
+    }
+  }, [loadingGetSettingsAppId, getSettingsAppId?.enabled, getSettingsAppId?.settings, refetch]);
+  
 
   React.useEffect(() => {
-    !loadingGetSettingsUserId &&
-      getSettingsUserId?.map((item) => {
-        setFormLocalValue((formLocalValue) => [...formLocalValue, item]);
-      });
-  }, [loadingGetSettingsUserId]);
+  if (!loadingGetSettingsUserId) {
+    getSettingsUserId?.forEach((item) => {
+      setFormLocalValue((formLocalValue) => [...formLocalValue, item]);
+    });
+  }
+}, [loadingGetSettingsUserId, getSettingsUserId]);
+
 
   const handleChange = async (nextChecked) => {
     if (nextChecked) {

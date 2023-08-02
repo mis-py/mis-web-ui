@@ -38,7 +38,7 @@ const EditTeamMembers = () => {
     }
 
     dispatch(setTeamMembers(userIds));
-  }, [isTeamDataLoading]);
+  }, [isTeamDataLoading, dispatch, getTeamId]);
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {

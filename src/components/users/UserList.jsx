@@ -17,7 +17,7 @@ const UserList = ({ searchValue, getUsers, loadingGetUser, errorGetUsers, dots, 
     if (errorGetUsers) {
       toast.error("No users found");
     }
-  }, [errorGetUsers, searchValue]);
+  }, [errorGetUsers, searchValue, dispatch]);
 
   return loadingGetUser ? (
     <SpinnerLoader />

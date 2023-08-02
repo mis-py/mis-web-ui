@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   useGetPermissionsQuery,
   useGetPermissionsTeamIdQuery,
@@ -14,7 +14,6 @@ import SpinnerLoader from "../../components/common/SpinnerLoader";
 import PageHeader from "../../components/common/PageHeader";
 
 const EditTeamPermissions = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
   const [checked, setChecked] = React.useState([]);
   const [editTeamPermission] = useEditTeamPermissionMutation();

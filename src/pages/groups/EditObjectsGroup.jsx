@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetGroupsObjectsQuery,
   useGetGroupIdObjectsQuery,
@@ -28,7 +28,7 @@ const EditObjectsGroup = () => {
     } else {
       setChecked(false);
     }
-  }, [getIdObjects]);
+  }, [getIdObjects, loadingGroupsObjects]);
 
   const handleEditObjectsGroup = async (e) => {
     e.preventDefault();
@@ -42,14 +42,15 @@ const EditObjectsGroup = () => {
   };
 
   const handleChooseAll = () => {
-    getGroupsObjects?.map((item) => {
+    getGroupsObjects?.forEach((item) => {
       setChecked((checked) => [...checked, item.id]);
     });
-
+  
     if (checked.length === getGroupsObjects?.length) {
       setChecked([]);
     }
   };
+  
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">

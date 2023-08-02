@@ -1,9 +1,7 @@
 import React from 'react';
 import { confirmAlert } from "react-confirm-alert";
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
 import { useGetTasksQuery } from 'redux/index';
-import { useGetJobsQuery } from 'redux/index';
 import { useTasksJobsAddMutation } from 'redux/index';
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import ListItemWrapper from "../../components/common/ListItemWrapper";

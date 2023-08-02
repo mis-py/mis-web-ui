@@ -23,7 +23,7 @@ const ManageMembersApp = () => {
   const members = useSelector((state) => state.editTeamMembers.members);
   const [btnWidth, setBtnWidth] = React.useState(985);
   const [searchValue, setSearchValue] = React.useState("");
-  const [checked, setChecked] = React.useState([]);
+  const [ setChecked] = React.useState([]);
   const { data: getDataTeamId } = useGetTeamIdQuery(id);
   const { data: getDataUsers, isLoading: loadingDataUsers } =
     useGetUsersQuery();
@@ -43,7 +43,7 @@ const ManageMembersApp = () => {
       setChecked(false);
     }
     setBtnWidth(containerWidth.current.clientWidth);
-  }, [getDataTeamId, containerWidth, btnWidth]);
+  }, [getDataTeamId, containerWidth, btnWidth, setChecked]);
 
   return (
     <div

@@ -5,7 +5,7 @@ import UserStatabotStatus from "./UserStatabotStatus";
 import PageHeader from "../../components/common/PageHeader";
 
 const Statabot = () => {
-  const [searchValue, setSearchValue] = React.useState("");
+  const [searchValue] = React.useState("");
   const {
     data: getUsers = [],
     isLoading: loadingGetUser,

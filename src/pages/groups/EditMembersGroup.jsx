@@ -31,7 +31,7 @@ const EditMembersGroup = () => {
     if (getGroupIdUsers) {
       dispatch(setMembers(getGroupIdUsers.map((user) => user.id)));
     }
-  }, [isGroupIdUsersLoading]);
+  }, [isGroupIdUsersLoading, getGroupIdUsers, dispatch]);
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {

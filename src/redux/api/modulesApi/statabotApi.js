@@ -23,7 +23,28 @@ export const statabotApi = createApi({
         const tags = [{ type: "Statabot", id: "LIST" }];
 
         if (id) {
-          tags.push({ type: "Logs", id });
+          tags.push({ type: "Statabot", id });
+        }
+
+        return tags;
+      }
+    }),
+    createUsertoStatabot: build.mutation({
+      query: (data) => {
+        return {
+          url: "/statabot/users/create",
+          method: "POST",
+          headers: {
+            "content-type": "application/json"
+          },
+          body: data,
+        };
+      },
+      providesTags: (result, error, id) => {
+        const tags = [{ type: "Statabot", id: "LIST" }];
+
+        if (id) {
+          tags.push({ type: "Statabot", id });
         }
 
         return tags;
@@ -34,4 +55,5 @@ export const statabotApi = createApi({
 
 export const { 
   useInviteUserToStatabotMutation,
+  useCreateUsertoStatabotMutation,
 } = statabotApi;

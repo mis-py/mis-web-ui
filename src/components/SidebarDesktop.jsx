@@ -22,10 +22,10 @@ const SidebarDesktop = () => {
   const [notificationsCount, setNotificationsCount] = React.useState(0);
 
   const { data: getModules = [] } = useGetModulesQuery();
-  const handleButtonClick = () => {
-    setIsPopupOpen(!isPopupOpen);
-    setNotificationsCount(0);
-  };
+  // const handleButtonClick = () => {
+  //   setIsPopupOpen(!isPopupOpen);
+  //   setNotificationsCount(0);
+  // };
 
   return (
     <>
