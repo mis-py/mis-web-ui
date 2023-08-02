@@ -29,7 +29,7 @@ const AddTeamMembers = () => {
                 .includes(searchValue.toLowerCase().trim())
             && el.team === null
         ))
-  }, [searchValue, loadingUsers]);
+  }, [searchValue, loadingUsers, getUsers]);
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {

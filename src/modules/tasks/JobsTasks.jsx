@@ -1,4 +1,4 @@
-import React,{useState}  from 'react';
+import React from 'react';
 import { useGetJobsQuery } from 'redux/index';
 import { useJobsResumeMutation } from 'redux/index';
 import { useJobsPauseMutation } from 'redux/index';
@@ -55,7 +55,7 @@ const Jobs = () => {
         if (getJobs !== undefined) {
           let statuses = {};
           let cron = {};
-          getJobs.map((job) => {
+          getJobs.forEach((job) => {
             statuses[job.id] = job.status;
 
             if (job.trigger.type === "cron") {
@@ -68,11 +68,11 @@ const Jobs = () => {
           setCronValues(cron);
           setStatusValues(statuses);
         }
-      }, [loadingGetJobs]);
+      }, [loadingGetJobs, getJobs]);
 
       const handleCronChange = (id, value) => {
         let crons = {};
-        getJobs.map((job) => {
+        getJobs.forEach((job) => {
           if (job.id === id) {
             crons[job.id] = value;
           } else {
@@ -86,7 +86,7 @@ const Jobs = () => {
       const handleStatusChange = (id, status) => {
         let statuses = {};
 
-        getJobs.map((job) => {
+        getJobs.forEach((job) => {
           if (job.id === id) {
             statuses[job.id] = status;
           } else {

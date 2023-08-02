@@ -7,8 +7,6 @@ import { resetTeam } from "redux/slices/teamSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import useOutsideClick from "hooks/useOutsideClick";
-
-import Tooltip from "components/Tooltip";
 import AdminWrapper from "config/AdminWrapper";
 
 import { FiSearch } from "react-icons/fi";
@@ -45,7 +43,7 @@ const Teams = () => {
     if (errorGetTeams) {
       toast.error("Teams not found");
     }
-  }, [getTeams, errorGetTeams]);
+  }, [getTeams, errorGetTeams, dispatch]);
 
   const toggleEdit = (index) => {
     if (showEdit === index) {

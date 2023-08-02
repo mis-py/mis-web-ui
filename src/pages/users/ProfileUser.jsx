@@ -52,7 +52,7 @@ const ProfileUser = () => {
     }, []);
 
     setSettingsValue(userSettings);
-  }, [loadingSettings, loadingUserId]);
+  }, [loadingSettings, loadingUserId, getSettings, getUserId.settings]);
 
   const handleSettingsChange = async (e, item) => {
     const newSettings = settingsValue.map(valueItem => {

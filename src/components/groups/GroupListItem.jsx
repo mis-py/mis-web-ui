@@ -8,7 +8,6 @@ import { useDeleteGroupMutation } from "redux/index";
 import AdminWrapper from "../../config/AdminWrapper";
 import {BiDotsVerticalRounded} from "react-icons/bi";
 import useOutsideClick from "../../hooks/useOutsideClick";
-import Tooltip from "../Tooltip";
 import TeamUsersShortList from "../teams/TeamUsersShortList";
 
 const GroupListItem = (props) => {

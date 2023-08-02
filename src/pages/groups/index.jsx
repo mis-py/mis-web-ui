@@ -26,12 +26,23 @@ const Groups = () => {
   const [serchValue, setSearchValue] = React.useState("");
   const [showSearch, setShowSearch] = React.useState(false);
 
+
   React.useEffect(() => {
-    if (errorGroup) {
-      toast.error("Groups not found");
-    }
-    dispatch(deleteMembersAll());
-  }, [errorGroup, loadingGroup]);
+    const deleteMembersAndShowError = async () => {
+      if (errorGroup) {
+        toast.error("Groups not found");
+      }
+      dispatch(deleteMembersAll());
+    };
+  
+    deleteMembersAndShowError();
+  }, [errorGroup, loadingGroup, dispatch]); 
+  // React.useEffect(() => {
+  //   if (errorGroup) {
+  //     toast.error("Groups not found");
+  //   }
+  //   dispatch(deleteMembersAll());
+  // }, [errorGroup, loadingGroup]);
 
   return (
     <div className="py-6">

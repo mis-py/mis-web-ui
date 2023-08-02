@@ -26,35 +26,45 @@ const EditTeamSettings = () => {
   const [editTeamSettingsSet] = useSettingsTeamSetMutation();
 
   React.useEffect(() => {
-      if (teamSettings !== undefined && allSettings !== undefined) {
-          const _formValue = [];
-
-          allSettings.map(allSettingsItem => {
-              if (allSettingsItem.is_global === true) {
-                return;
-              }
-
-              const teamSetting = teamSettings.find(
-                  (teamSetting) => teamSetting.setting.id === allSettingsItem.id
-              );
-
-              _formValue.push({ ...allSettingsItem, value: teamSetting === undefined ? "" : teamSetting.value});
-          });
-
-          setFormValues(_formValue);
-      }
-  }, [teamSettingsLoading, allSettingsLoading]);
+    if (teamSettings !== undefined && allSettings !== undefined) {
+      const _formValue = [];
+  
+      allSettings.forEach(allSettingsItem => {
+        if (allSettingsItem.is_global === true) {
+          return;
+        }
+  
+        const teamSetting = teamSettings.find(
+          teamSetting => teamSetting.setting.id === allSettingsItem.id
+        );
+  
+        _formValue.push({
+          ...allSettingsItem,
+          value: teamSetting === undefined ? "" : teamSetting.value,
+        });
+      });
+  
+      setFormValues(_formValue);
+    }
+  }, [teamSettingsLoading, allSettingsLoading, allSettings, teamSettings]);
+  
 
     const handleInputChange = (value, item) => {
         const _formValue = [];
 
-        formValues.map(formValue => {
-            if (formValue.id === item.id) {
-                _formValue.push({ ...formValue, value: value });
-            } else {
-                _formValue.push({ ...formValue });
-            }
-        });
+// Примечание: я предположил, что у вас есть значение `item`, которое определяет элемент, для которого нужно обновить `value`.
+// Также предполагается, что у вас есть значение `value`, которое используется для обновления `value` элемента.
+
+    const updatedFormValues = formValues.map(formValue => {
+        if (formValue.id === item.id) {
+        return { ...formValue, value: value };
+        } else {
+        return { ...formValue };
+        }
+    });
+    
+    setFormValues(updatedFormValues);
+    
 
         setFormValues(_formValue);
     };
@@ -63,24 +73,25 @@ const EditTeamSettings = () => {
         e.preventDefault();
         const updateValues = [];
 
-        formValues.map((formValue) => {
+        formValues.forEach((formValue) => {
             const teamSetting = teamSettings.find(
-                (teamSetting) => teamSetting.setting.id === formValue.id
+              (teamSetting) => teamSetting.setting.id === formValue.id
             );
-
-            // Проверка, что formValue и formValue.value не являются undefined
-            if (formValue !== undefined && formValue.value.length === 0
-                && (!teamSetting || !teamSetting.value) // Проверка, что teamSetting и teamSetting.value не являются undefined
-                || (teamSetting && teamSetting.value === formValue.value)
-            ) {
-                return;
+          
+            if (
+                formValue !== undefined &&
+                ((formValue.value.length === 0 && (!teamSetting || !teamSetting.value)) ||
+                  (teamSetting && teamSetting.value === formValue.value))
+            ){
+              return;
             }
-
+          
             updateValues.push({
-                setting_id: formValue.id,
-                new_value: formValue.value,
+              setting_id: formValue.id,
+              new_value: formValue.value,
             });
-        });
+          });
+          
 
         if (updateValues.length === 0) {
             toast.error("No changes found");

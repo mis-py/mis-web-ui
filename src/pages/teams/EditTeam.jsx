@@ -4,9 +4,6 @@ import { toast } from "react-toastify";
 import { useEditTeamMutation, useGetTeamIdQuery } from "redux/index";
 import {
   addTeamName,
-  addTeamPermissions,
-  addTeamMembers,
-  deleteTeamMembers,
   setTeamMembers,
 } from "redux/slices/teamSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,7 +37,7 @@ const EditTeam = () => {
     }
     dispatch(addTeamName(getTeamId.name));
     dispatch(setTeamMembers(userIds));
-  }, [loadingTeamId]);
+  }, [loadingTeamId, dispatch, getTeamId]);
 
   const handleEditTeam = async (e) => {
     e.preventDefault();

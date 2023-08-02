@@ -80,7 +80,7 @@ const EditUserSettings = () => {
     });
 
     dispatch(renderSettings(_settings));
-  }, [loadingGetSettings, loadingUserSettings]);
+  }, [loadingGetSettings, loadingUserSettings, dispatch, getUserSettings, getSettings]);
 
   const handleInputChange = (e, id) => {
     const value = e.target.value;

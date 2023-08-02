@@ -7,7 +7,6 @@ import {
   addUserSettings,
   renderSettings,
   addUserDefaultSettings,
-  resetSettings,
 } from "redux/slices/userSlice";
 
 import SearchInput from "components/SearchInput";
@@ -28,7 +27,7 @@ const AddUserSettings = () => {
     if (settings.length === 0) {
       dispatch(renderSettings(getSettings));
     }
-  }, [loadingGetSettings]);
+  }, [loadingGetSettings, dispatch, getSettings, settings.length]);
 
   const handleInputChange = (e, id) => {
     const value = e.target.value;

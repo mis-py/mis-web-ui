@@ -24,7 +24,7 @@ const AddTeamPermissions = () => {
     if (permissions?.length) {
       setChecked(permissions);
     }
-  }, []);
+  }, [permissions]);
 
   const handleAddPermissions = () => {
     dispatch(addTeamPermissions(checked.filter((n) => n !== "")));

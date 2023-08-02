@@ -31,7 +31,7 @@ const EditUserPermissions = () => {
     } else if (!getPermissionsUserId.length) {
       setChecked(false);
     }
-  }, [loadingPermissionsUserId]);
+  }, [loadingPermissionsUserId, getPermissionsUserId]);  
 
   const handleEditUserPermissions = async (e) => {
     e.preventDefault();

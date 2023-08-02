@@ -35,24 +35,24 @@ const Consumers = () => {
 
     let statuses = {};
 
-    Object.entries(getConsumers).map((data) => {
+    Object.entries(getConsumers).forEach((data) => {
       const [title, consumers] = data;
 
-      consumers.map(consumer => {
+      consumers.forEach(consumer => {
         statuses[title + "-" + consumer.consumer_tag] = consumer.status;
       });
     });
 
     setStatusValues(statuses);
-  }, [loadingGetConsumers])
+  }, [loadingGetConsumers, getConsumers])
 
   const handleStatusChange = (consumer_tag, status) => {
     let statuses = {};
 
-    Object.entries(getConsumers).map((data) => {
+    Object.entries(getConsumers).forEach((data) => {
       const [title, consumers] = data;
 
-      consumers.map(consumer => {
+      consumers.forEach(consumer => {
         if (consumer.consumer_tag === consumer_tag) {
           statuses[title + "-" + consumer.consumer_tag] = status;
         } else {

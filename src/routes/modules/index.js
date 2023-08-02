@@ -15,11 +15,11 @@ const useModuleRoutes = () => {
 
   React.useEffect(() => {
     const modules = [];
-    getModules.map(item => {
+    getModules.forEach(item => {
       let obj = {
         path: `/${item.name}`,
       };
-
+  
       if (item.name === 'webcat') {
         obj.element = <Webcat />;
       } else if (item.name === 'editwebcat') {
@@ -31,13 +31,13 @@ const useModuleRoutes = () => {
       } else if (item.name === 'auto_admin') {
         obj.element = <AutoAdmin />;
       }
-
+  
       modules.push(obj);
     });
-
+  
     setModuleRouteList(modules);
-
-  }, [isLoading]);
+  
+  }, [isLoading, getModules]);  
 
   return moduleRouteList;
 };
