@@ -37,7 +37,7 @@ const customStyles = {
 };
 
 const UserSelector = (props) => {
-    const { data: usersList = [], isLoading } = useGetUsersQuery({
+    const { data: usersList = [] } = useGetUsersQuery({
         team_id: props.teamId
     });
 

@@ -14,7 +14,7 @@ const DomainManagement = (props) => {
     const [user, setUser] = React.useState({});
     const [balance, setBalance] = React.useState(defaultBalance);
 
-    const {data: getBalance, isLoading: isBalanceLoading } = useGetResellerBalanceQuery({
+    const {data: getBalance } = useGetResellerBalanceQuery({
         team: team === undefined || team === null || team.value === undefined ? 0 : team.value
     }, {
         skip: team === undefined || team === null || team.value === undefined
@@ -24,7 +24,7 @@ const DomainManagement = (props) => {
         if (team !== null) {
             setBalance(getBalance);
         }
-    }, [isBalanceLoading, team]);
+    }, [getBalance, team]);
 
     const handleTeamChange = (choice) => {
         setTeam(choice);
