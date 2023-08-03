@@ -9,7 +9,7 @@ const Statabot = () => {
   const {
     data: getUsers = [],
     isLoading: loadingGetUser,
-    error: errorGetUsers,
+    error: errorGetUsers
   } = useGetUsersQuery();
 
   return (

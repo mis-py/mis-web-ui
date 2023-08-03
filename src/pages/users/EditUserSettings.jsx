@@ -5,6 +5,7 @@ import {
   useGetSettingsQuery,
   useGetUserSettingsIdQuery,
   useSettingUserSetMutation,
+  useGetUsersQuery,
 } from "redux/index";
 import {
   addUserSettings,
@@ -23,11 +24,12 @@ const EditUserSettings = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const settings = useSelector((state) => state.user.settings);
-  const { data: getSettings = [], isLoading: loadingGetSettings } =
+  const { data: getSettings = [] } =
       useGetSettingsQuery();
-  const { data: getUserSettings = [], isLoading: loadingUserSettings } =
+  const { data: getUserSettings = [] } =
       useGetUserSettingsIdQuery(id);
   const [editUserSettingsSet] = useSettingUserSetMutation();
+  const { refetch: refetchUsers } = useGetUsersQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
 
@@ -54,12 +56,13 @@ const EditUserSettings = () => {
       body: dataSettings,
     }).then((data) => {
       if (data.error !== undefined && data.error.data.message !== undefined) {
-        console.error(data.error.data.message);
-        toast.error("Settings were not saved");
+        toast.error(`Settings were not saved: ${data.error.data.message}`);
       } else {
         navigate(`/users/${id}`);
         toast.success("Added new settings");
       }
+
+      refetchUsers();
     });
   };
 
@@ -79,8 +82,11 @@ const EditUserSettings = () => {
       return setting;
     });
 
-    dispatch(renderSettings(_settings));
-  }, [loadingGetSettings, loadingUserSettings, dispatch, getUserSettings, getSettings]);
+    try {
+      dispatch(renderSettings(_settings));
+    } catch {
+    }
+  }, [dispatch, getUserSettings, getSettings]);
 
   const handleInputChange = (e, id) => {
     const value = e.target.value;
