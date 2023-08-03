@@ -8,7 +8,7 @@ import {
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Input from "components/Input"
-import USER from "assets/img/user.png";
+// import USER from "assets/img/user.png";
 import PageHeader from "../../components/common/PageHeader";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
@@ -21,6 +21,7 @@ const ProfileUser = () => {
 
   const [editUserSettingsSet] = useSettingUserSetMutation();
   const [settingsValue, setSettingsValue] = React.useState([]);
+  const [avatar, setAvatar] = React.useState(null);
   const { id } = useParams();
   const setDefaultSetting = function(item) {
     setSettingsValue(settingsValue.map((settingValue) => {
@@ -88,6 +89,20 @@ const ProfileUser = () => {
       }
     });
   };
+  
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+    if (file && allowedTypes.includes(file.type)) {
+      // Создаем объект URL, чтобы отобразить изображение в профиле
+      const imageUrl = URL.createObjectURL(file);
+      setAvatar(imageUrl);
+    } else {
+      alert('Пожалуйста, выберите файл с расширением .jpeg, .png или .gif.');
+    }
+  };
 
   return (
       <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -95,11 +110,14 @@ const ProfileUser = () => {
           <PageHeader
               header="Profile"
           />
-          <img
-              className="w-[64px] h-[64px]"
-              src={USER}
-              alt=""
-          />
+          <div>
+            {avatar ? (
+              <img src={avatar} alt="Аватар" />
+            ) : (
+              <div>Здесь будет отображаться ваш аватар</div>
+            )}
+              <input type="file" onChange={handleAvatarChange} accept="image/jpeg, image/png, image/gif" />
+          </div>
 
           <form className="mt-7">
             <Input
