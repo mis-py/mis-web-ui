@@ -1,25 +1,52 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { usersApi } from "./usersApi";
-import { teamsApi } from "./teamsApi";
-import { permissionsApi } from "./permissionsApi";
-import { appsApi } from "./appsApi";
-import { groupsApi } from "./groupsApi";
-import { modulesApi } from "./modulesApi";
-import { settingsApi } from "./settingsApi";
+import { configureStore, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
+
+//api
+import { usersApi } from "./api/usersApi";
+import { teamsApi } from "./api/teamsApi";
+import { permissionsApi } from "./api/permissionsApi";
+import { appsApi } from "./api/appsApi";
+import { groupsApi } from "./api/groupsApi";
+import { modulesApi } from "./api/modulesApi";
+import { settingsApi } from "./api/settingsApi";
+import { logsApi } from "./api/logsApi";
 
 //modules
-// import { webcatApi } from "./webcatApi";
-// import { firewallApi } from "./firewallApi";
+import { webcatApi } from "./api/modulesApi/webcatApi";
+import { consumersApi } from "./api/modulesApi/consumersApi";
+import { tasksApi } from "./api/modulesApi/tasksApi";
+import { timerApi } from "./api/modulesApi/timerApi";
+import { statabotApi } from "./api/modulesApi/statabotApi";
+import { autoAdminApi } from "./api/modulesApi/autoAdminApi";
 
-import addUserPermissionsSlice from "./slices/addUserPermissionsSlice";
-import addTeamMembersSlice from "./slices/addTeamMembersSlice";
-import addTeamPermissionsSlice from "./slices/addTeamPermissionsSlice";
+//slices
+import { authReducer } from "./slices/authSlice";
+import userSlice from "./slices/userSlice";
+import teamSlice from "./slices/teamSlice";
 import editTeamPermissionsSlice from "./slices/editTeamPermissionsSlice";
 import editTeamMembersSlice from "./slices/editTeamMembersSlice";
 import membersSlice from "./slices/membersSlice";
+import { startLoading, stopLoading } from './slices/loadingSlice';
+import loadingReducer from './slices/loadingSlice';
+
+const mutationLoadingMiddleware = ({ dispatch }) => next => action => {
+    if (~action.type.indexOf("executeMutation")) {
+        if (isPending(action)) {
+            dispatch(startLoading());
+        }
+
+        if (isFulfilled(action) || isRejected(action)) {
+            // setTimeout(() => {
+                dispatch(stopLoading());
+            // }, 1000);
+        }
+    }
+
+    next(action);
+};
 
 export const store = configureStore({
   reducer: {
+    //api
     [usersApi.reducerPath]: usersApi.reducer,
     [teamsApi.reducerPath]: teamsApi.reducer,
     [permissionsApi.reducerPath]: permissionsApi.reducer,
@@ -27,20 +54,28 @@ export const store = configureStore({
     [groupsApi.reducerPath]: groupsApi.reducer,
     [modulesApi.reducerPath]: modulesApi.reducer,
     [settingsApi.reducerPath]: settingsApi.reducer,
-    
-    //modules
-    // [webcatApi.reducerPath]: webcatApi.reducer,
-    // [firewallApi.reducerPath]: firewallApi.reducer,
+    [logsApi.reducerPath]: logsApi.reducer,
 
-    addUserPermissions: addUserPermissionsSlice,
-    addTeamMembers: addTeamMembersSlice,
-    addTeamPermissions: addTeamPermissionsSlice,
+    //modules
+    [webcatApi.reducerPath]: webcatApi.reducer,
+    [consumersApi.reducerPath]: consumersApi.reducer,
+    [tasksApi.reducerPath]: tasksApi.reducer,
+    [timerApi.reducerPath]: timerApi.reducer,
+    [statabotApi.reducerPath]: statabotApi.reducer,
+    [autoAdminApi.reducerPath]: autoAdminApi.reducer,
+
+    //slices
+    auth: authReducer,
+    user: userSlice,
+    team: teamSlice,
     editTeamPermissions: editTeamPermissionsSlice,
     editTeamMembers: editTeamMembersSlice,
     membersList: membersSlice,
+    loading: loadingReducer,
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware({}).concat([
+      //api
       usersApi.middleware,
       teamsApi.middleware,
       permissionsApi.middleware,
@@ -48,10 +83,16 @@ export const store = configureStore({
       groupsApi.middleware,
       modulesApi.middleware,
       settingsApi.middleware,
-      
-      //modules
-      // webcatApi.middleware,
-      // firewallApi.middleware,
+      logsApi.middleware,
 
+      //modules
+      webcatApi.middleware,
+      consumersApi.middleware,
+      tasksApi.middleware,
+      timerApi.middleware,
+      statabotApi.middleware,
+      autoAdminApi.middleware,
+
+      mutationLoadingMiddleware,
     ]),
 });

@@ -1,111 +1,161 @@
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import { confirmAlert } from "react-confirm-alert";
-import {
-  useDeleteUserMutation,
-  useGetUserIdQuery,
-  useGetPermissionsUserIdQuery,
-} from "../../redux";
-import { IoIosArrowBack } from "react-icons/io";
 
-import UserImg from "../../assets/img/user.png";
+import {
+  useGetMeQuery,
+  useGetSettingsQuery,
+  useSettingUserSetMutation,
+} from "redux/index";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import Input from "components/Input"
+import USER from "assets/img/user.png";
+import PageHeader from "../../components/common/PageHeader";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 const ProfileUser = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { data: getUserId, isLoading } = useGetUserIdQuery(id);
-  const [deleteUser] = useDeleteUserMutation();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
 
-  const [formValue, setFormValue] = React.useState({
-    username: "",
-    team: {},
-  });
+  const { data: getUserId = [], isLoading: loadingUserId } = useGetMeQuery();
+  const { data: getSettings = [], isLoading: loadingSettings } =
+      useGetSettingsQuery();
+
+  const [editUserSettingsSet] = useSettingUserSetMutation();
+  const [settingsValue, setSettingsValue] = React.useState([]);
+  const { id } = useParams();
+  const setDefaultSetting = function(item) {
+    setSettingsValue(settingsValue.map((settingValue) => {
+      if (settingValue.id === item.id) {
+        settingValue.value = settingValue.default_value;
+      }
+
+      return settingValue;
+    }));
+  };
 
   React.useEffect(() => {
-    if (!isLoading) {
-      setFormValue({
-        username: getUserId.username,
-        team: {
-          id: getUserId.team === null ? 0 : getUserId.team.id,
-          name: getUserId.team === null ? "NO TEAM" : getUserId.team.name,
-        },
-      });
-    }
-  }, [isLoading]);
 
-  const handleDeleteUser = async (e) => {
+    const userSettings = getSettings?.reduce((prev, curr) => {
+      return [
+        ...prev,
+        {
+          id: curr.id,
+          value: getUserId.settings
+              ?.map((el) => (el.setting.id === curr.id ? el.value : ""))
+              .filter((empty) => !!empty)
+              .toString(),
+          key: curr.key,
+          default_value: curr.default_value,
+          is_global: curr.is_global,
+          app: curr.app,
+        },
+      ];
+    }, []);
+
+    setSettingsValue(userSettings);
+  }, [loadingSettings, loadingUserId, getSettings, getUserId.settings]);
+
+  const handleSettingsChange = async (e, item) => {
+    const newSettings = settingsValue.map(valueItem => {
+      if (valueItem.id !== item.id) {
+        return valueItem;
+      }
+
+      valueItem.value = e.target.value;
+      return valueItem;
+    });
+
+    setSettingsValue(newSettings);
+  };
+
+  const handleSaveUser = async (e) => {
     e.preventDefault();
-    confirmAlert({
-      title: "Delete user",
-      message: "Are you sure you want to delete this user?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: async () => {
-            await deleteUser(id);
-            navigate("/users");
-            toast.success("User deleted");
-          },
-        },
-        {
-          label: "No",
-        },
-      ],
-      overlayClassName: "bg-blackSecond/70",
+    
+    let dataSettings = settingsValue.map(function (item) {
+        return { setting_id: item.id, new_value: item.value };
+    });
+
+    await editUserSettingsSet({
+      id: id,
+      body: dataSettings,
+    }).then((data) => {
+      if (data.error !== undefined && (data.error.data.message !== undefined || data.error.data.detail !== undefined)) {
+        console.error(data.error.data.message === undefined
+                        ? data.error.data.detail
+                        : data.error.data.message);
+        toast.error("Settings were not saved");
+      } else {
+        toast.success("Settings were saved");
+      }
     });
   };
 
   return (
-    <div className="py-6 min-h-screen h-full flex flex-col justify-between">
-      <div className="flex flex-col">
-        <div className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <Link to="/users">back</Link>
-        </div>
-        <h3 className="h3 my-5">Profile</h3>
+      <div className="py-6 min-h-screen h-full flex flex-col justify-between">
+        <div className="flex flex-col pb-[60px]">
+          <PageHeader
+              header="Profile"
+          />
+          <img
+              className="w-[64px] h-[64px]"
+              src={USER}
+              alt=""
+          />
 
-        <img className="w-[64px] h-[64px]" src={UserImg} alt="" />
-
-        <form className="my-7">
-          <label className="flex flex-col gap-1 mb-4" htmlFor="username">
-            Username
-            <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 border-none border-0 focus-visible:outline-none"
-              type="text"
-              id="username"
-              value={formValue.username}
-              readOnly
+          <form className="mt-7">
+            <Input
+                label="Username"
+                type="text"
+                id="username"
+                autoComplete="off"
+                value={getUserId && (getUserId.username === undefined ? "" : getUserId.username)}
+                readOnly
             />
-          </label>
 
-          <label htmlFor="team">
-            Team
-            <h3 className="body-2 text-gray mb-4">{formValue.team.name}</h3>
-          </label>
-          <label htmlFor="position">
-            Position
-            <h3 className="body-2 text-gray">Job title</h3>
-          </label>
-        </form>
-      </div>
-      {getPermissionsUserId && getPermissionsUserId.length !== 0 ? (
-        <div className="flex flex-col gap-4">
-          <button onClick={handleDeleteUser} className="btn-danger">
-            Delete my profile
-          </button>
+            <label htmlFor="team">
+              Team
+              <span className="block body-2 text-gray mb-4">
+              {getUserId.team === null || getUserId.team === undefined || getUserId.team.name === undefined
+                  ? "No team"
+                  : getUserId.team.name
+              }
+            </span>
+            </label>
+            <label htmlFor="position">
+              Position
+              <span className="block body-2 text-gray">
+              {getUserId?.position === null
+                  ? "Position name none"
+                  : getUserId?.position}
+            </span>
+            </label>
+          </form>
+          <h3 className="text-2xl font-bold mt-7 mb-5">Settings</h3>
+          <form>
+            <h1 className="h3 mb-5">Local settings</h1>
+            {settingsValue.length && settingsValue?.map(
+                (item) =>
+                    item !== undefined && !item.is_global && (
+                        <Input
+                            label={item.key}
+                            key={item.id}
+                            className="relative"
+                            id={item.key}
+                            type="text"
+                            autoComplete="off"
+                            value={item.value}
+                            name={item.key}
+                            changeValue={(e) => handleSettingsChange(e, item)}
+                            hasDefault={typeof item.default_value === 'string' && item.default_value.length !== 0}
+                            setDefault={() => setDefaultSetting(item)}
+                        />
+                    )
+            )}
+          </form>
         </div>
-      ) : (
-        false
-      )}
-    </div>
+        <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
+          <button onClick={handleSaveUser} className="btn-primary">Save</button>
+        </div>
+      </div>
   );
 };
 

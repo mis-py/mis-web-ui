@@ -1,180 +1,88 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import Drawer, {
-  DrawerContainer,
-  MainContentContainer,
-} from "react-swipeable-drawer";
-import { useGetModulesQuery } from "./redux";
+import SpinnerLoader from "components/common/SpinnerLoader";
 
-import MainLayout from "./layouts/MainLayout";
-import LoginLayout from "./layouts/LoginLayout";
-import Sidebar from "./components/Sidebar";
-import Signin from "./pages/Signin";
-import Home from "./pages/Home";
-import Users from "./pages/users/index";
-import AddUser from "./pages/users/AddUser";
-import AddUserPermissions from "./pages/users/AddUserPermissions";
-import AddUserSettings from "./pages/users/AddUserSettings";
-import EditUser from "./pages/users/EditUser";
-import EditUserPermissions from "./pages/users/EditUserPermissions";
-import ProfileUser from "./pages/users/ProfileUser";
-import SettingsUser from "./pages/users/SettingsUser";
-import EditUserSettings from "./pages/users/EditUserSettings";
-import Teams from "./pages/teams/index";
-import AddTeam from "./pages/teams/AddTeam";
-import EditTeam from "./pages/teams/EditTeam";
-import EditTeamPermissions from "./pages/teams/EditTeamPermissions";
-import EditTeamMembers from "./pages/teams/EditTeamMembers";
-import AddTeamMembers from "./pages/teams/AddTeamMembers";
-import AddTeamPermissions from "./pages/teams/AddTeamPermissions";
-import SettingsTeam from "./pages/teams/SettingsTeam";
-import Groups from "./pages/groups/index";
-import AddGroup from "./pages/groups/AddGroup";
-import EditMembersGroup from "./pages/groups/EditMembersGroup";
-import EditObjectsGroup from "./pages/groups/EditObjectsGroup";
-import Apps from "./pages/apps/index";
-import CloneApp from "./pages/apps/CloneApp";
-import LogsApp from "./pages/apps/LogsApp";
-import SettingsApp from "./pages/apps/SettingsApp";
-import ManageGroupApp from "./pages/apps/ManageGroupApp";
-import ManageMembersApp from "./pages/apps/ManageMembersApp";
-import NotFoundLayout from "./layouts/NotFoundLayout";
-import NotFound from "./pages/NotFound";
+import MainLayout from "layouts/MainLayout";
+import LoginLayout from "layouts/LoginLayout";
+import Signin from "pages/Signin";
+import Home from "pages/Home";
 
-import Modules from "./pages/Modules";
+import NotFound from "pages/NotFound";
+import { userRoutes } from "routes/users";
+import { teamRoutes } from "routes/teams";
+import { groupRoutes } from "routes/groups";
+import { appRoutes } from "routes/apps";
+import useModuleRoutes from "routes/modules";
+import { taskRoutes } from "routes/tasks";
 
-import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from 'react-redux';
+import LoadingOverlay from "./components/common/LoadingOverlay";
+import { consumersRoutes } from "routes/consumers";
 
 function App() {
-  const { data: getModules } = useGetModulesQuery();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+    React.useEffect(() => {
+        if (localStorage.getItem("token") === null) {
+            localStorage.removeItem("user_id");
+            localStorage.removeItem("username");
+
+            if (location.pathname !== '/signin') {
+                setTimeout(() => {
+                    navigate("/signin");
+                }, 200);
+            }
+        }
+    });
+
+  const isLoading = useSelector(state => state.loading);
+  const modulesList = useModuleRoutes();
 
   return (
     <div className="relative">
+      {isLoading && <LoadingOverlay />}
       <ToastContainer theme="dark" />
-      <Drawer position="left" size={80}>
-        {({
-          position,
-          swiping,
-          translation,
-          mainContentScroll,
-          toggleDrawer,
-          handleTouchStart,
-          handleTouchMove,
-          handleTouchEnd,
-        }) => (
-          <div>
-            <DrawerContainer
-              position={position}
-              size={100}
-              swiping={swiping}
-              translation={translation}
-              toggleDrawer={toggleDrawer}
-              handleTouchStart={handleTouchStart}
-              handleTouchMove={handleTouchMove}
-              handleTouchEnd={handleTouchEnd}
-              drawerContent={<Sidebar toggleDrawer={toggleDrawer} />}
-            />
-            <MainContentContainer
-              translation={translation}
-              mainContentScroll={mainContentScroll}
-            >
-              <React.Suspense fallback="Loading...">
-                <Routes>
-                  <Route path="/" element={<MainLayout />}>
-                    <Route index element={<Home />} />
-                    <Route path="/users" element={<Users />} />
-                    <Route path="/add-user" element={<AddUser />} />
-                    <Route
-                      path="/add-user/permissions"
-                      element={<AddUserPermissions />}
-                    />
-                    <Route path="/users/:id" element={<EditUser />} />
-                    <Route
-                      path="/user/permissions/:id"
-                      element={<EditUserPermissions />}
-                    />
-                    <Route
-                      path="/add-user/settings"
-                      element={<AddUserSettings />}
-                    />
-                    <Route
-                      path="/user/settings/:id"
-                      element={<EditUserSettings />}
-                    />
-                    <Route path="/profile/:id" element={<ProfileUser />} />
-                    <Route path="/settings/:id" element={<SettingsUser />} />
-                    <Route path="/teams" element={<Teams />} />
-                    <Route path="/add-team" element={<AddTeam />} />
-                    <Route path="/teams/:id" element={<EditTeam />} />
-                    <Route path="/groups" element={<Groups />} />
-                    <Route path="/add-group" element={<AddGroup />} />
-                    <Route
-                      path="/group/members/:id"
-                      element={<EditMembersGroup />}
-                    />
-                    <Route
-                      path="/group/objects/:id"
-                      element={<EditObjectsGroup />}
-                    />
-                    <Route
-                      path="/team/permissions/:id"
-                      element={<EditTeamPermissions />}
-                    />
-                    <Route
-                      path="/team/members/:id"
-                      element={<EditTeamMembers />}
-                    />
-                    <Route
-                      path="/add-team/members"
-                      element={<AddTeamMembers />}
-                    />
-                    <Route
-                      path="/add-team/permissions"
-                      element={<AddTeamPermissions />}
-                    />
-                    <Route
-                      path="/team/settings/:id"
-                      element={<SettingsTeam />}
-                    />
-                    <Route path="/apps" element={<Apps />} />
-                    <Route path="/apps/clone" element={<CloneApp />} />
-                    <Route path="/apps/logs/:id" element={<LogsApp />} />
-                    <Route
-                      path="/apps/settings/:id"
-                      element={<SettingsApp />}
-                    />
-                    <Route
-                      path="/apps/settings/manage/:id"
-                      element={<ManageGroupApp />}
-                    />
-                    <Route
-                      path="/apps/settings/manage/members/:id"
-                      element={<ManageMembersApp />}
-                    />
-                    {getModules?.map((item) => (
-                      <Route
-                        key={item.id}
-                        path={`/api${item.front_bundle_path}/`}
-                        element={<Modules />}
-                      />
-                    ))}
-                    {/* <Route path="/webcat" element={<Webcat />} /> */}
-                  </Route>
-                  <Route path="/signin" element={<LoginLayout />}>
-                    <Route index element={<Signin />} />
-                  </Route>
-                  <Route element={<NotFoundLayout />}>
-                    <Route path="*" element={<NotFound />} />
-                  </Route>
-                </Routes>
-              </React.Suspense>
-            </MainContentContainer>
-          </div>
-        )}
-      </Drawer>
+      <React.Suspense
+        fallback={
+          <SpinnerLoader
+            size={30}
+            cssOverride={{
+              height: "100vh",
+              alignItems: "center",
+            }}
+          />
+        }
+      >
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<Home />} />
+              {userRoutes
+                  .concat(teamRoutes, groupRoutes, appRoutes, modulesList, taskRoutes, consumersRoutes)
+                  .map((route, index) => (
+                  <Route
+                      key={`${route.path}_${index}`}
+                      path={route.path}
+                      element={route.element}
+                  />
+              ))}
+          </Route>
+          <Route path="/signin" element={<LoginLayout />}>
+            <Route index element={<Signin />} />
+          </Route>
+          <Route element={<MainLayout />}>
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </React.Suspense>
     </div>
   );
 }
 
 export default App;
+// {userRoutes
+//     .concat(teamRoutes, groupRoutes, appRoutes, moduleRoutes, taskRoutes)
+//     .map((route, index) => (
+
+//     ))}

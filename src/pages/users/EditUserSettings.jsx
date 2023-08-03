@@ -1,70 +1,149 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useGetUserSettingsQuery } from "../../redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  useGetSettingsQuery,
+  useGetUserSettingsIdQuery,
+  useSettingUserSetMutation,
+  useGetUsersQuery,
+} from "redux/index";
+import {
+  addUserSettings,
+  addUserDefaultSettings,
+  renderSettings,
+} from "redux/slices/userSlice";
+import { toast } from "react-toastify";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
+import Input from "components/Input";
+import PageHeader from "../../components/common/PageHeader";
+
 const EditUserSettings = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [searchInput, setSearchInput] = React.useState("");
-  const { data: getUserSettings } = useGetUserSettingsQuery();
+  const { id } = useParams();
+  const settings = useSelector((state) => state.user.settings);
+  const { data: getSettings = [] } =
+      useGetSettingsQuery();
+  const { data: getUserSettings = [] } =
+      useGetUserSettingsIdQuery(id);
+  const [editUserSettingsSet] = useSettingUserSetMutation();
+  const { refetch: refetchUsers } = useGetUsersQuery();
+
+  const [searchValue, setSearchValue] = React.useState("");
+
+  const handleSaveUser = async (e) => {
+    e.preventDefault();
+
+    let dataSettings = settings.reduce(function (result, item) {
+      const userSetting = getUserSettings.find(
+          (userSetting) => userSetting.setting.id === item.id
+      );
+
+      if (item.value !== "" || (userSetting !== undefined && userSetting.value.length)) {
+        result.push({ setting_id: item.id, new_value: item.value });
+      }
+      return result;
+    }, []);
+
+    if (editUserSettingsSet === 0 || dataSettings.length === 0) {
+      toast.error("Enter new settings");
+    }
+
+    await editUserSettingsSet({
+      id: id,
+      body: dataSettings,
+    }).then((data) => {
+      if (data.error !== undefined && data.error.data.message !== undefined) {
+        toast.error(`Settings were not saved: ${data.error.data.message}`);
+      } else {
+        navigate(`/users/${id}`);
+        toast.success("Added new settings");
+      }
+
+      refetchUsers();
+    });
+  };
+
+  React.useEffect(() => {
+    let _settings = getSettings.map((setting) => {
+      const userSetting = getUserSettings.find(
+          (userSetting) => userSetting.setting.id === setting.id
+      );
+
+      if (userSetting) {
+        return {
+          ...setting,
+          value: userSetting.value,
+        };
+      }
+
+      return setting;
+    });
+
+    try {
+      dispatch(renderSettings(_settings));
+    } catch {
+    }
+  }, [dispatch, getUserSettings, getSettings]);
+
+  const handleInputChange = (e, id) => {
+    const value = e.target.value;
+    dispatch(addUserSettings({ id, value }));
+  };
 
   return (
-    <div className="py-6 min-h-screen h-full flex flex-col justify-between">
-      <div className="flex flex-col">
-        <div className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <div onClick={() => navigate(-1)}>back</div>
+      <div className="py-6 min-h-screen h-full flex flex-col justify-between">
+        <div className="flex flex-col">
+          <PageHeader
+              header="Settings"
+          />
+          <form className="my-4 pb-[50px]">
+            <label
+                className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
+                htmlFor="search"
+            >
+              <input
+                  className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
+                  type="search"
+                  placeholder="Enter setting name to search..."
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+              />
+              <FiSearch className="w-12 text-gray" />
+            </label>
+
+            {settings
+                ?.filter((el) =>
+                    el.key.toLowerCase().includes(searchValue.toLowerCase().trim())
+                )
+                ?.map(
+                    (item) =>
+                        !item.is_global && (
+                            <Input
+                                key={item.id}
+                                label={`${item.key} ( ${item.app.name} )`}
+                                id={`${item.key}-${item.app.name}`.toLowerCase()}
+                                type="text"
+                                autoComplete="off"
+                                changeValue={(e) => handleInputChange(e, item.id)}
+                                value={item.value === undefined ? "" : item.value}
+                                name={item.key}
+                                hasDefault={item.default_value !== null && item.default_value.length}
+                                setDefault={() => dispatch(addUserDefaultSettings(item))}
+                            />
+                        )
+                )}
+          </form>
         </div>
-        <h3 className="h3 mt-5">Settings</h3>
-        <form className="my-4">
-          <label
-            className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
-            htmlFor="search"
-          >
-            <input
-              className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
-              type="search"
-              placeholder="Enter setting name to search..."
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-            />
-            <FiSearch className="w-12 text-gray" />
-          </label>
 
-          {getUserSettings
-            ?.filter((set) =>
-              set.app.name
-                .toLowerCase()
-                .includes(searchInput.toLowerCase().trim())
-            )
-            .map((setting) => (
-              <label
-                key={setting.id}
-                className="flex flex-col gap-1 mb-4"
-                htmlFor={setting.key}
-              >
-                {setting.app.name}
-                <input
-                  type={setting.type}
-                  name={setting.key}
-                  id={setting.key}
-                  //   checked={checkSuperUser}
-                  //   onChange={() => setCheckSuperUser(!checkSuperUser)}
-                  className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-                />
-              </label>
-            ))}
-        </form>
+        <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
+          <button onClick={handleSaveUser} className="btn-primary">
+            Save
+          </button>
+        </div>
       </div>
-
-      <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
-        <button className="btn-primary">Save</button>
-      </div>
-    </div>
   );
 };
 

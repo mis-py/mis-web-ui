@@ -1,74 +1,45 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useGetPermissionsUserIdQuery } from "../redux";
+import { Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAuth, selectIsAuth } from "redux/slices/authSlice";
 import { toast } from "react-toastify";
-import axios from "axios";
-import qs from "qs";
 
 import { AiOutlineEye } from "react-icons/ai";
 
-import LogoImg from "../assets/img/logo.png";
-import EllipseImg from "../assets/img/ellipse.png";
-
-import { getUrl } from "../config/variables";
-
 const Signin = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const dispatch = useDispatch();
+  const isAuth = useSelector(selectIsAuth);
   const [showPassword, setShowPassword] = React.useState("password");
 
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
 
-  React.useEffect(() => {
-    if (
-      localStorage.getItem("my-token") !== null &&
-      location.pathname === "/singin"
-    ) {
-      navigate("/");
+  const onSubmit = async (data) => {
+    const values = await dispatch(fetchAuth(data));
+
+    if (!values.payload) {
+      toast.error("Incorrect login or password!");
     }
-  }, [location]);
 
-  const onSubmit = (data) => {
-    axios({
-      method: "post",
-      url: "http://crm.ng.lan/api/auth/token",
-      data: qs.stringify(data),
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-      },
-    })
-      .then(function (response) {
-        if (response.status === 200) {
-          const token = response.data.access_token;
-          const user_id = response.data.user_id;
-          const user_name = response.data.username;
-          localStorage.setItem("my-token", token);
-          localStorage.setItem("user_id", user_id);
-          localStorage.setItem("user_name", user_name);
-          axios({
-            method: "get",
-            url: "http://crm.ng.lan/api/",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("my-token")}`,
-            },
-          })
-            .then(function (response) {
-              if (response.status === 200) {
-                navigate("/");
-              }
-            })
-            .catch(function (response) {});
-        }
-      })
-      .catch(function (response) {
-        toast.error("Incorrect login or password!");
-      });
+    if (values.payload !== undefined && values.payload.access_token !== undefined) {
+      window.localStorage.setItem("token", values.payload.access_token);
+      window.localStorage.setItem("user_id", values.payload.user_id);
+      window.localStorage.setItem("username", values.payload.username);
+    }
   };
+
+  if (isAuth) {
+    return <Navigate to="/" />;
+  }
 
   const toggleShowPassword = (e) => {
     e.preventDefault();
@@ -83,12 +54,13 @@ const Signin = () => {
 
   return (
     <div className="flex flex-col relative z-20 justify-center h-screen py-7 px-5 bg-backGround overflow-hidden lg:z-40">
+      <div className="absolute bottom-0 left-0 h-[55%] w-[120%] rounded-t-[35%]" style={{background:"#1D1D1D",transform:"translateX(-10%)"}}></div>
+
       <img
-        className="absolute bottom-0 left-0 h-[60%] w-full"
-        src={EllipseImg}
+        className="w-[192px] mx-auto mb-[104px] z-10"
+        src={require("assets/img/logo.png")}
         alt=""
       />
-      <img className="w-[192px] mx-auto mb-[104px] z-10" src={LogoImg} alt="" />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="z-10 sm:w-[345px] sm:mx-auto"

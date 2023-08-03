@@ -63,16 +63,15 @@ const FilterBar = ({
             showGeo ? "opacity-100 visible" : "opacity-0 invisible"
           } flex gap-2 overflow-hidden duration-300 text-gray text-sm`}
         >
-          {geos &&
-            geos.map((geo) => (
-              <button
-                key={geo}
-                onClick={() => setGeo(geo)}
-                className="flex justify-center items-center w-[32px] h-[32px] rounded bg-backGround duration-300 hover:bg-primary hover:text-white"
-              >
-                {geo}
-              </button>
-            ))}
+          {geos?.map((geo, index) => (
+            <button
+              key={geo}
+              onClick={() => setGeo(geo)}
+              className={`bg-backGround flex justify-center items-center w-[32px] h-[32px] rounded duration-300 text-white hover:bg-primary`}
+            >
+              {geo}
+            </button>
+          ))}
         </div>
       </div>
     </div>

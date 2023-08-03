@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Switch from "react-switch";
 import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
@@ -10,56 +10,61 @@ import {
   useStartAppMutation,
   useStopAppMutation,
   useSettingAppSetMutation,
-  useSettingUserSetMutation,
-} from "../../redux";
+} from "redux/index";
 
-import AdminWrapper from "../../config/AdminWrapper";
+import AdminWrapper from "config/AdminWrapper";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
+import PageHeader from "../../components/common/PageHeader";
 
 const SettingsApp = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+
   const [active, setActive] = React.useState(false);
-  const [userId, setUserId] = React.useState(0);
   const [formGlobalValue, setFormGlobalValue] = React.useState([]);
   const [newGlobalSettings, setNewGlobalSettings] = React.useState({});
   const [formLocalValue, setFormLocalValue] = React.useState([]);
   const [newLocalSettings, setNewLocalSettings] = React.useState({});
 
-  const { data: getSettingsAppId } = useGetSettingsAppIdQuery(id);
-  const { data: getSettingsUserId } = useGetSettingsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
+  const {
+    data: getSettingsAppId,
+    isLoading: loadingGetSettingsAppId,
+    refetch,
+  } = useGetSettingsAppIdQuery(id);
+
+  const { data: getSettingsUserId = [], isLoading: loadingGetSettingsUserId } =
+    useGetSettingsUserIdQuery(localStorage.getItem("user_id"));
   const [unloadAppModules] = useUnloadAppModulesMutation();
   const [startApp] = useStartAppMutation();
   const [stopApp] = useStopAppMutation();
   const [settingAppSet] = useSettingAppSetMutation();
-  const [settingUserSet] = useSettingUserSetMutation();
 
   React.useEffect(() => {
-    setUserId(localStorage.getItem("user_id"));
-
-    if (getSettingsAppId && getSettingsAppId.enabled) {
+    refetch();
+    if (!loadingGetSettingsAppId && getSettingsAppId?.enabled) {
       setActive(true);
     } else {
       setActive(false);
     }
-
-    getSettingsAppId &&
-      getSettingsAppId.settings.map((setting) => {
+  
+    if (!loadingGetSettingsAppId) {
+      getSettingsAppId?.settings.forEach((setting) => {
         setFormGlobalValue((formGlobalValue) => [...formGlobalValue, setting]);
       });
-  }, [getSettingsAppId]);
+    }
+  }, [loadingGetSettingsAppId, getSettingsAppId?.enabled, getSettingsAppId?.settings, refetch]);
+  
 
   React.useEffect(() => {
-    getSettingsUserId &&
-      getSettingsUserId.map((item) => {
-        setFormLocalValue((formLocalValue) => [...formLocalValue, item]);
-      });
-  }, [getSettingsUserId]);
+  if (!loadingGetSettingsUserId) {
+    getSettingsUserId?.forEach((item) => {
+      setFormLocalValue((formLocalValue) => [...formLocalValue, item]);
+    });
+  }
+}, [loadingGetSettingsUserId, getSettingsUserId]);
+
 
   const handleChange = async (nextChecked) => {
     if (nextChecked) {
@@ -69,6 +74,7 @@ const SettingsApp = () => {
       await stopApp(id).unwrap();
       setActive(nextChecked);
     }
+    refetch();
   };
 
   const handleDeleteApp = (e) => {
@@ -101,12 +107,12 @@ const SettingsApp = () => {
         body: Object.values(newGlobalSettings),
       }).unwrap();
     }
-    if (newLocalSettings !== 0) {
-      await settingUserSet({
-        userId,
-        body: Object.values(newLocalSettings),
-      }).unwrap();
-    }
+    // if (newLocalSettings !== 0) {
+    //   await settingUserSet({
+    //     currentUserId,
+    //     body: Object.values(newLocalSettings),
+    //   }).unwrap();
+    // }
     toast.success("Settings updated");
   };
 
@@ -114,28 +120,26 @@ const SettingsApp = () => {
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
         <div className="flex items-center justify-between text-gray">
-          <div className="flex">
-            <div className="flex items-center mr-2">
-              <IoIosArrowBack />
-            </div>
-            <Link to="/apps">back</Link>
-          </div>
-          <button
-            onClick={handleDeleteApp}
-            className="bg-danger rounded-lg p-3 cursor-pointer text-white flex text-bold"
-          >
-            <BsTrash />
-          </button>
-        </div>
-
-        <h3 className="h3 my-4">App name settings</h3>
-        <h4 className="text-gray mb-5">General settings</h4>
-        <div className="flex items-center gap-3 mb-5">
-          <Switch onChange={handleChange} checked={active} />
-          <p>Enable app</p>
+          <PageHeader/>
+          <AdminWrapper>
+            <button
+              onClick={handleDeleteApp}
+              className="bg-danger rounded-lg p-3 cursor-pointer text-white flex text-bold"
+            >
+              <BsTrash />
+            </button>
+          </AdminWrapper>
         </div>
         <AdminWrapper>
-          <h1 className="text-2xl font-bold">Global settings</h1>
+          <h4 className="text-2xl font-bold mb-5">General settings</h4>
+          <div className="flex items-center gap-3 mb-5">
+                  <Switch onChange={handleChange} checked={active} />
+                  <p>Enable app</p>
+                </div>
+
+          {formGlobalValue.length !== 0 && (
+            <h1 className="text-2xl font-bold">Global settings</h1>
+          )}
           <form className="my-7">
             {formGlobalValue.map(
               (item, index) =>

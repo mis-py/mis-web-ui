@@ -1,14 +1,11 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Select from "react-select";
 import {
-  useCloneAppMutation,
-  useGetModulesQuery,
-  useCloneAppNameMutation,
-} from "../../redux";
+  useCloneAppMutation
+} from "redux/index";
 
-import { IoIosArrowBack } from "react-icons/io";
+import PageHeader from "../../components/common/PageHeader";
 
 const customStyles = {
   option: (provided, state) => ({
@@ -49,26 +46,8 @@ const CloneApp = () => {
     url: "",
     branch: "",
   });
-  const [formValueName, setFormValueName] = React.useState({
-    id: 0,
-    name: "",
-    enabled: true,
-  });
 
-  const { data: getModules = [] } = useGetModulesQuery();
-  const [cloneApp, { error: errorCloneApp }] = useCloneAppMutation();
-  const [cloneAppName] = useCloneAppNameMutation();
-
-  const options = getModules?.map((item, index) => {
-    if (!item.enabled) {
-      return {
-        value: item.name,
-        label: item.name,
-        id: item.id,
-        enabled: true,
-      };
-    }
-  });
+  const [cloneApp] = useCloneAppMutation();
 
   const handleCloneApp = async (e) => {
     e.preventDefault();
@@ -79,25 +58,14 @@ const CloneApp = () => {
       navigate("/apps");
       toast.success("Added new app");
     }
-
-    if (formValueName.name !== "") {
-      await cloneAppName({ name: formValueName.name, ...formValueName });
-      navigate("/apps");
-      toast.success("Added new app");
-    }
   };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <Link to="/apps">back</Link>
-        </div>
-        <h3 className="h3 mt-5">Clone app</h3>
-
+        <PageHeader
+          header="Clone app"
+        />
         <form className="my-7">
           <label className="flex flex-col gap-1 mb-4" htmlFor="url">
             Url
@@ -130,7 +98,7 @@ const CloneApp = () => {
           </label>
         </form>
 
-        <h3 className="h3 my-5">Load app</h3>
+        {/* <h3 className="h3 my-5">Load app</h3>
         <label className="flex flex-col gap-1 mb-4" htmlFor="app">
           Name
           <Select
@@ -152,7 +120,7 @@ const CloneApp = () => {
               })
             }
           />
-        </label>
+        </label> */}
       </div>
 
       <div className="flex flex-col gap-3">

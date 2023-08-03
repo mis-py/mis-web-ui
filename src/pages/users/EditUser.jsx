@@ -1,91 +1,59 @@
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import Select from "react-select";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import { toast } from "react-toastify";
 import {
   useEditUserMutation,
   useGetUserIdQuery,
-  useGetTeamsQuery,
   useGetPermissionsUserIdQuery,
-} from "../../redux";
+} from "redux/index";
+import {
+  addUserName,
+  addUserPassword,
+  addUserTeam,
+  addUserPosition,
+} from "redux/slices/userSlice";
 
-import { IoIosArrowBack } from "react-icons/io";
-import { AiOutlinePlusCircle } from "react-icons/ai";
+import Input from "components/Input";
+import ButtonDark from "components/ButtonDark";
 
-const customStyles = {
-  option: (provided, state) => ({
-    ...provided,
-    fontWeight: state.isSelected ? "bold" : "normal",
-    color: state.isSelected ? "#ffffff" : "#757575",
-    backgroundColor: state.isSelected ? "#1A69DF" : "#1d1d1d",
-    borderRadius: "4px",
-  }),
-  singleValue: (provided, state) => ({
-    ...provided,
-    color: "#757575",
-    backgroundColor: "#1d1d1d",
-  }),
-  control: (base, state) => ({
-    ...base,
-    background: "#1d1d1d",
-    color: "#757575",
-    borderColor: "none",
-    borderWidth: "0",
-    boxShadow: state.isFocused ? null : null,
-  }),
-  menu: (provided) => ({
-    ...provided,
-    padding: 10,
-    backgroundColor: "#1d1d1d",
-  }),
-  input: (provided) => ({
-    ...provided,
-    color: "#757575",
-  }),
-};
+import PageHeader from "../../components/common/PageHeader";
+import TeamSelector from "../../components/common/TeamSelector";
 
 const EditUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data: getUserId, isLoading } = useGetUserIdQuery(id);
-  const { data: dataGetTeams = [], isLoading: loadingDataGetTeams } =
-    useGetTeamsQuery();
-  const { data: dataPermissionsUserId } = useGetPermissionsUserIdQuery(id);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const { data: getUserId = [], isLoading: loadingGetUserId } =
+    useGetUserIdQuery(id);
+
+  const { data: getPermissionsUserId = [] } = useGetPermissionsUserIdQuery(id);
   const [editUser] = useEditUserMutation();
 
-  const [formValue, setFormValue] = React.useState({
-    username: "",
-    password: "",
-    team: {},
-  });
-
-  const options = dataGetTeams.map((item, index) => {
-    return {
-      value: item.id,
-      label: item.name,
-      id: index + 1,
-    };
-  });
-
   React.useEffect(() => {
-    if (!isLoading && !loadingDataGetTeams) {
-      setFormValue({
-        username: getUserId.username,
-        password: "",
-        team: {
-          id: getUserId.team === null ? 0 : getUserId.team.id,
-          name: getUserId.team === null ? "NO TEAM" : getUserId.team.name,
-        },
-      });
+    if (!loadingGetUserId) {
+      dispatch(addUserName(getUserId.username));
+      dispatch(
+        addUserTeam(
+          getUserId.team === null
+            ? null
+            : { value: getUserId.team.id, label: getUserId.team.name }
+        )
+      );
+      dispatch(addUserPosition(getUserId.position));
     }
-  }, [isLoading, loadingDataGetTeams]);
+  }, [loadingGetUserId, dispatch, getUserId.position, getUserId.team, getUserId.username]);
 
   const handleEditUser = async (e) => {
     e.preventDefault();
     await editUser({
       id,
-      team_id: formValue.team.id,
-      new_password: formValue.password ? formValue.password : "",
+      username: user.username,
+      team_id: user.team === null ? null : user.team.value,
+      new_password: user.password ? user.password : "",
+      position: user.position,
     }).unwrap();
     navigate("/users");
     toast.success("User updated");
@@ -94,78 +62,55 @@ const EditUser = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <Link to="/users">back</Link>
-        </div>
-        <h3 className="h3 mt-5">Editing Profile</h3>
-
+        <PageHeader
+          header="Editing Profile"
+        />
         <form className="my-7">
-          <label className="flex flex-col gap-1 mb-4" htmlFor="username">
-            Username
-            <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-              type="text"
-              id="username"
-              autoComplete="off"
-              value={formValue.username}
-              readOnly
-            />
-          </label>
-
-          <label className="flex flex-col gap-1 mb-4" htmlFor="new-password">
-            Password
-            <input
-              className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-              type="password"
-              id="new-password"
-              placeholder="Enter a password"
-              autoComplete="off"
-              value={formValue.password}
-              onChange={(e) =>
-                setFormValue({ ...formValue, password: e.target.value })
+          <Input
+            label={"Username"}
+            type={"text"}
+            id={"username"}
+            value={user.username === null ? "" : user.username}
+            changeValue={(e) => dispatch(addUserName(e.target.value))}
+          />
+          <Input
+            label="Password"
+            type="password"
+            id="new-password"
+            placeholder="Enter a new password"
+            value={user.password === null ? "" : user.password}
+            changeValue={(e) => dispatch(addUserPassword(e.target.value))}
+          />
+          <TeamSelector
+              placeholder={user.team === null && "No team"}
+              team={user.team === null ? "" : user.team}
+              onChange={(choice) =>
+                  dispatch(addUserTeam(choice !== null ? choice : null))
               }
-            />
-          </label>
-          <label htmlFor="team">
-            Team
-            <Select
-              options={options}
-              styles={customStyles}
-              value={{
-                label: formValue.team.name,
-                value: formValue.team.id,
-              }}
-              onChange={(choice) => {
-                setFormValue({
-                  ...formValue,
-                  team: { id: choice.value, name: choice.label },
-                });
-              }}
-            />
-          </label>
+          />
+          <Input
+            label={"Job position"}
+            type={"text"}
+            id={"job-position"}
+            placeholder={user.position === "" ? "No position" : user.position}
+            value={user.position === null ? "" : user.position}
+            changeValue={(e) => dispatch(addUserPosition(e.target.value))}
+          />
         </form>
       </div>
 
       <div className="flex flex-col gap-3">
         <div className="flex gap-3">
-          <button
-            onClick={() => navigate(`/user/permissions/${id}`)}
-            className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
-          >
-            Permissions ({dataPermissionsUserId && dataPermissionsUserId.length}
-            )
-            <AiOutlinePlusCircle className="text-xl" />
-          </button>
-          <button
-            onClick={() => navigate(`/user/settings/${id}`)}
-            className="flex w-full justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
-          >
-            Settings
-            <AiOutlinePlusCircle className="text-xl" />
-          </button>
+          <ButtonDark
+            name={"Permissions"}
+            length={getPermissionsUserId?.length}
+            to={`/user/permissions/${id}`}
+          />
+          <ButtonDark
+            name={"Settings"}
+            length={getUserId.settings?.length}
+            to={`/user/settings/${id}`}
+          />
         </div>
         <button onClick={handleEditUser} className="btn-primary">
           Save

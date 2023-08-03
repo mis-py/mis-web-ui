@@ -1,19 +1,20 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+
 import {
   useGetGroupIdUsersQuery,
   useGetUsersQuery,
   useEditGroupMembersMutation,
-} from "../../redux";
+} from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
-import { addMembers, deleteMembers } from "../../redux/slices/membersSlice";
+import { addMembers, deleteMembers, setMembers } from "redux/slices/membersSlice";
+import USER from "assets/img/user.png";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
-
-import UserImg from "../../assets/img/user.png";
+import SpinnerLoader from "../../components/common/SpinnerLoader";
+import PageHeader from "../../components/common/PageHeader";
 
 const EditMembersGroup = () => {
   const navigate = useNavigate();
@@ -23,14 +24,14 @@ const EditMembersGroup = () => {
   const [searchValue, setSearchValue] = React.useState("");
   const { data: getDataUsers, isLoading: loadingDataUsers } =
     useGetUsersQuery();
-  const { data: getGroupIdUsers } = useGetGroupIdUsersQuery(id);
+  const { data: getGroupIdUsers, refetch: refetchMembers, isLoading: isGroupIdUsersLoading } = useGetGroupIdUsersQuery(id);
   const [editGroupMembers] = useEditGroupMembersMutation();
 
   React.useEffect(() => {
     if (getGroupIdUsers) {
-      getGroupIdUsers.map((user) => dispatch(addMembers(user.id)));
+      dispatch(setMembers(getGroupIdUsers.map((user) => user.id)));
     }
-  }, [getGroupIdUsers]);
+  }, [isGroupIdUsersLoading, getGroupIdUsers, dispatch]);
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {
@@ -43,22 +44,21 @@ const EditMembersGroup = () => {
   const handleEditGroupMembers = async (e) => {
     e.preventDefault();
     if (members) {
-      await editGroupMembers({ id, rest: members }).unwrap();
+      await editGroupMembers({ id, rest: members }).then(() => {
+        refetchMembers().then(() => {
+          navigate("/groups");
+          toast.success("Group members updating");
+        });
+      });
     }
-    navigate("/groups");
-    toast.success("Group members updating");
   };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray cursor-pointer">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <div onClick={() => navigate(-1)}>back</div>
-        </div>
-        <h3 className="h3 mt-5 mb-6">Manage members</h3>
+        <PageHeader
+          header="Manage members"
+        />
         <h3 className="mb-1">Search for member</h3>
         <form>
           <label
@@ -76,57 +76,55 @@ const EditMembersGroup = () => {
           </label>
         </form>
         {loadingDataUsers ? (
-          <h2 className="text-2xl mx-auto">Loading...</h2>
+          <SpinnerLoader />
         ) : (
           <div className="flex flex-col gap-4 pb-[80px]">
-            {getDataUsers &&
-              getDataUsers
-                .filter((el) =>
-                  el.username
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase().trim())
-                )
-                .map((user) => (
-                  <div
-                    key={user.id}
-                    className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
+            {getDataUsers
+              ?.filter((el) =>
+                el.username
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase().trim())
+              )
+              .map((user) => (
+                <div
+                  key={user.id}
+                  className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
+                >
+                  <button
+                    onClick={() => handleAddMembers(user.id)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2"
                   >
-                    <button
-                      onClick={() => handleAddMembers(user.id)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
-                    >
-                      {members.includes(user.id) ? (
-                        <AiOutlineCloseCircle className="text-danger text-2xl" />
-                      ) : (
-                        <AiOutlineCheckCircle className="text-gray text-2xl" />
-                      )}
-                    </button>
-                    <div className="flex justify-between items-center">
-                      <div className="lg:flex lg:items-center">
-                        <div className="flex flex-col lg:pr-[40px]">
-                          <div className="flex items-center gap-4">
-                            <img
-                              className="w-[56px] h-[56px]"
-                              src={UserImg}
-                              alt=""
-                            />
-                            <div className="flex flex-col">
-                              <h5 className="text-white mb-[10px]">
-                                {user.username}
-                              </h5>
-                              <h4 className={`text-xs mb-[6px] text-gray`}>
-                                Position
-                              </h4>
-                              <h4 className="text-gray text-xs">
-                                Added: 10.10.2000
-                              </h4>
+                    {members.includes(user.id) ? (
+                      <AiOutlineCloseCircle className="text-danger text-2xl" />
+                    ) : (
+                      <AiOutlineCheckCircle className="text-gray text-2xl" />
+                    )}
+                  </button>
+                  <div className="flex justify-between items-center">
+                    <div className="lg:flex lg:items-center">
+                      <div className="flex flex-col lg:pr-[40px]">
+                        <div className="flex items-center gap-4">
+                          <img
+                            className="w-[56px] h-[56px]"
+                            src={USER}
+                            alt=""
+                          />
+                          <div className="flex flex-col">
+                            <div className="text-white mb-[10px]">
+                              {user.username}
+                            </div>
+                            <div className={`text-xs mb-[6px] text-gray`}>
+                              {user.position === null
+                                ? "Position name none"
+                                : user.position}
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                ))}
+                </div>
+              ))}
           </div>
         )}
       </div>

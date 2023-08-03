@@ -1,82 +1,66 @@
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useEditTeamMutation, useGetTeamIdQuery } from "redux/index";
 import {
-  useEditTeamMutation,
-  useGetTeamIdQuery,
-  useGetPermissionsUserIdQuery,
-  useGetPermissionsTeamIdQuery,
-} from "../../redux";
-import { addMembers } from "../../redux/slices/membersSlice";
+  addTeamName,
+  setTeamMembers,
+} from "redux/slices/teamSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
-import IconUserImg from "../../assets/img/user.png";
-import Tooltip from "../../components/Tooltip";
+import TeamUsersShortList from "../../components/teams/TeamUsersShortList";
+import PageHeader from "../../components/common/PageHeader";
 
-const EditUser = () => {
+const EditTeam = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const permissions = useSelector(
-    (state) => state.editTeamPermissions.permissions
-  );
-  const members = useSelector((state) => state.membersList.members);
-  const { data: getTeamId, isLoading } = useGetTeamIdQuery(id);
-  const [editTeam] = useEditTeamMutation();
-  const { data: getPermissionsUserId } = useGetPermissionsUserIdQuery(
-    localStorage.getItem("user_id")
-  );
-  const { data: getPermissionsTeamId } = useGetPermissionsTeamIdQuery(id);
+  const team = useSelector((state) => state.team);
 
-  const [formValue, setFormValue] = React.useState({
-    name: "",
-    permissions: [],
-    users_ids: [],
-  });
+  const { data: getTeamId = [], isLoading: loadingTeamId } =
+    useGetTeamIdQuery(id);
+  const [editTeam] = useEditTeamMutation();
 
   React.useEffect(() => {
-    getTeamId &&
-      getTeamId.users.map((user) =>
-        !members.includes(user.id) ? dispatch(addMembers(user.id)) : null
-      );
+    let userIds = [];
 
-    if (getPermissionsUserId && getPermissionsUserId.length === 0) {
-      navigate("/teams");
+    if (
+      !(
+        getTeamId === undefined ||
+        getTeamId.users === undefined ||
+        getTeamId.users.length === 0
+      )
+    ) {
+      userIds = getTeamId.users.map((user) => user.id);
     }
-
-    if (!isLoading) {
-      setFormValue({
-        name: getTeamId.name,
-        permissions: permissions,
-        users_ids: members,
-      });
-    }
-  }, [isLoading]);
+    dispatch(addTeamName(getTeamId.name));
+    dispatch(setTeamMembers(userIds));
+  }, [loadingTeamId, dispatch, getTeamId]);
 
   const handleEditTeam = async (e) => {
     e.preventDefault();
     await editTeam({
       id,
-      ...formValue,
-    }).unwrap();
-    navigate("/teams");
-    toast.success("Team updating");
+      name: team.name,
+      permissions: team.permissions,
+      users_ids: team.members,
+      settings: team.settings,
+    }).then(() => {
+      navigate("/teams");
+      toast.success("Team updating");
+    });
   };
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <div className="flex items-center text-gray">
-          <div className="flex mr-2">
-            <IoIosArrowBack />
-          </div>
-          <Link to="/teams">back</Link>
-        </div>
-        <h3 className="h3 mt-5">Editing Team</h3>
-
+        <PageHeader
+          header={`Editing ${
+            getTeamId === undefined ? "" : getTeamId.name
+          } team`}
+        />
         <form className="my-7">
           <label className="flex flex-col gap-1 mb-4" htmlFor="teamname">
             Team name
@@ -84,44 +68,34 @@ const EditUser = () => {
               className="bg-blackSecond text-gray border-none border-0 rounded px-3 py-2 focus-visible:outline-none"
               type="text"
               id="teamname"
+              name="teamname"
               autoComplete="off"
-              value={formValue.name}
-              onChange={(e) =>
-                setFormValue({ ...formValue, name: e.target.value })
-              }
+              value={team.name === undefined ? "" : team.name}
+              onChange={(e) => dispatch(addTeamName(e.target.value))}
             />
           </label>
 
-          <div className="flex">
-            {!isLoading &&
-              getTeamId.users.map((item) => (
-                <div
-                  key={item.id}
-                  className="group cursor-pointer shadow -ml-1 relative"
-                >
-                  <img className="w-[35px] h-[35px]" src={IconUserImg} alt="" />
-                  <Tooltip name={item.username} />
-                </div>
-              ))}
-          </div>
+          {getTeamId.users !== undefined && Array.isArray(getTeamId.users) && (
+            <TeamUsersShortList users={getTeamId.users} team={team.id} />
+          )}
         </form>
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex justify-between items-center gap-6">
-          <button
-            onClick={() => navigate(`/team/permissions/${id}`)}
+          <Link
+            to={`/team/permissions/${id}`}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Permissions ({getPermissionsTeamId && getPermissionsTeamId.length})
+            Permissions ({team.permissions?.length})
             <AiOutlinePlusCircle className="text-xl" />
-          </button>
-          <button
-            onClick={() => navigate(`/team/members/${id}`)}
+          </Link>
+          <Link
+            to={`/team/members/${id}`}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Members ({members.length})
+            Members ({getTeamId.users?.length})
             <AiOutlinePlusCircle className="text-xl" />
-          </button>
+          </Link>
         </div>
         <button onClick={handleEditTeam} className="btn-primary">
           Save
@@ -131,4 +105,4 @@ const EditUser = () => {
   );
 };
 
-export default EditUser;
+export default EditTeam;

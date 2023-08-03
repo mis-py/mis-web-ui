@@ -1,12 +1,17 @@
 export * from "./store";
-export * from "./usersApi";
-export * from "./teamsApi";
-export * from "./permissionsApi";
-export * from "./appsApi";
-export * from "./groupsApi";
-export * from "./modulesApi";
-export * from "./settingsApi";
+export * from "./api/usersApi";
+export * from "./api/teamsApi";
+export * from "./api/permissionsApi";
+export * from "./api/appsApi";
+export * from "./api/groupsApi";
+export * from "./api/modulesApi";
+export * from "./api/settingsApi";
+export * from "./api/logsApi";
+export * from "./api/modulesApi/consumersApi";
+export * from "./api/modulesApi/tasksApi";
+export * from "./api/modulesApi/timerApi";
 
 //modules
-// export * from "./webcatApi";
-// export * from "./firewallApi";
+export * from "./api/modulesApi/webcatApi";
+export * from "./api/modulesApi/statabotApi";
+export * from "./api/modulesApi/autoAdminApi";

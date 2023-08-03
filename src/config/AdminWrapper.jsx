@@ -1,17 +1,14 @@
 import React from "react";
-import { useGetPermissionsUserIdQuery } from "../redux";
-import { currentUserId } from "../config/variables";
+import { useGetMyPermissionsQuery } from "redux/index";
 
 const AdminWrapper = ({ children }) => {
-  const { data, isLoading } = useGetPermissionsUserIdQuery(currentUserId);
+  const { data = [], isLoading } = useGetMyPermissionsQuery(null, {
+    skip: window.localStorage.getItem("token") === null,
+  });
 
-  if (
-    !isLoading &&
-    data.length !== 0 &&
-    data[0].permission.scope === "core:sudo"
-  ) {
+  if (!isLoading && data && data[0] !== undefined && data[0].permission.scope === "core:sudo") {
     return <>{children}</>;
-  } else if (data && data.length === 0) {
+  } else if (data === []) {
     return false;
   } else {
     return false;
