@@ -88,7 +88,9 @@ export const settingsApi = createApi({
         },
         body: data.body,
       }),
-      invalidatesTags: ["Settings"],
+      invalidatesTags: [
+          { type: "Settings" },
+      ],
     }),
     settingsTeamSet: build.mutation({
       query: (data) => ({

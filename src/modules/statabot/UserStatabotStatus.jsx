@@ -1,11 +1,15 @@
 import React from "react";
 import { confirmAlert } from "react-confirm-alert";
-import { useInviteUserToStatabotMutation, useCreateUsertoStatabotMutation } from "redux/index";
+import { useInviteUserToStatabotMutation,
+         useCreateUsertoStatabotMutation,
+         useGetUsersQuery,
+} from "redux/index";
 import { toast } from "react-toastify";
 
 
 const UserStatabotStatus = (props) => {
     const { user } = props;
+    const { refetch: refetchUsers } = useGetUsersQuery();
 
     const [inviteLink, setInviteLink] = React.useState("");
     const [inviteUser] = useInviteUserToStatabotMutation();
@@ -40,10 +44,16 @@ const UserStatabotStatus = (props) => {
                 "tag": statabotTag,
                 "mis_user_id": id,
             }).then(res => {
-                if (res.error === undefined || res.data !== true) {
-                    toast.error("Some error occured: " + res.error.data.message);
+                if (res.error !== undefined || res.data !== true) {
+                    let msg = "Some error occurred";
+                    if (res.error !== undefined) {
+                        msg += `: ${res.error.data.message}`;
+                    }
+
+                    toast.error(msg);
                 } else {
                     toast.success("User statabot account created successfully");
+                    refetchUsers();
                 }
             });
         };
@@ -87,7 +97,7 @@ const UserStatabotStatus = (props) => {
                     <div className="mt-3">
                         <div className="flex gap-2">
                             <button onClick={() => {handleInviteUser(user)}} className="btn btn-primary">Invite</button>
-                            <button onClick={() => {handleCreatStatabot(user)}} className="btn btn-primary">Creat</button>
+                            <button onClick={() => {handleCreatStatabot(user)}} className="btn btn-primary">Create</button>
                         </div>
 
                         {inviteLink !== undefined && inviteLink.length !== 0 && (

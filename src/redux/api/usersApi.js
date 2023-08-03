@@ -26,13 +26,7 @@ export const usersApi = createApi({
           method: "GET"
         };
       },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: "Users", id })),
-              { type: "Users", id: "LIST" },
-            ]
-          : [{ type: "Users", id: "LIST" }],
+      providesTags: () => [{ type: "Users", id: "LIST" }],
     }),
     getUserId: build.query({
       query: (id) => ({
