@@ -2,6 +2,7 @@ import React from "react";
 import TeamSelector from "../common/TeamSelector";
 import UserSelector from "../common/UserSelector";
 import Input from "../Input";
+import DomainSearch from "./DomainSearch";
 import { useGetResellerBalanceQuery } from "redux/index";
 
 const DomainManagement = (props) => {
@@ -13,6 +14,8 @@ const DomainManagement = (props) => {
     const [team, setTeam] = React.useState({});
     const [user, setUser] = React.useState({});
     const [balance, setBalance] = React.useState(defaultBalance);
+
+    const [domainSearchValue, setDomainSearchValue] = React.useState("");
 
     const {data: getBalance } = useGetResellerBalanceQuery({
         team: team === undefined || team === null || team.value === undefined ? 0 : team.value
@@ -46,7 +49,7 @@ const DomainManagement = (props) => {
                 />
 
                 <UserSelector
-                    labelClass="md:w-[150px]"
+                    labelClass="md:w-[200px]"
                     teamId={team === null ? null : team.value}
                     user={user === null || user.label === undefined ? null : user}
                     placeholder={(user === null || user.label === undefined) && "No user"}
@@ -61,6 +64,18 @@ const DomainManagement = (props) => {
                 type="text"
                 readOnly={true}
                 value={balance === undefined ? "" : `${balance.balance} ${balance.currency}`}
+            />
+
+            <DomainSearch
+                team_id={team === null || team.value === undefined ? null : team.value}
+                domainSearchValue={domainSearchValue}
+                setDomainSearchValue={
+                    (e) => {
+                        if (setDomainSearchValue !== undefined) {
+                            setDomainSearchValue(e.target.value)
+                        }
+                    }
+                }
             />
         </div>
     );
