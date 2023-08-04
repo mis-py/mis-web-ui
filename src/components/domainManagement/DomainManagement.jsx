@@ -17,11 +17,14 @@ const DomainManagement = (props) => {
 
     const [domainSearchValue, setDomainSearchValue] = React.useState("");
 
+    const ressellerBalanceCondition = team === undefined || team === null || team.value === undefined;
     const {data: getBalance } = useGetResellerBalanceQuery({
-        team: team === undefined || team === null || team.value === undefined ? 0 : team.value
+        team: ressellerBalanceCondition ? 0 : team.value
     }, {
-        skip: team === undefined || team === null || team.value === undefined
+        skip: ressellerBalanceCondition
     });
+
+    const [selectedDomains, setSelectedDomains] = React.useState([]);
 
     React.useEffect(() => {
         if (team !== null) {
@@ -40,43 +43,54 @@ const DomainManagement = (props) => {
 
     return (
         <div>
-            <div className="flex flex-wrap items-center gap-3">
-                <TeamSelector
-                    labelClass="flex-grow"
-                    placeholder={(team === null || team.label === undefined) && "No team"}
-                    team={team === null || team.label === undefined ? null : team}
-                    onChange={handleTeamChange}
+            <div className={selectedDomains.length ? "hidden" : null}>
+                <div className="flex flex-wrap items-center gap-3">
+                    <TeamSelector
+                        labelClass="flex-grow"
+                        placeholder={(team === null || team.label === undefined) && "No team"}
+                        team={team === null || team.label === undefined ? null : team}
+                        onChange={handleTeamChange}
+                    />
+
+                    <UserSelector
+                        labelClass="md:w-[200px]"
+                        teamId={team === null ? null : team.value}
+                        user={user === null || user.label === undefined ? null : user}
+                        placeholder={(user === null || user.label === undefined) && "No user"}
+                        onChange={(choice) => setUser(choice)}
+                    />
+                </div>
+
+                <Input
+                    label="Balance"
+                    id="team_balance"
+                    placeholder={team === null || team.label === undefined ? "Team balance" : `${team.label} balance`}
+                    type="text"
+                    readOnly={true}
+                    value={balance === undefined ? "" : `${balance.balance} ${balance.currency}`}
                 />
 
-                <UserSelector
-                    labelClass="md:w-[200px]"
-                    teamId={team === null ? null : team.value}
-                    user={user === null || user.label === undefined ? null : user}
-                    placeholder={(user === null || user.label === undefined) && "No user"}
-                    onChange={(choice) => setUser(choice)}
+                <DomainSearch
+                    team_id={team === null || team.value === undefined ? null : team.value}
+                    domainSearchValue={domainSearchValue}
+                    setDomainSearchValue={
+                        (e) => {
+                            if (setDomainSearchValue !== undefined) {
+                                setDomainSearchValue(e.target.value)
+                            }
+                        }
+                    }
+                    onSetupDomainsCallback={(params) => {
+                        setSelectedDomains(params.selectedDomains);
+                    }}
                 />
             </div>
 
-            <Input
-                label="Balance"
-                id="team_balance"
-                placeholder={team === null || team.label === undefined ? "Team balance" : `${team.label} balance`}
-                type="text"
-                readOnly={true}
-                value={balance === undefined ? "" : `${balance.balance} ${balance.currency}`}
-            />
-
-            <DomainSearch
-                team_id={team === null || team.value === undefined ? null : team.value}
-                domainSearchValue={domainSearchValue}
-                setDomainSearchValue={
-                    (e) => {
-                        if (setDomainSearchValue !== undefined) {
-                            setDomainSearchValue(e.target.value)
-                        }
-                    }
-                }
-            />
+            {selectedDomains.length ? (
+                <div>
+                    <p>1111</p>
+                </div>
+            ) : null}
         </div>
     );
 };

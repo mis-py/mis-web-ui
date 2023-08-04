@@ -67,24 +67,25 @@ const EditUserSettings = () => {
   };
 
   React.useEffect(() => {
-    let _settings = getSettings.map((setting) => {
-      const userSetting = getUserSettings.find(
-          (userSetting) => userSetting.setting.id === setting.id
-      );
+    if (getSettings !== undefined && getSettings.length) {
+      let _settings = getSettings.map((setting) => {
+        const userSetting = getUserSettings.find(
+            (userSetting) => userSetting.setting.id === setting.id
+        );
 
-      if (userSetting) {
-        return {
-          ...setting,
-          value: userSetting.value,
-        };
+        if (userSetting) {
+          return {
+            ...setting,
+            value: userSetting.value,
+          };
+        }
+
+        return setting;
+      });
+
+      if (_settings.length) {
+        dispatch(renderSettings(_settings));
       }
-
-      return setting;
-    });
-
-    try {
-      dispatch(renderSettings(_settings));
-    } catch {
     }
   }, [dispatch, getUserSettings, getSettings]);
 

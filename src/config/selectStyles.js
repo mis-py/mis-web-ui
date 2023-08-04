@@ -1,5 +1,5 @@
 
-export default {
+const styles = {
     option: (provided, state) => ({
         ...provided,
         fontWeight: state.isSelected ? "bold" : "normal",
@@ -30,3 +30,5 @@ export default {
         color: "#757575",
     }),
 };
+
+export default styles;

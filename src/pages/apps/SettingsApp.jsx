@@ -50,20 +50,23 @@ const SettingsApp = () => {
     }
   
     if (!loadingGetSettingsAppId) {
+      const _settings = [];
       getSettingsAppId?.settings.forEach((setting) => {
-        setFormGlobalValue((formGlobalValue) => [...formGlobalValue, setting]);
+        _settings.push(setting);
       });
+
+      setFormGlobalValue(_settings);
     }
   }, [loadingGetSettingsAppId, getSettingsAppId?.enabled, getSettingsAppId?.settings, refetch]);
   
 
   React.useEffect(() => {
-  if (!loadingGetSettingsUserId) {
-    getSettingsUserId?.forEach((item) => {
-      setFormLocalValue((formLocalValue) => [...formLocalValue, item]);
-    });
-  }
-}, [loadingGetSettingsUserId, getSettingsUserId]);
+    if (!loadingGetSettingsUserId) {
+      getSettingsUserId?.forEach((item) => {
+        setFormLocalValue((formLocalValue) => [...formLocalValue, item]);
+      });
+    }
+  }, [loadingGetSettingsUserId, getSettingsUserId]);
 
 
   const handleChange = async (nextChecked) => {
