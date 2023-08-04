@@ -35,7 +35,7 @@ function App() {
                 }, 200);
             }
         }
-    });
+    }, [location.pathname, navigate]);
 
   const isLoading = useSelector(state => state.loading);
   const modulesList = useModuleRoutes();
