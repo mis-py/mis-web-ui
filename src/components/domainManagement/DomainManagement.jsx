@@ -4,6 +4,8 @@ import UserSelector from "../common/UserSelector";
 import Input from "../Input";
 import DomainSearch from "./DomainSearch";
 import { useGetResellerBalanceQuery } from "redux/index";
+import ListItemWrapper from "../common/ListItemWrapper";
+import VPSSelector from "./VPSSelector";
 
 const DomainManagement = (props) => {
     const defaultBalance = {
@@ -88,7 +90,19 @@ const DomainManagement = (props) => {
 
             {selectedDomains.length ? (
                 <div>
-                    <p>1111</p>
+                    {selectedDomains.map(domain => (
+                        <ListItemWrapper
+                            key={domain}
+                        >
+                            <div>Domain: {domain}</div>
+                            <div className="flex gap-3 items-center mt-2">
+                                IP address:
+                                <VPSSelector
+
+                                />
+                            </div>
+                        </ListItemWrapper>
+                    ))}
                 </div>
             ) : null}
         </div>

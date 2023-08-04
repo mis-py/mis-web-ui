@@ -81,7 +81,19 @@ export const autoAdminApi = createApi({
                     body,
                 };
             },
-            providesTags: (result, error) => [{type: "AutoAdminDomains", id: "LIST"}],
+            providesTags: () => [{type: "AutoAdminDomains", id: "LIST"}],
+        }),
+        getVpsList: build.query({
+            query: () => {
+                return {
+                    url: "/auto_admin/vps/",
+                    method: "GET",
+                    headers: {
+                        accept: "application/json",
+                    },
+                };
+            },
+            providesTags: () => [{type: "AutoAdminVPSList", id: "LIST"}],
         }),
     }),
 });
@@ -89,5 +101,6 @@ export const autoAdminApi = createApi({
 export const {
     useGetResellerBalanceQuery,
     useGetAutoAdminExtensionsQuery,
-    useFindAutoAdminDomainsMutation
+    useFindAutoAdminDomainsMutation,
+    useGetVpsListQuery,
 } = autoAdminApi;

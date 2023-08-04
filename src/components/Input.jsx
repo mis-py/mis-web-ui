@@ -3,21 +3,23 @@ import React from "react";
 import Tooltip from "components/Tooltip";
 import { BiPaste } from "react-icons/bi";
 
-const Input = ({
-    label,
-    type,
-    id,
-    placeholder,
-    value,
-    changeValue,
-    readOnly,
-    className,
-    inputClassName,
-    name,
-    children,
-    hasDefault,
-    setDefault
-  }) => {
+const Input = (props) => {
+    const {
+        label,
+        type,
+        id,
+        placeholder,
+        value,
+        changeValue,
+        readOnly,
+        className,
+        inputClassName,
+        name,
+        children,
+        hasDefault,
+        setDefault
+    } = props;
+
   return (
     <label className={`flex flex-col gap-1 mb-4 ${hasDefault ? "relative" : ""} ${className === undefined ? "" : className}`.trim()} htmlFor={id}>
       {label}
