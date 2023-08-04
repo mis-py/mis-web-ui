@@ -16,9 +16,8 @@ const DomainSearch = (props) => {
     const [maxDomainPrice, setMaxDomainPrice] = React.useState(10);
 
     const [findDomains, findDomainsReqData] = useFindAutoAdminDomainsMutation();
-    const [selectedDomains, setSelectedDomains] = React.useState([]);
-
     const [domainsSearchResult, setDomainsSearchResult] = React.useState([]);
+    const [selectedDomains, setSelectedDomains] = React.useState([]);
 
     React.useEffect(() => {
         let _tmp = [];
@@ -43,52 +42,8 @@ const DomainSearch = (props) => {
                 return;
             }
 
+            setSelectedDomains([]);
             setDomainsSearchResult([]);
-            // setDomainsSearchResult([
-            //     {
-            //         "domain": "cart-crypto-test.com",
-            //         "price": 8.57,
-            //         "currency": "USD",
-            //         "is_free": true,
-            //         "is_available": true
-            //     },
-            //     {
-            //         "domain": "crypto-cart-test.com",
-            //         "price": 8.57,
-            //         "currency": "USD",
-            //         "is_free": true,
-            //         "is_available": true
-            //     },
-            //     {
-            //         "domain": "test-cart-crypto.com",
-            //         "price": 8.57,
-            //         "currency": "USD",
-            //         "is_free": true,
-            //         "is_available": true
-            //     },
-            //     {
-            //         "domain": "crypto-test-cart.com",
-            //         "price": 8.57,
-            //         "currency": "USD",
-            //         "is_free": true,
-            //         "is_available": true
-            //     },
-            //     {
-            //         "domain": "cart-test-crypto.com",
-            //         "price": 8.57,
-            //         "currency": "USD",
-            //         "is_free": true,
-            //         "is_available": true
-            //     },
-            //     {
-            //         "domain": "test-crypto-cart.com",
-            //         "price": 8.57,
-            //         "currency": "USD",
-            //         "is_free": true,
-            //         "is_available": true
-            //     }
-            // ]);
-
             await findDomains({
                 team_id: props.team_id,
                 q: props.domainSearchValue,
@@ -101,7 +56,7 @@ const DomainSearch = (props) => {
         }, 500);
 
         return () => clearTimeout(timer);
-    }, [selectedDomainZonesValues, maxDomainPrice, props.domainSearchValue, props.team_id]);
+    }, [selectedDomainZonesValues, maxDomainPrice, props.domainSearchValue, props.team_id, findDomains]);
 
     const handleDomainCheckboxCheck = (checkbox) => {
         const isChecked = checkbox.checked;
@@ -114,9 +69,18 @@ const DomainSearch = (props) => {
         }
     };
 
-    React.useEffect(() => {
-        console.log(selectedDomains);
-    }, [selectedDomains]);
+    const handleSetupButtonClick = () => {
+        const type = typeof props.onSetupDomainsCallback;
+
+        if (type === "function") {
+            props.onSetupDomainsCallback({
+                selectedDomains,
+                domainsSearchResult
+            });
+        } else {
+            console.error(`props.onSetupDomainsCallback should be a function, ${type} given`);
+        }
+    };
 
     return (
         <div>
@@ -154,20 +118,27 @@ const DomainSearch = (props) => {
                 </label>
             </div>
 
-            {findDomainsReqData.isLoading && <SpinnerLoader />}
+            {findDomainsReqData.isLoading
+                ? <SpinnerLoader />
+                : (domainsSearchResult !== undefined && domainsSearchResult.length ? <div className="flex flex-col gap-4">
+                    {domainsSearchResult.map(domain => (
+                        <ListItemWrapper
+                            key={domain.domain}
+                            className={domain.is_available === false ? "opacity-60" : ""}
+                        >
+                            <input value={domain.domain} type="checkbox" onChange={(e) => handleDomainCheckboxCheck(e.target)} />
 
-            {domainsSearchResult.length ? <div className="flex flex-col gap-4">
-                {domainsSearchResult.map(domain => (
-                    <ListItemWrapper
-                        key={domain.domain}
-                        className={domain.is_free === false ? "opacity-60" : ""}
-                    >
-                        <input value={domain.domain} type="checkbox" onChange={(e) => handleDomainCheckboxCheck(e.target)} />
+                            {JSON.stringify(domain)}
+                        </ListItemWrapper>
+                    ))}
+                </div> : null)
+            }
 
-                        {JSON.stringify(domain)}
-                    </ListItemWrapper>
-                ))}
-            </div> : null}
+            {selectedDomains !== undefined
+                && selectedDomains.length
+                ? <button onClick={handleSetupButtonClick} className="btn-primary mt-4">
+                    Setup domains
+                </button> : null}
         </div>
     );
 };

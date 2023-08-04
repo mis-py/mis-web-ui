@@ -28,8 +28,12 @@ import membersSlice from "./slices/membersSlice";
 import { startLoading, stopLoading } from './slices/loadingSlice';
 import loadingReducer from './slices/loadingSlice';
 
-const mutationLoadingMiddleware = ({ dispatch }) => next => action => {
-    if (~action.type.indexOf("executeMutation")) {
+const mutationLoadingMiddleware = (params) => next => action => {
+    const { dispatch } = params;
+
+    if (~action.type.indexOf("executeMutation")
+        && (action.meta.arg === undefined || action.meta.arg.endpointName.indexOf("find") === -1)
+    ) {
         if (isPending(action)) {
             dispatch(startLoading());
         }

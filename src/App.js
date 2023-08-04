@@ -81,8 +81,3 @@ function App() {
 }
 
 export default App;
-// {userRoutes
-//     .concat(teamRoutes, groupRoutes, appRoutes, moduleRoutes, taskRoutes)
-//     .map((route, index) => (
-
-//     ))}
