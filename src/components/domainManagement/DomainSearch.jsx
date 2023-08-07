@@ -49,7 +49,7 @@ const DomainSearch = (props) => {
                 q: props.domainSearchValue,
                 zones: selectedDomainZonesValues,
                 max_price: maxDomainPrice,
-                quantity: 1,
+                quantity: 3,
             }).then(res => {
                 setDomainsSearchResult(res.data);
             });
@@ -75,7 +75,8 @@ const DomainSearch = (props) => {
         if (type === "function") {
             props.onSetupDomainsCallback({
                 selectedDomains,
-                domainsSearchResult
+                domainsSearchResult,
+                maxDomainPrice,
             });
         } else {
             console.error(`props.onSetupDomainsCallback should be a function, ${type} given`);

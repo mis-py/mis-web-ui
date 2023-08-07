@@ -81,7 +81,7 @@ export const autoAdminApi = createApi({
                     body,
                 };
             },
-            providesTags: () => [{type: "AutoAdminDomains", id: "LIST"}],
+            invalidatesTags: () => [{type: "AutoAdminDomains", id: "LIST"}],
         }),
         getVpsList: build.query({
             query: () => {
@@ -95,6 +95,34 @@ export const autoAdminApi = createApi({
             },
             providesTags: () => [{type: "AutoAdminVPSList", id: "LIST"}],
         }),
+        setupAutoAdminDomains: build.mutation({
+            query: (data) => {
+                let body = {
+                    reseller: {
+                        service: "openprovider",
+                        team_id: data.team_id,
+                        user_id: data.user_id || 0,
+                    },
+                    // dns_controller: {
+                    //     service: "cloudflare",
+                    //     team_id: data.team_id,
+                    // },
+                    domains: data.domains,
+                    max_price: data.max_price,
+                    price_currency: "USD",
+                };
+
+                return {
+                    url: "/auto_admin/setup/domains",
+                    method: "POST",
+                    headers: {
+                        accept: "application/json",
+                    },
+                    body
+                };
+            },
+            invalidatesTags: () => [{type: "AutoAdminDomains", id: "LIST"}],
+        }),
     }),
 });
 
@@ -103,4 +131,5 @@ export const {
     useGetAutoAdminExtensionsQuery,
     useFindAutoAdminDomainsMutation,
     useGetVpsListQuery,
+    useSetupAutoAdminDomainsMutation,
 } = autoAdminApi;

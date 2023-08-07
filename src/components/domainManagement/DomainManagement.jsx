@@ -3,9 +3,14 @@ import TeamSelector from "../common/TeamSelector";
 import UserSelector from "../common/UserSelector";
 import Input from "../Input";
 import DomainSearch from "./DomainSearch";
-import { useGetResellerBalanceQuery } from "redux/index";
+import {
+    useGetResellerBalanceQuery,
+    useSetupAutoAdminDomainsMutation,
+} from "redux/index";
 import ListItemWrapper from "../common/ListItemWrapper";
 import VPSSelector from "./VPSSelector";
+import SpinnerLoader from "../common/SpinnerLoader";
+import {toast} from "react-toastify";
 
 const DomainManagement = (props) => {
     const defaultBalance = {
@@ -17,6 +22,7 @@ const DomainManagement = (props) => {
     const [user, setUser] = React.useState({});
     const [balance, setBalance] = React.useState(defaultBalance);
 
+    const [maxDomainPrice, setMaxDomainPrice] = React.useState(10);
     const [domainSearchValue, setDomainSearchValue] = React.useState("");
 
     const ressellerBalanceCondition = team === undefined || team === null || team.value === undefined;
@@ -25,8 +31,10 @@ const DomainManagement = (props) => {
     }, {
         skip: ressellerBalanceCondition
     });
+    const [setupDomainsMutation, setupDomainsMutationData] = useSetupAutoAdminDomainsMutation();
 
     const [selectedDomains, setSelectedDomains] = React.useState([]);
+    const [domainVps, setDomainVps] = React.useState({});
 
     React.useEffect(() => {
         if (team !== null) {
@@ -42,6 +50,43 @@ const DomainManagement = (props) => {
             setBalance(defaultBalance);
         }
     };
+
+    const handleVpsSelector = (domain, choice) => {
+        let _vps = JSON.parse(JSON.stringify(domainVps));
+
+        if (choice === undefined || choice === null) {
+            delete _vps[domain];
+        } else {
+            _vps[domain] = choice.value;
+        }
+
+        setDomainVps(_vps);
+    };
+
+    const handleSetupDomainsButton = async () => {
+        const domains = [];
+        Object.entries(domainVps).forEach(([domain, vps]) => {
+            domains.push({
+                name: domain,
+                vps_id: vps,
+            });
+        });
+
+        await setupDomainsMutation({
+            team_id: team.value,
+            user_id: user.value,
+            max_price: maxDomainPrice,
+            domains,
+        }).then(res => {
+            if (res.error === undefined) {
+                toast.success("Domains setup in progress");
+            } else if (res.error.data.detail !== undefined) {
+                toast.error(res.error.data.detail);
+            } else {
+                toast.error(res.error.data.message);
+            }
+        });
+    }
 
     return (
         <div>
@@ -84,6 +129,7 @@ const DomainManagement = (props) => {
                     }
                     onSetupDomainsCallback={(params) => {
                         setSelectedDomains(params.selectedDomains);
+                        setMaxDomainPrice(params.maxDomainPrice);
                     }}
                 />
             </div>
@@ -98,11 +144,21 @@ const DomainManagement = (props) => {
                             <div className="flex gap-3 items-center mt-2">
                                 IP address:
                                 <VPSSelector
-
+                                    onChange={(choice) => {handleVpsSelector(domain, choice)}}
                                 />
                             </div>
                         </ListItemWrapper>
                     ))}
+
+                    {selectedDomains.length === Object.keys(domainVps).length
+                        && setupDomainsMutationData.isLoading === false
+                        && (
+                        <button onClick={handleSetupDomainsButton} className="btn-primary mt-4">
+                            Setup domains
+                        </button>
+                    )}
+
+                    {setupDomainsMutationData.isLoading ? <SpinnerLoader /> : null}
                 </div>
             ) : null}
         </div>
