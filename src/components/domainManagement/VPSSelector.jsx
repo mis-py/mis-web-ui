@@ -5,7 +5,7 @@ import { useGetVpsListQuery } from "redux/index";
 import customStyles from "config/selectStyles";
 import Select from "react-select";
 
-const Input = (props) => {
+const VPSSelector = (props) => {
     const { data: vpsLists = [] } = useGetVpsListQuery();
     const [options, setOptions] = React.useState([]);
 
@@ -20,16 +20,15 @@ const Input = (props) => {
         }
     }, [vpsLists]);
 
-    console.log(vpsLists);
-
     return (
         <Select
             isClearable
             options={options}
             styles={customStyles}
             placeholder="Select ip address..."
+            onChange={props.onChange}
         />
     );
 };
 
-export default Input;
+export default VPSSelector;
