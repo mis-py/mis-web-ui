@@ -4,24 +4,25 @@ import {
   useGetMeQuery,
   useGetSettingsQuery,
   useSettingUserSetMutation,
+  useSaveUserPhotoMutation,
 } from "redux/index";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Input from "components/Input"
-// import USER from "assets/img/user.png";
+import USER from "assets/img/user.png";
 import PageHeader from "../../components/common/PageHeader";
-
+import {MdAddAPhoto} from "react-icons/md"
 import "react-confirm-alert/src/react-confirm-alert.css";
+import { baseUrl } from "config/variables";
 
 const ProfileUser = () => {
 
-  const { data: getUserId = [], isLoading: loadingUserId } = useGetMeQuery();
+  const { data: getUserId = [], isLoading: loadingUserId, refetch: refetchProfileData } = useGetMeQuery();
   const { data: getSettings = [], isLoading: loadingSettings } =
       useGetSettingsQuery();
 
   const [editUserSettingsSet] = useSettingUserSetMutation();
   const [settingsValue, setSettingsValue] = React.useState([]);
-  const [avatar, setAvatar] = React.useState(null);
   const { id } = useParams();
   const setDefaultSetting = function(item) {
     setSettingsValue(settingsValue.map((settingValue) => {
@@ -32,6 +33,8 @@ const ProfileUser = () => {
       return settingValue;
     }));
   };
+
+  const [updateUserPhoto] = useSaveUserPhotoMutation();
 
   React.useEffect(() => {
 
@@ -91,18 +94,34 @@ const ProfileUser = () => {
   };
   
 
-  const handleAvatarChange = (e) => {
+  const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
     if (file && allowedTypes.includes(file.type)) {
-      // Создаем объект URL, чтобы отобразить изображение в профиле
-      const imageUrl = URL.createObjectURL(file);
-      setAvatar(imageUrl);
+      let formData = new FormData();
+      formData.append("photo", file);
+
+      await updateUserPhoto({id, formData}).then(res => {
+        if (res.error === undefined) {
+          toast.success("Profile photo updated");
+          refetchProfileData();
+        } else {
+          toast.error("Profile photo was not updated. Some error occurred");
+        }
+      });
+
     } else {
       alert('Пожалуйста, выберите файл с расширением .jpeg, .png или .gif.');
     }
   };
+
+  let user_bg = '';
+  if (getUserId === undefined || getUserId.photo_path === undefined || getUserId.photo_path.length === 0) {
+    user_bg = USER;
+  } else {
+    user_bg = `${baseUrl}/${getUserId.photo_path}`;
+  }
 
   return (
       <div className="py-6 min-h-screen h-full flex flex-col justify-between">
@@ -110,13 +129,21 @@ const ProfileUser = () => {
           <PageHeader
               header="Profile"
           />
-          <div>
-            {avatar ? (
-              <img src={avatar} alt="Аватар" />
-            ) : (
-              <div>Здесь будет отображаться ваш аватар</div>
-            )}
-              <input type="file" onChange={handleAvatarChange} accept="image/jpeg, image/png, image/gif" />
+
+          <div
+            className="w-[64px] h-[64px] rounded-full bg-no-repeat bg-cover bg-center relative"
+            style={{ backgroundImage: `url(${user_bg})` }}
+          >
+            <input
+              id="avatar-upload"
+              type="file"
+              onChange={handleAvatarChange}
+              accept="image/jpeg, image/jpg, image/png, image/gif"
+              style={{ display: 'none' }}
+            />
+            <label htmlFor="avatar-upload">
+              <MdAddAPhoto className="text-2xl text-gray cursor-pointer absolute bottom-0 right-0 mr-1 mb-1 bg-white rounded-full p-1" />
+            </label>
           </div>
 
           <form className="mt-7">

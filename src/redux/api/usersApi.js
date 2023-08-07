@@ -65,6 +65,22 @@ export const usersApi = createApi({
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
     }),
+    saveUserPhoto: build.mutation({
+      query: ({
+        id,
+        formData
+      }) => {
+        return {
+          url: `/users/${id}/photo`,
+          method: "POST",
+          // headers: { 
+          //   "content-type": "multipart/form-data",
+          // },
+          body: formData,
+        };
+      },
+      invalidatesTags: [{ type: "Users", id: "LIST" }],
+    }),
     userLogout: build.mutation({
       query: () => ({
         url: "/auth/logout",
@@ -85,5 +101,6 @@ export const {
   useAddUserMutation,
   useEditUserMutation,
   useDeleteUserMutation,
+  useSaveUserPhotoMutation,
   useUserLogoutMutation,
 } = usersApi;
