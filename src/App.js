@@ -19,6 +19,7 @@ import { taskRoutes } from "routes/tasks";
 import { useSelector } from 'react-redux';
 import LoadingOverlay from "./components/common/LoadingOverlay";
 import { consumersRoutes } from "routes/consumers";
+import { initiateWebSocket } from "./config/WebSocketConnection";
 
 function App() {
   const navigate = useNavigate();
@@ -36,6 +37,14 @@ function App() {
             }
         }
     }, [location.pathname, navigate]);
+
+    const webSocket = initiateWebSocket();
+
+    if (webSocket !== undefined) {
+        webSocket.onopen = function (e) {
+            webSocket.send('{"subscribe": "notifications"}');
+        }
+    }
 
   const isLoading = useSelector(state => state.loading);
   const modulesList = useModuleRoutes();
