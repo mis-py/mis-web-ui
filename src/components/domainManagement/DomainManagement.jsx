@@ -47,6 +47,7 @@ const DomainManagement = (props) => {
                 if (Object.values(domains).every(domain => domain.state === "done_finish")) {
                     toast.success("All domains have been successfully set up!");
                     setSelectedDomains([]);
+                    setDomainSearchValue("");
                 }
             }
         };
