@@ -5,7 +5,7 @@ import { useGetAppLogsQuery, useGetAppByIdQuery } from "redux/index";
 
 import {useParams} from "react-router-dom";
 
-import LogItem from "components/logs/LogItem";
+import LogItem from "../../components/logs/LogItem";
 
 const LogsApp = () => {
 
@@ -33,18 +33,18 @@ const LogsApp = () => {
         <button onClick={() => {refetchLogs()}}>Reload</button>
 
         <pre className="whitespace-break-spaces">
-        {terminalValue !== undefined && terminalValue.split("\n").reverse().forEach(item => {
+        {terminalValue !== undefined && terminalValue.split("\n").reverse().map(item => {
           if (item.trim().length === 0) {
-            return;
+            return null;
           }
 
           try {
-          const data = JSON.parse(item);
+            const data = JSON.parse(item);
 
-          return <LogItem
-                    key={`log-item-${data.record.line}-${data.record.level.name}-${data.record.elapsed.seconds}-${data.record.message.replace(" ", "-")}`}
-                    logData={data}
-                  />;
+            return <LogItem
+                      key={`log-item-${data.record.line}-${data.record.level.name}-${data.record.elapsed.seconds}-${data.record.message.replace(" ", "-")}`}
+                      logData={data}
+                    />;
           } catch(e) {
             const rand = Math.random();
             return (<p className="mb-2" key={`log-item-text-${rand}`}>{item}</p>);

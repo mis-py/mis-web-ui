@@ -11,11 +11,34 @@ import ListItemWrapper from "../common/ListItemWrapper";
 import VPSSelector from "./VPSSelector";
 import SpinnerLoader from "../common/SpinnerLoader";
 import {toast} from "react-toastify";
+import webSocket from "../../config/WebSocketConnection";
 
 const DomainManagement = (props) => {
     const defaultBalance = {
         balance: 0,
         currency: "USD",
+    };
+
+    const [setupProgress, setSetupProgress] = React.useState({});
+
+    webSocket.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+
+        if (data.data.message.body.domain !== undefined) {
+            let domains = JSON.parse(JSON.stringify(setupProgress));
+            domains[data.data.message.body.domain] = {
+                message: data.data.message.body.status
+                    + " " + data.data.message.body.state
+                    + " " + data.data.message.body.detail,
+                state: `${data.data.message.body.status}_${data.data.message.body.state}`,
+            };
+            setSetupProgress(domains);
+
+            if (Object.values(domains).every(domain => domain.state === "done_finish")) {
+                toast.success("All domains have been successfully set up!");
+                setSelectedDomains([]);
+            }
+        }
     };
 
     const [team, setTeam] = React.useState({});
@@ -80,6 +103,13 @@ const DomainManagement = (props) => {
         }).then(res => {
             if (res.error === undefined) {
                 toast.success("Domains setup in progress");
+
+                let _tmp = {};
+                Object.entries(domainVps).forEach(([domain]) => {
+                    _tmp[domain] = { state: 'in_progress' };
+                });
+                setSetupProgress(_tmp);
+
             } else if (res.error.data.detail !== undefined) {
                 toast.error(res.error.data.detail);
             } else {
@@ -146,6 +176,10 @@ const DomainManagement = (props) => {
                                 <VPSSelector
                                     onChange={(choice) => {handleVpsSelector(domain, choice)}}
                                 />
+
+                                {setupProgress[domain] !== undefined && (
+                                    setupProgress[domain].state === 'in_progress' ? "In progress..." : setupProgress[domain].message
+                                )}
                             </div>
                         </ListItemWrapper>
                     ))}
@@ -153,7 +187,7 @@ const DomainManagement = (props) => {
                     {selectedDomains.length === Object.keys(domainVps).length
                         && setupDomainsMutationData.isLoading === false
                         && (
-                        <button onClick={handleSetupDomainsButton} className="btn-primary mt-4">
+                        <button onClick={() => { handleSetupDomainsButton(); }} className="btn-primary mt-4">
                             Setup domains
                         </button>
                     )}
