@@ -125,11 +125,15 @@ const DomainSearch = (props) => {
                     {domainsSearchResult.map(domain => (
                         <ListItemWrapper
                             key={domain.domain}
-                            className={domain.is_available === false ? "opacity-60" : ""}
+                            className={domain.is_available === false ? "opacity-40" : "" }
                         >
-                            <input value={domain.domain} type="checkbox" onChange={(e) => handleDomainCheckboxCheck(e.target)} />
-
-                            {JSON.stringify(domain)}
+                            <div className="flex flex-nowrap items-center">
+                              <input value={domain.domain} type="checkbox" onChange={(e) => handleDomainCheckboxCheck(e.target)}/>
+                              <p className="pl-6">{domain.domain}</p>
+                              <p className="ml-auto text-primary">{domain.price}{domain.currency}</p>
+                            </div>
+                            
+                            {/* {JSON.stringify(domain)} */}
                         </ListItemWrapper>
                     ))}
                 </div> : null)
