@@ -7,6 +7,10 @@ const tabs = [
         label: 'Domain management',
         Component: React.lazy(() => import("components/domainManagement/DomainManagement"))
     },
+    {
+        label: 'Domain dashboard',
+        Component: React.lazy(() => import("components/domainManagement/DomainDashboard"))
+    },
 ];
 
 const Binom = () => {
