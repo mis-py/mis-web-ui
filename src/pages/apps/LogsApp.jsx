@@ -32,7 +32,6 @@ const LogsApp = () => {
 
         <button onClick={() => {refetchLogs()}}>Reload</button>
 
-        <pre className="whitespace-break-spaces">
         {terminalValue !== undefined && terminalValue.split("\n").reverse().map(item => {
           if (item.trim().length === 0) {
             return null;
@@ -50,7 +49,6 @@ const LogsApp = () => {
             return (<p className="mb-2" key={`log-item-text-${rand}`}>{item}</p>);
           }
         })}
-        </pre>
       </div>
     </div>
   );
