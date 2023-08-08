@@ -1,7 +1,15 @@
+import { baseUrl } from "./variables";
 
-import {baseUrl} from "./variables";
-const token = localStorage.getItem("token");
+let webSocket;
 
-const webSocket = new WebSocket(baseUrl.replace("http", "ws") + `/ws/?token=${token}`)
+export function initiateWebSocket() {
+    const token = localStorage.getItem("token");
+
+    if (token && webSocket === undefined) {
+        webSocket = new WebSocket(baseUrl.replace("http", "ws") + `/ws/?token=${token}`);
+    }
+
+    return webSocket;
+}
 
 export default webSocket;

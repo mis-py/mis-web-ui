@@ -11,7 +11,7 @@ import ListItemWrapper from "../common/ListItemWrapper";
 import VPSSelector from "./VPSSelector";
 import SpinnerLoader from "../common/SpinnerLoader";
 import {toast} from "react-toastify";
-import webSocket from "../../config/WebSocketConnection";
+import { initiateWebSocket } from "config/WebSocketConnection";
 
 const DomainManagement = (props) => {
     const defaultBalance = {
@@ -21,25 +21,29 @@ const DomainManagement = (props) => {
 
     const [setupProgress, setSetupProgress] = React.useState({});
 
-    webSocket.onmessage = (e) => {
-        const data = JSON.parse(e.data);
+    const webSocket = initiateWebSocket();
 
-        if (data.data.message.body.domain !== undefined) {
-            let domains = JSON.parse(JSON.stringify(setupProgress));
-            domains[data.data.message.body.domain] = {
-                message: data.data.message.body.status
-                    + " " + data.data.message.body.state
-                    + " " + data.data.message.body.detail,
-                state: `${data.data.message.body.status}_${data.data.message.body.state}`,
-            };
-            setSetupProgress(domains);
+    if (webSocket !== undefined) {
+        webSocket.onmessage = (e) => {
+            const data = JSON.parse(e.data);
 
-            if (Object.values(domains).every(domain => domain.state === "done_finish")) {
-                toast.success("All domains have been successfully set up!");
-                setSelectedDomains([]);
+            if (data.data.message.body.domain !== undefined) {
+                let domains = JSON.parse(JSON.stringify(setupProgress));
+                domains[data.data.message.body.domain] = {
+                    message: data.data.message.body.status
+                        + " " + data.data.message.body.state
+                        + " " + data.data.message.body.detail,
+                    state: `${data.data.message.body.status}_${data.data.message.body.state}`,
+                };
+                setSetupProgress(domains);
+
+                if (Object.values(domains).every(domain => domain.state === "done_finish")) {
+                    toast.success("All domains have been successfully set up!");
+                    setSelectedDomains([]);
+                }
             }
-        }
-    };
+        };
+    }
 
     const [team, setTeam] = React.useState({});
     const [user, setUser] = React.useState({});
