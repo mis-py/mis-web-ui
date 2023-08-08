@@ -44,7 +44,7 @@ const EditUser = () => {
       );
       dispatch(addUserPosition(getUserId.position));
     }
-  }, [loadingGetUserId, dispatch, getUserId.position, getUserId.team, getUserId.username]);
+  }, [loadingGetUserId, dispatch, getUserId]);
 
   const handleEditUser = async (e) => {
     e.preventDefault();
