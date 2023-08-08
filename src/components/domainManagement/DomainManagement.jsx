@@ -27,6 +27,13 @@ const DomainManagement = (props) => {
         webSocket.onmessage = (e) => {
             const data = JSON.parse(e.data);
 
+            if (data.data === undefined
+                || data.data.message === undefined
+                || data.data.message.body === undefined
+            ) {
+                return;
+            }
+
             if (data.data.message.body.domain !== undefined) {
                 let domains = JSON.parse(JSON.stringify(setupProgress));
                 domains[data.data.message.body.domain] = {
