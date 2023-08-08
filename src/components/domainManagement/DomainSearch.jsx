@@ -53,7 +53,7 @@ const DomainSearch = (props) => {
             }).then(res => {
                 setDomainsSearchResult(res.data);
             });
-        }, 500);
+        }, 1000);
 
         return () => clearTimeout(timer);
     }, [selectedDomainZonesValues, maxDomainPrice, props.domainSearchValue, props.team_id, findDomains]);
