@@ -17,6 +17,7 @@ import { tasksApi } from "./api/modulesApi/tasksApi";
 import { timerApi } from "./api/modulesApi/timerApi";
 import { statabotApi } from "./api/modulesApi/statabotApi";
 import { autoAdminApi } from "./api/modulesApi/autoAdminApi";
+import { binomApi } from "./api/modulesApi/binomDomainApi";
 
 //slices
 import { authReducer } from "./slices/authSlice";
@@ -67,6 +68,7 @@ export const store = configureStore({
     [timerApi.reducerPath]: timerApi.reducer,
     [statabotApi.reducerPath]: statabotApi.reducer,
     [autoAdminApi.reducerPath]: autoAdminApi.reducer,
+    [binomApi.reducerPath]: binomApi.reducer,
 
     //slices
     auth: authReducer,
@@ -96,6 +98,7 @@ export const store = configureStore({
       timerApi.middleware,
       statabotApi.middleware,
       autoAdminApi.middleware,
+      binomApi.middleware,
 
       mutationLoadingMiddleware,
     ]),

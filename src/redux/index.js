@@ -15,3 +15,4 @@ export * from "./api/modulesApi/timerApi";
 export * from "./api/modulesApi/webcatApi";
 export * from "./api/modulesApi/statabotApi";
 export * from "./api/modulesApi/autoAdminApi";
+export * from "./api/modulesApi/binomDomainApi";
