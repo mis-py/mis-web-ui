@@ -1,6 +1,7 @@
 import React from "react";
 import {
-    useGetBinomDomainsQuery
+    useGetBinomDomainsQuery,
+    useGetGeosListQuery
 } from "redux/index";
 import SpinnerLoader from "../common/SpinnerLoader";
 import ListItemWrapper from "../common/ListItemWrapper";
@@ -8,7 +9,18 @@ import Input from "../Input";
 
 const DomainDashboard = () => {
     const { data: binomDomains } = useGetBinomDomainsQuery();
+    const { data: binomGeos } = useGetGeosListQuery();
+
     const [domainsList, setDomainsList] = React.useState([]);
+    const [geosList, setGeosList] = React.useState([]);
+
+    React.useEffect(() => {
+        if (binomGeos !== undefined) {
+            setGeosList(binomGeos);
+        } else {
+            setGeosList([]);
+        }
+    }, [binomGeos]);
 
     React.useEffect(() => {
         if (binomDomains !== undefined) {
@@ -17,6 +29,14 @@ const DomainDashboard = () => {
             setDomainsList([]);
         }
     }, [binomDomains]);
+
+    const handleGeoChange = (e, domain) => {
+        if (window.confirm(`Do you want to change GEO for ${domain.domain} (${domain.ip}) domain?`)) {
+            alert("Change GEO is in process");
+        } else {
+            e.preventDefault();
+        }
+    };
 
     return (
         domainsList.length === 0 ? (
@@ -114,12 +134,12 @@ const DomainDashboard = () => {
 
 
                         {domain.current_geo === null ? null : (<div className="flex gap-4">
-                            <div className="flex-grow w-[50%]">
+                            <div className="flex-grow w-[50%] mb-4">
                                 Current GEO
                                 <span className="block body-2 text-gray">GEO: {domain.current_geo.name}</span>
                             </div>
 
-                            <div className="flex-grow w-[50%]">
+                            <div className="flex-grow w-[50%] mb-4">
                                 Check results
                                 <span className="flex gap-1.5">
                                     {Object.entries(domain.current_geo.task_check_statuses).map(([key, val]) => (
@@ -132,6 +152,23 @@ const DomainDashboard = () => {
                                 </span>
                             </div>
                         </div>)}
+
+                        {geosList.length === 0
+                            ? null
+                            : (
+                                <div>
+                                    Change geo
+                                    <select onChange={(e) => { handleGeoChange(e, domain) }} className="text-black block mt-1 min-w-[110px]">
+                                        <option value="">---</option>
+                                        {geosList.map(geo => (
+                                            <option
+                                                key={`change_geo_${geo.id}_${domain.id}`}
+                                                value={geo.id}>{geo.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )
+                        }
                     </ListItemWrapper>
                 ))}
             </div>)
