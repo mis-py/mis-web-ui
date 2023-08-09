@@ -81,7 +81,6 @@ const UserItem = ({ user, index, showEdit, setShowEdit, dots, ...props }) => {
         <div className="lg:flex lg:items-center">
           <div className="flex flex-col">
             <div className="flex items-center gap-4">
-              {console.log(user)}
               <AvatarUser
                 userData={user}
                 icon={false}
