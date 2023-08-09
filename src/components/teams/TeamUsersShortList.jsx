@@ -2,6 +2,8 @@ import React from "react";
 import Tooltip from "components/Tooltip";
 import { Link } from "react-router-dom";
 
+import AvatarUser from "components/users/AvatarUser";
+
 const PermissionLabel = (props) => {
     return (
         <>
@@ -16,11 +18,13 @@ const PermissionLabel = (props) => {
                                 : `/users/${item.id}`
                             }
                         >
-                            <img
-                                className="w-[35px] h-[35px]"
-                                src={require("assets/img/user.png")}
-                                alt={item.username}
+                            <AvatarUser
+                                userData={item}
+                                icon={false}
+                                width={35}
+                                height={35}
                             />
+
                             <Tooltip name={item.username} />
                         </Link>
                     ))}

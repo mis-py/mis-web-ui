@@ -39,17 +39,6 @@ export const logsApi = createApi({
           responseHandler: "text",
         };
       },
-      // transformResponse: (response, meta, arg) => {
-      //   meta.response.headers.forEach(item => {
-      //     console.log(item)
-      //   })
-      //
-      //   console.log(meta);
-      //
-      //   // console.log({filename: meta.response.headers.entries(), response});
-      //
-      //   return {filename: meta.response.headers.filename, response};
-      // },
       providesTags: (result, error, { id }) => {
         const tags = [{ type: "Logs", id: "LIST" }];
 

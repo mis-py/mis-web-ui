@@ -45,7 +45,7 @@ export const userSlice = createSlice({
       }
     },
     editSettingsUser: (state, action) => {
-      console.log(action);
+      // console.log(action);
     },
     resetSettings: (state) => {
       state.settings = [];
