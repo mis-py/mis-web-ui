@@ -8,7 +8,7 @@ import { useDeleteUserMutation } from "redux/index";
 import AdminWrapper from "config/AdminWrapper";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { baseUrl } from "config/variables";
+import AvatarUser from "./AvatarUser";
 
 const UserItem = ({ user, index, showEdit, setShowEdit, dots, ...props }) => {
   const navigate = useNavigate();
@@ -81,10 +81,10 @@ const UserItem = ({ user, index, showEdit, setShowEdit, dots, ...props }) => {
         <div className="lg:flex lg:items-center">
           <div className="flex flex-col">
             <div className="flex items-center gap-4">
-              <img
-                className="w-[56px] h-[56px] rounded-full"
-                src={user.photo_path !== null ? `${baseUrl}/${user.photo_path}`: require("assets/img/user.png")}
-                alt=""
+              {console.log(user)}
+              <AvatarUser
+                userData={user}
+                icon={false}
               />
               <div className="flex flex-col">
                 <div className="text-white mb-[10px]">{user.username}</div>

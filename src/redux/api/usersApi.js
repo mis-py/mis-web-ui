@@ -82,15 +82,12 @@ export const usersApi = createApi({
     }),
     saveUserPhoto: build.mutation({
       query: ({
-        id,
+        userId,
         formData
       }) => {
         return {
-          url: `/users/${id}/photo`,
+          url: `/users/${userId}/photo`,
           method: "POST",
-          // headers: { 
-          //   "content-type": "multipart/form-data",
-          // },
           body: formData,
         };
       },
