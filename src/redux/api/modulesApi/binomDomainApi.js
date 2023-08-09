@@ -41,10 +41,25 @@ export const binomApi = createApi({
             },
             providesTags: () => [{ type: "BinomDomains", id: "LIST" }],
         }),
+
+        // get GEOs list
+        getGeosList: build.query({
+            query: () => {
+                return {
+                    url: `/binom_companion/geo`,
+                    method: "GET",
+                    headers: {
+                        accept: "application/json",
+                    },
+                };
+            },
+            providesTags: () => [{ type: "Geo", id: "LIST" }],
+        }),
     }),
 
 });
 
 export const {
-    useGetBinomDomainsQuery
+    useGetBinomDomainsQuery,
+    useGetGeosListQuery,
 } = binomApi;
