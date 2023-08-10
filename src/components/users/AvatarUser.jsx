@@ -21,8 +21,10 @@ const AvatarUser = (props) => {
     user_bg = `${baseUrl}/${userData.photo_path}`;
   }
 
+  let className = (props.className === undefined ? "w-[64px] h-[64px]" : props.className);
+
   return (
-    <div className={("relative overflow-hidden " + props.className).trim()}>
+    <div className={("relative overflow-hidden " + className).trim()}>
       <img
         className="absolute rounded-full w-full h-full object-cover object-center"
         src={user_bg}

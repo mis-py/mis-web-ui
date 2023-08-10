@@ -111,7 +111,6 @@ const ProfileUser = () => {
           userRefetch={refetchProfileData}
           userId={id}
           icon={true}
-          className="w-[64px] h-[64px]"
         />
 
         <form className="mt-7">
