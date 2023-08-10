@@ -7,16 +7,7 @@ import USER from "../../assets/img/user.png";
 import UserLogo from "./LogoUser";
 
 const AvatarUser = (props) => {
-    const { userData, userRefetch, userId, icon } = props;
-    let {width, height} = props;
-
-    if (width === undefined) {
-        width = 64;
-    }
-
-    if (height === undefined) {
-        height = 64;
-    }
+  const { userData, userRefetch, userId, icon } = props;
 
   let user_bg = "";
   if (
@@ -31,7 +22,7 @@ const AvatarUser = (props) => {
   }
 
   return (
-    <div className={`relative w-[${width}px] h-[${width}px] overflow-hidden`}>
+    <div className={("relative overflow-hidden " + props.className).trim()}>
       <img
         className="absolute rounded-full w-full h-full object-cover object-center"
         src={user_bg}

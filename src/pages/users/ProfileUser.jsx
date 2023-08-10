@@ -37,37 +37,41 @@ const ProfileUser = () => {
   };
 
   React.useEffect(() => {
-    const userSettings = getSettings?.reduce((prev, curr) => {
-      return [
-        ...prev,
-        {
-          id: curr.id,
-          value: getUserId.settings
-            ?.map((el) => (el.setting.id === curr.id ? el.value : ""))
-            .filter((empty) => !!empty)
-            .toString(),
-          key: curr.key,
-          default_value: curr.default_value,
-          is_global: curr.is_global,
-          app: curr.app,
-        },
-      ];
-    }, []);
+    if (getSettings !== undefined && getSettings.length) {
+      const userSettings = getSettings?.reduce((prev, curr) => {
+        return [
+          ...prev,
+          {
+            id: curr.id,
+            value: getUserId.settings
+                ?.map((el) => (el.setting.id === curr.id ? el.value : ""))
+                .filter((empty) => !!empty)
+                .toString(),
+            key: curr.key,
+            default_value: curr.default_value,
+            is_global: curr.is_global,
+            app: curr.app,
+          },
+        ];
+      }, []);
 
-    setSettingsValue(userSettings);
+      setSettingsValue(userSettings);
+    }
   }, [loadingSettings, loadingUserId, getSettings, getUserId]);
 
   const handleSettingsChange = async (e, item) => {
-    const newSettings = settingsValue.map((valueItem) => {
-      if (valueItem.id !== item.id) {
+    if (settingsValue !== undefined && settingsValue.length) {
+      const newSettings = settingsValue.map((valueItem) => {
+        if (valueItem.id !== item.id) {
+          return valueItem;
+        }
+
+        valueItem.value = e.target.value;
         return valueItem;
-      }
+      });
 
-      valueItem.value = e.target.value;
-      return valueItem;
-    });
-
-    setSettingsValue(newSettings);
+      setSettingsValue(newSettings);
+    }
   };
 
   const handleSaveUser = async (e) => {
@@ -107,6 +111,7 @@ const ProfileUser = () => {
           userRefetch={refetchProfileData}
           userId={id}
           icon={true}
+          className="w-[64px] h-[64px]"
         />
 
         <form className="mt-7">

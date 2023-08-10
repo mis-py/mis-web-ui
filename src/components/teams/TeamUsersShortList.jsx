@@ -21,8 +21,7 @@ const PermissionLabel = (props) => {
                             <AvatarUser
                                 userData={item}
                                 icon={false}
-                                width={35}
-                                height={35}
+                                className="w-[35px] h-[35px]"
                             />
 
                             <Tooltip name={item.username} />
