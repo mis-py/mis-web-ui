@@ -35,6 +35,11 @@ const EditTeam = () => {
     ) {
       userIds = getTeamId.users.map((user) => user.id);
     }
+
+    if (userIds.length === 0) {
+      return;
+    }
+
     dispatch(addTeamName(getTeamId.name));
     dispatch(setTeamMembers(userIds));
   }, [loadingTeamId, dispatch, getTeamId]);

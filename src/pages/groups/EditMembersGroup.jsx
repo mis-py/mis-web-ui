@@ -9,12 +9,11 @@ import {
 } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
 import { addMembers, deleteMembers, setMembers } from "redux/slices/membersSlice";
-import USER from "assets/img/user.png";
-
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import PageHeader from "../../components/common/PageHeader";
+import AvatarUser from "components/users/AvatarUser";
 
 const EditMembersGroup = () => {
   const navigate = useNavigate();
@@ -104,10 +103,11 @@ const EditMembersGroup = () => {
                     <div className="lg:flex lg:items-center">
                       <div className="flex flex-col lg:pr-[40px]">
                         <div className="flex items-center gap-4">
-                          <img
-                            className="w-[56px] h-[56px]"
-                            src={USER}
-                            alt=""
+                          <AvatarUser
+                            width={56}
+                            height={56}
+                            icon={false}
+                            userData={user}
                           />
                           <div className="flex flex-col">
                             <div className="text-white mb-[10px]">

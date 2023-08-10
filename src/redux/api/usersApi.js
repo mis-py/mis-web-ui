@@ -26,7 +26,13 @@ export const usersApi = createApi({
           method: "GET"
         };
       },
-      providesTags: () => [{ type: "Users", id: "LIST" }],
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Users", id })),
+              { type: "Users", id: "LIST" },
+            ]
+          : [{ type: "Users", id: "LIST" }],
     }),
     getUserId: build.query({
       query: (id) => ({
@@ -74,6 +80,19 @@ export const usersApi = createApi({
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
     }),
+    saveUserPhoto: build.mutation({
+      query: ({
+        userId,
+        formData
+      }) => {
+        return {
+          url: `/users/${userId}/photo`,
+          method: "POST",
+          body: formData,
+        };
+      },
+      invalidatesTags: [{ type: "Users", id: "LIST" }],
+    }),
     userLogout: build.mutation({
       query: () => ({
         url: "/auth/logout",
@@ -94,5 +113,6 @@ export const {
   useAddUserMutation,
   useEditUserMutation,
   useDeleteUserMutation,
+  useSaveUserPhotoMutation,
   useUserLogoutMutation,
 } = usersApi;

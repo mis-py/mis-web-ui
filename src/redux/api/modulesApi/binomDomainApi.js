@@ -1,50 +1,80 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import RtkDefaultQuery from "config/RtkDefaultQuery";
 
 export const binomApi = createApi({
     reducerPath: "binomDomainApi",
-    tagTypes: ["Binom"],
-    baseQuery: fetchBaseQuery({
-        baseUrl,
-    }),
+    tagTypes: ["BinomDomains"],
+    baseQuery: RtkDefaultQuery,
     endpoints: (build) => ({
-        getBinomId: build.query({
-            query: () => ({
+        getBinomDomainById: build.query({
+            query: (id) => ({
                 url: `/binom_companion/domain/${id}`,
                 method: "GET",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             providesTags: (result, error, id) => [{ type: "binom", id }],
         }),
-        updateBinomId: build.mutation({
-            query: (tag) => ({
+        updateBinomDomainById: build.mutation({
+            query: (id) => ({
                 url: `/binom_companion/domain/${id}`,
                 method: "PUT",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             invalidatesTags: [{ type: "binom", id: "LIST" }],  
         }),
-        binomResume: build.mutation({
-            query: (tag) => ({
-                url: `/binom/${tag}/resume`,
-                method: "POST",
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            }),
-            invalidatesTags: [{ type: "binom", id: "LIST" }], 
+        // delete domain
+
+        // Get domains list
+        getBinomDomains: build.query({
+            query: (data) => {
+                return {
+                    url: `/binom_companion/domain`,
+                    method: "GET",
+                    headers: {
+                        accept: "application/json",
+                    },
+                };
+            },
+            providesTags: () => [{ type: "BinomDomains", id: "LIST" }],
+        }),
+
+        // get GEOs list
+        getGeosList: build.query({
+            query: () => {
+                return {
+                    url: `/binom_companion/geo`,
+                    method: "GET",
+                    headers: {
+                        accept: "application/json",
+                    },
+                };
+            },
+            providesTags: () => [{ type: "Geo", id: "LIST" }],
+        }),
+
+        // get GEOs list
+        binomGeoDomainChange: build.mutation({
+            query: (geo_id) => {
+                return {
+                    url: `/binom_companion/domain-change?geo_id=${geo_id}`,
+                    method: "GET",
+                    headers: {
+                        accept: "application/json",
+                    },
+                };
+            },
+            invalidatesTags: () => [{ type: "Geo", id: "LIST" }],
         }),
     }),
 
 });
 
 export const {
-    
-} = binomDomainApi;
+    useGetBinomDomainsQuery,
+    useGetGeosListQuery,
+    useBinomGeoDomainChangeMutation,
+} = binomApi;

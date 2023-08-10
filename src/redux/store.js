@@ -17,6 +17,7 @@ import { tasksApi } from "./api/modulesApi/tasksApi";
 import { timerApi } from "./api/modulesApi/timerApi";
 import { statabotApi } from "./api/modulesApi/statabotApi";
 import { autoAdminApi } from "./api/modulesApi/autoAdminApi";
+import { binomApi } from "./api/modulesApi/binomDomainApi";
 
 //slices
 import { authReducer } from "./slices/authSlice";
@@ -28,8 +29,12 @@ import membersSlice from "./slices/membersSlice";
 import { startLoading, stopLoading } from './slices/loadingSlice';
 import loadingReducer from './slices/loadingSlice';
 
-const mutationLoadingMiddleware = ({ dispatch }) => next => action => {
-    if (~action.type.indexOf("executeMutation")) {
+const mutationLoadingMiddleware = (params) => next => action => {
+    const { dispatch } = params;
+
+    if (~action.type.indexOf("executeMutation")
+        && (action.meta.arg === undefined || action.meta.arg.endpointName.indexOf("find") === -1)
+    ) {
         if (isPending(action)) {
             dispatch(startLoading());
         }
@@ -63,6 +68,7 @@ export const store = configureStore({
     [timerApi.reducerPath]: timerApi.reducer,
     [statabotApi.reducerPath]: statabotApi.reducer,
     [autoAdminApi.reducerPath]: autoAdminApi.reducer,
+    [binomApi.reducerPath]: binomApi.reducer,
 
     //slices
     auth: authReducer,
@@ -92,6 +98,7 @@ export const store = configureStore({
       timerApi.middleware,
       statabotApi.middleware,
       autoAdminApi.middleware,
+      binomApi.middleware,
 
       mutationLoadingMiddleware,
     ]),

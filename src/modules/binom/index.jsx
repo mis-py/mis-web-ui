@@ -4,6 +4,10 @@ import TabsList from "../../components/common/tabs/TabsList";
 
 const tabs = [
     {
+        label: 'Domain dashboard',
+        Component: React.lazy(() => import("components/domainManagement/DomainDashboard"))
+    },
+    {
         label: 'Domain management',
         Component: React.lazy(() => import("components/domainManagement/DomainManagement"))
     },
@@ -24,6 +28,7 @@ const Binom = () => {
             <TabsList
                 items={tabs}
                 setActiveTab={setActiveTab}
+                activeTab={activeTab}
             />
 
             <Component />
