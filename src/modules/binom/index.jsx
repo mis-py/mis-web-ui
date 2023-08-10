@@ -28,6 +28,7 @@ const Binom = () => {
             <TabsList
                 items={tabs}
                 setActiveTab={setActiveTab}
+                activeTab={activeTab}
             />
 
             <Component />

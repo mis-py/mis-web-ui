@@ -9,11 +9,9 @@ const TabsList = (props) => {
     return (
         <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 mb-4">
             {props.items.map((item, index) => (
-                <li className="mr-2"
-                    key={`tab-${index}`}
-                >
+                <li key={`tab-${index}`}>
                     <span
-                        className={`${defaultClass} ${inactiveClass}`.trim()}
+                        className={`${defaultClass} ${inactiveClass} ${props.activeTab === index ? "bg-[#4D4D4D]" : ""}`.trim()}
                         onClick={() => { setActiveTab(index) }}
                     >
                         {item.label}
