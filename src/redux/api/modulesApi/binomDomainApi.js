@@ -55,6 +55,20 @@ export const binomApi = createApi({
             },
             providesTags: () => [{ type: "Geo", id: "LIST" }],
         }),
+
+        // get GEOs list
+        binomGeoDomainChange: build.mutation({
+            query: (geo_id) => {
+                return {
+                    url: `/binom_companion/domain-change?geo_id=${geo_id}`,
+                    method: "GET",
+                    headers: {
+                        accept: "application/json",
+                    },
+                };
+            },
+            invalidatesTags: () => [{ type: "Geo", id: "LIST" }],
+        }),
     }),
 
 });
@@ -62,4 +76,5 @@ export const binomApi = createApi({
 export const {
     useGetBinomDomainsQuery,
     useGetGeosListQuery,
+    useBinomGeoDomainChangeMutation,
 } = binomApi;
