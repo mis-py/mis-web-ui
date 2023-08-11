@@ -146,7 +146,7 @@ const AddGroup = () => {
           </div>
         )}
       </div>
-      <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
+      <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround w-full lg:max-w-[-webkit-fill-available] lg:left-[345px]">
         <button onClick={handleAddGroup} className="btn-primary">
           Add group
         </button>
