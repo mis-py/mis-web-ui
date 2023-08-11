@@ -33,6 +33,7 @@ export const usersApi = createApi({
               { type: "Users", id: "LIST" },
             ]
           : [{ type: "Users", id: "LIST" }],
+      keepUnusedDataFor: 0.1,
     }),
     getUserId: build.query({
       query: (id) => ({
@@ -40,13 +41,15 @@ export const usersApi = createApi({
         method: "GET"
       }),
       providesTags: (result, error, id) => [{ type: "Users", id }],
+      keepUnusedDataFor: 0.1,
     }),
     getMe: build.query({
       query: () => ({
         url: `/users/me`,
         method: "GET"
       }),
-      providesTags: () => [{ type: "Users" }],
+      providesTags: () => [{ type: "Users", id: "ME" }],
+      keepUnusedDataFor: 0.1,
     }),
     addUser: build.mutation({
       query: (body) => ({
@@ -68,7 +71,7 @@ export const usersApi = createApi({
         },
         body: rest,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Users", id }],
+      invalidatesTags: (result, error, { id }) => [{ type: "Users", id }, { type: "Users", id: "LIST" }],
     }),
     deleteUser: build.mutation({
       query: (id) => ({
@@ -91,7 +94,7 @@ export const usersApi = createApi({
           body: formData,
         };
       },
-      invalidatesTags: [{ type: "Users", id: "LIST" }],
+      invalidatesTags: (result, error, id) => [{ type: "Users", id: "LIST" }, { type: "Users", id }],
     }),
     userLogout: build.mutation({
       query: () => ({

@@ -1,7 +1,4 @@
 import React from "react";
-// import { useSaveUserPhotoMutation } from "redux/index";
-// import { toast } from "react-toastify";
-// import { MdAddAPhoto } from "react-icons/md";
 import { baseUrl } from "config/variables";
 import USER from "../../assets/img/user.png";
 import UserLogo from "./LogoUser";
