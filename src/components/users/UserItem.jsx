@@ -60,7 +60,9 @@ const UserItem = ({ user, index, showEdit, setShowEdit, dots, ...props }) => {
         <div
           ref={refPopup}
           className={`${
-            showEdit === index ? "opacity-100 visible" : "hidden opacity-0 invisible"
+            showEdit === index
+              ? "opacity-100 visible"
+              : "hidden opacity-0 invisible"
           } duration-300 absolute top-1 w-[175px] z-10 right-1 bg-backGround shadow lg:top-3`}
         >
           <div
@@ -82,6 +84,7 @@ const UserItem = ({ user, index, showEdit, setShowEdit, dots, ...props }) => {
           <div className="flex flex-col">
             <div className="flex items-center gap-4">
               <AvatarUser
+                className="w-[64px] h-[64px]"
                 userData={user}
                 icon={false}
               />

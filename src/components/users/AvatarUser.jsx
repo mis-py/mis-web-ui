@@ -1,10 +1,9 @@
 import React from "react";
-// import { useSaveUserPhotoMutation } from "redux/index";
-// import { toast } from "react-toastify";
-// import { MdAddAPhoto } from "react-icons/md";
 import { baseUrl } from "config/variables";
+
+import UpdateAvatar from "./UpdateAvatar";
+
 import USER from "../../assets/img/user.png";
-import UserLogo from "./LogoUser";
 
 const AvatarUser = (props) => {
   const { userData, userRefetch, userId, icon } = props;
@@ -28,7 +27,7 @@ const AvatarUser = (props) => {
         src={user_bg}
         alt="User"
       />
-      {icon && <UserLogo
+      {icon && <UpdateAvatar
         userId={userId}
         userRefetch={userRefetch}
       />}
