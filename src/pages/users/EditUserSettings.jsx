@@ -67,7 +67,9 @@ const EditUserSettings = () => {
   };
 
   React.useEffect(() => {
-    if (getSettings !== undefined && getSettings.length) {
+    if (getSettings !== undefined && getSettings.length
+      && getUserSettings !== undefined && getUserSettings.length
+    ) {
       let _settings = getSettings.map((setting) => {
         const userSetting = getUserSettings.find(
             (userSetting) => userSetting.setting.id === setting.id

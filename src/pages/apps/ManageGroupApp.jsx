@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetGroupsQuery } from "../../redux";
 import { toast } from "react-toastify";
 
@@ -10,7 +10,10 @@ import SpinnerLoader from "../../components/common/SpinnerLoader";
 import PageHeader from "../../components/common/PageHeader";
 
 const ManageGroupApp = () => {
+  const params = useParams();
   const navigate = useNavigate();
+
+  console.log(params);
 
   const {
     data: getGroups = [],
