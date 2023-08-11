@@ -145,7 +145,7 @@ const EditTeamSettings = () => {
                       autoComplete="off"
                       value={formItem.value}
                       name={formItem.key}
-                      hasDefault={formItem.default_value !== null && formItem.default_value.length}
+                      hasDefault={formItem.default_value !== null && formItem.default_value.length > 0}
                       changeValue={(e) => handleInputChange(e.target.value, formItem)}
                       setDefault={() => handleInputChange(formItem.default_value, formItem)}
                   />
