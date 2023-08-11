@@ -64,7 +64,7 @@ const AddUserSettings = () => {
                     changeValue={(e) => handleInputChange(e, item.id)}
                     value={item.value}
                     name={item.key}
-                    hasDefault={item.default_value !== null && item.default_value.length}
+                    hasDefault={item.default_value !== null && item.default_value.length > 0}
                     setDefault={() => dispatch(addUserDefaultSettings(item))}
                   />
                 )
