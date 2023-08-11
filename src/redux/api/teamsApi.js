@@ -18,6 +18,7 @@ export const teamsApi = createApi({
               { type: "Teams", id: "LIST" },
             ]
           : [{ type: "Teams", id: "LIST" }],
+      keepUnusedDataFor: 0.1
     }),
     getTeamId: build.query({
       query: (id) => ({
@@ -28,6 +29,7 @@ export const teamsApi = createApi({
         },
       }),
       providesTags: (result, error, id) => [{ type: "Teams", id }],
+      keepUnusedDataFor: 0.1
     }),
     addTeam: build.mutation({
       query: (body) => ({

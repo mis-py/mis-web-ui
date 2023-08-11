@@ -14,6 +14,7 @@ export const groupsApi = createApi({
           accept: "application/json",
         },
       }),
+      keepUnusedDataFor: 0.1,
       providesTags: (result) =>
         result
           ? [
@@ -37,6 +38,7 @@ export const groupsApi = createApi({
               { type: "Groups", id: "LIST" },
             ]
           : [{ type: "Groups", id: "LIST" }],
+      keepUnusedDataFor: 0.1,
     }),
     getGroupIdUsers: build.query({
       query: (id) => ({
@@ -53,6 +55,7 @@ export const groupsApi = createApi({
               { type: "Groups", id: "LIST" },
             ]
           : [{ type: "Groups", id: "LIST" }],
+      keepUnusedDataFor: 0.1,
     }),
     getGroupIdObjects: build.query({
       query: (id) => ({
@@ -63,6 +66,7 @@ export const groupsApi = createApi({
         },
       }),
       providesTags: (result, error, id) => [{ type: "Groups", id }],
+      keepUnusedDataFor: 0.1,
     }),
     addGroup: build.mutation({
       query: (body) => ({
