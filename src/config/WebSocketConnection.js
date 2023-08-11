@@ -7,6 +7,10 @@ export function initiateWebSocket() {
 
     if (token !== null && webSocket === undefined) {
         webSocket = new WebSocket(baseUrl.replace("http", "ws") + `/ws/?token=${token}`);
+
+        webSocket.onerror = (e) => {
+            console.log(e);
+        };
     }
 
     return webSocket;

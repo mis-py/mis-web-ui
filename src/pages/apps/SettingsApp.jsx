@@ -17,6 +17,7 @@ import AdminWrapper from "config/AdminWrapper";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 import PageHeader from "../../components/common/PageHeader";
+import Input from "../../components/Input";
 
 const SettingsApp = () => {
   const navigate = useNavigate();
@@ -147,22 +148,15 @@ const SettingsApp = () => {
             {formGlobalValue.map(
               (item, index) =>
                 item.is_global && (
-                  <label
-                    key={item.id}
-                    className="flex flex-col gap-1 mb-4"
-                    htmlFor={item.key}
-                  >
-                    {item.key}
-                    <input
-                      className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-                      type={item.type}
-                      id={item.id}
-                      name={item.default_value}
-                      autoComplete="off"
+                    <Input
+                      key={item.key}
+                      label={item.key}
+                      name={item.key}
+                      id={item.key}
                       value={
                         item.default_value === null ? "" : item.default_value
                       }
-                      onChange={(e) => {
+                      changeValue={(e) => {
                         let data = [...formGlobalValue];
                         data[index] = { ...data[index] };
                         data[index].default_value = e.target.value;
@@ -171,15 +165,14 @@ const SettingsApp = () => {
                         data2[e.target.id] = {
                           setting_id: data[index].id,
                           new_value:
-                            data[index].default_value === ""
-                              ? null
-                              : data[index].default_value,
+                              data[index].default_value === ""
+                                  ? null
+                                  : data[index].default_value,
                         };
                         setFormGlobalValue(data);
                         setNewGlobalSettings(data2);
                       }}
                     />
-                  </label>
                 )
             )}
           </form>

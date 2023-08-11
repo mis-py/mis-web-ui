@@ -47,26 +47,17 @@ const EditTeamSettings = () => {
       setFormValues(_formValue);
     }
   }, [teamSettingsLoading, allSettingsLoading, allSettings, teamSettings]);
-  
 
     const handleInputChange = (value, item) => {
-        const _formValue = [];
-
-// Примечание: я предположил, что у вас есть значение `item`, которое определяет элемент, для которого нужно обновить `value`.
-// Также предполагается, что у вас есть значение `value`, которое используется для обновления `value` элемента.
-
-    const updatedFormValues = formValues.map(formValue => {
-        if (formValue.id === item.id) {
-        return { ...formValue, value: value };
-        } else {
-        return { ...formValue };
-        }
-    });
+        const updatedFormValues = formValues.map(formValue => {
+            if (formValue.id === item.id) {
+                return { ...formValue, value: value };
+            } else {
+                return { ...formValue };
+            }
+        });
     
-    setFormValues(updatedFormValues);
-    
-
-        setFormValues(_formValue);
+        setFormValues(updatedFormValues);
     };
 
     const HandleSaveTeamSettings = async (e) => {
@@ -145,7 +136,7 @@ const EditTeamSettings = () => {
                       autoComplete="off"
                       value={formItem.value}
                       name={formItem.key}
-                      hasDefault={formItem.default_value !== null && formItem.default_value.length}
+                      hasDefault={formItem.default_value !== null && formItem.default_value.length > 0}
                       changeValue={(e) => handleInputChange(e.target.value, formItem)}
                       setDefault={() => handleInputChange(formItem.default_value, formItem)}
                   />

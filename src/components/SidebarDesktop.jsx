@@ -52,7 +52,7 @@ const SidebarDesktop = () => {
                   <button onClick={() => setIsPopupOpen(!isPopupOpen)} className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond">
                     <FiBell />
                   </button>
-                  <div className={`${isPopupOpen ? "flex" : "hidden"} absolute px-7 py-2 block text-gray duration-300 cursor-pointer bg-blackSecond hover:bg-blackSecond hover:text-primary`}>
+                  <div className={`${isPopupOpen ? "flex" : "hidden"} absolute rounded-lg block text-gray duration-300 cursor-pointer bg-blackSecond hover:bg-blackSecond`}>
                     <Notifications isPopupOpen={isPopupOpen} setIsPopupOpen={setIsPopupOpen} notificationsCount={notificationsCount} setNotificationsCount={setNotificationsCount} className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"/>
                   </div>
                 </div>
