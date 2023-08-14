@@ -23,7 +23,7 @@ export const usersApi = createApi({
 
         return {
           url: url,
-          method: "GET"
+          method: "GET",
         };
       },
       providesTags: (result) =>
@@ -33,20 +33,23 @@ export const usersApi = createApi({
               { type: "Users", id: "LIST" },
             ]
           : [{ type: "Users", id: "LIST" }],
+      keepUnusedDataFor: 0.1,
     }),
     getUserId: build.query({
       query: (id) => ({
         url: `/users/${id}`,
-        method: "GET"
+        method: "GET",
       }),
       providesTags: (result, error, id) => [{ type: "Users", id }],
+      keepUnusedDataFor: 0.1,
     }),
     getMe: build.query({
       query: () => ({
         url: `/users/me`,
-        method: "GET"
+        method: "GET",
       }),
       providesTags: () => [{ type: "Users" }],
+      keepUnusedDataFor: 0.1,
     }),
     addUser: build.mutation({
       query: (body) => ({
@@ -58,6 +61,7 @@ export const usersApi = createApi({
         body,
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
+      keepUnusedDataFor: 0.1,
     }),
     editUser: build.mutation({
       query: ({ id, ...rest }) => ({
@@ -69,6 +73,7 @@ export const usersApi = createApi({
         body: rest,
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Users", id }],
+      keepUnusedDataFor: 0.1,
     }),
     deleteUser: build.mutation({
       query: (id) => ({
@@ -79,12 +84,10 @@ export const usersApi = createApi({
         },
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
+      keepUnusedDataFor: 0.1,
     }),
     saveUserPhoto: build.mutation({
-      query: ({
-        userId,
-        formData
-      }) => {
+      query: ({ userId, formData }) => {
         return {
           url: `/users/${userId}/photo`,
           method: "POST",
@@ -92,6 +95,7 @@ export const usersApi = createApi({
         };
       },
       invalidatesTags: [{ type: "Users", id: "LIST" }],
+      keepUnusedDataFor: 0.1,
     }),
     userLogout: build.mutation({
       query: () => ({
@@ -102,6 +106,7 @@ export const usersApi = createApi({
         },
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
+      keepUnusedDataFor: 0.1,
     }),
   }),
 });
