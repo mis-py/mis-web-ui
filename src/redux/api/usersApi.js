@@ -23,7 +23,7 @@ export const usersApi = createApi({
 
         return {
           url: url,
-          method: "GET"
+          method: "GET",
         };
       },
       providesTags: (result) =>
@@ -38,7 +38,7 @@ export const usersApi = createApi({
     getUserId: build.query({
       query: (id) => ({
         url: `/users/${id}`,
-        method: "GET"
+        method: "GET",
       }),
       providesTags: (result, error, id) => [{ type: "Users", id }],
       keepUnusedDataFor: 0.1,
@@ -46,9 +46,9 @@ export const usersApi = createApi({
     getMe: build.query({
       query: () => ({
         url: `/users/me`,
-        method: "GET"
+        method: "GET",
       }),
-      providesTags: () => [{ type: "Users", id: "ME" }],
+      providesTags: () => [{ type: "Users" }],
       keepUnusedDataFor: 0.1,
     }),
     addUser: build.mutation({
@@ -84,10 +84,7 @@ export const usersApi = createApi({
       invalidatesTags: [{ type: "Users", id: "LIST" }],
     }),
     saveUserPhoto: build.mutation({
-      query: ({
-        userId,
-        formData
-      }) => {
+      query: ({ userId, formData }) => {
         return {
           url: `/users/${userId}/photo`,
           method: "POST",

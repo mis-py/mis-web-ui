@@ -2,7 +2,7 @@ import { useSaveUserPhotoMutation } from "redux/index";
 import { toast } from "react-toastify";
 import { MdAddAPhoto } from "react-icons/md";
 
-const UserLogo = (props) => {
+const UpdateAvatar = (props) => {
     const { userRefetch, userId } = props;
 
   const [updateUserPhoto] = useSaveUserPhotoMutation();
@@ -44,4 +44,4 @@ const UserLogo = (props) => {
   );
 };
 
-export default UserLogo;
+export default UpdateAvatar;

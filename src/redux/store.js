@@ -23,8 +23,6 @@ import { binomApi } from "./api/modulesApi/binomDomainApi";
 import { authReducer } from "./slices/authSlice";
 import userSlice from "./slices/userSlice";
 import teamSlice from "./slices/teamSlice";
-import editTeamPermissionsSlice from "./slices/editTeamPermissionsSlice";
-import editTeamMembersSlice from "./slices/editTeamMembersSlice";
 import membersSlice from "./slices/membersSlice";
 import { startLoading, stopLoading } from './slices/loadingSlice';
 import loadingReducer from './slices/loadingSlice';
@@ -74,8 +72,6 @@ export const store = configureStore({
     auth: authReducer,
     user: userSlice,
     team: teamSlice,
-    editTeamPermissions: editTeamPermissionsSlice,
-    editTeamMembers: editTeamMembersSlice,
     membersList: membersSlice,
     loading: loadingReducer,
   },
