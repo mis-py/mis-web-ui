@@ -1,26 +1,22 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useGetGroupsQuery } from "../../redux";
+import { useGetGroupsQuery, useGetAppByIdQuery } from "../../redux";
 import { toast } from "react-toastify";
-
+import { firstUppercase } from "config/functions";
 import { FiSearch } from "react-icons/fi";
-
+import { useParams } from "react-router-dom";
 import GroupListItem from "../../components/groups/GroupListItem";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import PageHeader from "../../components/common/PageHeader";
 
 const ManageGroupApp = () => {
-  const params = useParams();
-  const navigate = useNavigate();
-
-  console.log(params);
-
+  const {id} = useParams();
   const {
     data: getGroups = [],
     isLoading: loadingGroups,
     error: errorGroups,
-  } = useGetGroupsQuery();
-
+  } = useGetGroupsQuery({ app_id: id });
+  const { data: applicationData, isLoading: isAppDataLoading } =
+    useGetAppByIdQuery(id);
   const [searchValue, setSearchValue] = React.useState("");
 
   React.useEffect(() => {
@@ -32,8 +28,10 @@ const ManageGroupApp = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <PageHeader
-          header="Manage groups"
+      <PageHeader
+          header={`${
+            !isAppDataLoading && firstUppercase(applicationData.name)
+          } group list`}
         />
         <h3 className="mb-1">Search for groups</h3>
         <form>
@@ -71,16 +69,6 @@ const ManageGroupApp = () => {
                 ))}
           </div>
         )}
-      </div>
-      <div
-        className={`flex fixed w-full h-[80px] bottom-0 bg-backGround lg:w-[985px] lg:max-w-[-webkit-fill-available]`}
-      >
-        <button
-          onClick={() => navigate(-1)}
-          className={`btn-primary absolute z-20 left-0 bottom-6 w-[calc(100%_-_40px)] lg:w-full`}
-        >
-          Save
-        </button>
       </div>
     </div>
   );
