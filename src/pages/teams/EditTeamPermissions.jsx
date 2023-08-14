@@ -1,25 +1,17 @@
 import React from "react";
-import { useParams } from "react-router-dom";
-import {
-  useGetPermissionsQuery,
-  useGetPermissionsTeamIdQuery,
-  useEditTeamPermissionMutation,
-} from "redux/index";
-import { addTeamPermissions } from "redux/slices/teamSlice";
-import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
+import {useParams} from "react-router-dom";
+import {useEditTeamPermissionMutation, useGetPermissionsQuery, useGetPermissionsTeamIdQuery,} from "redux/index";
+import {toast} from "react-toastify";
 
 import PermissionLabel from "components/permissions/PermissionLabel";
 
-import { FiSearch } from "react-icons/fi";
+import {FiSearch} from "react-icons/fi";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import PageHeader from "../../components/common/PageHeader";
 
 const EditTeamPermissions = () => {
   const { id } = useParams();
-  const dispatch = useDispatch();
   const [checked, setChecked] = React.useState([]);
-  const permissions = useSelector((state) => state.team.permissions);
   const [editTeamPermission] = useEditTeamPermissionMutation();
   const { data: dataPermissions = [], isLoading: loadingDataPermissions } =
     useGetPermissionsQuery();
@@ -40,7 +32,7 @@ const EditTeamPermissions = () => {
     if (!loadingPermissionsTeamId) {
       setChecked(getPermissionsTeamId.map((it) => it.permission.scope));
     }
-  }, [loadingPermissionsTeamId]);
+  }, [getPermissionsTeamId, loadingPermissionsTeamId]);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
