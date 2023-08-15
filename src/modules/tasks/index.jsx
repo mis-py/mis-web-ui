@@ -43,7 +43,7 @@ const Tasks = () => {
             <SpinnerLoader />
           ) :
             (<div className="flex flex-col gap-4">
-              {Object.entries(getTasks).map((moduleTaskList) => {
+              {getTasks !== undefined && getTasks !== null ? Object.entries(getTasks).map((moduleTaskList) => {
                 const [, taskList] = moduleTaskList;
 
                 return taskList.map(item => (
@@ -86,7 +86,7 @@ const Tasks = () => {
                     </div>
                 </ListItemWrapper>
                 ));
-              })}
+              }) : null}
             </div>)
         }
       </div>
