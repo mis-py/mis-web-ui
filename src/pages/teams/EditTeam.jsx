@@ -2,19 +2,13 @@ import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useEditTeamMutation, useGetTeamIdQuery } from "redux/index";
-import {
-  addTeamName,
-  addTeamPermissions,
-  addTeamMembers,
-  deleteTeamMembers,
-  setTeamMembers,
-} from "redux/slices/teamSlice";
+import { addTeamName, setTeamMembers } from "redux/slices/teamSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
-import TeamUsersShortList from "../../components/teams/TeamUsersShortList";
-import PageHeader from "../../components/common/PageHeader";
+import TeamUsersShortList from "components/teams/TeamUsersShortList";
+import PageHeader from "components/common/PageHeader";
 
 const EditTeam = () => {
   const { id } = useParams();
@@ -29,20 +23,32 @@ const EditTeam = () => {
   React.useEffect(() => {
     let userIds = [];
 
-    if (!(getTeamId === undefined || getTeamId.users === undefined || getTeamId.users.length === 0)) {
-      userIds = getTeamId.users.map(user => user.id);
+    if (
+      !(
+        getTeamId === undefined ||
+        getTeamId.users === undefined ||
+        getTeamId.users.length === 0
+      )
+    ) {
+      userIds = getTeamId.users.map((user) => user.id);
     }
 
+    dispatch(addTeamName(getTeamId.name));
     dispatch(setTeamMembers(userIds));
+
+    if (userIds.length === 0) {
+      return;
+    }
   }, [loadingTeamId]);
 
   const handleEditTeam = async (e) => {
     e.preventDefault();
     await editTeam({
       id,
-      name: "",
+      name: team.name,
       permissions: team.permissions,
       users_ids: team.members,
+      settings: team.settings,
     }).then(() => {
       navigate("/teams");
       toast.success("Team updating");
@@ -53,7 +59,9 @@ const EditTeam = () => {
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
         <PageHeader
-          header={`Editing ${getTeamId === undefined ? "" : getTeamId.name} team`}
+          header={`Editing ${
+            getTeamId === undefined ? "" : getTeamId.name
+          } team`}
         />
         <form className="my-7">
           <label className="flex flex-col gap-1 mb-4" htmlFor="teamname">
@@ -69,10 +77,9 @@ const EditTeam = () => {
             />
           </label>
 
-          {getTeamId.users !== undefined && Array.isArray(getTeamId.users) && <TeamUsersShortList
-              users={getTeamId.users}
-              team={team.id}
-          />}
+          {getTeamId.users !== undefined && Array.isArray(getTeamId.users) && (
+            <TeamUsersShortList users={getTeamId.users} team={team.id} />
+          )}
         </form>
       </div>
       <div className="flex flex-col gap-3">
@@ -81,7 +88,7 @@ const EditTeam = () => {
             to={`/team/permissions/${id}`}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Permissions ({team.permissions?.length})
+            Permissions ({getTeamId.permissions?.length})
             <AiOutlinePlusCircle className="text-xl" />
           </Link>
           <Link

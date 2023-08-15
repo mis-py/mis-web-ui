@@ -1,9 +1,7 @@
 import React from 'react';
 import { confirmAlert } from "react-confirm-alert";
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
 import { useGetTasksQuery } from 'redux/index';
-import { useGetJobsQuery } from 'redux/index';
 import { useTasksJobsAddMutation } from 'redux/index';
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import ListItemWrapper from "../../components/common/ListItemWrapper";
@@ -45,7 +43,7 @@ const Tasks = () => {
             <SpinnerLoader />
           ) :
             (<div className="flex flex-col gap-4">
-              {Object.entries(getTasks).map((moduleTaskList) => {
+              {getTasks !== undefined && getTasks !== null ? Object.entries(getTasks).map((moduleTaskList) => {
                 const [, taskList] = moduleTaskList;
 
                 return taskList.map(item => (
@@ -88,7 +86,7 @@ const Tasks = () => {
                     </div>
                 </ListItemWrapper>
                 ));
-              })}
+              }) : null}
             </div>)
         }
       </div>

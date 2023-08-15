@@ -1,10 +1,7 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
 
 import PageHeader from "components/common/PageHeader";
 const EditWebcat = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
   const [formValue, setFormValue] = React.useState({});
   React.useEffect(() => {}, []);
   const handleEditUser = async (e) => {

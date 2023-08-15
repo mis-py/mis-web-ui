@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGetAppsQuery } from "redux/index";
 import { toast } from "react-toastify";
 
@@ -10,7 +10,6 @@ import ListItemWrapper from "../../components/common/ListItemWrapper";
 import { AiOutlinePlus, AiOutlineSetting } from "react-icons/ai";
 import { CgFileDocument } from "react-icons/cg";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
-import TeamUsersShortList from "../../components/teams/TeamUsersShortList";
 
 const Apps = () => {
 
@@ -28,7 +27,7 @@ const Apps = () => {
       toast.error("No apps found");
     }
     refetch();
-  }, [errorApps]);
+  }, [errorApps, refetch]);
 
   return (
     <div className="py-6">

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Switch from "react-switch";
 import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
@@ -10,16 +10,14 @@ import {
   useStartAppMutation,
   useStopAppMutation,
   useSettingAppSetMutation,
-  useSettingUserSetMutation,
 } from "redux/index";
 
 import AdminWrapper from "config/AdminWrapper";
 
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
-
-import { currentUserId } from "config/variables";
 import PageHeader from "../../components/common/PageHeader";
+import Input from "../../components/Input";
 
 const SettingsApp = () => {
   const navigate = useNavigate();
@@ -43,7 +41,6 @@ const SettingsApp = () => {
   const [startApp] = useStartAppMutation();
   const [stopApp] = useStopAppMutation();
   const [settingAppSet] = useSettingAppSetMutation();
-  const [settingUserSet] = useSettingUserSetMutation();
 
   React.useEffect(() => {
     refetch();
@@ -52,19 +49,26 @@ const SettingsApp = () => {
     } else {
       setActive(false);
     }
-
-    !loadingGetSettingsAppId &&
-      getSettingsAppId?.settings.map((setting) => {
-        setFormGlobalValue((formGlobalValue) => [...formGlobalValue, setting]);
+  
+    if (!loadingGetSettingsAppId) {
+      const _settings = [];
+      getSettingsAppId?.settings.forEach((setting) => {
+        _settings.push(setting);
       });
-  }, [loadingGetSettingsAppId]);
+
+      setFormGlobalValue(_settings);
+    }
+  }, [loadingGetSettingsAppId, getSettingsAppId?.enabled, getSettingsAppId?.settings, refetch]);
+  
 
   React.useEffect(() => {
-    !loadingGetSettingsUserId &&
-      getSettingsUserId?.map((item) => {
+    if (!loadingGetSettingsUserId) {
+      getSettingsUserId?.forEach((item) => {
         setFormLocalValue((formLocalValue) => [...formLocalValue, item]);
       });
-  }, [loadingGetSettingsUserId]);
+    }
+  }, [loadingGetSettingsUserId, getSettingsUserId]);
+
 
   const handleChange = async (nextChecked) => {
     if (nextChecked) {
@@ -144,22 +148,15 @@ const SettingsApp = () => {
             {formGlobalValue.map(
               (item, index) =>
                 item.is_global && (
-                  <label
-                    key={item.id}
-                    className="flex flex-col gap-1 mb-4"
-                    htmlFor={item.key}
-                  >
-                    {item.key}
-                    <input
-                      className="bg-blackSecond text-gray rounded px-3 py-2 focus-visible:outline-none border-none"
-                      type={item.type}
-                      id={item.id}
-                      name={item.default_value}
-                      autoComplete="off"
+                    <Input
+                      key={item.key}
+                      label={item.key}
+                      name={item.key}
+                      id={item.key}
                       value={
                         item.default_value === null ? "" : item.default_value
                       }
-                      onChange={(e) => {
+                      changeValue={(e) => {
                         let data = [...formGlobalValue];
                         data[index] = { ...data[index] };
                         data[index].default_value = e.target.value;
@@ -168,15 +165,14 @@ const SettingsApp = () => {
                         data2[e.target.id] = {
                           setting_id: data[index].id,
                           new_value:
-                            data[index].default_value === ""
-                              ? null
-                              : data[index].default_value,
+                              data[index].default_value === ""
+                                  ? null
+                                  : data[index].default_value,
                         };
                         setFormGlobalValue(data);
                         setNewGlobalSettings(data2);
                       }}
                     />
-                  </label>
                 )
             )}
           </form>
@@ -219,13 +215,13 @@ const SettingsApp = () => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <button
-          onClick={() => navigate(`/apps/settings/manage/${id}`)}
-          className="flex justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
+        <Link to={`/apps/settings/manage/${id}`}
+              className="flex justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
         >
           Manage groups
           <AiOutlinePlusCircle className="text-xl" />
-        </button>
+        </Link>
+
         <button onClick={handleNewSettings} className="btn-primary">
           Save
         </button>

@@ -3,11 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGetTeamIdQuery, useGetUsersQuery } from "../../redux";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  addMembers,
-  deleteMembers,
-} from "../../redux/slices/editTeamMembersSlice";
-
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 
@@ -23,18 +18,10 @@ const ManageMembersApp = () => {
   const members = useSelector((state) => state.editTeamMembers.members);
   const [btnWidth, setBtnWidth] = React.useState(985);
   const [searchValue, setSearchValue] = React.useState("");
-  const [checked, setChecked] = React.useState([]);
+  const [ setChecked] = React.useState([]);
   const { data: getDataTeamId } = useGetTeamIdQuery(id);
   const { data: getDataUsers, isLoading: loadingDataUsers } =
     useGetUsersQuery();
-
-  const handleAddMembers = (id) => {
-    if (!members.includes(id)) {
-      dispatch(addMembers(id));
-    } else {
-      dispatch(deleteMembers(id));
-    }
-  };
 
   React.useEffect(() => {
     if (getDataTeamId && getDataTeamId.users.length) {
@@ -43,7 +30,7 @@ const ManageMembersApp = () => {
       setChecked(false);
     }
     setBtnWidth(containerWidth.current.clientWidth);
-  }, [getDataTeamId, containerWidth, btnWidth]);
+  }, [getDataTeamId, containerWidth, btnWidth, setChecked]);
 
   return (
     <div
@@ -91,7 +78,6 @@ const ManageMembersApp = () => {
                       className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
                     >
                       <button
-                        onClick={() => handleAddMembers(user.id)}
                         className="absolute right-3 top-1/2 -translate-y-1/2"
                       >
                         {members.includes(user.id) ? (
@@ -110,15 +96,9 @@ const ManageMembersApp = () => {
                                 alt=""
                               />
                               <div className="flex flex-col">
-                                <h5 className="text-white mb-[10px]">
+                                <div className="text-white mb-[10px]">
                                   {user.username}
-                                </h5>
-                                <h4 className={`text-xs mb-[6px] text-gray`}>
-                                  Position
-                                </h4>
-                                <h4 className="text-gray text-xs">
-                                  Added: 10.10.2000
-                                </h4>
+                                </div>
                               </div>
                             </div>
                           </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import {
@@ -9,12 +9,11 @@ import {
 } from "redux/index";
 import { useDispatch, useSelector } from "react-redux";
 import { addMembers, deleteMembers, setMembers } from "redux/slices/membersSlice";
-import USER from "assets/img/user.png";
-
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import PageHeader from "../../components/common/PageHeader";
+import AvatarUser from "components/users/AvatarUser";
 
 const EditMembersGroup = () => {
   const navigate = useNavigate();
@@ -31,7 +30,7 @@ const EditMembersGroup = () => {
     if (getGroupIdUsers) {
       dispatch(setMembers(getGroupIdUsers.map((user) => user.id)));
     }
-  }, [isGroupIdUsersLoading]);
+  }, [isGroupIdUsersLoading, getGroupIdUsers, dispatch]);
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {
@@ -104,23 +103,21 @@ const EditMembersGroup = () => {
                     <div className="lg:flex lg:items-center">
                       <div className="flex flex-col lg:pr-[40px]">
                         <div className="flex items-center gap-4">
-                          <img
-                            className="w-[56px] h-[56px]"
-                            src={USER}
-                            alt=""
+                          <AvatarUser
+                            width={56}
+                            height={56}
+                            icon={false}
+                            userData={user}
                           />
                           <div className="flex flex-col">
-                            <h5 className="text-white mb-[10px]">
+                            <div className="text-white mb-[10px]">
                               {user.username}
-                            </h5>
-                            <h4 className={`text-xs mb-[6px] text-gray`}>
+                            </div>
+                            <div className={`text-xs mb-[6px] text-gray`}>
                               {user.position === null
                                 ? "Position name none"
                                 : user.position}
-                            </h4>
-                            <h4 className="text-gray text-xs">
-                              Added: 10.10.2000
-                            </h4>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -131,7 +128,7 @@ const EditMembersGroup = () => {
           </div>
         )}
       </div>
-      <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
+      <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround w-full lg:max-w-[-webkit-fill-available] lg:left-[345px]">
         <button onClick={handleEditGroupMembers} className="btn-primary">
           Save
         </button>

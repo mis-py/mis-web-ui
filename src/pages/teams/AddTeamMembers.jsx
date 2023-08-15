@@ -29,7 +29,7 @@ const AddTeamMembers = () => {
                 .includes(searchValue.toLowerCase().trim())
             && el.team === null
         ))
-  }, [searchValue, loadingUsers]);
+  }, [searchValue, loadingUsers, getUsers]);
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {
@@ -90,15 +90,9 @@ const AddTeamMembers = () => {
                             alt=""
                           />
                           <div className="flex flex-col">
-                            <h5 className="text-white mb-[10px]">
+                            <div className="text-white mb-[10px]">
                               {user.username}
-                            </h5>
-                            <h4 className={`text-xs mb-[6px] text-gray`}>
-                              Position
-                            </h4>
-                            <h4 className="text-gray text-xs">
-                              Added: 10.10.2000
-                            </h4>
+                            </div>
                           </div>
                         </div>
                       </div>

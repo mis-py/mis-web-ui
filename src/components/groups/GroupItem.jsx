@@ -1,6 +1,6 @@
 import React from "react";
 
-import ListItemWrapper from "../../components/common/ListItemWrapper";
+import ListItemWrapper from "../common/ListItemWrapper";
 import { useNavigate, Link } from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
 import {toast} from "react-toastify";
@@ -8,10 +8,9 @@ import { useDeleteGroupMutation } from "redux/index";
 import AdminWrapper from "../../config/AdminWrapper";
 import {BiDotsVerticalRounded} from "react-icons/bi";
 import useOutsideClick from "../../hooks/useOutsideClick";
-import Tooltip from "../Tooltip";
 import TeamUsersShortList from "../teams/TeamUsersShortList";
 
-const GroupListItem = (props) => {
+const GroupItem = (props) => {
     const navigate = useNavigate();
     const [deleteGroup] = useDeleteGroupMutation();
 
@@ -121,4 +120,4 @@ const GroupListItem = (props) => {
     );
 };
 
-export default GroupListItem;
+export default GroupItem;

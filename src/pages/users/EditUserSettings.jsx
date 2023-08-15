@@ -5,6 +5,7 @@ import {
   useGetSettingsQuery,
   useGetUserSettingsIdQuery,
   useSettingUserSetMutation,
+  useGetUsersQuery,
 } from "redux/index";
 import {
   addUserSettings,
@@ -23,11 +24,12 @@ const EditUserSettings = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const settings = useSelector((state) => state.user.settings);
-  const { data: getSettings = [], isLoading: loadingGetSettings } =
+  const { data: getSettings = [] } =
       useGetSettingsQuery();
-  const { data: getUserSettings = [], isLoading: loadingUserSettings } =
+  const { data: getUserSettings = [] } =
       useGetUserSettingsIdQuery(id);
   const [editUserSettingsSet] = useSettingUserSetMutation();
+  const { refetch: refetchUsers } = useGetUsersQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
 
@@ -54,33 +56,40 @@ const EditUserSettings = () => {
       body: dataSettings,
     }).then((data) => {
       if (data.error !== undefined && data.error.data.message !== undefined) {
-        console.error(data.error.data.message);
-        toast.error("Settings were not saved");
+        toast.error(`Settings were not saved: ${data.error.data.message}`);
       } else {
         navigate(`/users/${id}`);
         toast.success("Added new settings");
       }
+
+      refetchUsers();
     });
   };
 
   React.useEffect(() => {
-    let _settings = getSettings.map((setting) => {
-      const userSetting = getUserSettings.find(
-          (userSetting) => userSetting.setting.id === setting.id
-      );
+    if (getSettings !== undefined && getSettings.length
+      && getUserSettings !== undefined && getUserSettings.length
+    ) {
+      let _settings = getSettings.map((setting) => {
+        const userSetting = getUserSettings.find(
+            (userSetting) => userSetting.setting.id === setting.id
+        );
 
-      if (userSetting) {
-        return {
-          ...setting,
-          value: userSetting.value,
-        };
+        if (userSetting) {
+          return {
+            ...setting,
+            value: userSetting.value,
+          };
+        }
+
+        return setting;
+      });
+
+      if (_settings.length) {
+        dispatch(renderSettings(_settings));
       }
-
-      return setting;
-    });
-
-    dispatch(renderSettings(_settings));
-  }, [loadingGetSettings, loadingUserSettings]);
+    }
+  }, [dispatch, getUserSettings, getSettings]);
 
   const handleInputChange = (e, id) => {
     const value = e.target.value;
@@ -124,7 +133,7 @@ const EditUserSettings = () => {
                                 changeValue={(e) => handleInputChange(e, item.id)}
                                 value={item.value === undefined ? "" : item.value}
                                 name={item.key}
-                                hasDefault={item.default_value !== null && item.default_value.length}
+                                hasDefault={item.default_value !== null && item.default_value.length > 0}
                                 setDefault={() => dispatch(addUserDefaultSettings(item))}
                             />
                         )
@@ -132,7 +141,7 @@ const EditUserSettings = () => {
           </form>
         </div>
 
-        <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
+        <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround w-full lg:max-w-[-webkit-fill-available] lg:left-[345px]">
           <button onClick={handleSaveUser} className="btn-primary">
             Save
           </button>

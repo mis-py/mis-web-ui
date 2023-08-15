@@ -15,19 +15,24 @@ import { webcatApi } from "./api/modulesApi/webcatApi";
 import { consumersApi } from "./api/modulesApi/consumersApi";
 import { tasksApi } from "./api/modulesApi/tasksApi";
 import { timerApi } from "./api/modulesApi/timerApi";
+import { statabotApi } from "./api/modulesApi/statabotApi";
+import { autoAdminApi } from "./api/modulesApi/autoAdminApi";
+import { binomApi } from "./api/modulesApi/binomDomainApi";
 
 //slices
 import { authReducer } from "./slices/authSlice";
 import userSlice from "./slices/userSlice";
 import teamSlice from "./slices/teamSlice";
-import editTeamPermissionsSlice from "./slices/editTeamPermissionsSlice";
-import editTeamMembersSlice from "./slices/editTeamMembersSlice";
 import membersSlice from "./slices/membersSlice";
 import { startLoading, stopLoading } from './slices/loadingSlice';
 import loadingReducer from './slices/loadingSlice';
 
-const mutationLoadingMiddleware = ({ dispatch }) => next => action => {
-    if (~action.type.indexOf("executeMutation")) {
+const mutationLoadingMiddleware = (params) => next => action => {
+    const { dispatch } = params;
+
+    if (~action.type.indexOf("executeMutation")
+        && (action.meta.arg === undefined || action.meta.arg.endpointName.indexOf("find") === -1)
+    ) {
         if (isPending(action)) {
             dispatch(startLoading());
         }
@@ -59,13 +64,14 @@ export const store = configureStore({
     [consumersApi.reducerPath]: consumersApi.reducer,
     [tasksApi.reducerPath]: tasksApi.reducer,
     [timerApi.reducerPath]: timerApi.reducer,
+    [statabotApi.reducerPath]: statabotApi.reducer,
+    [autoAdminApi.reducerPath]: autoAdminApi.reducer,
+    [binomApi.reducerPath]: binomApi.reducer,
 
     //slices
     auth: authReducer,
     user: userSlice,
     team: teamSlice,
-    editTeamPermissions: editTeamPermissionsSlice,
-    editTeamMembers: editTeamMembersSlice,
     membersList: membersSlice,
     loading: loadingReducer,
   },
@@ -86,6 +92,10 @@ export const store = configureStore({
       consumersApi.middleware,
       tasksApi.middleware,
       timerApi.middleware,
+      statabotApi.middleware,
+      autoAdminApi.middleware,
+      binomApi.middleware,
+
       mutationLoadingMiddleware,
     ]),
 });

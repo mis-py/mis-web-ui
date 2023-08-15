@@ -8,13 +8,11 @@ export const baseUrl = `${
   // "http://dev.ng.lan/api"
 }`;
 
-export const currentUserId = localStorage.getItem("user_id");
-
 export const sidebar = [
   { icon: <BiUser />, title: "Users", url: "/users" },
   { icon: <FiUsers />, title: "Teams", url: "/teams" },
   { icon: <MdGroups />, title: "Groups", url: "/groups" },
   { icon: <AiOutlineAppstore />, title: "Applications", url: "/apps", },
   { icon: <BiTask />, title: "Tasks", url: "/tasks", },
-  { icon: <MdTask />, title: "Consumers", url: "/consumers", }
+  { icon: <MdTask />, title: "Consumers", url: "/consumers", },
 ];

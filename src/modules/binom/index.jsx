@@ -1,15 +1,44 @@
 import React from 'react'
+import PageHeader from "../../components/common/PageHeader";
+import TabsList from "../../components/common/tabs/TabsList";
 
-// import defaultBinomValue from "./binomFormValue";
+const tabs = [
+    {
+        label: 'Domain dashboard',
+        Component: React.lazy(() => import("components/domainManagement/DomainDashboard"))
+    },
+    {
+        label: 'Domain management',
+        Component: React.lazy(() => import("components/domainManagement/DomainManagement"))
+    },
+    {
+        label: 'Setup process',
+        Component: React.lazy(() => import("components/domainManagement/SetupProcess"))
+    },
+];
 
 const Binom = () => {
-    // const [formValue, setFormValue] = React.useState(defaultBinomValue)
+    const [activeTab, setActiveTab] = React.useState(0);
 
-  return (
-    <>
-    asd
-    </>
-  )
+    const { Component } = tabs[activeTab];
+
+    return (
+        <div className="py-6">
+            <div className="flex flex-col">
+            <PageHeader
+                header="Binom companion"
+                showBack={false}
+            />
+            <TabsList
+                items={tabs}
+                setActiveTab={setActiveTab}
+                activeTab={activeTab}
+            />
+
+            <Component />
+          </div>
+        </div>
+    )
 }
 
 export default Binom

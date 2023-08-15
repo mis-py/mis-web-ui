@@ -128,17 +128,14 @@ const AddGroup = () => {
                             alt=""
                           />
                           <div className="flex flex-col">
-                            <h5 className="text-white mb-[10px]">
+                            <div className="text-white mb-[10px]">
                               {user.username}
-                            </h5>
-                            <h4 className={`text-xs mb-[6px] text-gray`}>
+                            </div>
+                            <div className={`text-xs mb-[6px] text-gray`}>
                               {user.position === null
                                 ? "Position name none"
                                 : user.position}
-                            </h4>
-                            <h4 className="text-gray text-xs">
-                              Added: 10.10.2000
-                            </h4>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -149,7 +146,7 @@ const AddGroup = () => {
           </div>
         )}
       </div>
-      <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
+      <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround w-full lg:max-w-[-webkit-fill-available] lg:left-[345px]">
         <button onClick={handleAddGroup} className="btn-primary">
           Add group
         </button>

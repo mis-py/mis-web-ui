@@ -7,13 +7,30 @@ export const groupsApi = createApi({
   baseQuery: RtkDefaultQuery,
   endpoints: (build) => ({
     getGroups: build.query({
-      query: () => ({
-        url: `/groups/`,
-        method: "GET",
-        headers: {
-          accept: "application/json",
-        },
-      }),
+      query: (data) => {
+        let url = "/groups/";
+
+        if (data !== undefined) {
+          const args = [];
+
+          if (data.app_id !== undefined) {
+            args.push(`app_id=${data.app_id}`);
+          }
+
+          if (args.length) {
+            url += '?' + args.join('&');
+          }
+        }
+
+        return {
+          url,
+          method: "GET",
+          headers: {
+            accept: "application/json",
+          },
+        };
+      },
+      keepUnusedDataFor: 0.1,
       providesTags: (result) =>
         result
           ? [
@@ -37,6 +54,7 @@ export const groupsApi = createApi({
               { type: "Groups", id: "LIST" },
             ]
           : [{ type: "Groups", id: "LIST" }],
+      keepUnusedDataFor: 0.1,
     }),
     getGroupIdUsers: build.query({
       query: (id) => ({
@@ -53,6 +71,7 @@ export const groupsApi = createApi({
               { type: "Groups", id: "LIST" },
             ]
           : [{ type: "Groups", id: "LIST" }],
+      keepUnusedDataFor: 0.1,
     }),
     getGroupIdObjects: build.query({
       query: (id) => ({
@@ -63,6 +82,7 @@ export const groupsApi = createApi({
         },
       }),
       providesTags: (result, error, id) => [{ type: "Groups", id }],
+      keepUnusedDataFor: 0.1,
     }),
     addGroup: build.mutation({
       query: (body) => ({

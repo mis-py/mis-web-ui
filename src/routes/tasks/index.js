@@ -1,18 +1,21 @@
 import Tasks from "modules/tasks";
-import Jobs from "modules/tasks/JobsTasks";
-// import EditMembersGroup from "pages/groups/EditMembersGroup";
-// import EditObjectsGroup from "pages/groups/EditObjectsGroup";
+import JobsTasks from "modules/tasks/JobsTasks";
+import JobsLogs from "../../modules/tasks/JobsLogs";
 
 export const taskRoutes = [
   {
     path: "/tasks",
     element: <Tasks />,
   },
-
   {
     path: "/tasks/jobs/:id",
-    element: <Jobs />,
+    element: <JobsTasks />,
   },
+  {
+    path: "/tasks/jobs/logs/:id",
+    element: <JobsLogs />,
+  },
+
   // {
   //   path: "/group/members/:id",
   //   element: <EditMembersGroup />,

@@ -38,7 +38,7 @@ const EditTeamMembers = () => {
     }
 
     dispatch(setTeamMembers(userIds));
-  }, [isTeamDataLoading]);
+  }, [isTeamDataLoading, dispatch, getTeamId]);
 
   const handleAddMembers = (id) => {
     if (!members.includes(id)) {
@@ -123,15 +123,9 @@ const EditTeamMembers = () => {
                               title={user.username}
                             />
                             <div className="flex flex-col">
-                              <h5 className="text-white mb-[10px]">
+                              <div className="text-white mb-[10px]">
                                 {user.username}
-                              </h5>
-                              <h4 className={`text-xs mb-[6px] text-gray`}>
-                                Position
-                              </h4>
-                              <h4 className="text-gray text-xs">
-                                Added: 10.10.2000
-                              </h4>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -145,7 +139,7 @@ const EditTeamMembers = () => {
           </div>
         )}
       </div>
-      <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround lg:w-[1025px] lg:max-w-[-webkit-fill-available] lg:left-[345px]">
+      <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround w-full lg:max-w-[-webkit-fill-available] lg:left-[345px]">
         <button onClick={handleEditTeamMembers} className="btn-primary">
           Save
         </button>

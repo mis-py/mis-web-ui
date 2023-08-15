@@ -20,7 +20,7 @@ const Webcat = () => {
   const [showSearch, setShowSearch] = React.useState(false);
   const [showFilter, setShowFilter] = React.useState(false);
   const [filterGrid, setFilterGrid] = React.useState(1);
-  const [filterGeo, setFilterGeo] = React.useState(null);
+  const [filterGeo] = React.useState(null);
   const [searchValue, setSearchValue] = React.useState("");
   const [geo, setGeo] = React.useState("");
 
@@ -89,14 +89,14 @@ const Webcat = () => {
             </div>
           </div>
           <div className="flex justify-between items-center mb-3">
-            <a
-              onClick={(e) => handleUpdateThumbnails(e)}
-              href="#"
-              className="flex items-center gap-2 text-gray cursor-pointer"
-            >
-              <BsArrowRepeat />
-              <p>Update all thumbnails</p>
-            </a>
+          <button
+            onClick={handleUpdateThumbnails}
+            className="flex items-center gap-2 text-gray cursor-pointer bg-transparent border-none p-0"
+          >
+            <BsArrowRepeat />
+            <p>Update all thumbnails</p>
+          </button>
+
             <h2 onClick={() => setGeo("")} className="cursor-pointer text-gray">
               Reset filter
             </h2>

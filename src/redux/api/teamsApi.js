@@ -18,23 +18,25 @@ export const teamsApi = createApi({
               { type: "Teams", id: "LIST" },
             ]
           : [{ type: "Teams", id: "LIST" }],
+      keepUnusedDataFor: 0.1,
     }),
     getTeamId: build.query({
       query: (id) => ({
         url: `/teams/${id}`,
         method: "GET",
         headers: {
-          "content-type": "application/json"
+          "content-type": "application/json",
         },
       }),
       providesTags: (result, error, id) => [{ type: "Teams", id }],
+      keepUnusedDataFor: 0.1,
     }),
     addTeam: build.mutation({
       query: (body) => ({
         url: "/teams/create",
         method: "POST",
         headers: {
-          "content-type": "application/json"
+          "content-type": "application/json",
         },
         body,
       }),
@@ -45,7 +47,7 @@ export const teamsApi = createApi({
         url: `/teams/${id}`,
         method: "PUT",
         headers: {
-          accept: "application/json"
+          accept: "application/json",
         },
         body: rest,
       }),
@@ -56,7 +58,7 @@ export const teamsApi = createApi({
         url: `/teams/${id}`,
         method: "DELETE",
         headers: {
-          accept: "application/json"
+          accept: "application/json",
         },
       }),
       invalidatesTags: [{ type: "Teams", id: "LIST" }],

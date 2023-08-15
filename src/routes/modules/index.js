@@ -5,6 +5,7 @@ import Statabot from "modules/statabot";
 const Webcat = React.lazy(() => import("modules/webcat"));
 const EditWebcat = React.lazy(() => import("modules/webcat/EditWebcat"));
 const Binom = React.lazy(() => import("modules/binom/index.jsx"))
+const AutoAdmin = React.lazy(() => import("modules/auto_admin/index.jsx"))
 
 const useModuleRoutes = () => {
   const { data: getModules = [], isLoading } = useGetModulesQuery(null, {
@@ -13,28 +14,31 @@ const useModuleRoutes = () => {
   const [moduleRouteList, setModuleRouteList] = React.useState([]);
 
   React.useEffect(() => {
-    const modules = [];
-    getModules.map(item => {
-      let obj = {
-        path: `/${item.name}`,
-      };
+    if (getModules !== undefined && getModules.length) {
+      const modules = [];
+      getModules.forEach(item => {
+        let obj = {
+          path: `/${item.name}`,
+        };
 
-      if (item.name === 'webcat') {
-        obj.element = <Webcat />;
-      } else if (item.name === 'editwebcat') {
-        obj.element = <EditWebcat />;
-      } else if (item.name === 'statabot') {
-        obj.element = <Statabot />;
-      } else if (item.name === 'binom_companation') {
-        obj.element = <Binom />;
-      }
+        if (item.name === 'webcat') {
+          obj.element = <Webcat/>;
+        } else if (item.name === 'editwebcat') {
+          obj.element = <EditWebcat/>;
+        } else if (item.name === 'statabot') {
+          obj.element = <Statabot/>;
+        } else if (item.name === 'binom_companion') {
+          obj.element = <Binom/>;
+        } else if (item.name === 'auto_admin') {
+          obj.element = <AutoAdmin/>;
+        }
 
-      modules.push(obj);
-    });
+        modules.push(obj);
+      });
 
-    setModuleRouteList(modules);
-
-  }, [isLoading]);
+      setModuleRouteList(modules);
+    }
+  }, [isLoading, getModules]);  
 
   return moduleRouteList;
 };

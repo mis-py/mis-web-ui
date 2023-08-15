@@ -13,6 +13,7 @@ import Notifications from "./Notifications";
 
 import { sidebar } from "config/variables";
 import AdminWrapper from "config/AdminWrapper";
+import SidebarStyles from "../assets/css/components/Sidebar.module.css";
 
 const SidebarDesktop = () => {
   const [userPopup, setUserPopup] = React.useState(false);
@@ -20,11 +21,9 @@ const SidebarDesktop = () => {
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
   const [notificationsCount, setNotificationsCount] = React.useState(0);
 
-  const { data: getModules = [] } = useGetModulesQuery();
-  const handleButtonClick = () => {
-    setIsPopupOpen(!isPopupOpen);
-    setNotificationsCount(0);
-  };
+  const { data: getModules = [], isLoading: isModulesLoading } = useGetModulesQuery(null, {
+    refetchOnMountOrArgChange: true,
+  });
 
   return (
     <>
@@ -51,7 +50,7 @@ const SidebarDesktop = () => {
                   <button onClick={() => setIsPopupOpen(!isPopupOpen)} className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond">
                     <FiBell />
                   </button>
-                  <div className={`${isPopupOpen ? "flex" : "hidden"} absolute px-7 py-2 block text-gray duration-300 cursor-pointer bg-blackSecond hover:bg-blackSecond hover:text-primary`}>
+                  <div className={`${isPopupOpen ? "flex" : "hidden"} absolute rounded-lg block text-gray duration-300 cursor-pointer bg-blackSecond hover:bg-blackSecond`}>
                     <Notifications isPopupOpen={isPopupOpen} setIsPopupOpen={setIsPopupOpen} notificationsCount={notificationsCount} setNotificationsCount={setNotificationsCount} className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"/>
                   </div>
                 </div>
@@ -69,7 +68,7 @@ const SidebarDesktop = () => {
             </div>
           </div>
 
-          <ul>
+          <ul className={`${SidebarStyles.sidebar} overflow-auto`}>
             <AdminWrapper>
             {sidebar.map((link) => (
               <li key={link.title}>
@@ -91,7 +90,7 @@ const SidebarDesktop = () => {
               </li>
             ))}
             </AdminWrapper>
-            <li
+            {isModulesLoading === false && getModules !== null && getModules.length > 0 ? <li
               className={`flex items-center justify-between px-5 gap-3 duration-300 group cursor-pointer hover:bg-blackSecond`}
               onClick={() => setShowListApps(!showListApps)}
             >
@@ -100,15 +99,15 @@ const SidebarDesktop = () => {
                   <AiOutlineAppstoreAdd />
                 </div>
                 <div className="py-3 duration-300 group-hover:text-primary">
-                  List Apps
+                  Apps list
                 </div>
               </div>
               <IoIosArrowForward
                 className={`${showListApps ? "rotate-90" : ""} duration-300`}
               />
-            </li>
+            </li> : null}
             <li
-              className={`${showListApps ? "opacity-100 visible" : "opacity-0 invisible"
+              className={`${showListApps ? "opacity-100 visible" : "hidden opacity-0 invisible"
                 } flex flex-col duration-300`}
             >
               {getModules?.map(

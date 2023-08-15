@@ -15,72 +15,74 @@ import Input from "../../components/Input";
 
 const EditTeamSettings = () => {
   const { id } = useParams();
-
+   const navigate = useNavigate();  
   const { data: teamData } = useGetTeamIdQuery(id);
   const { data: teamSettings, isLoading: teamSettingsLoading } = useGetSettingsTeamIdQuery(id);
   const { data: allSettings, isLoading: allSettingsLoading } = useGetSettingsQuery();
 
   const [searchValue, setSearchValue] = React.useState("");
   const [formValues, setFormValues] = React.useState([]);
-
+ 
   const [editTeamSettingsSet] = useSettingsTeamSetMutation();
 
   React.useEffect(() => {
-      if (teamSettings !== undefined && allSettings !== undefined) {
-          const _formValue = [];
-
-          allSettings.map(allSettingsItem => {
-              if (allSettingsItem.is_global === true) {
-                return;
-              }
-
-              const teamSetting = teamSettings.find(
-                  (teamSetting) => teamSetting.setting.id === allSettingsItem.id
-              );
-
-              _formValue.push({ ...allSettingsItem, value: teamSetting === undefined ? "" : teamSetting.value});
-          });
-
-          setFormValues(_formValue);
-      }
-  }, [teamSettingsLoading, allSettingsLoading]);
+    if (teamSettings !== undefined && allSettings !== undefined) {
+      const _formValue = [];
+  
+      allSettings.forEach(allSettingsItem => {
+        if (allSettingsItem.is_global === true) {
+          return;
+        }
+  
+        const teamSetting = teamSettings.find(
+          teamSetting => teamSetting.setting.id === allSettingsItem.id
+        );
+  
+        _formValue.push({
+          ...allSettingsItem,
+          value: teamSetting === undefined ? "" : teamSetting.value,
+        });
+      });
+  
+      setFormValues(_formValue);
+    }
+  }, [teamSettingsLoading, allSettingsLoading, allSettings, teamSettings]);
 
     const handleInputChange = (value, item) => {
-        const _formValue = [];
-
-        formValues.map(formValue => {
+        const updatedFormValues = formValues.map(formValue => {
             if (formValue.id === item.id) {
-                _formValue.push({ ...formValue, value: value });
+                return { ...formValue, value: value };
             } else {
-                _formValue.push({ ...formValue });
+                return { ...formValue };
             }
         });
-
-        setFormValues(_formValue);
+    
+        setFormValues(updatedFormValues);
     };
 
     const HandleSaveTeamSettings = async (e) => {
         e.preventDefault();
         const updateValues = [];
 
-        formValues.map((formValue) => {
+        formValues.forEach((formValue) => {
             const teamSetting = teamSettings.find(
-                (teamSetting) => teamSetting.setting.id === formValue.id
+              (teamSetting) => teamSetting.setting.id === formValue.id
             );
-
-            // Проверка, что formValue и formValue.value не являются undefined
-            if (formValue !== undefined && formValue.value.length === 0
-                && (!teamSetting || !teamSetting.value) // Проверка, что teamSetting и teamSetting.value не являются undefined
-                || (teamSetting && teamSetting.value === formValue.value)
-            ) {
-                return;
+          
+            if (
+                formValue !== undefined &&
+                ((formValue.value.length === 0 && (!teamSetting || !teamSetting.value)) ||
+                  (teamSetting && teamSetting.value === formValue.value))
+            ){
+              return;
             }
-
+          
             updateValues.push({
-                setting_id: formValue.id,
-                new_value: formValue.value,
+              setting_id: formValue.id,
+              new_value: formValue.value,
             });
-        });
+          });
+          
 
         if (updateValues.length === 0) {
             toast.error("No changes found");
@@ -93,6 +95,7 @@ const EditTeamSettings = () => {
         }).then((res) => {
             if (res.data === null) {
                 toast.success("Team settings were updated");
+                navigate(-1);
             } else {
                 toast.error(res.error.data.message);
             }
@@ -133,7 +136,7 @@ const EditTeamSettings = () => {
                       autoComplete="off"
                       value={formItem.value}
                       name={formItem.key}
-                      hasDefault={formItem.default_value !== null && formItem.default_value.length}
+                      hasDefault={formItem.default_value !== null && formItem.default_value.length > 0}
                       changeValue={(e) => handleInputChange(e.target.value, formItem)}
                       setDefault={() => handleInputChange(formItem.default_value, formItem)}
                   />

@@ -1,26 +1,22 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import {
-  useGetPermissionsQuery,
-  useGetPermissionsTeamIdQuery,
-  useEditTeamPermissionMutation,
-} from "redux/index";
-import { toast } from "react-toastify";
+import {useParams} from "react-router-dom";
+import {useEditTeamPermissionMutation, useGetPermissionsQuery, useGetPermissionsTeamIdQuery,} from "redux/index";
+import {toast} from "react-toastify";
 
 import PermissionLabel from "components/permissions/PermissionLabel";
 
-import { FiSearch } from "react-icons/fi";
+import {FiSearch} from "react-icons/fi";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import PageHeader from "../../components/common/PageHeader";
 
 const EditTeamPermissions = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
   const [checked, setChecked] = React.useState([]);
   const [editTeamPermission] = useEditTeamPermissionMutation();
   const { data: dataPermissions = [], isLoading: loadingDataPermissions } =
     useGetPermissionsQuery();
-  const { data: getPermissionsTeamId } = useGetPermissionsTeamIdQuery(id);
+  const { data: getPermissionsTeamId, isLoading: loadingPermissionsTeamId } =
+    useGetPermissionsTeamIdQuery(id);
 
   const handleAddPermissions = async (e) => {
     e.preventDefault();
@@ -33,22 +29,15 @@ const EditTeamPermissions = () => {
   };
 
   React.useEffect(() => {
-    if (getPermissionsTeamId && getPermissionsTeamId.length) {
-      setChecked(
-        getPermissionsTeamId &&
-          getPermissionsTeamId.map((it) => it.permission.scope)
-      );
-    } else if (getPermissionsTeamId && !getPermissionsTeamId.length) {
-      setChecked(false);
+    if (!loadingPermissionsTeamId) {
+      setChecked(getPermissionsTeamId.map((it) => it.permission.scope));
     }
-  }, [getPermissionsTeamId]);
+  }, [getPermissionsTeamId, loadingPermissionsTeamId]);
 
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-        <PageHeader
-          header="Manage permissions"
-        />
+        <PageHeader header="Manage permissions" />
         <form className="my-4">
           <label
             className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
@@ -68,23 +57,21 @@ const EditTeamPermissions = () => {
             <div className="flex flex-col gap-4">
               {dataPermissions &&
                 dataPermissions.map((item) => (
-                  <PermissionLabel 
-                  key={item.id} 
-                  item={item}
-                  checked={
-                          !checked.length
-                            ? setChecked([""])
-                            : checked.includes(item.scope)
-                        }
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setChecked([...checked, item.scope]);
-                          } else {
-                            setChecked(
-                              checked.filter((obj) => obj !== item.scope)
-                            );
-                          }
-                  }}
+                  <PermissionLabel
+                    key={item.id}
+                    item={item}
+                    checked={
+                      !checked.length
+                        ? setChecked([""])
+                        : checked.includes(item.scope)
+                    }
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setChecked([...checked, item.scope]);
+                      } else {
+                        setChecked(checked.filter((obj) => obj !== item.scope));
+                      }
+                    }}
                   />
                 ))}
             </div>

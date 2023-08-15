@@ -1,6 +1,5 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-
 import Drawer, {
   DrawerContainer,
   MainContentContainer,
@@ -8,8 +7,13 @@ import Drawer, {
 
 import SidebarDesktop from "components/SidebarDesktop";
 import Sidebar from "components/Sidebar";
+// import webSocket from "../config/WebSocketConnection";
 
 const MainLayout = () => {
+
+    // webSocket.onopen = function (e) {
+    //     webSocket.send('{"subscribe": "notifications"}');
+    // }
 
   return (
     <>

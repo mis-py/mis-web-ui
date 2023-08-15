@@ -12,17 +12,26 @@ const baseQuery = fetchBaseQuery({
 });
 
 const RtkDefaultQuery = async (args, api, extraOptions) => {
-    let result = await baseQuery(args, api, extraOptions);
+    if (localStorage.getItem("token") === null) {
+        return {
+            error: {
+                status: 400,
+                data: { message: "No token found" },
+            },
+        };
+    } else {
+        let result = await baseQuery(args, api, extraOptions);
 
-    if (result.error !== undefined && result.error.status === 401) {
-      localStorage.removeItem('token');
+        if (result.error !== undefined && result.error.status === 401) {
+            localStorage.removeItem('token');
 
-      if (window.location.pathname !== '/signin') {
-          return <Navigate to="/signin" />;
-      }
+            if (window.location.pathname !== '/signin') {
+                return <Navigate to="/signin" />;
+            }
+        }
+
+        return result;
     }
-
-    return result;
 };
 
 export default RtkDefaultQuery;

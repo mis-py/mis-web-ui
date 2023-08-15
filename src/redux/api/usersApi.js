@@ -7,10 +7,25 @@ export const usersApi = createApi({
   baseQuery: RtkDefaultQuery,
   endpoints: (build) => ({
     getUsers: build.query({
-      query: () => ({
-        url: `/users/`,
-        method: "GET"
-      }),
+      query: (params) => {
+        let url = `/users/`;
+        let queryParams = [];
+
+        if (params !== undefined) {
+          if (params.team_id !== undefined && params.team_id !== null) {
+            queryParams.push(`team_id=${params.team_id}`);
+          }
+        }
+
+        if (queryParams.length) {
+          url += `?${queryParams.join("&")}`;
+        }
+
+        return {
+          url: url,
+          method: "GET",
+        };
+      },
       providesTags: (result) =>
         result
           ? [
@@ -18,20 +33,23 @@ export const usersApi = createApi({
               { type: "Users", id: "LIST" },
             ]
           : [{ type: "Users", id: "LIST" }],
+      keepUnusedDataFor: 0.1,
     }),
     getUserId: build.query({
       query: (id) => ({
         url: `/users/${id}`,
-        method: "GET"
+        method: "GET",
       }),
       providesTags: (result, error, id) => [{ type: "Users", id }],
+      keepUnusedDataFor: 0.1,
     }),
     getMe: build.query({
       query: () => ({
         url: `/users/me`,
-        method: "GET"
+        method: "GET",
       }),
       providesTags: () => [{ type: "Users" }],
+      keepUnusedDataFor: 0.1,
     }),
     addUser: build.mutation({
       query: (body) => ({
@@ -53,7 +71,7 @@ export const usersApi = createApi({
         },
         body: rest,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Users", id }],
+      invalidatesTags: (result, error, { id }) => [{ type: "Users", id }, { type: "Users", id: "LIST" }],
     }),
     deleteUser: build.mutation({
       query: (id) => ({
@@ -64,6 +82,16 @@ export const usersApi = createApi({
         },
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
+    }),
+    saveUserPhoto: build.mutation({
+      query: ({ userId, formData }) => {
+        return {
+          url: `/users/${userId}/photo`,
+          method: "POST",
+          body: formData,
+        };
+      },
+      invalidatesTags: (result, error, id) => [{ type: "Users", id: "LIST" }, { type: "Users", id }],
     }),
     userLogout: build.mutation({
       query: () => ({
@@ -85,5 +113,6 @@ export const {
   useAddUserMutation,
   useEditUserMutation,
   useDeleteUserMutation,
+  useSaveUserPhotoMutation,
   useUserLogoutMutation,
 } = usersApi;
