@@ -103,6 +103,17 @@ export const usersApi = createApi({
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
     }),
+    userResetPassword: build.mutation({
+      query: (data) => ({
+        url: "/auth/change_password",
+        method: "POST",
+        body: data,
+        headers: {
+          "content-type": "application/json",
+        },
+      }),
+      invalidatesTags: [{ type: "Users", id: "LIST" }],
+    }),
   }),
 });
 
@@ -115,4 +126,5 @@ export const {
   useDeleteUserMutation,
   useSaveUserPhotoMutation,
   useUserLogoutMutation,
+  useUserResetPasswordMutation
 } = usersApi;

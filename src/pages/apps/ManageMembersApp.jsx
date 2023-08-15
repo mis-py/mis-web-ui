@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetTeamIdQuery, useGetUsersQuery } from "../../redux";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
@@ -12,7 +12,6 @@ import PageHeader from "../../components/common/PageHeader";
 
 const ManageMembersApp = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { id } = useParams();
   let containerWidth = React.useRef();
   const members = useSelector((state) => state.editTeamMembers.members);
