@@ -27,7 +27,7 @@ const AddUserSettings = () => {
     if (settings.length === 0) {
       dispatch(renderSettings(getSettings));
     }
-  }, [loadingGetSettings, dispatch, getSettings, settings.length]);
+  }, [loadingGetSettings, getSettings, dispatch, settings]);
 
   const handleInputChange = (e, id) => {
     const value = e.target.value;
