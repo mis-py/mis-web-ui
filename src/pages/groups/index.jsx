@@ -1,19 +1,16 @@
 import React from "react";
 import { toast } from "react-toastify";
-
 import { useGetGroupsQuery } from "redux/index";
 import { deleteMembersAll } from "redux/slices/membersSlice";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
 import AdminWrapper from "config/AdminWrapper";
 
-import { FiSearch } from "react-icons/fi";
+import GroupList from "components/groups/GroupList";
 
+import { FiSearch } from "react-icons/fi";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 
-import GroupListItem from "../../components/groups/GroupListItem";
-import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 const Groups = () => {
   const dispatch = useDispatch();
@@ -26,7 +23,6 @@ const Groups = () => {
   const [serchValue, setSearchValue] = React.useState("");
   const [showSearch, setShowSearch] = React.useState(false);
 
-
   React.useEffect(() => {
     const deleteMembersAndShowError = async () => {
       if (errorGroup) {
@@ -34,15 +30,9 @@ const Groups = () => {
       }
       dispatch(deleteMembersAll());
     };
-  
+
     deleteMembersAndShowError();
-  }, [errorGroup, loadingGroup, dispatch]); 
-  // React.useEffect(() => {
-  //   if (errorGroup) {
-  //     toast.error("Groups not found");
-  //   }
-  //   dispatch(deleteMembersAll());
-  // }, [errorGroup, loadingGroup]);
+  }, [errorGroup, loadingGroup, dispatch]);
 
   return (
     <div className="py-6">
@@ -82,23 +72,11 @@ const Groups = () => {
         </div>
 
         <h3 className="h3 mb-5">Groups ({getGroups?.length})</h3>
-        {loadingGroup ? (
-          <SpinnerLoader />
-        ) : (
-          <div className="flex flex-col gap-4">
-            {getGroups
-              ?.filter((el) =>
-                el.name.toLowerCase().includes(serchValue.toLowerCase().trim())
-              )
-              .map((group, index) => (
-                  <GroupListItem
-                      key={group.id}
-                      group={group}
-                      index={index}
-                  />
-              ))}
-          </div>
-        )}
+        <GroupList
+          getGroups={getGroups}
+          loadingGroup={loadingGroup}
+          serchValue={serchValue}
+        />
       </div>
     </div>
   );
