@@ -1,22 +1,27 @@
 import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetGroupsQuery, useGetAppByIdQuery } from "../../redux";
 import { toast } from "react-toastify";
-import { firstUppercase } from "config/functions";
+import { firstUppercase } from "../../config/functions";
+
 import { FiSearch } from "react-icons/fi";
-import { useParams } from "react-router-dom";
-import GroupListItem from "../../components/groups/GroupListItem";
+
+import GroupListItem from "../../components/groups/GroupItem";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import PageHeader from "../../components/common/PageHeader";
 
 const ManageGroupApp = () => {
-  const {id} = useParams();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { data: applicationData, isLoading: isAppDataLoading } =
+    useGetAppByIdQuery(id);
+
   const {
     data: getGroups = [],
     isLoading: loadingGroups,
     error: errorGroups,
-  } = useGetGroupsQuery({ app_id: id });
-  const { data: applicationData, isLoading: isAppDataLoading } =
-    useGetAppByIdQuery(id);
+  } = useGetGroupsQuery();
+
   const [searchValue, setSearchValue] = React.useState("");
 
   React.useEffect(() => {
@@ -28,10 +33,10 @@ const ManageGroupApp = () => {
   return (
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
-      <PageHeader
+        <PageHeader
           header={`${
             !isAppDataLoading && firstUppercase(applicationData.name)
-          } group list`}
+          } manage groups`}
         />
         <h3 className="mb-1">Search for groups</h3>
         <form>
@@ -61,14 +66,20 @@ const ManageGroupApp = () => {
                     .includes(searchValue.toLowerCase().trim())
                 )
                 .map((group, index) => (
-                    <GroupListItem
-                        key={group.id}
-                        group={group}
-                        index={index}
-                    />
+                  <GroupListItem key={group.id} group={group} index={index} />
                 ))}
           </div>
         )}
+      </div>
+      <div
+        className={`flex fixed w-full h-[80px] bottom-0 bg-backGround lg:w-[985px] lg:max-w-[-webkit-fill-available]`}
+      >
+        <button
+          onClick={() => navigate(-1)}
+          className={`btn-primary absolute z-20 left-0 bottom-6 w-[calc(100%_-_40px)] lg:w-full`}
+        >
+          Save
+        </button>
       </div>
     </div>
   );

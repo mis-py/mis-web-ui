@@ -14,7 +14,9 @@ export const modulesApi = createApi({
           accept: "application/json"
         },
       }),
-      extraOptions: { maxRetries: 1 },
+      // onQueryStarted: () => {
+      //   console.log(localStorage.getItem("token"));
+      // },
       providesTags: (result) =>
         result
           ? [

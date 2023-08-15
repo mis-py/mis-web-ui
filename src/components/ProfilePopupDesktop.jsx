@@ -15,12 +15,14 @@ const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
   const refPopup = useOutsideClick(handleClickOutside);
 
   const handleLogOut = async (e) => {
-    await userLogout().then(() => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user_id");
-      localStorage.removeItem("username");
-      window.location.reload();
-    });
+    await userLogout()
+      .then(() => {
+        localStorage.clear();
+      })
+      .then(() => {
+        window.location.reload();
+        navigate("/signin");
+      });
   };
 
   return (
@@ -34,7 +36,7 @@ const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
       <ul>
         <button
           onClick={() => {
-            navigate(`/profile/${localStorage.getItem('user_id')}`);
+            navigate(`/profile/${localStorage.getItem("user_id")}`);
           }}
           className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
         >
