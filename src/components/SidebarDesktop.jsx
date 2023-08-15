@@ -21,11 +21,9 @@ const SidebarDesktop = () => {
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
   const [notificationsCount, setNotificationsCount] = React.useState(0);
 
-  const { data: getModules = [] } = useGetModulesQuery();
-  // const handleButtonClick = () => {
-  //   setIsPopupOpen(!isPopupOpen);
-  //   setNotificationsCount(0);
-  // };
+  const { data: getModules = [], isLoading: isModulesLoading } = useGetModulesQuery(null, {
+    refetchOnMountOrArgChange: true,
+  });
 
   return (
     <>
@@ -92,7 +90,7 @@ const SidebarDesktop = () => {
               </li>
             ))}
             </AdminWrapper>
-            <li
+            {isModulesLoading === false && getModules !== null && getModules.length > 0 ? <li
               className={`flex items-center justify-between px-5 gap-3 duration-300 group cursor-pointer hover:bg-blackSecond`}
               onClick={() => setShowListApps(!showListApps)}
             >
@@ -101,15 +99,15 @@ const SidebarDesktop = () => {
                   <AiOutlineAppstoreAdd />
                 </div>
                 <div className="py-3 duration-300 group-hover:text-primary">
-                  List Apps
+                  Apps list
                 </div>
               </div>
               <IoIosArrowForward
                 className={`${showListApps ? "rotate-90" : ""} duration-300`}
               />
-            </li>
+            </li> : null}
             <li
-              className={`${showListApps ? "opacity-100 visible" : "h-0 opacity-0 invisible"
+              className={`${showListApps ? "opacity-100 visible" : "hidden opacity-0 invisible"
                 } flex flex-col duration-300`}
             >
               {getModules?.map(

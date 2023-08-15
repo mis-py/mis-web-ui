@@ -66,7 +66,7 @@ const Sidebar = ({ toggleDrawer }) => {
                 </div>
               </NavLink>
             ))}
-            {getModules?.length && <div
+            {getModules !== null && getModules.length > 0 ? <div
               className={`flex items-center justify-between px-5 gap-3 duration-300 group cursor-pointer hover:bg-blackSecond`}
               onClick={() => setShowListApps(!showListApps)}
             >
@@ -75,16 +75,16 @@ const Sidebar = ({ toggleDrawer }) => {
                   <AiOutlineAppstoreAdd />
                 </div>
                 <div className="py-3 duration-300 group-hover:text-primary">
-                  List Apps
+                  Apps list
                 </div>
               </div>
               <IoIosArrowForward
                 className={`${showListApps ? "rotate-90" : ""} duration-300`}
               />
-            </div>}
+            </div> : null}
             {getModules?.length && <div
               className={`${
-                showListApps ? "opacity-100 visible" : "opacity-0 invisible"
+                showListApps ? "opacity-100 visible" : "opacity-0 invisible hidden"
               } flex flex-col duration-300`}
             >
               {getModules.map(
