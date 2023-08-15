@@ -14,6 +14,7 @@ export const modulesApi = createApi({
           accept: "application/json"
         },
       }),
+      extraOptions: { maxRetries: 1 },
       providesTags: (result) =>
         result
           ? [
