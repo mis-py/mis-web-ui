@@ -10,6 +10,7 @@ import ListItemWrapper from "../../components/common/ListItemWrapper";
 import { AiOutlinePlus, AiOutlineSetting } from "react-icons/ai";
 import { CgFileDocument } from "react-icons/cg";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
+import InstallLogs from "components/logs/InstallLogs";
 
 const Apps = () => {
 
@@ -57,12 +58,11 @@ const Apps = () => {
             </div>
           </div>
           <AdminWrapper>
-            <Link
-              to="/apps/clone"
+            <InstallLogs
               className="px-5 flex items-center justify-center bg-blackSecond text-gray rounded-lg"
             >
               <AiOutlinePlus />
-            </Link>
+            </InstallLogs>
           </AdminWrapper>
         </div>
 
