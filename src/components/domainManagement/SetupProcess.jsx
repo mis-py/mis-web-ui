@@ -1,13 +1,13 @@
 import React from "react";
-import {
-    useGetBinomDomainsQuery,
-    useGetGeosListQuery,
-    useBinomGeoDomainChangeMutation
-} from "redux/index";
-import SpinnerLoader from "../common/SpinnerLoader";
-import ListItemWrapper from "../common/ListItemWrapper";
-import Input from "../Input";
-import { toast } from "react-toastify";
+// import {
+//     useGetBinomDomainsQuery,
+//     useGetGeosListQuery,
+//     useBinomGeoDomainChangeMutation
+// } from "redux/index";
+// import SpinnerLoader from "../common/SpinnerLoader";
+// import ListItemWrapper from "../common/ListItemWrapper";
+// import Input from "../Input";
+// import { toast } from "react-toastify";
 
 
 const DomainDashboard = () => {

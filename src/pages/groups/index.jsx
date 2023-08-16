@@ -7,21 +7,18 @@ import { useDispatch } from "react-redux";
 import AdminWrapper from "config/AdminWrapper";
 
 import GroupList from "components/groups/GroupList";
+import SearchInputBtn from "components/SearchInputBtn";
 
-import { FiSearch } from "react-icons/fi";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
-
 
 const Groups = () => {
   const dispatch = useDispatch();
+  const [searchValue, setSearchValue] = React.useState("");
   const {
     data: getGroups = [],
     isLoading: loadingGroup,
     error: errorGroup,
   } = useGetGroupsQuery();
-
-  const [serchValue, setSearchValue] = React.useState("");
-  const [showSearch, setShowSearch] = React.useState(false);
 
   React.useEffect(() => {
     const deleteMembersAndShowError = async () => {
@@ -38,29 +35,11 @@ const Groups = () => {
     <div className="py-6">
       <div className="flex flex-col">
         <div className="flex justify-between gap-3 mb-5">
-          <div className="flex flex-auto">
-            <button
-              onClick={() => setShowSearch(!showSearch)}
-              className={`${
-                showSearch
-                  ? "rounded-l-lg text-primary"
-                  : "rounded-l-lg text-gray"
-              } flex justify-center duration-300 items-center px-3 h-[32px] bg-blackSecond`}
-            >
-              <FiSearch />
-            </button>
-            <div className="relative h-[32px] w-full duration-300">
-              <input
-                className={`${
-                  showSearch ? "w-full px-3" : "w-0 px-0"
-                } bg-blackSecond h-full text-xs text-gray border-none placeholder:text-gray duration-300 rounded-r w-full focus:shadow-none focus:ring-0`}
-                type="search"
-                placeholder="Enter group name to search..."
-                value={serchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-              />
-            </div>
-          </div>
+          <SearchInputBtn
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            placeholder={"Enter group name to search..."}
+          />
           <AdminWrapper>
             <Link
               to="/add-group"
@@ -75,7 +54,7 @@ const Groups = () => {
         <GroupList
           getGroups={getGroups}
           loadingGroup={loadingGroup}
-          serchValue={serchValue}
+          searchValue={searchValue}
         />
       </div>
     </div>
