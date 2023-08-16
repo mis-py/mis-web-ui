@@ -11,6 +11,7 @@ import Input from "components/Input";
 import PageHeader from "../../components/common/PageHeader";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import AvatarUser from "../../components/users/AvatarUser";
+import ResetPassword from "components/users/ResetPassword";
 
 const ProfileUser = () => {
   const {
@@ -125,6 +126,9 @@ const ProfileUser = () => {
             }
             readOnly
           />
+          <ResetPassword
+            user={getUserId}
+          />
 
           <label htmlFor="team">
             Team
@@ -173,7 +177,7 @@ const ProfileUser = () => {
             )}
         </form>
       </div>
-      <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround w-full lg:max-w-[-webkit-fill-available] lg:left-[345px]">
+      <div className="fixed left-0 bottom-0 px-5 pb-6 bg-backGround w-full lg:max-w-[-webkit-fill-available] lg:left-[345px]">
         <button onClick={handleSaveUser} className="btn-primary">
           Save
         </button>
