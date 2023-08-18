@@ -11,7 +11,7 @@ export const baseUrl = `${
 export const sidebar = [
   { icon: <BiUser />, title: "Users", url: "/users" },
   { icon: <FiUsers />, title: "Teams", url: "/teams" },
-  { icon: <MdGroups />, title: "Groups", url: "/groups" },
+  { icon: <MdGroups />, title: "Access Groups", url: "/groups" },
   { icon: <AiOutlineAppstore />, title: "Applications", url: "/apps", },
   { icon: <BiTask />, title: "Tasks", url: "/tasks", },
   { icon: <MdTask />, title: "Consumers", url: "/consumers", },

@@ -16,7 +16,7 @@ import AdminWrapper from "config/AdminWrapper";
 import SidebarStyles from "../assets/css/components/Sidebar.module.css";
 
 const SidebarDesktop = () => {
-  const [userPopup, setUserPopup] = React.useState(false);
+  // const [userPopup, setUserPopup] = React.useState(false);
   const [showListApps, setShowListApps] = React.useState(false);
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
   const [notificationsCount, setNotificationsCount] = React.useState(0);
@@ -29,47 +29,8 @@ const SidebarDesktop = () => {
 
   return (
     <>
-      <div className="hidden fixed h-full w-full bg-backGround text-gray py-6 lg:flex lg:w-[345px] lg:border-r lg:border-blackSecond lg:z-30">
+      {/* <div className="hidden fixed h-full w-full bg-backGround text-gray py-6 lg:flex lg:w-[200px] lg:border-r lg:border-blackSecond lg:z-30"> */}
         <div className="flex flex-col">
-          <div className="relatie flex mb-4 px-5">
-            <ProfilePopupDesktop
-              userPopup={userPopup}
-              setUserPopup={setUserPopup}
-            />
-            <div className="flex flex-auto gap-[10px]">
-              <div className="flex flex-auto">
-                <button className="flex justify-center items-center w-[32px] h-[32px] rounded-l bg-blackSecond">
-                  <FiSearch />
-                </button>
-                <input
-                  className="bg-[#3F3F3F] rounded-r w-full border-0 px-3 h-[32px] focus-visible:outline-none"
-                  type="text"
-                />
-              </div>
-              <div className="flex gap-[10px]">
-
-                <div className="flex">
-                  <button onClick={() => setIsPopupOpen(!isPopupOpen)} className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond">
-                    <FiBell />
-                  </button>
-                  <div className={`${isPopupOpen ? "flex" : "hidden"} absolute rounded-lg block text-gray duration-300 cursor-pointer bg-blackSecond hover:bg-blackSecond`}>
-                    <Notifications isPopupOpen={isPopupOpen} setIsPopupOpen={setIsPopupOpen} notificationsCount={notificationsCount} setNotificationsCount={setNotificationsCount} className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"/>
-                  </div>
-                </div>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setUserPopup(!userPopup);
-
-                  }}
-                  className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond"
-                >
-                  <FiUser />
-                </button>
-              </div>
-            </div>
-          </div>
-
           <ul className={`${SidebarStyles.sidebar} overflow-auto`}>
             <AdminWrapper>
             {sidebar.map((link) => (
@@ -136,7 +97,7 @@ const SidebarDesktop = () => {
             </li>
           </ul>
         </div>
-      </div>
+      {/* </div> */}
     </>
   );
 };

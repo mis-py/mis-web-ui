@@ -17,6 +17,7 @@ import ListItemWrapper from "../../components/common/ListItemWrapper";
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 
 import TeamUsersShortList from "../../components/teams/TeamUsersShortList";
+import MisSearch from "components/MisSearch";
 
 const Teams = () => {
   const navigate = useNavigate();
@@ -28,7 +29,6 @@ const Teams = () => {
   } = useGetTeamsQuery();
   const [deleteTeam] = useDeleteTeamMutation();
 
-  const [showSearch, setShowSearch] = React.useState(false);
   const [showEdit, setShowEdit] = React.useState(false);
   const [serchValue, setSearchValue] = React.useState("");
 
@@ -75,32 +75,9 @@ const Teams = () => {
   };
 
   return (
-    <div className="py-6">
       <div className="flex flex-col">
         <div className="flex justify-between gap-3 mb-5">
-          <div className="flex flex-auto">
-            <button
-              onClick={() => setShowSearch(!showSearch)}
-              className={`${
-                showSearch
-                  ? "rounded-l-lg text-primary"
-                  : "rounded-l-lg text-gray"
-              } flex justify-center duration-300 items-center px-3 h-[32px] bg-blackSecond`}
-            >
-              <FiSearch />
-            </button>
-            <div className="relative h-[32px] w-full duration-300">
-              <input
-                className={`${
-                  showSearch ? "w-full px-3" : "w-0 px-0"
-                } bg-blackSecond h-full text-xs text-gray border-none placeholder:text-gray duration-300 rounded-r w-full focus:shadow-none focus:ring-0`}
-                type="search"
-                placeholder="Enter team name to search..."
-                value={serchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-              />
-            </div>
-          </div>
+          <MisSearch placeholderStr="Enter team name to search..."></MisSearch>
           <AdminWrapper>
             <Link
               to="/add-team"
@@ -186,7 +163,6 @@ const Teams = () => {
           </div>
         )}
       </div>
-    </div>
   );
 };
 
