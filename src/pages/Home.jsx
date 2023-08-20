@@ -30,45 +30,45 @@ import "react-toastify/dist/ReactToastify.css";
 import { FiSearch } from "react-icons/fi";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  // const navigate = useNavigate();
+  // const location = useLocation();
 
-  React.useEffect(() => {
-    if (localStorage.getItem("token") === null) {
-        localStorage.removeItem("user_id");
-        localStorage.removeItem("username");
+  // React.useEffect(() => {
+  //   if (localStorage.getItem("token") === null) {
+  //       localStorage.removeItem("user_id");
+  //       localStorage.removeItem("username");
 
-        if (location.pathname !== '/signin') {
-            setTimeout(() => {
-                navigate("/signin");
-            }, 200);
-        }
-    }
-  }, [location.pathname, navigate]);
+  //       if (location.pathname !== '/signin') {
+  //           setTimeout(() => {
+  //               navigate("/signin");
+  //           }, 200);
+  //       }
+  //   }
+  // }, [location.pathname, navigate]);
 
-  const webSocket = initiateWebSocket();
+  // const webSocket = initiateWebSocket();
 
-  if (webSocket !== undefined) {
-      webSocket.onopen = function (e) {
-          webSocket.send('{"subscribe": "notifications"}');
-      }
-  }
+  // if (webSocket !== undefined) {
+  //     webSocket.onopen = function (e) {
+  //         webSocket.send('{"subscribe": "notifications"}');
+  //     }
+  // }
 
-  const isLoading = useSelector(state => state.loading);
-  const modulesList = useModuleRoutes();
+  // const isLoading = useSelector(state => state.loading);
+  // const modulesList = useModuleRoutes();
 
 
   return (
     <div className="h-screen py-6">
       <div className="flex flex-col h-full">
-        <div className="flex items-center bg-blackSecond rounded w-full pl-3">
+        {/* <div className="flex items-center bg-blackSecond rounded w-full pl-3">
           <FiSearch className="text-lg text-gray" />
           <input
             className="bg-transparent border-none border-0 text-xs text-gray placeholder:text-gray duration-300 w-full focus:!shadow-none focus:ring-0"
             type="search"
             placeholder="Search..."
           />
-        </div>
+        </div> */}
         <h2 className="text-center h-full h3 text-gray flex items-center justify-center">
           Nothing here <br /> for now
         </h2>

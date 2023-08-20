@@ -1,8 +1,7 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
-
+import { Outlet, useLocation, Navigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import SidebarDesktop from "components/SidebarDesktop";
-
 import Notifications from "components/Notifications";
 import TopBar from "components/TopBar";
 // import webSocket from "../config/WebSocketConnection";
@@ -10,6 +9,14 @@ import TopBar from "components/TopBar";
 const MainLayout = () => {
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
   const [notificationsCount, setNotificationsCount] = React.useState(0);
+
+  const location = useLocation();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  // redirect to login if user not authorized
+  if (!isAuthenticated) {
+      return <Navigate to='/login' state={{from: location}} />
+  }
 
     // webSocket.onopen = function (e) {
     //     webSocket.send('{"subscribe": "notifications"}');

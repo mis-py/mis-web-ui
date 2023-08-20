@@ -48,7 +48,7 @@ const Groups = () => {
     <div className="py-6">
       <div className="flex flex-col">
         <div className="flex justify-between gap-3 mb-5">
-          <div className="flex flex-auto">
+          {/* <div className="flex flex-auto">
             <button
               onClick={() => setShowSearch(!showSearch)}
               className={`${
@@ -69,8 +69,8 @@ const Groups = () => {
                 value={serchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
               />
-            </div>
-          </div>
+            </div> */}
+          {/* </div> */}
           <AdminWrapper>
             <Link
               to="/add-group"

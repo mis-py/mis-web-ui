@@ -30,23 +30,21 @@ const SidebarDesktop = () => {
   return (
     <>
       {/* <div className="hidden fixed h-full w-full bg-backGround text-gray py-6 lg:flex lg:w-[200px] lg:border-r lg:border-blackSecond lg:z-30"> */}
-        <div className="flex flex-col">
+        <div className="flex flex-col p-1">
           <ul className={`${SidebarStyles.sidebar} overflow-auto`}>
             <AdminWrapper>
             {sidebar.map((link) => (
               <li key={link.title}>
                 <NavLink
-                  className={({ isActive }) =>
-                    isActive
-                      ? `flex items-center px-5 gap-3 duration-300 group text-primary bg-blackSecond`
-                      : `flex items-center px-5 gap-3 duration-300 group hover:bg-blackSecond`
+                  className={
+                    ({isActive}) => `flex items-center p-1 gap-3 duration-300 group ${isActive ? 'text-primary bg-blackSecond rounded-r' : 'hover:bg-blackSecond'}`
                   }
                   to={link.url}
                 >
                   <div className="duration-300 group-hover:text-primary">
                     {link.icon}
                   </div>
-                  <h3 className="py-3 duration-300 group-hover:text-primary">
+                  <h3 className="duration-300 group-hover:text-primary">
                     {link.title}
                   </h3>
                 </NavLink>

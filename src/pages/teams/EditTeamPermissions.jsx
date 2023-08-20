@@ -49,18 +49,6 @@ const EditTeamPermissions = () => {
           header="Manage permissions"
         />
         <form className="my-4">
-          <label
-            className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
-            htmlFor="search"
-          >
-            <input
-              className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
-              type="search"
-              placeholder="Enter permission name to search..."
-            />
-            <FiSearch className="w-12 text-gray" />
-          </label>
-
           {loadingDataPermissions ? (
             <SpinnerLoader />
           ) : (

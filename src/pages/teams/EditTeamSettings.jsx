@@ -110,20 +110,6 @@ const EditTeamSettings = () => {
         />
 
           <form className="my-4 pb-[50px]">
-              <label
-                  className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"
-                  htmlFor="search"
-              >
-                  <input
-                      className="w-full bg-transparent border-none focus:shadow-none focus:ring-0"
-                      type="search"
-                      placeholder="Enter setting name to search..."
-                      value={searchValue}
-                      onChange={(e) => setSearchValue(e.target.value)}
-                  />
-                  <FiSearch className="w-12 text-gray" />
-              </label>
-
               {formValues
                   ?.filter((el) =>
                       el.key.toLowerCase().includes(searchValue.toLowerCase().trim())

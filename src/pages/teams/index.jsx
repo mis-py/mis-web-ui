@@ -77,7 +77,7 @@ const Teams = () => {
   return (
       <div className="flex flex-col">
         <div className="flex justify-between gap-3 mb-5">
-          <MisSearch placeholderStr="Enter team name to search..."></MisSearch>
+          {/* <MisSearch placeholderStr="Enter team name to search..."></MisSearch> */}
           <AdminWrapper>
             <Link
               to="/add-team"

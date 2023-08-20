@@ -67,19 +67,6 @@ const EditTeam = () => {
           } team`}
         />
         <form className="my-7">
-          <label className="flex flex-col gap-1 mb-4" htmlFor="teamname">
-            Team name
-            <input
-              className="bg-blackSecond text-gray border-none border-0 rounded px-3 py-2 focus-visible:outline-none"
-              type="text"
-              id="teamname"
-              name="teamname"
-              autoComplete="off"
-              value={team.name === undefined ? "" : team.name}
-              onChange={(e) => dispatch(addTeamName(e.target.value))}
-            />
-          </label>
-
           {getTeamId.users !== undefined && Array.isArray(getTeamId.users) && (
             <TeamUsersShortList users={getTeamId.users} team={team.id} />
           )}

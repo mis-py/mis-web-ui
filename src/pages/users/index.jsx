@@ -23,11 +23,11 @@ const Users = () => {
     <div className="py-6">
       <div className="flex flex-col">
         <div className="flex justify-between gap-3 mb-5">
-          <SearchInputBtn
+          {/* <SearchInputBtn
             setSearchValue={setSearchValue}
             searchValue={searchValue}
             placeholder={"Enter user name to search..."}
-          />
+          /> */}
           <AdminWrapper>
             <Link
               to="/add-user"
