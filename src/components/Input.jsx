@@ -26,7 +26,7 @@ const Input = (props) => {
       
       <input
         name={name}
-        className={`bg-blackSecond rounded px-3 py-2 focus-visible:outline-none border-none ${inputClassName === undefined ? "" : inputClassName}`.trim()}
+        className={`bg-blackSecond rounded mt-1 px-3 py-2 focus-visible:outline-none border-none ${inputClassName === undefined ? "" : inputClassName}`.trim()}
         type={type}
         id={id}
         placeholder={placeholder}
