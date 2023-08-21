@@ -3,7 +3,7 @@ import RtkDefaultQuery from "config/RtkDefaultQuery";
 
 export const tasksApi = createApi({
     reducerPath: "tasksApi",
-    tagTypes: ["Tasks", "Jobs"],
+    tagTypes: ["Tasks", "Jobs", "TaskJobs"],
     baseQuery: RtkDefaultQuery,
     endpoints: (build) => ({
         getTasks: build.query({
@@ -20,7 +20,7 @@ export const tasksApi = createApi({
                     method: "GET",
                 }
             },
-            providesTags: (result, error, id) => [{ type: "Tasks", id }],
+            providesTags: (result, error, id) => [{ type: "TaskJobs", id }],
         }),
         getJobById: build.query({
             query: (id) => {
@@ -85,7 +85,7 @@ export const tasksApi = createApi({
                     body,
                 }
             },
-            invalidatesTags: [{ type: "Tasks", id: "LIST" }],
+            invalidatesTags: (result, error, { id }) => [{ type: "Tasks", id: "LIST" }, { type: "TaskJobs", id }],
         }),
     }),
 
