@@ -51,7 +51,6 @@ const Tasks = () => {
                   key={item.id}
                 >
                   <div className="flex justify-between gap-4 pb-3 border-b border-backGround">
-                    {console.log(item)}
                     <div className="flex flex-col gap-4">
                       <div className="flex flex-col">
                         <div className="text-gray text-xs">
