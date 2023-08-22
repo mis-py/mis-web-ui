@@ -60,7 +60,7 @@
         @apply text-base font-medium text-white bg-danger py-[11px] px-5 rounded-lg text-center w-full flex justify-center duration-300 hover:bg-dangerEasy focus:bg-dangerEasy active:bg-danger
     }
     .btn-base {
-        @apply text-base font-medium text-white bg-gray py-2 px-5 rounded-lg text-center w-full flex justify-center duration-300 hover:bg-blackSecond focus:bg-blackSecond active:bg-backGround
+        @apply text-base font-medium text-white bg-gray py-2 px-5 rounded-lg text-center flex justify-center duration-300 hover:bg-blackSecond focus:bg-blackSecond active:bg-backGround
     }
     /* .default-checkbox {
         @apply w-5 h-5 appearance-none rounded border duration-300 default:ring-2 border-primary indeterminate:bg-white checked:bg-transparent checked:border checked:border-primary checked:bg-primary

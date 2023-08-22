@@ -9,6 +9,7 @@ import { groupsApi } from "./api/groupsApi";
 import { modulesApi } from "./api/modulesApi";
 import { settingsApi } from "./api/settingsApi";
 import { logsApi } from "./api/logsApi";
+import {notificationsApi} from "./api/notificationsApi";
 
 //modules
 import { webcatApi } from "./api/modulesApi/webcatApi";
@@ -58,6 +59,7 @@ export const store = configureStore({
     [modulesApi.reducerPath]: modulesApi.reducer,
     [settingsApi.reducerPath]: settingsApi.reducer,
     [logsApi.reducerPath]: logsApi.reducer,
+    [notificationsApi.reducerPath]: notificationsApi.reducer,
 
     //modules
     [webcatApi.reducerPath]: webcatApi.reducer,
@@ -86,6 +88,7 @@ export const store = configureStore({
       modulesApi.middleware,
       settingsApi.middleware,
       logsApi.middleware,
+      notificationsApi.middleware,
 
       //modules
       webcatApi.middleware,

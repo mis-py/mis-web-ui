@@ -9,7 +9,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { RiAppsLine } from "react-icons/ri";
 
 import ProfilePopupDesktop from "components/ProfilePopupDesktop";
-import Notifications from "./Notifications";
+import Notifications from "../components/notifications/Notifications";
 
 import { sidebar } from "config/variables";
 import AdminWrapper from "config/AdminWrapper";
@@ -36,13 +36,16 @@ const SidebarDesktop = () => {
             />
             <div className="flex flex-auto gap-[10px]">
               <div className="flex flex-auto">
-                <button className="flex justify-center items-center w-[32px] h-[32px] rounded-l bg-blackSecond">
-                  <FiSearch />
-                </button>
-                <input
-                  className="bg-[#3F3F3F] rounded-r w-full border-0 px-3 h-[32px] focus-visible:outline-none"
-                  type="text"
-                />
+                <form className="flex">
+                  <button className="flex justify-center items-center w-[32px] h-[32px] rounded-l bg-blackSecond">
+                    <FiSearch />
+                  </button>
+                  <input
+                    className="bg-[#3F3F3F] rounded-r w-full border-0 px-3 h-[32px] focus-visible:outline-none"
+                    type="text"
+                    name="q"
+                  />
+                </form>
               </div>
               <div className="flex gap-[10px]">
 

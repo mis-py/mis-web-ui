@@ -48,7 +48,7 @@ function Notifications({isPopupOpen, setIsPopupOpen, notificationsCount, setNoti
                 ))}
               </ul>
             </div>
-            <button className="btn-primary mt-4 w-full" onClick={handleButtonClick}>Закрыть</button>
+            <button className="btn-primary mt-4 w-full" onClick={handleButtonClick}>Close</button>
         </div>
     )
 }
