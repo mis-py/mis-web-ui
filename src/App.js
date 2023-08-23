@@ -15,6 +15,7 @@ import { groupRoutes } from "routes/groups";
 import { appRoutes } from "routes/apps";
 import useModuleRoutes from "routes/modules";
 import { taskRoutes } from "routes/tasks";
+import { notificationsRoutes } from "routes/notifications";
 
 import { useSelector } from 'react-redux';
 import LoadingOverlay from "./components/common/LoadingOverlay";
@@ -68,7 +69,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
               {userRoutes
-                  .concat(teamRoutes, groupRoutes, appRoutes, modulesList, taskRoutes, consumersRoutes)
+                  .concat(teamRoutes, groupRoutes, appRoutes, modulesList, taskRoutes, consumersRoutes, notificationsRoutes)
                   .map((route, index) => (
                   <Route
                       key={`${route.path}_${index}`}

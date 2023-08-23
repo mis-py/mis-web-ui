@@ -10,6 +10,7 @@ export * from "./api/logsApi";
 export * from "./api/modulesApi/consumersApi";
 export * from "./api/modulesApi/tasksApi";
 export * from "./api/modulesApi/timerApi";
+export * from "./api/notificationsApi"
 
 //modules
 export * from "./api/modulesApi/webcatApi";

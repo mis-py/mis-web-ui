@@ -68,7 +68,7 @@ const AddUserPermissions = () => {
             </div>
           )}
         </form>
-        <div className="fixed w-full left-0 bottom-0 px-5 pb-6 bg-backGround w-full lg:max-w-[-webkit-fill-available] lg:left-[345px]">
+        <div className="fixed left-0 bottom-0 px-5 pb-6 bg-backGround w-full lg:max-w-[-webkit-fill-available] lg:left-[345px]">
           <button onClick={handleUserPermissions} className="btn-primary">
             Save
           </button>

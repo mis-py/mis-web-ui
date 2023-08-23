@@ -5,7 +5,7 @@ import {
   useGetSettingsQuery,
   useSettingUserSetMutation,
 } from "redux/index";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Input from "components/Input";
 import PageHeader from "../../components/common/PageHeader";
@@ -45,9 +45,9 @@ const ProfileUser = () => {
           {
             id: curr.id,
             value: getUserId.settings
-                ?.map((el) => (el.setting.id === curr.id ? el.value : ""))
-                .filter((empty) => !!empty)
-                .toString(),
+              ?.map((el) => (el.setting.id === curr.id ? el.value : ""))
+              .filter((empty) => !!empty)
+              .toString(),
             key: curr.key,
             default_value: curr.default_value,
             is_global: curr.is_global,
@@ -126,9 +126,13 @@ const ProfileUser = () => {
             }
             readOnly
           />
-          <ResetPassword
-            user={getUserId}
-          />
+          <div className="flex gap-4">
+            <ResetPassword user={getUserId} />
+
+            <Link to="/notifications/routing_keys" className="btn btn-base my-3">
+              Notifications settings
+            </Link>
+          </div>
 
           <label htmlFor="team">
             Team
