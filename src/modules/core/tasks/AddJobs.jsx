@@ -1,12 +1,12 @@
 import React from 'react';
 import { useParams, useNavigate } from "react-router-dom";
-import PageHeader from "../../components/common/PageHeader";
+import PageHeader from "components/common/PageHeader";
 import {
     useGetTaskByIdQuery,
     useTasksJobsAddMutation,
 } from "redux/index";
-import SpinnerLoader from "../../components/common/SpinnerLoader";
-import Input from "../../components/Input";
+import SpinnerLoader from "components/common/SpinnerLoader";
+import Input from "components/common/Input";
 import { toast } from "react-toastify";
 
 const AddJobs = () => {

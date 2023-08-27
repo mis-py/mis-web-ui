@@ -7,12 +7,12 @@ import { useDispatch } from "react-redux";
 import AdminWrapper from "config/AdminWrapper";
 
 import GroupList from "components/groups/GroupList";
-import SearchInputBtn from "components/SearchInputBtn";
+import Search from "components/common/SearchComponent";
 
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 
-import GroupListItem from "../../../components/groups/GroupListItem";
-import SpinnerLoader from "../../../components/common/SpinnerLoader";
+import GroupListItem from "components/groups/GroupListItem";
+import SpinnerLoader from "components/common/SpinnerLoader";
 
 const Groups = () => {
   const dispatch = useDispatch();
@@ -38,11 +38,11 @@ const Groups = () => {
     <div className="py-6">
       <div className="flex flex-col">
         <div className="flex justify-between gap-3 mb-5">
-          <SearchInputBtn
+          {/* <Search
             searchValue={searchValue}
             setSearchValue={setSearchValue}
             placeholder={"Enter group name to search..."}
-          />
+          /> */}
           <AdminWrapper>
             <Link
               to="/add-group"

@@ -3,17 +3,17 @@ import { NavLink } from "react-router-dom";
 import { useGetModulesQuery } from "redux/index";
 import { firstUppercase } from "config/functions";
 
-import { FiSearch, FiBell, FiUser } from "react-icons/fi";
+// import { FiSearch, FiBell, FiUser } from "react-icons/fi";
 import { AiOutlineAppstoreAdd } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { RiAppsLine } from "react-icons/ri";
 
-import ProfilePopupDesktop from "components/ProfilePopupDesktop";
-import Notifications from "../components/Notifications";
+// import ProfilePopupDesktop from "components/ProfilePopupDesktop";
+// import Notifications from "components/notifications/Notifications";
 
 import { sidebar } from "config/variables";
-import AdminWrapper from "config/AdminWrapper";
-import SidebarStyles from "../assets/css/components/Sidebar.module.css";
+// import AdminWrapper from "config/AdminWrapper";
+import SidebarStyles from "assets/css/components/Sidebar.module.css";
 
 const SidebarDesktop = () => {
   // const [userPopup, setUserPopup] = React.useState(false);

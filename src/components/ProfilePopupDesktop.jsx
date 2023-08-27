@@ -12,18 +12,18 @@ const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
   //   setUserPopup(false);
   // };
 
-  const refPopup = useOutsideClick(handleClickOutside);
+  // const refPopup = useOutsideClick(handleClickOutside);
 
-  const handleLogOut = async (e) => {
-    await userLogout()
-      .then(() => {
-        localStorage.clear();
-      })
-      .then(() => {
-        window.location.reload();
-        navigate("/signin");
-      });
-  };
+  // const handleLogOut = async (e) => {
+  //   await userLogout()
+  //     .then(() => {
+  //       localStorage.clear();
+  //     })
+  //     .then(() => {
+  //       window.location.reload();
+  //       navigate("/signin");
+  //     });
+  // };
 
   return (
     // <div

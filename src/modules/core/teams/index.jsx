@@ -4,7 +4,7 @@ import AdminWrapper from "config/AdminWrapper";
 import { useGetTeamsQuery } from "redux/index";
 
 import TeamList from "components/teams/TeamList";
-import SearchInputBtn from "components/SearchInputBtn";
+import Search from "components/common/SearchComponent";
 
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 
@@ -19,11 +19,11 @@ const Teams = () => {
   return (
       <div className="flex flex-col">
         <div className="flex justify-between gap-3 mb-5">
-          <SearchInputBtn
+          {/* <Search
             setSearchValue={setSearchValue}
             serchValue={serchValue}
             placeholder={"Enter team name to search..."}
-          />
+          /> */}
           <AdminWrapper>
             <Link
               to="/add-team"

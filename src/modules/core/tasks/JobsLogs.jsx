@@ -1,12 +1,12 @@
 import React from 'react';
 import { useParams } from "react-router-dom";
-import PageHeader from "../../components/common/PageHeader";
+import PageHeader from "components/common/PageHeader";
 import {
     useGetJobByIdQuery,
     useGetJobLogsQuery,
 } from "redux/index";
-import LogItem from "../../components/logs/LogItem";
-import SpinnerLoader from "../../components/common/SpinnerLoader";
+import LogItem from "components/logs/LogItem";
+import SpinnerLoader from "components/common/SpinnerLoader";
 
 
 const JobsLogs = () => {
