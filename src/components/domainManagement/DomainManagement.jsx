@@ -1,7 +1,7 @@
 import React from "react";
 import TeamSelector from "../common/TeamSelector";
 import UserSelector from "../common/UserSelector";
-import Input from "../Input";
+import Input from "../common/Input";
 import DomainSearch from "./DomainSearch";
 import {
     useGetResellerBalanceQuery,

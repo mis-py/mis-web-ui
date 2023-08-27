@@ -1,4 +1,4 @@
-import Consumers from "modules/consumers"
+import Consumers from "modules/core/consumers"
 
 export const consumersRoutes = [
     {

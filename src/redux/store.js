@@ -21,6 +21,7 @@ import { binomApi } from "./api/modulesApi/binomDomainApi";
 
 //slices
 import { authReducer } from "./slices/authSlice";
+import { searchReducer } from './slices/searchSlice'
 import userSlice from "./slices/userSlice";
 import teamSlice from "./slices/teamSlice";
 import editTeamPermissionsSlice from "./slices/editTeamPermissionsSlice";
@@ -78,6 +79,7 @@ export const store = configureStore({
     editTeamMembers: editTeamMembersSlice,
     membersList: membersSlice,
     loading: loadingReducer,
+    search: searchReducer,
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware({}).concat([

@@ -1,5 +1,5 @@
 import React from "react";
-import Input from "../Input";
+import Input from "../common/Input";
 import customStyles from "config/selectStyles";
 import Select from "react-select";
 import {

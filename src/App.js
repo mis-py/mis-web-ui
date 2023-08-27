@@ -1,22 +1,22 @@
 import React from "react";
 import MainLayout from "layouts/MainLayout";
-import Signin from "pages/Signin";
-import Home from "pages/Home";
+import { Home, NotFound, Signin} from "modules/core";
 import { useDispatch } from "react-redux";
-
 import { userRoutes } from "routes/users";
 import { teamRoutes } from "routes/teams";
 import { groupRoutes } from "routes/groups";
 import { appRoutes } from "routes/apps";
+import { profileRoutes } from "routes/profile";
 import useModuleRoutes from "routes/modules";
 import { taskRoutes } from "routes/tasks";
 import { consumersRoutes } from "routes/consumers";
 import { logout } from "redux/slices/authSlice";
-import NotFound from "pages/NotFound";
+
 import {createBrowserRouter, RouterProvider, redirect } from "react-router-dom";
 
 import "index.css";
 import "react-toastify/dist/ReactToastify.css";
+
 
 
 function App() {
@@ -35,7 +35,7 @@ function App() {
       children: [
         { index: true, element: <Home />},
         ...Array()
-            .concat(userRoutes, teamRoutes, groupRoutes, appRoutes, modulesList, taskRoutes, consumersRoutes)
+            .concat(userRoutes, teamRoutes, groupRoutes, appRoutes, modulesList, taskRoutes, consumersRoutes, profileRoutes)
             .map((route, index) => (
             {
                 key: `${route.path}_${index}`,

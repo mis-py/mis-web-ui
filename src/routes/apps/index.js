@@ -1,9 +1,9 @@
-import Apps from "pages/apps";
+import Apps from "modules/core/apps";
 // import CloneApp from "pages/apps/CloneApp";
-import LogsApp from "pages/apps/LogsApp";
-import SettingsApp from "pages/apps/SettingsApp";
-import ManageGroupApp from "pages/apps/ManageGroupApp";
-import ManageMembersApp from "pages/apps/ManageMembersApp";
+import LogsApp from "modules/core/apps/LogsApp";
+import SettingsApp from "modules/core/apps/SettingsApp";
+import ManageGroupApp from "modules/core/apps/ManageGroupApp";
+import ManageMembersApp from "modules/core/apps/ManageMembersApp";
 
 export const appRoutes = [
   {

@@ -5,8 +5,8 @@ const initialState = {
   password: "",
   team: null,
   position: "",
-  permissions: [],
-  settings: [],
+  permissions: {},
+  settings: {},
 };
 
 export const userSlice = createSlice({
@@ -25,39 +25,26 @@ export const userSlice = createSlice({
     addUserPosition: (state, action) => {
       state.position = action.payload;
     },
-    addUserPermissions: (state, action) => {
-      state.permissions = action.payload;
+    setUserPermission: (state, action) => {
+      const { id, checked } = action.payload;
+      state.permissions[id] = checked;
     },
-    renderSettings: (state, action) => {
-      state.settings = action.payload.map((item) => ({ value: "", ...item }));
-    },
-    addUserSettings: (state, action) => {
+    setUserSetting: (state, action) => {
       const { id, value } = action.payload;
-      const item = state.settings.find((obj) => obj.id === id);
-      if (item) {
-        item.value = value;
-      }
+      state.settings[id] = value;
     },
     addUserDefaultSettings: (state, action) => {
-      const item = state.settings.find((obj) => obj.id === action.payload.id);
-      if (item && action.payload.default_value !== null) {
-        item.value = action.payload.default_value;
-      }
-    },
-    editSettingsUser: (state, action) => {
-      // console.log(action);
-    },
-    resetSettings: (state) => {
-      state.settings = [];
+      const { id , default_value } = action.payload;
+      state.settings[id] = default_value
     },
     resetUser: (state) => {
       state.username = "";
       state.password = "";
       state.team = null;
       state.position = "";
-      state.permissions = [];
-      state.settings = [];
-    },
+      state.permissions = {};
+      state.settings = {};
+    }
   },
 });
 
@@ -66,13 +53,9 @@ export const {
   addUserPassword,
   addUserTeam,
   addUserPosition,
-  addUserPermissions,
-  renderSettings,
-  renderEditSettings,
-  addUserSettings,
+  setUserPermission,
+  setUserSetting,
   addUserDefaultSettings,
-  editSettingsUser,
-  resetSettings,
   resetUser,
 } = userSlice.actions;
 

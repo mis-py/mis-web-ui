@@ -6,7 +6,7 @@ import {
 } from "redux/index";
 import SpinnerLoader from "../common/SpinnerLoader";
 import ListItemWrapper from "../common/ListItemWrapper";
-import Input from "../Input";
+import Input from "../common/Input";
 import { toast } from "react-toastify";
 
 const DomainDashboard = () => {

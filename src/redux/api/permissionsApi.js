@@ -15,13 +15,27 @@ export const permissionsApi = createApi({
         },
       }),
       providesTags: ["Permissions"],
+      transformResponse: (response) => {
+        let newResponse = response.reduce((acc, item) => {
+          return {[item.id]: item, ...acc}
+        }, {});
+
+        return { entities: newResponse, allIds:Object.keys(newResponse) }
+      }
     }),
     getPermissionsUserId: build.query({
       query: (id) => ({
         url: `/permissions/user/${id}`,
         method: "GET",
       }),
-      providesTags: (result, error, id) => [{ type: "Permissions", id }],
+      providesTags: (result, error, id) => [{ type: "Permissions", id }],      
+      transformResponse: (response) => {
+        let newResponse = response.reduce((acc, item) => {
+          return {[item.permission.id]: item, ...acc}
+        }, {});
+
+        return { entities: newResponse, allIds:Object.keys(newResponse) }
+      }
     }),
     getMyPermissions: build.query({
       query: () => ({
@@ -38,26 +52,27 @@ export const permissionsApi = createApi({
       providesTags: (result, error, id) => [{ type: "Permissions", id }],
     }),
     editUserPermission: build.mutation({
-      query: ({ id, rest }) => ({
+      // pass all permissions that must user has access
+      query: ({ id, scopesList }) => ({
         url: `/permissions/user/${id}`,
         method: "PUT",
         credentials: "include",
         headers: {
           accept: "application/json"
         },
-        body: rest,
+        body: scopesList,
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Permissions", id }],
     }),
     editTeamPermission: build.mutation({
-      query: ({ id, rest }) => ({
-        url: `/permissions/team/${id}`,
+      query: ({ teamId, scopesList }) => ({
+        url: `/permissions/team/${teamId}`,
         method: "PUT",
         credentials: "include",
         headers: {
           accept: "application/json"
         },
-        body: rest,
+        body: scopesList,
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Permissions", id }],
     }),
@@ -68,7 +83,7 @@ export const {
   useGetPermissionsQuery,
   useGetPermissionsUserIdQuery,
   useGetMyPermissionsQuery,
-  useEditUserPermissionMutation,
   useGetPermissionsTeamIdQuery,
+  useEditUserPermissionMutation,
   useEditTeamPermissionMutation,
 } = permissionsApi;

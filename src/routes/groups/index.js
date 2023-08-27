@@ -1,7 +1,7 @@
-import Groups from "pages/groups";
-import AddGroup from "pages/groups/AddGroup";
-import EditMembersGroup from "pages/groups/EditMembersGroup";
-import EditObjectsGroup from "pages/groups/EditObjectsGroup";
+import Groups from "modules/core/groups";
+import AddGroup from "modules/core/groups/AddGroup";
+import EditMembersGroup from "modules/core/groups/EditMembersGroup";
+import EditObjectsGroup from "modules/core/groups/EditObjectsGroup";
 
 export const groupRoutes = [
   {

@@ -1,48 +1,17 @@
-import Users from "pages/users";
-import AddUser from "pages/users/AddUser";
-import AddUserPermissions from "pages/users/AddUserPermissions";
-import AddUserSettings from "pages/users/AddUserSettings";
-import EditUser from "pages/users/EditUser";
-import EditUserPermissions from "pages/users/EditUserPermissions";
-import EditUserSettings from "pages/users/EditUserSettings";
-import ProfileUser from "pages/users/ProfileUser";
-import SettingsUser from "pages/users/SettingsUser";
+import UserList from "modules/core/users/UserList"
+import UserEdit from "modules/core/users/UserEdit"
 
 export const userRoutes = [
   {
     path: "/users",
-    element: <Users />,
+    element: <UserList />,
   },
   {
-    path: "/add-user",
-    element: <AddUser />,
-  },
-  {
-    path: "/add-user/permissions",
-    element: <AddUserPermissions />,
-  },
-  {
-    path: "/add-user/settings",
-    element: <AddUserSettings />,
+    path: "/users/add",
+    element: <UserEdit />,
   },
   {
     path: "/users/:id",
-    element: <EditUser />,
-  },
-  {
-    path: "/user/permissions/:id",
-    element: <EditUserPermissions />,
-  },
-  {
-    path: "/user/settings/:id",
-    element: <EditUserSettings />,
-  },
-  {
-    path: "/profile/:id",
-    element: <ProfileUser />,
-  },
-  {
-    path: "/profile/settings/:id",
-    element: <SettingsUser />,
+    element: <UserEdit />,
   },
 ];

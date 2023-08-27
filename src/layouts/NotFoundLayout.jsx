@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import SidebarDesktop from "components/SidebarDesktop";
+import SidebarDesktop from "layouts/Sidebar";
 
 const NotFoundLayout = () => {
   return (

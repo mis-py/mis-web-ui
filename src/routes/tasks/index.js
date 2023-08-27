@@ -1,5 +1,5 @@
-import Tasks from "modules/tasks";
-import Jobs from "modules/tasks/JobsTasks";
+import Tasks from "modules/core/tasks";
+import Jobs from "modules/core/tasks/JobsTasks";
 // import EditMembersGroup from "pages/groups/EditMembersGroup";
 // import EditObjectsGroup from "pages/groups/EditObjectsGroup";
 

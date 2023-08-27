@@ -1,11 +1,11 @@
-import Teams from "pages/teams";
-import AddTeam from "pages/teams/AddTeam";
-import AddTeamMembers from "pages/teams/AddTeamMembers";
-import AddTeamPermissions from "pages/teams/AddTeamPermissions";
-import EditTeam from "pages/teams/EditTeam";
-import EditTeamMembers from "pages/teams/EditTeamMembers";
-import EditTeamPermissions from "pages/teams/EditTeamPermissions";
-import EditTeamSettings from "pages/teams/EditTeamSettings";
+import Teams from "modules/core/teams";
+import AddTeam from "modules/core/teams/AddTeam";
+import AddTeamMembers from "modules/core/teams/AddTeamMembers";
+import AddTeamPermissions from "modules/core/teams/AddTeamPermissions";
+import EditTeam from "modules/core/teams/EditTeam";
+import EditTeamMembers from "modules/core/teams/EditTeamMembers";
+import EditTeamPermissions from "modules/core/teams/EditTeamPermissions";
+import EditTeamSettings from "modules/core/teams/EditTeamSettings";
 
 export const teamRoutes = [
   {

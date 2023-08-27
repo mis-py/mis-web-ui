@@ -14,29 +14,15 @@ export const settingsApi = createApi({
           accept: "application/json",
         },
       }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: "Settings", id })),
-              { type: "Settings", id: "LIST" },
-            ]
-          : [{ type: "Settings", id: "LIST" }],
-    }),
-    getUserSettingsId: build.query({
-      query: (id) => ({
-        url: `/settings/user/${id}`,
-        method: "GET",
-        headers: {
-          accept: "application/json",
-        },
-      }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: "Settings", id })),
-              { type: "Settings", id: "LIST" },
-            ]
-          : [{ type: "Settings", id: "LIST" }],
+      providesTags: (result) => [{ type: "Settings" }],
+      // normalize response
+      transformResponse: (response) => {
+        let newResponse = response.reduce((acc, item) => {
+          return {[item.id]: item, ...acc}
+        }, {});
+
+        return { entities: newResponse, allIds: Object.keys(newResponse)}
+      }
     }),
     getSettingsAppId: build.query({
       query: (id) => ({
@@ -57,6 +43,14 @@ export const settingsApi = createApi({
         },
       }),
       providesTags: (result, error, id) => [{ type: "Settings", id }],
+      // normalize response
+      transformResponse: (response) => {
+        let newResponse = response.reduce((acc, item) => {
+          return {[item.setting.id]: item, ...acc}
+        }, {});
+        
+        return { entities: newResponse, allIds: Object.keys(newResponse)}
+      }
     }),
     getSettingsTeamId: build.query({
       query: (id) => ({
@@ -108,7 +102,6 @@ export const settingsApi = createApi({
 
 export const {
   useGetSettingsQuery,
-  useGetUserSettingsIdQuery,
   useGetSettingsAppIdQuery,
   useGetSettingsUserIdQuery,
   useGetSettingsTeamIdQuery,

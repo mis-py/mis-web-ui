@@ -1,9 +1,11 @@
 import React from "react";
 import { Outlet, useLocation, Navigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import SidebarDesktop from "components/SidebarDesktop";
+import SidebarDesktop from "layouts/Sidebar";
 import Notifications from "components/Notifications";
-import TopBar from "components/TopBar";
+import TopBar from "layouts/TopBar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import webSocket from "../config/WebSocketConnection";
 
 const MainLayout = () => {
@@ -24,18 +26,20 @@ const MainLayout = () => {
 
   return (
     <>
-      {/* <div className={`${isPopupOpen ? "flex" : "hidden"} absolute rounded-lg block text-gray duration-300 cursor-pointer bg-blackSecond hover:bg-blackSecond`}>
-        <Notifications isPopupOpen={isPopupOpen} setIsPopupOpen={setIsPopupOpen} notificationsCount={notificationsCount} setNotificationsCount={setNotificationsCount} className="flex justify-between items-center bg-blackSecond rounded text-sm text-gray mb-7"/>
-      </div> */}
       <div className="flex flex-row">
         <div className="flex flex-none">
           <SidebarDesktop />
         </div>
         <div className="flex flex-col flex-grow">
           <TopBar />
-          <Outlet />
+          <div className="py-1">
+            <div className="flex flex-col">
+              <Outlet />
+            </div>
+          </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

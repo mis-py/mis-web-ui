@@ -4,17 +4,17 @@ import { Link } from "react-router-dom";
 
 const PageHeader = (props) => {
     const showBack = props.showBack === undefined || props.showBack === true;
+    // TODO replace this shitty slash by css
+
+    let pathSeparator = props.routeHeader !== undefined ? "/ " : "";
 
     return (
-        <>
-            {showBack && <Link className="flex items-center text-gray cursor-pointer" to={-1}>
-                <div className="flex mr-2">
-                    <IoIosArrowBack />
-                </div>
-                <div>back</div>
+        <div className="flex flex-row">
+            {showBack && <Link className="flex items-center text-white cursor-pointer mr-1" to={-1}>
+            {props.routeHeader}
             </Link>}
-            <h1 className={`h3 mt-5 mb-6 ${props.headerClass}`.trim()}>{props.header}</h1>
-        </>
+            <div className={`flex text-white py-1 ${props.headerClass}`.trim()}>{pathSeparator}{props.header}</div>
+        </div>
     );
 };
 
