@@ -1,16 +1,20 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useGetGroupsQuery } from "../../../redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { useGetGroupsQuery, useGetAppByIdQuery } from "redux/index";
 import { toast } from "react-toastify";
+import { firstUppercase } from "config/functions";
 
 import { FiSearch } from "react-icons/fi";
 
-import GroupListItem from "../../../components/groups/GroupListItem";
-import SpinnerLoader from "../../../components/common/SpinnerLoader";
-import PageHeader from "../../../components/common/PageHeader";
+import GroupListItem from "components/groups/GroupItem";
+import SpinnerLoader from "components/common/SpinnerLoader";
+import PageHeader from "components/common/PageHeader";
 
 const ManageGroupApp = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const { data: applicationData, isLoading: isAppDataLoading } =
+    useGetAppByIdQuery(id);
 
   const {
     data: getGroups = [],
@@ -30,7 +34,9 @@ const ManageGroupApp = () => {
     <div className="py-6 min-h-screen h-full flex flex-col justify-between">
       <div className="flex flex-col">
         <PageHeader
-          header="Manage groups"
+          header={`${
+            !isAppDataLoading && firstUppercase(applicationData.name)
+          } manage groups`}
         />
         <h3 className="mb-1">Search for groups</h3>
         <form>
@@ -60,11 +66,7 @@ const ManageGroupApp = () => {
                     .includes(searchValue.toLowerCase().trim())
                 )
                 .map((group, index) => (
-                    <GroupListItem
-                        key={group.id}
-                        group={group}
-                        index={index}
-                    />
+                  <GroupListItem key={group.id} group={group} index={index} />
                 ))}
           </div>
         )}

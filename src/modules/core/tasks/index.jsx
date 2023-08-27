@@ -20,7 +20,7 @@ const Tasks = () => {
         {
           label: "Yes",
           onClick: async () => {
-            await addjob(id);
+            await addjob({ id });
             <Link to={`/tasks/jobs/${id}`}/>
             refetchTasks();
           },
@@ -43,7 +43,7 @@ const Tasks = () => {
             <SpinnerLoader />
           ) :
             (<div className="flex flex-col gap-4">
-              {Object.entries(getTasks).map((moduleTaskList) => {
+              {getTasks !== undefined && getTasks !== null ? Object.entries(getTasks).map((moduleTaskList) => {
                 const [, taskList] = moduleTaskList;
 
                 return taskList.map(item => (
@@ -51,7 +51,6 @@ const Tasks = () => {
                   key={item.id}
                 >
                   <div className="flex justify-between gap-4 pb-3 border-b border-backGround">
-                    
                     <div className="flex flex-col gap-4">
                       <div className="flex flex-col">
                         <div className="text-gray text-xs">
@@ -78,15 +77,17 @@ const Tasks = () => {
                           <CgFileDocument className="text-3xl text-gray cursor-pointer mb-3" />
                         </Link>
                       ) : null}
-                      {item.is_available_add_job ? (
+                      {item.extra_typed === null ? (
                       <BiAddToQueue onClick={() => { handleAddJobs(item.id, item.id) }}
                         className="text-3xl text-gray cursor-pointer"
-                      />) : null}
+                      />) : <Link to={`/tasks/add-job/${item.id}`}>
+                        <BiAddToQueue className="text-3xl text-gray mb-3" />
+                      </Link>}
                     </div>
                     </div>
                 </ListItemWrapper>
                 ));
-              })}
+              }) : null}
             </div>)
         }
       </div>

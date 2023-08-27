@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Switch from "react-switch";
 import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
@@ -215,13 +215,13 @@ const SettingsApp = () => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <button
-          onClick={() => navigate(`/apps/settings/manage/${id}`)}
-          className="flex justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
+        <Link to={`/apps/settings/manage/${id}`}
+              className="flex justify-between items-center cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
         >
           Manage groups
           <AiOutlinePlusCircle className="text-xl" />
-        </button>
+        </Link>
+
         <button onClick={handleNewSettings} className="btn-primary">
           Save
         </button>

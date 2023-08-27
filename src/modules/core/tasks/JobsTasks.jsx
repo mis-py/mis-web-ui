@@ -6,14 +6,15 @@ import { useJobsRescheduleMutation } from 'redux/index';
 import SpinnerLoader from "../../../components/common/SpinnerLoader";
 import ListItemWrapper from 'components/common/ListItemWrapper';
 import { Cron } from 'react-js-cron';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import 'react-js-cron/dist/styles.css'
 import PageHeader from "../../../components/common/PageHeader";
 import { toast } from "react-toastify";
-import {BiPauseCircle} from "react-icons/bi";
-import {BiPlayCircle} from "react-icons/bi"
+import { BiPauseCircle } from "react-icons/bi";
+import { BiPlayCircle } from "react-icons/bi"
+import { CgFileDocument } from "react-icons/cg";
 
-const Jobs = () => {
+const JobsTasks = () => {
     const { id } = useParams();
     const { data: getJobs, isLoading: loadingGetJobs } = useGetJobsQuery(id);
     const [jobsPause] = useJobsPauseMutation();
@@ -148,8 +149,13 @@ const Jobs = () => {
                             className={`text-4xl ${statusValues[item.id] === 'paused' ? 'text-primary' : 'text-gray'} cursor-pointer mb-3`}
                           />
                           <BiPlayCircle onClick={(e) => { ResumeMutation(e, item.id); handleStatusChange(item.id, "running") }}
-                            className={`text-4xl ${statusValues[item.id] === 'running' ? 'text-primary' : 'text-gray'} cursor-pointer`}
+                            className={`text-4xl ${statusValues[item.id] === 'running' ? 'text-primary' : 'text-gray'} cursor-pointer mb-3`}
                           />
+                        <Link to={`/tasks/jobs/logs/${item.id}`}>
+                            <CgFileDocument
+                                className="text-4xl text-gray cursor-pointer"
+                            />
+                        </Link>
                         </div>
                       </div>
                     </div>
@@ -163,17 +169,6 @@ const Jobs = () => {
                     <div className="flex flex-col gap-4">
                       <form onSubmit={handleFormSubmit}>
                         <div className="text-gray text-xs pb-3 flex flex-col">
-                          {/* {isValidInput(inputValue) ? (
-                            <select
-                              className="!border-primary pt-2 rounded"
-                              value={inputValue}
-                              onChange={handleInputChange}
-                            >
-                              <option value="">Select an option</option>
-                              <option value="option1">Option 1</option>
-                              <option value="option2">Option 2</option>
-                            </select>
-                          ) :} */} 
                             <input
                               className="!border-primary rounded"
                               type="text"
@@ -201,4 +196,4 @@ const Jobs = () => {
 
 }
 
-export default Jobs
+export default JobsTasks;

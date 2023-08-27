@@ -9,6 +9,7 @@ import { groupsApi } from "./api/groupsApi";
 import { modulesApi } from "./api/modulesApi";
 import { settingsApi } from "./api/settingsApi";
 import { logsApi } from "./api/logsApi";
+import {notificationsApi} from "./api/notificationsApi";
 
 //modules
 import { webcatApi } from "./api/modulesApi/webcatApi";
@@ -24,8 +25,6 @@ import { authReducer } from "./slices/authSlice";
 import { searchReducer } from './slices/searchSlice'
 import userSlice from "./slices/userSlice";
 import teamSlice from "./slices/teamSlice";
-import editTeamPermissionsSlice from "./slices/editTeamPermissionsSlice";
-import editTeamMembersSlice from "./slices/editTeamMembersSlice";
 import membersSlice from "./slices/membersSlice";
 import { startLoading, stopLoading } from './slices/loadingSlice';
 import loadingReducer from './slices/loadingSlice';
@@ -61,6 +60,7 @@ export const store = configureStore({
     [modulesApi.reducerPath]: modulesApi.reducer,
     [settingsApi.reducerPath]: settingsApi.reducer,
     [logsApi.reducerPath]: logsApi.reducer,
+    [notificationsApi.reducerPath]: notificationsApi.reducer,
 
     //modules
     [webcatApi.reducerPath]: webcatApi.reducer,
@@ -75,8 +75,6 @@ export const store = configureStore({
     auth: authReducer,
     user: userSlice,
     team: teamSlice,
-    editTeamPermissions: editTeamPermissionsSlice,
-    editTeamMembers: editTeamMembersSlice,
     membersList: membersSlice,
     loading: loadingReducer,
     search: searchReducer,
@@ -92,6 +90,7 @@ export const store = configureStore({
       modulesApi.middleware,
       settingsApi.middleware,
       logsApi.middleware,
+      notificationsApi.middleware,
 
       //modules
       webcatApi.middleware,

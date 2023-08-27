@@ -2,16 +2,13 @@ import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useEditTeamMutation, useGetTeamIdQuery } from "redux/index";
-import {
-  addTeamName,
-  setTeamMembers,
-} from "redux/slices/teamSlice";
+import { addTeamName, setTeamMembers } from "redux/slices/teamSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
-import TeamUsersShortList from "../../../components/teams/TeamUsersShortList";
-import PageHeader from "../../../components/common/PageHeader";
+import TeamUsersShortList from "components/teams/TeamUsersShortList";
+import PageHeader from "components/common/PageHeader";
 
 const EditTeam = () => {
   const { id } = useParams();
@@ -36,13 +33,13 @@ const EditTeam = () => {
       userIds = getTeamId.users.map((user) => user.id);
     }
 
+    dispatch(addTeamName(getTeamId.name));
+    dispatch(setTeamMembers(userIds));
+
     if (userIds.length === 0) {
       return;
     }
-
-    dispatch(addTeamName(getTeamId.name));
-    dispatch(setTeamMembers(userIds));
-  }, [loadingTeamId, dispatch, getTeamId]);
+  }, [loadingTeamId]);
 
   const handleEditTeam = async (e) => {
     e.preventDefault();
@@ -78,7 +75,7 @@ const EditTeam = () => {
             to={`/team/permissions/${id}`}
             className="flex justify-between items-center w-full cursor-pointer text-gray bg-blackSecond px-[10px] py-3 rounded-lg"
           >
-            Permissions ({team.permissions?.length})
+            Permissions ({getTeamId.permissions?.length})
             <AiOutlinePlusCircle className="text-xl" />
           </Link>
           <Link

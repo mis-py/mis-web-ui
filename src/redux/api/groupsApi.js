@@ -7,13 +7,29 @@ export const groupsApi = createApi({
   baseQuery: RtkDefaultQuery,
   endpoints: (build) => ({
     getGroups: build.query({
-      query: () => ({
-        url: `/groups/`,
-        method: "GET",
-        headers: {
-          accept: "application/json",
-        },
-      }),
+      query: (data) => {
+        let url = "/groups/";
+
+        if (data !== undefined) {
+          const args = [];
+
+          if (data.app_id !== undefined) {
+            args.push(`app_id=${data.app_id}`);
+          }
+
+          if (args.length) {
+            url += '?' + args.join('&');
+          }
+        }
+
+        return {
+          url,
+          method: "GET",
+          headers: {
+            accept: "application/json",
+          },
+        };
+      },
       keepUnusedDataFor: 0.1,
       providesTags: (result) =>
         result

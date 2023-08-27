@@ -3,7 +3,7 @@ import RtkDefaultQuery from "config/RtkDefaultQuery";
 
 export const tasksApi = createApi({
     reducerPath: "tasksApi",
-    tagTypes: ["Tasks"],
+    tagTypes: ["Tasks", "Jobs", "TaskJobs"],
     baseQuery: RtkDefaultQuery,
     endpoints: (build) => ({
         getTasks: build.query({
@@ -17,6 +17,24 @@ export const tasksApi = createApi({
             query: (id) => {
                 return {
                     url: `/tasks/jobs?task_id=${id}`,
+                    method: "GET",
+                }
+            },
+            providesTags: (result, error, id) => [{ type: "TaskJobs", id }],
+        }),
+        getJobById: build.query({
+            query: (id) => {
+                return {
+                    url: `/tasks/jobs/${id}`,
+                    method: "GET",
+                }
+            },
+            providesTags: (result, error, id) => [{ type: "Jobs", id }],
+        }),
+        getTaskById: build.query({
+            query: (id) => {
+                return {
+                    url: `/tasks/${id}`,
                     method: "GET",
                 }
             },
@@ -48,11 +66,26 @@ export const tasksApi = createApi({
             invalidatesTags: ["Tasks"], 
         }),
         tasksJobsAdd: build.mutation({
-            query: (id) => ({
-                url: `/tasks/${id}/add-job`,
-                method: "POST",
-            }),
-            invalidatesTags: [{ type: "Tasks", id: "LIST" }], 
+            query: (data) => {
+                const body = {
+                    trigger: {},
+                };
+
+                if (data.extra !== undefined) {
+                    body.extra = data.extra;
+                }
+
+                if (data.cronString !== undefined) {
+                    body.trigger.cron = data.cronString;
+                }
+
+                return {
+                    url: `/tasks/${data.id}/add-job`,
+                    method: "POST",
+                    body,
+                }
+            },
+            invalidatesTags: (result, error, { id }) => [{ type: "Tasks", id: "LIST" }, { type: "TaskJobs", id }],
         }),
     }),
 
@@ -65,4 +98,6 @@ export const {
     useJobsRescheduleMutation,
     useGetJobsQuery,
     useTasksJobsAddMutation,
+    useGetJobByIdQuery,
+    useGetTaskByIdQuery,
 } = tasksApi;

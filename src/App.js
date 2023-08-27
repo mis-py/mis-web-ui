@@ -9,6 +9,10 @@ import { appRoutes } from "routes/apps";
 import { profileRoutes } from "routes/profile";
 import useModuleRoutes from "routes/modules";
 import { taskRoutes } from "routes/tasks";
+import { notificationsRoutes } from "routes/notifications";
+
+import { useSelector } from 'react-redux';
+import LoadingOverlay from "./components/common/LoadingOverlay";
 import { consumersRoutes } from "routes/consumers";
 import { logout } from "redux/slices/authSlice";
 
@@ -35,7 +39,7 @@ function App() {
       children: [
         { index: true, element: <Home />},
         ...Array()
-            .concat(userRoutes, teamRoutes, groupRoutes, appRoutes, modulesList, taskRoutes, consumersRoutes, profileRoutes)
+            .concat(userRoutes, teamRoutes, groupRoutes, appRoutes, modulesList, taskRoutes, consumersRoutes, profileRoutes, notificationsRoutes)
             .map((route, index) => (
             {
                 key: `${route.path}_${index}`,

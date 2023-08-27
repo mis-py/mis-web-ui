@@ -16,16 +16,19 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
 
   const handleLogOut = async (e) => {
     e.preventDefault();
-    await userLogout().then(() => {
-      toggleDrawer();
-      localStorage.removeItem("my-token");
-      localStorage.removeItem("user_id");
-      localStorage.removeItem("user_name");
+    await userLogout()
+      .then(() => {
+        toggleDrawer();
+        localStorage.removeItem("my-token");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("user_name");
 
-      // setTimeout(() => {
+        // setTimeout(() => {
+        // }, 100);
+      })
+      .then(() => {
         navigate("/signin");
-      // }, 100);
-    });
+      });
   };
 
   return (
@@ -39,7 +42,7 @@ const ProfilePopup = ({ userPopup, setUserPopup, toggleDrawer }) => {
       <ul>
         <button
           onClick={() => {
-            navigate(`/profile/${localStorage.getItem('user_id')}`);
+            navigate(`/profile/${localStorage.getItem("user_id")}`);
             toggleDrawer();
           }}
           className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"

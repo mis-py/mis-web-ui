@@ -1,54 +1,81 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import RtkDefaultQuery from "config/RtkDefaultQuery";
 
-export const notificationApi = createApi({
-  reducerPath: "notificationApi",
+export const notificationsApi = createApi({
+  reducerPath: "notificationsApi",
   tagTypes: ["Notifications"],
   baseQuery: RtkDefaultQuery,
   endpoints: (build) => ({
-    getUsers: build.query({
+    getNotifications: build.query({
       query: () => ({
-        url: `/users/`,
+        url: `/notifications/routing_keys/`,
         method: "GET",
       }),
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: "Users", id })),
-              { type: "Users", id: "LIST" },
+              ...result.map(({ id }) => ({ type: "Notifications", id })),
+              { type: "Notifications", id: "LIST" },
             ]
-          : [{ type: "Users", id: "LIST" }],
+          : [{ type: "Notifications", id: "LIST" }],
     }),
-    getUserId: build.query({
-      query: (id) => ({
-        url: `/users/${id}`,
+    getNotificationsMy: build.query({
+      query: () => ({
+        url: `/notifications/routing_keys/my`,
         method: "GET",
       }),
-      providesTags: (result, error, id) => [{ type: "Users", id }],
+      providesTags: (result, error, id) => [{ type: "Notifications", id }],
     }),
+    keySubscribe: build.mutation({
+      query: (data) => ({
+            url: `/notifications/routing_keys/set-subscriptions/`,
+            method: "POST",
+            headers: {
+              accept: "application/json",
+            },
+            body: data.body,
+          }),
+          invalidatesTags: (result, error, { id }) => [{ type: "Notifications", id }],
+    })
 
-    editUser: build.mutation({
-      query: ({ id, ...rest }) => ({
-        url: `/users/${id}`,
-        method: "PUT",
-        headers: {
-          accept: "application/json",
-        },
-        body: rest,
-      }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Users", id }],
-    }),
-    deleteUser: build.mutation({
-      query: (id) => ({
-        url: `/users/${id}`,
-        method: "DELETE",
-        headers: {
-          accept: "application/json",
-        },
-      }),
-      invalidatesTags: [{ type: "Users", id: "LIST" }],
-    }),
+    // editNotifications: build.mutation({
+    //   query: ({ key_id }) => ({
+    //     url: `/notifications/routing_keys/${key_id}`,
+    //     method: "PUT",
+    //     headers: {
+    //       accept: "application/json",
+    //     },
+    //   }),
+    //   invalidatesTags: (result, error, { id }) => [{ type: "Notifications", id }],
+    // }),
+    // subscribeNotifications: build.mutation({
+    //   query: ({ key_id }) => ({
+    //     url: `/notifications/routing_keys/${key_id}`,
+    //     method: "POST",
+    //     headers: {
+    //       accept: "application/json",
+    //     },
+    //   }),
+    //   invalidatesTags: (result, error, { id }) => [{ type: "Notifications", id }],
+    // }),
+    // deleteNotications: build.mutation({
+    //   query: (key_id) => ({
+    //     url: `/notifications/routing_keys/${key_id}`,
+    //     method: "DELETE",
+    //     headers: {
+    //       accept: "application/json",
+    //     },
+    //   }),
+    //   invalidatesTags: [{ type: "Notifications", id: "LIST" }],
+    // }),
   }),
 });
 
-export const {} = notificationApi;
+export const {
+  useGetNotificationsQuery,
+  useGetNotificationsMyQuery,
+  useKeySubscribeMutation,
+  // useEditNotificationsMutation,
+  // useSubscribeNotificationsMutation,
+  // useDeleteNoticationsMutation,
+} = notificationsApi;

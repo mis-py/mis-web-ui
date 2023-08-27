@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet, useLocation, Navigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import SidebarDesktop from "layouts/Sidebar";
-import Notifications from "components/Notifications";
+import Notifications from "components/notifications/Notifications";
 import TopBar from "layouts/TopBar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

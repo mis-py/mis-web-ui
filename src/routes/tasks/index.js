@@ -1,24 +1,23 @@
 import Tasks from "modules/core/tasks";
-import Jobs from "modules/core/tasks/JobsTasks";
-// import EditMembersGroup from "pages/groups/EditMembersGroup";
-// import EditObjectsGroup from "pages/groups/EditObjectsGroup";
+import JobsTasks from "modules/core/tasks/JobsTasks";
+import JobsLogs from "modules/core/tasks/JobsLogs";
+import AddJobs from "modules/core/tasks/AddJobs";
 
 export const taskRoutes = [
   {
     path: "/tasks",
     element: <Tasks />,
   },
-
   {
     path: "/tasks/jobs/:id",
-    element: <Jobs />,
+    element: <JobsTasks />,
   },
-  // {
-  //   path: "/group/members/:id",
-  //   element: <EditMembersGroup />,
-  // },
-  // {
-  //   path: "/group/objects/:id",
-  //   element: <EditObjectsGroup />,
-  // },
+  {
+    path: "/tasks/jobs/logs/:id",
+    element: <JobsLogs />,
+  },
+  {
+    path: "/tasks/add-job/:id",
+    element: <AddJobs />,
+  },
 ];

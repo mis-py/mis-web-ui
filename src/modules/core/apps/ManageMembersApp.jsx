@@ -1,12 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetTeamIdQuery, useGetUsersQuery } from "redux/index";
-import { useDispatch, useSelector } from "react-redux";
-
-import {
-  addMembers,
-  deleteMembers,
-} from "redux/slices/editTeamMembersSlice";
+import { useSelector } from "react-redux";
 
 import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
@@ -17,7 +12,6 @@ import PageHeader from "components/common/PageHeader";
 
 const ManageMembersApp = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { id } = useParams();
   let containerWidth = React.useRef();
   const members = useSelector((state) => state.editTeamMembers.members);
@@ -27,14 +21,6 @@ const ManageMembersApp = () => {
   const { data: getDataTeamId } = useGetTeamIdQuery(id);
   const { data: getDataUsers, isLoading: loadingDataUsers } =
     useGetUsersQuery();
-
-  const handleAddMembers = (id) => {
-    if (!members.includes(id)) {
-      dispatch(addMembers(id));
-    } else {
-      dispatch(deleteMembers(id));
-    }
-  };
 
   React.useEffect(() => {
     if (getDataTeamId && getDataTeamId.users.length) {
@@ -91,7 +77,6 @@ const ManageMembersApp = () => {
                       className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6"
                     >
                       <button
-                        onClick={() => handleAddMembers(user.id)}
                         className="absolute right-3 top-1/2 -translate-y-1/2"
                       >
                         {members.includes(user.id) ? (

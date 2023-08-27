@@ -12,7 +12,18 @@ const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
   //   setUserPopup(false);
   // };
 
-  // const refPopup = useOutsideClick(handleClickOutside);
+  const refPopup = useOutsideClick(handleClickOutside);
+
+  const handleLogOut = async (e) => {
+    await userLogout()
+      .then(() => {
+        localStorage.clear();
+      })
+      .then(() => {
+        window.location.reload();
+        navigate("/signin");
+      });
+  };
 
   return (
     // <div
@@ -26,7 +37,7 @@ const ProfilePopupDesktop = ({ userPopup, setUserPopup }) => {
 
         {/* <button
           onClick={() => {
-            navigate(`/profile/${localStorage.getItem('user_id')}`);
+            navigate(`/profile/${localStorage.getItem("user_id")}`);
           }}
           className="flex bg-backGround drop-shadow-lg items-center px-5 w-full gap-3 duration-300 group hover:bg-blackSecond"
         >
