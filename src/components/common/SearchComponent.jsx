@@ -29,27 +29,17 @@ const Search = ({searchParams = {}}) => {
     }
 
     return (
-    <div className="flex flex-auto">
-        <button
-            className={`${
-            showSearch
-                ? "rounded-l-lg text-primary"
-                : "rounded-l-lg text-gray"
-            } flex justify-center duration-300 items-center px-3 h-[32px] bg-blackSecond`}
-        >
+    <div className="join">
+        <button className={"btn btn-square btn-outline btn-sm join-item z-10"}>
             <FiSearch />
         </button>
-        <div className="relative h-[32px] w-full duration-300">
-            <input
-                className={`${
-                    showSearch ? "w-full px-3" : "w-0 px-0"
-                } bg-blackSecond h-full text-xs text-gray border-none placeholder:text-gray duration-300 rounded-r w-full focus:shadow-none focus:ring-0`}
-                type="search"
-                placeholder={placeholder}
-                value={value}
-                onChange={onChange}
-            />
-        </div>
+        <input
+            className={"input input-bordered input-sm join-item w-full"}
+            type="search"
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+        />
     </div>
     );
 };

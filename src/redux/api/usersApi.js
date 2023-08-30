@@ -49,7 +49,6 @@ export const usersApi = createApi({
         method: "GET",
       }),
       providesTags: () => [{ type: "Users" }],
-      keepUnusedDataFor: 0.1,
     }),
     addUser: build.mutation({
       query: (body) => ({

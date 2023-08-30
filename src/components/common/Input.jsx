@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import Tooltip from "components/Tooltip";
+// import Tooltip from "components/Tooltip";
 import { BiRotateLeft } from "react-icons/bi";
 
 const Input = (props) => {
@@ -17,7 +17,9 @@ const Input = (props) => {
       name,
       children,
       default_value=null,
-      setDefault
+      setDefault,
+      primaryLabel,
+      secondLabel
   } = props;
 
   const [inputValue, setInputValue] = useState("");
@@ -40,8 +42,35 @@ const Input = (props) => {
     }
   }
 
-  return (
-    <label className={`flex flex-col gap-1 mb-4 ${hasDefault ? "relative" : ""} ${className === undefined ? "" : className}`.trim()} htmlFor={id}>
+  const defaultButton = <div className="tooltip tooltip-left" data-tip={`Paste default value`}>
+      <button className="btn btn-square btn-outline btn-sm join-item rounded">
+        <BiRotateLeft onClick={onSetDefault} className="text-gray"/>
+      </button>
+    </div>
+
+  return (<>
+      <div className="form-control">
+        <label className="label">
+          <span className="label-text">{primaryLabel ?? label}</span>
+          <span className="label-text-alt">{secondLabel}</span>
+        </label>
+        <div className="join">
+          <input
+           className="input input-bordered input-sm w-full join-item" 
+           placeholder={placeholder}
+           name={name}
+           type={type}
+           id={id}
+           autoComplete="off"
+           value={inputValue}
+           onChange={onChange}
+           readOnly={readOnly}
+           />
+          { hasDefault && defaultButton }
+        </div>
+        {children}
+      </div>
+    {/* <label className={`flex flex-col gap-1 mb-4 ${hasDefault ? "relative" : ""} ${className === undefined ? "" : className}`.trim()} htmlFor={id}>
       {label}
       
       <input
@@ -66,8 +95,9 @@ const Input = (props) => {
         </div>
       )}
 
-      {children}
-    </label>
+      {children} */}
+    {/* </label> */}
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { toast } from "react-toastify";
@@ -8,13 +8,11 @@ import {
   useGetUserIdQuery,
   useAddUserMutation,
   useSettingUserSetMutation,
-  useGetUsersQuery,
   useEditUserPermissionMutation,
 } from "redux/index";
 
 import {
   addUserName,
-  addUserPassword,
   addUserTeam,
   addUserPosition,
 } from "redux/slices/userSlice";
@@ -31,7 +29,6 @@ const UserEdit = () => {
 
     const editMode = id !== undefined;
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
 
@@ -152,8 +149,7 @@ const UserEdit = () => {
       settingsSection: <SettingsForm id={id} />,
       permissionsSection: <PermissionsForm id={id} />,
       formSection: <UserForm />,
-      pageHeader: editMode ? user.username : "New",
-      routeHeader: "Users",
+      pageHeader: ["Administration", "isBack:Users", (editMode ? user.username : "New")],
       saveButtonEvent: handleSave,
       saveButtonTitle: "Save",
       saveButtonIcon: <FiSave />,

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import qs from "qs";
+// import qs from "qs";
 
 import { baseUrl } from "config/variables";
 

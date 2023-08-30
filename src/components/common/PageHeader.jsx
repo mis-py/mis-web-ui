@@ -3,17 +3,30 @@ import { IoIosArrowBack } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 const PageHeader = (props) => {
-    const showBack = props.showBack === undefined || props.showBack === true;
+    // const showBack = props.showBack === undefined || props.showBack === true;
     // TODO replace this shitty slash by css
 
-    let pathSeparator = props.routeHeader !== undefined ? "/ " : "";
+    let headerArray = props.pageHeader.map((item, index) => {
+        if (item.startsWith('isBack:')) {
+            return <li key={index}>
+                        <Link className="flex items-center cursor-pointer mr-1 link link-primary" to={-1}>
+                            {item.replace('isBack:', '')}
+                        </Link>
+                    </li>
+        } else {
+            return <li key={index}>{item}</li>
+        }
+    })
 
     return (
-        <div className="flex flex-row">
-            {showBack && <Link className="flex items-center text-white cursor-pointer mr-1" to={-1}>
+        <div className="breadcrumbs text-lg overflow-visible">
+            <ul>
+                {headerArray}
+            </ul>
+            {/* {showBack && <Link className="flex items-center cursor-pointer mr-1" to={-1}>
             {props.routeHeader}
             </Link>}
-            <div className={`flex text-white py-1 ${props.headerClass}`.trim()}>{pathSeparator}{props.header}</div>
+            <div className={`${props.headerClass}`.trim()}>{pathSeparator}{props.header}</div> */}
         </div>
     );
 };

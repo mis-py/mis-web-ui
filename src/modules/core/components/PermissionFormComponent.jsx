@@ -32,7 +32,11 @@ const PermissionsForm = ({id}) => {
             }
         })
         // filter settings by searchValue
-        .filter((item) => item.name.toLocaleLowerCase().includes(searchValue.toLowerCase().trim()));
+        .filter((item) => {
+            return item.name.toLocaleLowerCase().includes(searchValue.toLowerCase().trim()) ||
+                item.scope.toLocaleLowerCase().includes(searchValue.toLowerCase().trim())
+            
+        });
 
     const handleChangePermission = async (e, item, state) => {
         dispatch(setUserPermission({id: item.id, checked: state}));
@@ -44,7 +48,7 @@ const PermissionsForm = ({id}) => {
             value: searchValue, 
             placeholder: "Enter permission name to search..."}} 
         />
-        <div className="flex flex-wrap gap-4">
+        <div className="grid grid-cols-2 gap-4">
         {labels.map((item) => (
             <PermissionBox
                 key={item.id}

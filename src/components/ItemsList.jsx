@@ -7,40 +7,43 @@ import { FiUserPlus } from "react-icons/fi";
 import Search from "components/common/SearchComponent";
 
 const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOptions, ...props }) => {
+
+  const links = routes?.map((item, index) => (
+    <Link
+            key={index}
+            to={item}
+            className="btn btn-outline btn-square btn-sm"
+        >
+        <FiUserPlus />
+    </Link>
+  ));
+  const searchElement = props.searchParams !== undefined && <Search searchParams={props.searchParams} />;
+
   return isLoading ? (
     <SpinnerLoader />
-  ) : (<>
-    <PageHeader
-        header={pageHeader}
-        showBack={false}
-    />
-    <div className="flex flex-row justify-between gap-[10px] py-1">
-    {
-        routes?.map((item, index) => (
-            <Link
-                    key={index}
-                    to={item}
-                    className="flex justify-center items-center w-[32px] h-[32px] rounded bg-blackSecond"
-                >
-                <FiUserPlus />
-            </Link>
-        ))
-    }
-    {props.searchParams !== undefined && <Search searchParams={props.searchParams} /> }
+  ) : (
+  <div className="flex flex-5 flex-col flex-grow overflow-y-auto">
+      <div className="flex items-center justify-between">
+        <PageHeader pageHeader={pageHeader} />
+        <div className="flex flex-row text-lg gap-1">
+          {links} {searchElement}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-4 p-2 overflow-y-auto">
+        {getItems.map((item, index) => (
+            <ListItem
+              key={index}
+              item_id={item.id}
+              primary_name={item.username}
+              secondary_name={item.team === null ? "No team" : item.team.name}
+              additional_name={item.position === null ? "Position name none" : item.position}
+              buttonOptions={buttonOptions}
+            />
+          ))
+        }
+      </div>
     </div>
-    <div className="flex flex-col gap-4">
-      {getItems.map((item, index) => (
-          <ListItem
-            key={index}
-            item_id={item.id}
-            primary_name={item.username}
-            secondary_name={item.team === null ? "No team" : item.team.name}
-            additional_name={item.position === null ? "Position name none" : item.position}
-            buttonOptions={buttonOptions}
-          />
-        ))
-      }
-    </div></>
   );
 };
 

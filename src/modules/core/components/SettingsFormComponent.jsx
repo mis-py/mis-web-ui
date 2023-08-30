@@ -59,6 +59,8 @@ const SettingsForm = ({id}) => {
         {inputs?.map((item) =>(
             <Input
                 label={`${item.key} ( ${item.app.name} )`}
+                primaryLabel={item.key}
+                secondLabel={item.app.name}
                 key={item.id}
                 className="relative"
                 id={item.key}

@@ -4,16 +4,50 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-    html {
-        -webkit-tap-highlight-color: transparent;
-    }
-    body {
-        @apply text-white text-base font-ubuntu bg-backGround
+@layer components {
+    .select-sm-mis-1 {
+        font-size: 0.8rem;
+        line-height: 1rem;
+        padding-top: 0.35rem;
+        font-weight: 400;
     }
 }
 
-@layer components {
+@layer utilities {
+    .without-ring {
+        @apply focus:ring-0 focus:ring-offset-0;
+    }
+}
+/* custom scrollbar */
+::-webkit-scrollbar {
+    width: 20px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #a8bbbf;
+  }
+
+/* @layer base {
+    html {
+        -webkit-tap-highlight-color: transparent;
+    } */
+    /* body {
+        @apply text-white text-base font-ubuntu bg-backGround
+    } */
+/* } */
+
+/* @layer components {
     .h1 {
         @apply text-5xl
     }
@@ -64,10 +98,10 @@
     }
     /* .default-checkbox {
         @apply w-5 h-5 appearance-none rounded border duration-300 default:ring-2 border-primary indeterminate:bg-white checked:bg-transparent checked:border checked:border-primary checked:bg-primary
-    } */
-}
+    } 
+}*/
 
-.react-confirm-alert-body {
+/* .react-confirm-alert-body {
     box-shadow: none;
 }
 
@@ -87,4 +121,4 @@
 
 .capitalize-first::first-letter {
     text-transform: uppercase;
-}
+} */

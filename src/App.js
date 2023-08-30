@@ -18,7 +18,6 @@ import { logout } from "redux/slices/authSlice";
 
 import {createBrowserRouter, RouterProvider, redirect } from "react-router-dom";
 
-import "index.css";
 import "react-toastify/dist/ReactToastify.css";
 
 

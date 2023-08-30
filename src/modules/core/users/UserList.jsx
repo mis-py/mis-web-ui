@@ -1,7 +1,7 @@
 import React from "react";
 import { useGetUsersQuery } from "redux/index";
 import ItemsList from "components/ItemsList";
-import { resetUser } from "redux/slices/userSlice";
+// import { resetUser } from "redux/slices/userSlice";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useDeleteUserMutation } from "redux/index";
@@ -16,7 +16,7 @@ const UserList = () => {
     const {
       data: getUsers = [],
       isLoading: loadingGetUser,
-      error: errorGetUsers,
+      // error: errorGetUsers,
     } = useGetUsersQuery();
 
     const searchValue = useSelector((state) => "UserList" in state.search.searchData ? state.search.searchData["UserList"] : "");
@@ -71,7 +71,7 @@ const UserList = () => {
     return (
       <ItemsList 
         routes={routes} 
-        pageHeader="Users" 
+        pageHeader={["Administration", "Users"]}
         getItems={filteredUsers} 
         isLoading={loadingGetUser} 
         buttonOptions={buttonOptions} 
