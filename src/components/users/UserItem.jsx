@@ -5,12 +5,21 @@ import { toast } from "react-toastify";
 import useOutsideClick from "hooks/useOutsideClick";
 import { useDeleteUserMutation } from "redux/index";
 
+import Avatar from "../common/Avatar";
+
 import AdminWrapper from "config/AdminWrapper";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import AvatarUser from "./AvatarUser";
 
-const UserItem = ({ user, index, showEdit, setShowEdit, dots, ...props }) => {
+const UserItem = ({
+  user,
+  avatar,
+  index,
+  showEdit,
+  setShowEdit,
+  dots,
+  ...props
+}) => {
   const navigate = useNavigate();
   const [deleteUser] = useDeleteUserMutation();
 
@@ -83,11 +92,7 @@ const UserItem = ({ user, index, showEdit, setShowEdit, dots, ...props }) => {
         <div className="lg:flex lg:items-center">
           <div className="flex flex-col">
             <div className="flex items-center gap-4">
-              <AvatarUser
-                className="w-[64px] h-[64px]"
-                userData={user}
-                icon={false}
-              />
+              <Avatar avatar={avatar} icon={false} />
               <div className="flex flex-col">
                 <div className="text-white mb-[10px]">{user.username}</div>
                 <div

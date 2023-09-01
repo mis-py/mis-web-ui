@@ -1,18 +1,16 @@
 import React from "react";
-import AvatarUser from "./users/AvatarUser";
 import MisButton from "./common/MisButton";
 import Avatar from "components/common/Avatar";
 
-import AvatarGroup from "../assets/img/groups.png"
+const ListItem = ({ item_id, primary_name, secondary_name, additional_name, buttonOptions, avatar, ...props }) => {
 
-const ListItem = ({ item_id, primary_name, secondary_name, additional_name, buttonOptions }) => {
   return (
     <div className="flex flex-col relative bg-blackSecond px-4 py-[10px] rounded lg:p-6">
       <div className="flex justify-between items-center">
         <div className="lg:flex lg:items-center">
           <div className="flex flex-col">
             <div className="flex items-center gap-4">
-              <Avatar user_bg={AvatarGroup} icon={false} />
+              <Avatar icon={avatar} />
               <div className="flex flex-col">
                 <div className="text-white mb-[10px]">{primary_name}</div>
                 <div className="text-gray text-xs mb-[6px]">{secondary_name}</div>

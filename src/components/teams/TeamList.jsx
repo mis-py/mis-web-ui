@@ -7,7 +7,10 @@ import { toast } from "react-toastify"
 import { FiEdit, FiXCircle} from "react-icons/fi";
 import { confirmAlert } from "react-confirm-alert";
 import { useNavigate } from "react-router-dom";
+import TeamUsersShortList from "components/teams/TeamUsersShortList"
 // import { SearchContext } from "context/SearchContext";
+
+import TeamImg from "assets/img/groups.png";
 
 const TeamList = () => {
     const navigate = useNavigate();
@@ -28,8 +31,8 @@ const TeamList = () => {
     //   }, [loadingGetUser, searchValue]);
 
     const filteredTeams = getTeams.filter((el) => el.name.toLowerCase().includes(searchValue.toLowerCase().trim())).map((item)=> (
-      {...item, primary_name: item.name, secondary_name: "", additional_name: ""}
-    ))
+      {...item, primary_name: item.name, secondary_name: "", additional_name: "", avatar: TeamImg}
+    ));
 
     const [deleteTeam] = useDeleteTeamMutation();
 
@@ -70,6 +73,7 @@ const TeamList = () => {
     const routes = ['/teams/add'];
 
     return (
+      <>
       <ItemsList 
         routes={routes} 
         pageHeader="Teams" 
@@ -85,6 +89,8 @@ const TeamList = () => {
           showSearch: false
         } }
       />
+      <TeamUsersShortList/>
+      </>
     );
 };
 

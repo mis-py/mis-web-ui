@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import Input from "components/common/Input";
 import PageHeader from "components/common/PageHeader";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import AvatarUser from "components/users/AvatarUser";
+import AvatarUser from "components/common/Avatar";
 import ResetPassword from "components/users/ResetPassword";
 
 const ProfileUser = () => {

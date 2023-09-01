@@ -8,6 +8,7 @@ import { useDeleteUserMutation } from "redux/index";
 import { FiEdit, FiXCircle} from "react-icons/fi";
 import { confirmAlert } from "react-confirm-alert";
 import { useNavigate } from "react-router-dom";
+import UserImg from "assets/img/user.png";
 // import { SearchContext } from "context/SearchContext";
 
 const UserList = () => {
@@ -32,7 +33,8 @@ const UserList = () => {
       {...item,
         primary_name: item.username,
         secondary_name: item.team === null ? "No team" : item.team.name,
-        additional_name: item.position === null ? "" : item.position
+        additional_name: item.position === null ? "" : item.position,
+        avatar: UserImg
       }
     ))
 
@@ -81,8 +83,6 @@ const UserList = () => {
         getItems={filteredUsers} 
         isLoading={loadingGetUser} 
         buttonOptions={buttonOptions}
-        primary_name="username"
-        secondary_name="team"
         searchParams={ {
           key: "UserList",
           value: searchValue,

@@ -2,12 +2,12 @@ import React from "react";
 import Tooltip from "components/Tooltip";
 import { Link } from "react-router-dom";
 
-import AvatarUser from "components/users/AvatarUser";
+import Avatar from "components/common/Avatar";
 
 const PermissionLabel = (props) => {
     return (
         <>
-            {props.users.length ? (
+            {Array.isArray(props.users) && props.users.length ? (
                 <div className="flex gap-1.5">
                     {props.users.map((item) => (
                         <Link
@@ -18,7 +18,7 @@ const PermissionLabel = (props) => {
                                 : `/users/${item.id}`
                             }
                         >
-                            <AvatarUser
+                            <Avatar
                                 userData={item}
                                 icon={false}
                                 className="w-[35px] h-[35px]"
@@ -27,7 +27,8 @@ const PermissionLabel = (props) => {
                             <Tooltip name={item.username} />
                         </Link>
                     ))}
-                </div>) : (
+                </div>
+            ) : (
                 <p className="text-danger">No users</p>
             )}
         </>

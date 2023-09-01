@@ -7,6 +7,7 @@ import { FiUserPlus } from "react-icons/fi";
 import Search from "components/common/SearchComponent";
 
 const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOptions, ...props }) => {
+
   return isLoading ? (
     <SpinnerLoader />
   ) : (<>
@@ -36,6 +37,7 @@ const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOpt
             primary_name={item.primary_name}
             secondary_name={item.secondary_name}
             additional_name={item.additional_name}
+            avatar={item.avatar}
             buttonOptions={buttonOptions}
           />
         ))
