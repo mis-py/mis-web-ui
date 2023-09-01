@@ -50,7 +50,7 @@ const Avatar = (props) => {
     <div className={("relative overflow-hidden " + className).trim()}>
       <img
         className="absolute rounded-full w-full h-full object-cover object-center"
-        src={user_bg}
+        src={props.user_bg}
         alt="User"
       />
       {icon && (<><input

@@ -33,9 +33,9 @@ const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOpt
           <ListItem
             key={index}
             item_id={item.id}
-            primary_name={item.username}
-            secondary_name={item.team === null ? "No team" : item.team.name}
-            additional_name={item.position === null ? "Position name none" : item.position}
+            primary_name={item.primary_name}
+            secondary_name={item.secondary_name}
+            additional_name={item.additional_name}
             buttonOptions={buttonOptions}
           />
         ))

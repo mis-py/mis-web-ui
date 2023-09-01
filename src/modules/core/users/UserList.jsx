@@ -1,7 +1,7 @@
 import React from "react";
 import { useGetUsersQuery } from "redux/index";
 import ItemsList from "components/ItemsList";
-import { resetUser } from "redux/slices/userSlice";
+// import { resetUser } from "redux/slices/userSlice";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useDeleteUserMutation } from "redux/index";
@@ -16,7 +16,7 @@ const UserList = () => {
     const {
       data: getUsers = [],
       isLoading: loadingGetUser,
-      error: errorGetUsers,
+      // error: errorGetUsers,
     } = useGetUsersQuery();
 
     const searchValue = useSelector((state) => "UserList" in state.search.searchData ? state.search.searchData["UserList"] : "");
@@ -28,7 +28,13 @@ const UserList = () => {
     //     }
     //   }, [loadingGetUser, searchValue]);
 
-    const filteredUsers = getUsers.filter((el) => el.username.toLowerCase().includes(searchValue.toLowerCase().trim()))
+    const filteredUsers = getUsers.filter((el) => el.username.toLowerCase().includes(searchValue.toLowerCase().trim())).map((item)=> (
+      {...item,
+        primary_name: item.username,
+        secondary_name: item.team === null ? "No team" : item.team.name,
+        additional_name: item.position === null ? "" : item.position
+      }
+    ))
 
     const [deleteUser] = useDeleteUserMutation();
 
@@ -74,7 +80,9 @@ const UserList = () => {
         pageHeader="Users" 
         getItems={filteredUsers} 
         isLoading={loadingGetUser} 
-        buttonOptions={buttonOptions} 
+        buttonOptions={buttonOptions}
+        primary_name="username"
+        secondary_name="team"
         searchParams={ {
           key: "UserList",
           value: searchValue,

@@ -11,13 +11,14 @@ export const teamsApi = createApi({
         url: `/teams/`,
         method: "GET",
       }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: "Teams", id })),
-              { type: "Teams", id: "LIST" },
-            ]
-          : [{ type: "Teams", id: "LIST" }],
+      providesTags: (result) => {
+        if (result) {
+          const tags = result.map(({ id }) => ({ type: "Teams", id }));
+          tags.push({ type: "Teams", id: "LIST" });
+          return tags;
+        }
+        return [{ type: "Teams", id: "LIST" }];
+      },
       keepUnusedDataFor: 0.1,
     }),
     getTeamId: build.query({

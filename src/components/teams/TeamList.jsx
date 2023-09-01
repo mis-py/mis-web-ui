@@ -1,28 +1,91 @@
 import React from "react";
-import { toast } from "react-toastify";
-import { resetTeam } from "redux/slices/teamSlice";
-import { useDispatch } from "react-redux";
+import { useGetTeamsQuery, useDeleteTeamMutation } from "redux/index";
+import ItemsList from "components/ItemsList";
+// import { resetUser } from "redux/slices/userSlice";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify"
+import { FiEdit, FiXCircle} from "react-icons/fi";
+import { confirmAlert } from "react-confirm-alert";
+import { useNavigate } from "react-router-dom";
+// import { SearchContext } from "context/SearchContext";
 
-import SpinnerLoader from "components/common/SpinnerLoader";
-import TeamItem from "./TeamItem";
+const TeamList = () => {
+    const navigate = useNavigate();
 
-const TeamList = ({ getTeams, loadingGetTeams, errorGetTeams, serchValue }) => {
-  const dispatch = useDispatch();
+    const {
+      data: getTeams = [],
+      isLoading: loadingGetTeams,
+      // error: errorGetUsers,
+    } = useGetTeamsQuery();
 
-  React.useEffect(() => {
-    dispatch(resetTeam());
-    if (errorGetTeams) {
-      toast.error("Teams not found");
-    }
-  }, [errorGetTeams, dispatch]);
+    const searchValue = useSelector((state) => "TeamList" in state.search.searchData ? state.search.searchData["TeamList"] : "");
 
-  return loadingGetTeams ? (
-    <SpinnerLoader />
-  ) : (
-    <div className="flex flex-col gap-4">
-      <TeamItem getTeams={getTeams} serchValue={serchValue} />
-    </div>
-  );
+    // React.useEffect(() => {
+    //     dispatch(resetUser());
+    //     if (errorGetUsers) {
+    //       toast.error("No users found");
+    //     }
+    //   }, [loadingGetUser, searchValue]);
+
+    const filteredTeams = getTeams.filter((el) => el.name.toLowerCase().includes(searchValue.toLowerCase().trim())).map((item)=> (
+      {...item, primary_name: item.name, secondary_name: "", additional_name: ""}
+    ))
+
+    const [deleteTeam] = useDeleteTeamMutation();
+
+    const buttonOptions = [
+        {
+            title: "Edit",
+            callback: (item_id) => navigate(`/teams/${ item_id }`),
+            icon: <FiEdit />
+        },
+        {
+            title: "Remove",
+            callback: (item_id) => handleDeleteTeam(item_id),
+            icon: <FiXCircle />
+        }
+    ]
+  
+    const handleDeleteTeam = async (id) => {
+      confirmAlert({
+        title: "Delete team",
+        message: "Are you sure you want to delete this team?",
+        buttons: [
+          {
+            label: "Yes",
+            onClick: async () => {
+              await deleteTeam(id);
+              navigate("/teams");
+              toast.success("Team deleted");
+            },
+          },
+          {
+            label: "No",
+          },
+        ],
+        overlayClassName: "bg-blackSecond/70",
+      });
+    };
+
+    const routes = ['/teams/add'];
+
+    return (
+      <ItemsList 
+        routes={routes} 
+        pageHeader="Teams" 
+        getItems={filteredTeams} 
+        isLoading={loadingGetTeams} 
+        buttonOptions={buttonOptions}
+        primary_name="username"
+        secondary_name="team"
+        searchParams={ {
+          key: "UserList",
+          value: searchValue,
+          placeholder: "Enter name to search...",
+          showSearch: false
+        } }
+      />
+    );
 };
 
 export default TeamList;

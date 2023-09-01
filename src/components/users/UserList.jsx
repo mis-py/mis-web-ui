@@ -6,7 +6,16 @@ import { resetUser } from "redux/slices/userSlice";
 
 import UserItem from "./UserItem";
 
-const UserList = ({ searchValue, getUsers, loadingGetUser, errorGetUsers, dots, ...props }) => {
+import UserAvatar from "assets/img/user.png";
+
+const UserList = ({
+  searchValue,
+  getUsers,
+  loadingGetUser,
+  errorGetUsers,
+  dots,
+  ...props
+}) => {
   const dispatch = useDispatch();
   const [showEdit, setShowEdit] = React.useState(false);
 
@@ -31,6 +40,7 @@ const UserList = ({ searchValue, getUsers, loadingGetUser, errorGetUsers, dots, 
           <UserItem
             key={user.id}
             user={user}
+            avatar={UserAvatar}
             dots={dots}
             index={index}
             showEdit={showEdit}
