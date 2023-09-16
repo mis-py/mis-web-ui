@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Switch from "react-switch";
+// import Switch from "react-switch";
 import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
 import {
@@ -137,7 +137,7 @@ const SettingsApp = () => {
         <AdminWrapper>
           <h4 className="text-2xl font-bold mb-5">General settings</h4>
           <div className="flex items-center gap-3 mb-5">
-                  <Switch onChange={handleChange} checked={active} />
+                  {/* <Switch onChange={handleChange} checked={active} /> */}
                   <p>Enable app</p>
                 </div>
 

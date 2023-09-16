@@ -18,7 +18,7 @@ const PermissionBox = (props) => {
     return (
         <div className="form-control">
             <label className="label cursor-pointer justify-start" htmlFor={htmlFor}>
-                <input 
+                <input
                     id={htmlFor} 
                     name={props.item.name} 
                     type="checkbox" 

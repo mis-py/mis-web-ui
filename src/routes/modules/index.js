@@ -19,6 +19,7 @@ const useModuleRoutes = () => {
       getModules.forEach(item => {
         let obj = {
           path: `/${item.name}`,
+          ...item
         };
 
         if (item.name === 'webcat') {

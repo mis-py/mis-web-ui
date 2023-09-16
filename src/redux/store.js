@@ -9,7 +9,7 @@ import { groupsApi } from "./api/groupsApi";
 import { modulesApi } from "./api/modulesApi";
 import { settingsApi } from "./api/settingsApi";
 import { logsApi } from "./api/logsApi";
-import {notificationsApi} from "./api/notificationsApi";
+import { notificationsApi } from "./api/notificationsApi";
 
 //modules
 import { webcatApi } from "./api/modulesApi/webcatApi";
@@ -22,8 +22,9 @@ import { binomApi } from "./api/modulesApi/binomDomainApi";
 
 //slices
 import { authReducer } from "./slices/authSlice";
-import { searchReducer } from './slices/searchSlice'
-import userSlice from "./slices/userSlice";
+import { searchReducer } from './slices/searchSlice';
+import { profileReducer } from "./slices/profileSlice";
+import { userReducer } from "./slices/userSlice";
 import teamSlice from "./slices/teamSlice";
 import membersSlice from "./slices/membersSlice";
 import { startLoading, stopLoading } from './slices/loadingSlice';
@@ -73,11 +74,12 @@ export const store = configureStore({
 
     //slices
     auth: authReducer,
-    user: userSlice,
+    user: userReducer,
     team: teamSlice,
     membersList: membersSlice,
     loading: loadingReducer,
     search: searchReducer,
+    profile: profileReducer,
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware({}).concat([

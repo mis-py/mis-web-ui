@@ -42,11 +42,12 @@ const Input = (props) => {
     }
   }
 
-  const defaultButton = <div className="tooltip tooltip-left" data-tip={`Paste default value`}>
+  const defaultButton = 
+  // <div className="tooltip tooltip-left" data-tip={`Paste default value`}>
       <button className="btn btn-square btn-outline btn-sm join-item rounded">
         <BiRotateLeft onClick={onSetDefault} className="text-gray"/>
       </button>
-    </div>
+    {/* </div> */}
 
   return (<>
       <div className="form-control">
@@ -56,7 +57,7 @@ const Input = (props) => {
         </label>
         <div className="join">
           <input
-           className="input input-bordered input-sm w-full join-item" 
+           className={`input input-bordered input-sm w-full ${hasDefault ? 'join-item': ''}`}
            placeholder={placeholder}
            name={name}
            type={type}

@@ -19,7 +19,7 @@ export const permissionsApi = createApi({
         let newResponse = response.reduce((acc, item) => {
           return {[item.id]: item, ...acc}
         }, {});
-
+        
         return { entities: newResponse, allIds:Object.keys(newResponse) }
       }
     }),
@@ -43,6 +43,13 @@ export const permissionsApi = createApi({
         method: "GET",
       }),
       providesTags: () => [{ type: "Permissions" }],
+      transformResponse: (response)=> {
+        let newResponse = response.reduce((acc, item) => {
+          return {[item.id]: item, ...acc}
+        }, {});
+
+        return { entities: newResponse, allIds:Object.keys(newResponse) }
+      }
     }),
     getPermissionsTeamId: build.query({
       query: (id) => ({

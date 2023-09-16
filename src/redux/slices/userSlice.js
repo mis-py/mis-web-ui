@@ -59,7 +59,7 @@ export const {
   resetUser,
 } = userSlice.actions;
 
-export default userSlice.reducer;
+export const userReducer = userSlice.reducer;
 
 export const selectMyArray = (state) => state.userSlice.settings;
 export const selectInputById = (id) => (state) => {

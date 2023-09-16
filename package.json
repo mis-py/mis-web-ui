@@ -62,7 +62,6 @@
     "react-select": "^5.4.0",
     "react-spinners": "^0.13.8",
     "react-swipeable-drawer": "^3.1.0",
-    "react-switch": "^7.0.0",
     "react-toastify": "^9.0.8",
     "resolve": "^1.20.0",
     "resolve-url-loader": "^4.0.0",
@@ -71,7 +70,7 @@
     "shortid": "^2.2.16",
     "source-map-loader": "^3.0.0",
     "style-loader": "^3.3.1",
-    "tailwindcss": "^3.0.2",
+    "tailwindcss": "^3.3.3",
     "terser-webpack-plugin": "^5.2.5",
     "web-vitals": "^2.1.4",
     "webpack": "^5.64.4",
@@ -105,7 +104,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.12",
     "postcss": "^8.4.17",
-    "tailwindcss": "^3.1.8"
+    "tailwindcss": "^3.3.3"
   },
   "jest": {
     "roots": [

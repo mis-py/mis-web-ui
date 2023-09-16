@@ -3,12 +3,12 @@ import { useGetJobsQuery } from 'redux/index';
 import { useJobsResumeMutation } from 'redux/index';
 import { useJobsPauseMutation } from 'redux/index';
 import { useJobsRescheduleMutation } from 'redux/index';
-import SpinnerLoader from "../../../components/common/SpinnerLoader";
+import SpinnerLoader from "components/common/SpinnerLoader";
 import ListItemWrapper from 'components/common/ListItemWrapper';
 import { Cron } from 'react-js-cron';
 import { useParams, Link } from 'react-router-dom';
 import 'react-js-cron/dist/styles.css'
-import PageHeader from "../../../components/common/PageHeader";
+import PageHeader from "components/common/PageHeader";
 import { toast } from "react-toastify";
 import { BiPauseCircle } from "react-icons/bi";
 import { BiPlayCircle } from "react-icons/bi"

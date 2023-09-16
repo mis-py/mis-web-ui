@@ -1,30 +1,39 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FiUser, FiLogOut, FiBell } from "react-icons/fi";
-import MisButton from "components/common/MisButton";
-import { useSelector } from "react-redux";
+import { FiUser, FiLogOut, FiSun, FiMoon } from "react-icons/fi";
+// import MisButton from "components/common/MisButton";
+import { useDispatch, useSelector } from "react-redux";
+import { setTheme } from 'redux/slices/profileSlice';
 import { useGetMeQuery } from "redux/index";
 import USER from "assets/img/user.png";
-import { icons } from "react-icons/lib/esm";
+// import { icons } from "react-icons/lib/esm";
 
 const TopBar = () => {
     const navigate = useNavigate();
-    const [isPopupOpen, setIsPopupOpen] = React.useState(false);
+    const dispatch = useDispatch();
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
     const {
         data: getUserId = [],
         isLoading: loadingUserId,
         refetch: refetchProfileData,
       } = useGetMeQuery();
 
-    const topBar = [
-        // { icon: <FiBell />, title: "Notifications" , clickEvent: () => setIsPopupOpen(!isPopupOpen) },
-        { icon: <FiUser />, title: "Profile", clickEvent: () => navigate(`/profile/${localStorage.getItem('user_id')}`) },
-        { icon: <FiLogOut />, title: "Logout", clickEvent: () => navigate("/logout") },
-    ];
+    const currentTheme = useSelector((state) => state.profile.theme);
 
-    const buttons = topBar.map((item, index) => (
-        <MisButton key={item.title} clickEvent={item.clickEvent} isFirst={index===0} icon={item.icon}></MisButton>
-    ))
+        // // initially set the theme and "listen" for changes to apply them to the HTML tag
+        // React.useEffect(() => {
+        //   document.querySelector('html').setAttribute('data-theme', theme);
+        // }, [theme]);
+
+    // const topBar = [
+    //     // { icon: <FiBell />, title: "Notifications" , clickEvent: () => setIsPopupOpen(!isPopupOpen) },
+    //     { icon: <FiUser />, title: "Profile", clickEvent: () => navigate(`/profile/${localStorage.getItem('user_id')}`) },
+    //     { icon: <FiLogOut />, title: "Logout", clickEvent: () => navigate("/logout") },
+    // ];
+
+    // const buttons = topBar.map((item, index) => (
+    //     <MisButton key={item.title} clickEvent={item.clickEvent} isFirst={index===0} icon={item.icon}></MisButton>
+    // ))
     
     const handleClick = (e) => {
         const elem = e.target;//document.activeElement;
@@ -51,37 +60,36 @@ const TopBar = () => {
         </li>
     ));
 
+    const onThemeChange = () => {
+        dispatch(setTheme(currentTheme === 'dark' ? 'light' : 'dark'));
+    }
+
     return (
     <>
         <div className="flex items-center justify-between px-2 py-2">
-            <div>Welcome, {getUserId.username}!</div>
-            <div className="flex flex-row text-lg gap-1">
-                {/* {buttons} */}
-                <div className="dropdown dropdown-end">
-                    <label tabIndex="0" className="btn btn-sm btn-ghost btn-circle avatar">
-                        <div className="w-10 rounded-full">
-                        <img src={USER} />
+            <p className="text-sm">Welcome, {getUserId.username}!</p>
+
+            <div className="flex flex-row text-lg gap-4">
+                <div className="flex tooltip tooltip-bottom" data-tip={`Switch to ${currentTheme==='light'?'dark':'light'}`}>
+                    <label className="swap swap-rotate w-8 h-8">
+                    <input type="checkbox" onChange={onThemeChange} checked={currentTheme==='light'} />
+                    <FiSun className="swap-on fill-current w-8 h-8" />
+                    <FiMoon className="swap-off fill-current w-8 h-8" />
+                    </label>
+                </div>
+
+                <div className="flex dropdown dropdown-end">
+                    <label tabIndex="0" className="btn btn-sm btn-ghost btn-circle avatar w-8 h-8">
+                        <div className="rounded-full">
+                            <img src={USER} />
                         </div>
                     </label>
                     <ul tabIndex="0" className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-                        {/* {buttons} */}
                         {ahrefs}
-                        {/* <li>
-                        <a class="justify-between">
-                            Profile
-                            <span class="badge">New</span>
-                        </a>
-                        </li>
-                        <li><a>Settings</a></li>
-                        <li><a>Logout</a></li> */}
                     </ul>
                 </div>
             </div>
         </div>
-
-        {/* <div className="bg-base-100 flex flex-row gap-[10px] place-items-end ">
-            
-        </div> */}
     </>
   );
 };
