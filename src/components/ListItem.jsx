@@ -1,16 +1,16 @@
 import React from "react";
-import AvatarUser from "./users/AvatarUser";
 import MisButton from "./common/MisButton";
 import Avatar from "components/common/Avatar";
 
-const ListItem = ({ item_id, primary_name, secondary_name, additional_name, buttonOptions }) => {
+const ListItem = ({ item_id, primary_name, secondary_name, additional_name, buttonOptions, avatar, ...props }) => {
+
   return (
     <div className="card flex-g w-full bg-base-100 shadow-mis-1 rounded-lg p-4">
       <div className="card-body flex-row justify-between items-center p-0">
         <div className="lg:flex lg:items-center">
           <div className="flex flex-col">
             <div className="flex items-center gap-4">
-              <Avatar icon={false} />
+              <Avatar icon={avatar} />
               <div className="flex flex-col">
                 <h2 className="card-title">{primary_name}</h2>
                 <p className="">{secondary_name}</p>

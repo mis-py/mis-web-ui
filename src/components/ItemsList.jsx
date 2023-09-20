@@ -31,17 +31,18 @@ const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOpt
       </div>
 
       <div className="flex flex-col gap-4 p-2 overflow-y-auto">
-        {getItems.map((item, index) => (
-            <ListItem
-              key={index}
-              item_id={item.id}
-              primary_name={item.username}
-              secondary_name={item.team === null ? "No team" : item.team.name}
-              additional_name={item.position === null ? "Position name none" : item.position}
-              buttonOptions={buttonOptions}
-            />
-          ))
-        }
+      {getItems.map((item, index) => (
+          <ListItem
+            key={index}
+            item_id={item.id}
+            primary_name={item.primary_name}
+            secondary_name={item.secondary_name}
+            additional_name={item.additional_name}
+            avatar={item.avatar}
+            buttonOptions={buttonOptions}
+          />
+        ))
+      }
       </div>
     </div>
   );

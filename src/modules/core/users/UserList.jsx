@@ -8,6 +8,7 @@ import { useDeleteUserMutation } from "redux/index";
 import { FiEdit, FiXCircle} from "react-icons/fi";
 import { confirmAlert } from "react-confirm-alert";
 import { useNavigate } from "react-router-dom";
+import UserImg from "assets/img/user.png";
 // import { SearchContext } from "context/SearchContext";
 
 const UserList = () => {
@@ -28,7 +29,14 @@ const UserList = () => {
     //     }
     //   }, [loadingGetUser, searchValue]);
 
-    const filteredUsers = getUsers.filter((el) => el.username.toLowerCase().includes(searchValue.toLowerCase().trim()))
+    const filteredUsers = getUsers.filter((el) => el.username.toLowerCase().includes(searchValue.toLowerCase().trim())).map((item)=> (
+      {...item,
+        primary_name: item.username,
+        secondary_name: item.team === null ? "No team" : item.team.name,
+        additional_name: item.position === null ? "" : item.position,
+        avatar: UserImg
+      }
+    ))
 
     const [deleteUser] = useDeleteUserMutation();
 
@@ -74,7 +82,7 @@ const UserList = () => {
         pageHeader={["Administration", "Users"]}
         getItems={filteredUsers} 
         isLoading={loadingGetUser} 
-        buttonOptions={buttonOptions} 
+        buttonOptions={buttonOptions}
         searchParams={ {
           key: "UserList",
           value: searchValue,

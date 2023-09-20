@@ -13,7 +13,7 @@ import { FiSearch } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import SpinnerLoader from "../../../components/common/SpinnerLoader";
 import PageHeader from "../../../components/common/PageHeader";
-import AvatarUser from "components/users/AvatarUser";
+import AvatarUser from "components/common/Avatar";
 
 const EditMembersGroup = () => {
   const navigate = useNavigate();
