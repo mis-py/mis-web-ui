@@ -4,31 +4,26 @@ import { useDispatch } from "react-redux";
 import PermissionBox from "modules/core/components/PermissionBoxComponent";
 import Search from "components/common/SearchComponent";
 
-import {
-  useGetPermissionsQuery,
-  useGetPermissionsUserIdQuery,
-} from "redux/index";
 import { setUserPermission } from "redux/slices/userSlice";
 import { useSelector } from "react-redux";
 
-const PermissionsForm = ({id}) => {
+const PermissionsForm = ({permissionsData, itemPermissions}) => {
     const dispatch = useDispatch();
-
-    const editMode = id !== undefined;
 
     const { 
         data: {entities: getPermissions = {}, allIds: getPermissionsAllIds = []} = {}, isLoading: loadingPermissions 
-    } = useGetPermissionsQuery();
+    } = permissionsData;
+
     const { 
-        data: {entities: getPermissionsUserId = {}, allIds: getPermissionsUserAllIds = []} = {}, isLoading: loadingPermissionsUserId
-    } = useGetPermissionsUserIdQuery(id, {skip: editMode===false});
+        data: {entities: getPermissionsItemId = {}, allIds: getPermissionsItemAllIds = []} = {}, isLoading: loadingPermissionsItemId
+    } = itemPermissions;
 
     const searchValue = useSelector((state) => "PermissionsForm" in state.search.searchData ? state.search.searchData["PermissionsForm"] : "");
     
     let labels = getPermissionsAllIds.map((key)=> {
             return {
                 ...getPermissions[key],
-                checked: key in getPermissionsUserId
+                checked: key in getPermissionsItemId
             }
         })
         // filter settings by searchValue

@@ -33,10 +33,9 @@ const UserForm = () => {
         onInputChange={(e) => dispatch(addUserPassword(e.target.value))}
     />
     <TeamSelector
-        placeholder={user.team === null && "No team"}
-        team={user.team === null ? "" : user.team}
-        onChange={(choice) =>
-            dispatch(addUserTeam(choice !== null ? choice : null))
+        team={user.team ?? null}
+        onTeamChange={(choice) =>
+            dispatch(addUserTeam(choice ?? null))
         }
     />
     <Input

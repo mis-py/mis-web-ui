@@ -18,7 +18,7 @@ const useModuleRoutes = () => {
       const modules = [];
       getModules.forEach(item => {
         let obj = {
-          path: `/${item.name}`,
+          path: `${item.name}`,
           ...item
         };
 

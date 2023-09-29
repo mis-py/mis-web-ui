@@ -19,10 +19,7 @@ const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOpt
   ));
   const searchElement = props.searchParams !== undefined && <Search searchParams={props.searchParams} />;
 
-  return isLoading ? (
-    <SpinnerLoader />
-  ) : (
-  <div className="flex flex-5 flex-col flex-grow overflow-y-auto">
+  return <>
       <div className="flex items-center justify-between">
         <PageHeader pageHeader={pageHeader} />
         <div className="flex flex-row text-lg gap-1">
@@ -30,7 +27,7 @@ const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOpt
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 p-2 overflow-y-auto">
+      <div className="flex flex-col gap-4 p-2 overflow-y-auto h-screen">
       {getItems.map((item, index) => (
           <ListItem
             key={index}
@@ -44,8 +41,7 @@ const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOpt
         ))
       }
       </div>
-    </div>
-  );
+    </>
 };
 
 export default ItemsList;

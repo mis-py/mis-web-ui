@@ -21,7 +21,7 @@ const Signin = () => {
   const [showPassword, setShowPassword] = React.useState("password");
 
   if (isAuthenticated) {
-    return <Navigate to='/'/>
+    return <Navigate to='/home'/>
   }
 
   let params = new URLSearchParams(location.search);
@@ -42,7 +42,7 @@ const Signin = () => {
       return toast.error("Incorrect login or password!");
     }
 
-    return redirect(data.redirectTo || "/");
+    return redirect(data.redirectTo || "/home");
   };
 
   const toggleShowPassword = (e) => {

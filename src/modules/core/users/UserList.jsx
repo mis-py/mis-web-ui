@@ -1,18 +1,17 @@
 import React from "react";
-import { useGetUsersQuery } from "redux/index";
+import { useGetUsersQuery, useDeleteUserMutation } from "redux/index";
 import ItemsList from "components/ItemsList";
-// import { resetUser } from "redux/slices/userSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useDeleteUserMutation } from "redux/index";
 import { FiEdit, FiXCircle} from "react-icons/fi";
 import { confirmAlert } from "react-confirm-alert";
 import { useNavigate } from "react-router-dom";
 import UserImg from "assets/img/user.png";
-// import { SearchContext } from "context/SearchContext";
+import { resetUser } from "redux/slices/userSlice";
 
 const UserList = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const {
       data: getUsers = [],
@@ -22,18 +21,16 @@ const UserList = () => {
 
     const searchValue = useSelector((state) => "UserList" in state.search.searchData ? state.search.searchData["UserList"] : "");
 
-    // React.useEffect(() => {
-    //     dispatch(resetUser());
-    //     if (errorGetUsers) {
-    //       toast.error("No users found");
-    //     }
-    //   }, [loadingGetUser, searchValue]);
+    React.useEffect(() => {
+        dispatch(resetUser());
+      }, [loadingGetUser, searchValue]);
 
     const filteredUsers = getUsers.filter((el) => el.username.toLowerCase().includes(searchValue.toLowerCase().trim())).map((item)=> (
-      {...item,
+      {
+        ...item,
         primary_name: item.username,
-        secondary_name: item.team === null ? "No team" : item.team.name,
-        additional_name: item.position === null ? "" : item.position,
+        secondary_name: item.team === null ? "Team: -" : "Team: " + item.team.name,
+        additional_name: item.position === null ? "Position: -" : "Position: " + item.position,
         avatar: UserImg
       }
     ))

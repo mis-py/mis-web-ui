@@ -1,6 +1,6 @@
 import React from "react";
 import { useGetUsersQuery } from "redux/index";
-import UserList from "components/users/UserList";
+import UserList from "modules/core/users/UserList";
 import UserStatabotStatus from "./UserStatabotStatus";
 import PageHeader from "../../components/common/PageHeader";
 

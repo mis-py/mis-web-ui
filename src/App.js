@@ -27,18 +27,6 @@ function App() {
     {
       element: <MainLayout />,
       path: "/*",
-      // children: [
-      //   { index: true, element: <Home />},
-      //   ...[]
-      //       .concat(profileRoutes, notificationsRoutes)
-      //       .map((route, index) => (
-      //       {
-      //           key: `${route.path}_${index}`,
-      //           path: route.path,
-      //           element: route.element,
-      //       }
-      //   ))
-      // ]
     },
     {
       path: "/logout",

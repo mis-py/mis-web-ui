@@ -9,6 +9,11 @@ import {
   useAddUserMutation,
   useSettingUserSetMutation,
   useEditUserPermissionMutation,
+
+  useGetPermissionsQuery,
+  useGetPermissionsUserIdQuery,
+  useGetSettingsQuery,
+  useGetSettingsUserIdQuery,
 } from "redux/index";
 
 import {
@@ -17,12 +22,10 @@ import {
   addUserPosition,
 } from "redux/slices/userSlice";
 
-import EditUser from "modules/core/components/EditUserComponent";
-import { FiSave } from "react-icons/fi";
-
-import UserForm from "../components/UserFormComponent";
-import SettingsForm from "../components/SettingsFormComponent";
-import PermissionsForm from "../components/PermissionFormComponent";
+import EditItem from "modules/core/components/EditItemComponent";
+import UserForm from "modules/core/components/UserFormComponent";
+import SettingsForm from "modules/core/components/SettingsFormComponent";
+import PermissionsForm from "modules/core/components/PermissionFormComponent";
 
 const UserEdit = () => {
     const { id } = useParams();
@@ -145,17 +148,38 @@ const UserEdit = () => {
       toast.success(`Saved permissions for user ${user.username}`);
     }
 
+    const getPermissions = useGetPermissionsQuery();
+
+    const getPermissionsUserId = useGetPermissionsUserIdQuery(id, {skip: editMode===false});
+
+    const getSettings = useGetSettingsQuery();
+
+    const getSettingsUserId = useGetSettingsUserIdQuery(id, {skip: editMode===false});;
+
     const itemProps = {
-      settingsSection: <SettingsForm id={id} />,
-      permissionsSection: <PermissionsForm id={id} />,
+      settingsSection: <SettingsForm settingsData={getSettings} itemSettings={getSettingsUserId} />,
+      permissionsSection: <PermissionsForm permissionsData={getPermissions} itemPermissions={getPermissionsUserId} />,
       formSection: <UserForm />,
       pageHeader: ["Administration", "isBack:Users", (editMode ? user.username : "New")],
       saveButtonEvent: handleSave,
-      saveButtonTitle: "Save",
-      saveButtonIcon: <FiSave />,
+      formName: "User",
+      sections: [
+        {
+            name: "User",
+            element: <UserForm />
+        },
+        {
+            name: "Settings",
+            element: <SettingsForm settingsData={getSettings} itemSettings={getSettingsUserId} />
+        },
+        {
+            name: "Permissions",
+            element: <PermissionsForm permissionsData={getPermissions} itemPermissions={getPermissionsUserId} />
+        }
+      ]
     }
 
-    return <EditUser {...itemProps} />;
+    return <EditItem {...itemProps} />;
   };
   
   export default UserEdit;

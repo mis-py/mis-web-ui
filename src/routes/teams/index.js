@@ -1,5 +1,5 @@
-import TeamList from "components/teams/TeamList";
-import TeamEdit from "modules/core/teams/EditTeam";
+import TeamList from "modules/core/teams/TeamList";
+import TeamEdit from "modules/core/teams/TeamEdit";
 // import Teams from "modules/core/teams";
 // import AddTeam from "modules/core/teams/AddTeam";
 // import AddTeamMembers from "modules/core/teams/AddTeamMembers";

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { resetUser } from "redux/slices/userSlice";
 
-import UserItem from "./UserItem";
+import UserItem from "./UnusedUserItem";
 
 import UserAvatar from "assets/img/user.png";
 

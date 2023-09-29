@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  id: 0,
   name: "",
   permissions: [],
   members: [],
@@ -11,6 +12,9 @@ export const teamSlice = createSlice({
   name: "team",
   initialState,
   reducers: {
+    addTeamId: (state, action) => {
+      state.id = action.payload;
+    },
     addTeamName: (state, action) => {
       state.name = action.payload;
     },
@@ -30,14 +34,17 @@ export const teamSlice = createSlice({
       state.members = action.payload;
     },
     resetTeam: (state) => {
+      state.id = 0;
       state.name = "";
       state.permissions = [];
       state.members = [];
+      state.settings = [];
     },
   },
 });
 
 export const {
+  addTeamId,
   addTeamName,
   addTeamPermissions,
   addTeamMembers,

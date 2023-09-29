@@ -1,5 +1,5 @@
-import React from "react";
-import { Outlet, useLocation, Navigate, Routes } from "react-router-dom";
+import { useEffect, useState, React } from "react";
+import { Outlet, useLocation , Navigate, Routes } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import SidebarDesktop from "layouts/Sidebar";
 import Notifications from "components/notifications/Notifications";
@@ -12,7 +12,6 @@ import { NavLink, Route } from "react-router-dom";
 import { useGetModulesQuery } from "redux/index";
 import { firstUppercase } from "config/functions";
 import { RiAppsLine } from "react-icons/ri";
-import { FiUsers } from "react-icons/fi";
 import { BiTask, BiUser } from "react-icons/bi";
 import { AiOutlineAppstore } from "react-icons/ai";
 import { MdGroups, MdTask } from "react-icons/md";
@@ -23,15 +22,11 @@ import { groupRoutes } from "routes/groups";
 import { appRoutes } from "routes/apps";
 import { taskRoutes } from "routes/tasks";
 import { consumersRoutes } from "routes/consumers";
-// import ProfilePopupDesktop from "components/ProfilePopupDesktop";
-// import Notifications from "components/notifications/Notifications";
-
-// import AdminWrapper from "config/AdminWrapper";
-// import SidebarStyles from "assets/css/components/Sidebar.module.css";
-import { FiHome, FiCpu } from "react-icons/fi";
+import { FiHome, FiCpu, FiUsers } from "react-icons/fi";
 import useModuleRoutes from "routes/modules";
+import Home from "modules/core/Home";
 
-export const sidebar = [
+let adminNavs = [
   { icon: <BiUser />, title: "Users", url: "/users" },
   { icon: <FiUsers />, title: "Teams", url: "/teams" },
   { icon: <MdGroups />, title: "Access Groups", url: "/groups" },
@@ -40,93 +35,116 @@ export const sidebar = [
   { icon: <MdTask />, title: "Consumers", url: "/consumers", },
 ];
 
+const getNavLink = (displayName, path, icon) => <NavLink to={path}>{icon}{displayName}</NavLink>
+
+// TODO prevent reload page if location not changed
 const MainLayout = () => {
-  // const [isPopupOpen, setIsPopupOpen] = React.useState(false);
-  // const [notificationsCount, setNotificationsCount] = React.useState(0);
+    // const [isPopupOpen, setIsPopupOpen] = React.useState(false);
+    // const [notificationsCount, setNotificationsCount] = React.useState(0);
+    const location = useLocation();
 
-  const location = useLocation();
-  const { isAuthenticated } = useSelector((state) => state.auth);
-  const { theme: currentTheme } = useSelector((state) => state.profile);
-  // load user information
-  const {
-    data: getUserId = [],
-    isLoading: loadingUserId,
-    refetch: refetchProfileData,
-  } = useGetMeQuery({skip: !isAuthenticated});
+    const [displayLocation, setDisplayLocation] = useState(location);
 
-  const modules = useModuleRoutes();
+    const [transitionStage, setTransistionStage] = useState("fadeIn");
 
-  const { data: myPermission = {}, isLoading } = useGetMyPermissionsQuery({skip: !isAuthenticated});
+    const { isAuthenticated } = useSelector((state) => state.auth);
+    const { theme: currentTheme } = useSelector((state) => state.profile);
+    // load user information
+    // const {
+    //   data: getUserId = [],
+    //   isLoading: loadingUserId,
+    //   refetch: refetchProfileData,
+    // } = useGetMeQuery({skip: !isAuthenticated});
 
-  // redirect to login if user not authorized
+    const modules = useModuleRoutes();
+
+    const { data: myPermission = {}, isLoading } = useGetMyPermissionsQuery({skip: !isAuthenticated});
+
+    useEffect(() => {
+      if (location !== displayLocation) setTransistionStage("fadeOut");
+    }, [location, displayLocation]);
+
+    // redirect to login if user not authorized
     if (!isAuthenticated) {
       return <Navigate to='/login' state={{from: location}} />
-  }
-    // webSocket.onopen = function (e) {
-    //     webSocket.send('{"subscribe": "notifications"}');
-    // }
+    }
+      // webSocket.onopen = function (e) {
+      //     webSocket.send('{"subscribe": "notifications"}');
+      // }
 
+    let mainNavBar = [<li key={0}>{getNavLink("Home", "/home", <FiHome/>)}</li>];
+    let routes = [<Route index key="home" path="/home" element={<Home/>} />];
 
+    const hasSudoPermission = myPermission.allIds?.find((id)=> myPermission.entities[id].permission.scope === 'core:sudo') !== undefined;
 
-  const hasSudoPermission = myPermission.allIds?.find((id)=> myPermission.entities[id].permission.scope === 'core:sudo') !== undefined;
+    if (hasSudoPermission){
+      let adminRoutes = [].concat(userRoutes, teamRoutes, groupRoutes, appRoutes, taskRoutes, consumersRoutes);
+      //let menuIsOpen = adminRoutes.filter(item => item.path.includes(location.pathname)).length > 0;
+      let menuIsOpen = true;
+      mainNavBar.push(<li key={mainNavBar.length}>
+          <details open={menuIsOpen}>
+            <summary><FiCpu />Administration</summary>
+            <ul>{adminNavs.map((link) => (
+              <li key={link.title}>
+                <NavLink 
+                  to={link.url}
+                  className={({ isActive, isPending }) =>
+                    isPending ? "pending" : isActive ? "active" : "disabled"
+                  }  
+                >
+                  {link.icon}{link.title}
+                </NavLink>
+              </li>))}
+            </ul>
+          </details>
+        </li>
+      );
 
-  // if (!isLoading && data && data[0] !== undefined && data[0].permission.scope === "core:sudo") {
-  //   return <>{children}</>;
-  // } else if (data === []) {
-  //   return false;
-  // } else {
-  //   return false;
-  // }
+      adminRoutes = adminRoutes.map((item, index) => (<Route key={`${item.path}_${index}`} path={item.path} element={item.element}/>));
 
-  const adminNav = hasSudoPermission && 
-  <li>
-    <details open={false}>
-      <summary>
-        <FiCpu />
-        Administration
-      </summary>
-      <ul>{sidebar.map((link) => (
-        <li key={link.title}>
-          <NavLink to={link.url}>
-            {link.icon}{link.title}
+      routes = routes.concat(adminRoutes);
+    }
+
+    const activeModules = modules?.filter((item) => item.enabled && item.id != 1);
+    
+    if (activeModules.length){
+      activeModules.forEach((item, index) =>(
+        mainNavBar.push(<li key={index+mainNavBar.length}>
+          <NavLink to={`/${item.path}`}>
+            <RiAppsLine />{firstUppercase(item.name)}
           </NavLink>
-        </li>))}
-      </ul>
-    </details>
-  </li>
+        </li>)
+      ));
 
-  let adminRoutes = [].concat(userRoutes, teamRoutes, groupRoutes, appRoutes, taskRoutes, consumersRoutes);
-  adminRoutes =  hasSudoPermission && adminRoutes.map((item, index) => (<Route key={`${item.path}_${index}`} path={item.path} element={item.element}/>));
+      let modulesRoutes = activeModules.map((item, index) => (<Route key={`${item.path}_${index}`} path={item.path} element={item.element}/>));
 
-  const activeModules = modules?.filter((item) => item.enabled && item.id != 1);
+      routes = routes.concat(modulesRoutes);
+    }
 
-  const modulesNav = activeModules?.map((item, index) =>(
-    <NavLink to={`/${item.path}`}>
-      <RiAppsLine />{firstUppercase(item.name)}
-    </NavLink>
-  ));
-
-  const modulesRoutes = activeModules?.map((item, index) => (<Route key={`${item.path}_${index}`} path={item.path} element={item.element}/>));
-
-  return (
-      <>
-        <div className="flex max-h-screen flex-row overflow-hidden" data-theme={currentTheme}>
-          <SidebarDesktop adminNav={adminNav} modulesNav={modulesNav} />
-          <div className="flex flex-col flex-5 overflow-y-auto">
-            <TopBar />
-            <div className="flex flex-row shadow-mis-tl-1 p-4 pb-0 overflow-hidden">
-              {/* <Outlet /> */}
-              <Routes>
-                {adminRoutes}
-                {modulesRoutes}
-              </Routes>
+    return (
+        <>
+          <div className="flex max-h-screen flex-row overflow-hidden" data-theme={currentTheme}>
+            <SidebarDesktop sidebarNav={mainNavBar} />
+            <div className="flex flex-col flex-5 overflow-y-auto">
+              <TopBar />
+              <div className="flex flex-row shadow-mis-tl-1 p-4 pb-0 h-screen overflow-hidden">
+                <div 
+                  className={`flex flex-5 flex-col flex-grow overflow-y-auto ${transitionStage}`} 
+                  onAnimationEnd={() => {
+                    if (transitionStage === "fadeOut") {
+                      setTransistionStage("fadeIn");
+                      setDisplayLocation(location);
+                    }
+                  }}
+                >
+                  <Routes location={displayLocation}>{routes}</Routes>
+                </div>
+              </div>
             </div>
+            <ToastContainer />
           </div>
-          <ToastContainer />
-        </div>
-
-      </>
-  );
+        </>
+    );
 };
 
 export default MainLayout;

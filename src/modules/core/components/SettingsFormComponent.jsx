@@ -2,11 +2,6 @@ import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-    useGetSettingsQuery,
-    useGetSettingsUserIdQuery,
-} from "redux/index";
-
-import {
     setUserSetting,
     addUserDefaultSettings,
 } from "redux/slices/userSlice";
@@ -14,18 +9,17 @@ import {
 import Input from "components/common/Input";
 import Search from "components/common/SearchComponent";
 
-const SettingsForm = ({id}) => {
+const SettingsForm = ({settingsData, itemSettings}) => {
     const dispatch = useDispatch();
-
-    const editMode = id !== undefined;
 
     // nested destructurizing looks like a bit complex but actually it is easy
     const { 
         data: {entities: getSettings = {}, allIds: getSettingsAllIds = []} = {}, isLoading: loadingGetSettings 
-    } = useGetSettingsQuery();
+    } = settingsData;
+
     const { 
-        data: {entities: getUserSettings = {}, allIds: getUserSettingsAllIds = []} = {}, isLoading: loadingUserSettings 
-    } = useGetSettingsUserIdQuery(id, {skip: editMode===false});
+        data: {entities: getItemSettings = {}, allIds: getItemSettingsAllIds = []} = {}, isLoading: loadingItemSettings 
+    } = itemSettings;
 
     const searchValue = useSelector((state) => "SettingsForm" in state.search.searchData ? state.search.searchData["SettingsForm"] : "");
 
@@ -34,7 +28,7 @@ const SettingsForm = ({id}) => {
         .map((key) => {
             return {
                 ...getSettings[key],
-                value: getUserSettings[key]?.value
+                value: getItemSettings[key]?.value
             }
         })
         // filter settings by searchValue

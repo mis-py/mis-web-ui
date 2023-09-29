@@ -8,7 +8,7 @@ import { useDeleteGroupMutation } from "redux/index";
 import AdminWrapper from "../../config/AdminWrapper";
 import {BiDotsVerticalRounded} from "react-icons/bi";
 import useOutsideClick from "../../hooks/useOutsideClick";
-import TeamUsersShortList from "../teams/TeamUsersShortList";
+// import TeamUsersShortList from "../teams/TeamUsersShortList";
 
 const GroupListItem = (props) => {
     const navigate = useNavigate();
@@ -107,13 +107,13 @@ const GroupListItem = (props) => {
                 </AdminWrapper>
             </div>
 
-            <div className="duration-300 flex flex-col pt-4">
+            {/* <div className="duration-300 flex flex-col pt-4">
                 <p className="pb-4">Members of the department:</p>
                 {props.group.users !== undefined && Array.isArray(props.group.users) && <TeamUsersShortList
                     users={props.group.users}
                     team={props.group.id}
                 />}
-            </div>
+            </div> */}
 
             {props.children}
         </ListItemWrapper>
