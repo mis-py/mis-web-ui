@@ -1,55 +1,60 @@
 import { React, useEffect, useState } from "react";
-import { addTeamName, setTeamMembers } from "redux/slices/teamSlice";
+import { setGroupName, setGroupMembers } from "redux/slices/groupSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "components/common/Input";
 import UserSelector from "components/common/UserSelector";
 import { useGetUsersQuery } from "redux/index";
+import { useGetGroupIdUsersQuery } from "redux/index";
 
-const TeamForm = ({teamId}) => {
-    const team = useSelector((state) => state.team);
+const GroupForm = ({groupId}) => {
+    const group = useSelector((state) => state.group);
     const dispatch = useDispatch();
 
     const { data: usersList = [], isLoading: loadingUsers } = useGetUsersQuery();
+
+    const { data: groupUsersList = [], isLoading: loadingGroupUsers } = useGetGroupIdUsersQuery(groupId, {
+        skip: groupId == undefined
+    });
 
     const [ usersData, setUsersData ] = useState({
         selectedUsers: [],
         remainingUsers: []
     });
-    
+
     useEffect(() => {
         let mappedUserList = usersList
             ?.map((item) => {
             return {
                 value: item.id,
                 label: item.username,
-                teamID: item.team !== null ? item.team.id : null
             };
         });
 
-        setUsersData({
-            selectedUsers: mappedUserList?.filter((item) => item.teamID == teamId),
-            remainingUsers: mappedUserList?.filter((item) => item.teamID != teamId && item.teamID == null)
-        })
+        let currentUsersList = groupUsersList?.map((item) => item.id);
 
-    }, [loadingUsers]);
+        setUsersData({
+            selectedUsers: mappedUserList?.filter((item) => currentUsersList.includes(item.value)),
+            remainingUsers: mappedUserList?.filter((item) => currentUsersList.includes(item.value) === false),
+        })
+    }, [loadingUsers, loadingGroupUsers]);
 
     return (<>
         <Input
-            label="Team name"
+            label="Group name"
             type="text"
             id="name"
             autoComplete="off"
-            placeholder="Enter team name"
-            value={team.name}
-            onInputChange={(e) => dispatch(addTeamName(e.target.value))}
+            placeholder="Enter group name"
+            value={group.name}
+            onInputChange={(e) => dispatch(setGroupName(e.target.value))}
         />
-        <UserSelector 
+        <UserSelector
             getSelectedUsers={usersData.selectedUsers}
             getRemainingUsers={usersData.remainingUsers}
-            onUsersChange={(e) => dispatch(setTeamMembers(e))}
+            onUsersChange={(e) => dispatch(setGroupMembers(e))}
         />
     </>
     );
 }
 
-export default TeamForm;
+export default GroupForm;

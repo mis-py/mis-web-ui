@@ -6,6 +6,7 @@ import { teamsApi } from "./api/teamsApi";
 import { permissionsApi } from "./api/permissionsApi";
 import { appsApi } from "./api/appsApi";
 import { groupsApi } from "./api/groupsApi";
+import { objectsApi } from "./api/objectsApi";
 import { modulesApi } from "./api/modulesApi";
 import { settingsApi } from "./api/settingsApi";
 import { logsApi } from "./api/logsApi";
@@ -26,9 +27,10 @@ import { searchReducer } from './slices/searchSlice';
 import { profileReducer } from "./slices/profileSlice";
 import { userReducer } from "./slices/userSlice";
 import teamSlice from "./slices/teamSlice";
-import membersSlice from "./slices/membersSlice";
 import { startLoading, stopLoading } from './slices/loadingSlice';
 import loadingReducer from './slices/loadingSlice';
+import groupSlice from "./slices/groupSlice";
+import appSlice from "./slices/appSlice";
 
 const mutationLoadingMiddleware = (params) => next => action => {
     const { dispatch } = params;
@@ -58,6 +60,7 @@ export const store = configureStore({
     [permissionsApi.reducerPath]: permissionsApi.reducer,
     [appsApi.reducerPath]: appsApi.reducer,
     [groupsApi.reducerPath]: groupsApi.reducer,
+    [objectsApi.reducerPath]: objectsApi.reducer,
     [modulesApi.reducerPath]: modulesApi.reducer,
     [settingsApi.reducerPath]: settingsApi.reducer,
     [logsApi.reducerPath]: logsApi.reducer,
@@ -76,10 +79,11 @@ export const store = configureStore({
     auth: authReducer,
     user: userReducer,
     team: teamSlice,
-    membersList: membersSlice,
+    group: groupSlice,
     loading: loadingReducer,
     search: searchReducer,
     profile: profileReducer,
+    app: appSlice,
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware({}).concat([
@@ -89,6 +93,7 @@ export const store = configureStore({
       permissionsApi.middleware,
       appsApi.middleware,
       groupsApi.middleware,
+      objectsApi.middleware,
       modulesApi.middleware,
       settingsApi.middleware,
       logsApi.middleware,

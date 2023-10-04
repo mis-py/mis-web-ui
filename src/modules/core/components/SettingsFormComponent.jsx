@@ -9,7 +9,7 @@ import {
 import Input from "components/common/Input";
 import Search from "components/common/SearchComponent";
 
-const SettingsForm = ({settingsData, itemSettings}) => {
+const SettingsForm = ({settingsData, itemSettings, isGlobal=false}) => {
     const dispatch = useDispatch();
 
     // nested destructurizing looks like a bit complex but actually it is easy
@@ -34,7 +34,7 @@ const SettingsForm = ({settingsData, itemSettings}) => {
         // filter settings by searchValue
         .filter((item) => item.key.toLocaleLowerCase().includes(searchValue.toLowerCase().trim()))
         // only local user settings here
-        .filter((item) => item.is_global == false);
+        .filter((item) => item.is_global == isGlobal);
     
     const handleChangeSetting = async (e, item) => {
         dispatch(setUserSetting({id: item.id, value: e.target.value}));
@@ -44,11 +44,15 @@ const SettingsForm = ({settingsData, itemSettings}) => {
         dispatch(addUserDefaultSettings({id: item.id, default_value: item.default_value}));
     }
 
-    return (<>
+    return (
+    <div className="form-control">
+        <label className="label">
+            <span className="label-text">Enter setting name to search...</span>
+        </label>
         <Search searchParams={{
             key: "SettingsForm", 
             value: searchValue, 
-            placeholder: "Enter setting name to search..."}} 
+            placeholder: "SETTING_NAME or module_name"}} 
         />
         {inputs?.map((item) =>(
             <Input
@@ -69,7 +73,8 @@ const SettingsForm = ({settingsData, itemSettings}) => {
                 setDefault={(e) => handleChangeToDefault(e, item)}
             />
         ))}
-    </>);
+    </div>
+    );
 };
 
 export default SettingsForm;

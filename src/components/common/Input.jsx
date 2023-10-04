@@ -65,7 +65,8 @@ const Input = (props) => {
            autoComplete="off"
            value={inputValue}
            onChange={onChange}
-           readOnly={readOnly}
+          //  readOnly={readOnly}
+           disabled={readOnly}
            />
           { hasDefault && defaultButton }
         </div>

@@ -3,7 +3,6 @@ import SpinnerLoader from "components/common/SpinnerLoader";
 import ListItem from "./ListItem";
 import PageHeader from "components/common/PageHeader";
 import { Link } from "react-router-dom";
-import { FiUserPlus } from "react-icons/fi";
 import Search from "components/common/SearchComponent";
 
 const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOptions, ...props }) => {
@@ -11,10 +10,10 @@ const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOpt
   const links = routes?.map((item, index) => (
     <Link
             key={index}
-            to={item}
+            to={item.route}
             className="btn btn-outline btn-square btn-sm"
         >
-        <FiUserPlus />
+        {item.icon}
     </Link>
   ));
   const searchElement = props.searchParams !== undefined && <Search searchParams={props.searchParams} />;
@@ -36,7 +35,7 @@ const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOpt
             secondary_name={item.secondary_name}
             additional_name={item.additional_name}
             avatar={item.avatar}
-            buttonOptions={buttonOptions}
+            buttonOptions={buttonOptions.filter((button) => 'isDisplay' in button ? button.isDisplay(item) : true)}
           />
         ))
       }

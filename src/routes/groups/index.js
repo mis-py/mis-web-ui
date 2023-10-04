@@ -1,23 +1,21 @@
-import Groups from "modules/core/groups";
-import AddGroup from "modules/core/groups/AddGroup";
-import EditMembersGroup from "modules/core/groups/EditMembersGroup";
-import EditObjectsGroup from "modules/core/groups/EditObjectsGroup";
+// import Groups from "modules/core/groups";
+// import AddGroup from "modules/core/groups/AddGroup";
+// import EditMembersGroup from "modules/core/groups/EditMembersGroup";
+// import EditObjectsGroup from "modules/core/groups/EditObjectsGroup";
+import GroupList from 'modules/core/groups/GroupList';
+import GroupEdit from 'modules/core/groups/GroupEdit';
 
 export const groupRoutes = [
   {
     path: "/groups",
-    element: <Groups />,
+    element: <GroupList />,
   },
   {
-    path: "/add-group",
-    element: <AddGroup />,
+    path: "/groups/add",
+    element: <GroupEdit />,
   },
   {
-    path: "/group/members/:id",
-    element: <EditMembersGroup />,
-  },
-  {
-    path: "/group/objects/:id",
-    element: <EditObjectsGroup />,
+    path: "/groups/:id",
+    element: <GroupEdit />,
   },
 ];

@@ -1,36 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import Select from "react-select";
-import {
-    useGetUsersQuery
-} from "redux/index";
 
-const UserSelector = ({teamId, onUsersChange}) => {
-    const { data: usersList = [], isLoading: loadingUsers } = useGetUsersQuery();
+const UserSelector = ({onUsersChange, getSelectedUsers, getRemainingUsers}) => {
 
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [remainingUsers, setRemainingUsers] = useState([]);
 
     // initial fill up state data
     useEffect(() => {
-
-        let mappedUserList = usersList
-            ?.map((item) => {
-            return {
-                value: item.id,
-                label: item.username,
-                teamID: item.team !== null ? item.team.id : null
-            };
-        });
-
-        let existingUsers = mappedUserList?.filter((item) => item.teamID == teamId);
-        let otherUsers = mappedUserList?.filter((item) => item.teamID != teamId && item.teamID == null);
-
-        setSelectedUsers(existingUsers);
-        setRemainingUsers(otherUsers);
-    }, [loadingUsers, teamId]);
+        setSelectedUsers(getSelectedUsers);
+        setRemainingUsers(getRemainingUsers);
+    }, [getSelectedUsers, getRemainingUsers]);
 
     const onSelectChange = (value, event) => {
-
+        console.log(value, event);
         let newSelected = [], newRemaining = [];
 
         switch (event.action){

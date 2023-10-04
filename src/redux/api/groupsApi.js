@@ -30,7 +30,6 @@ export const groupsApi = createApi({
           },
         };
       },
-      keepUnusedDataFor: 0.1,
       providesTags: (result) =>
         result
           ? [
@@ -39,22 +38,46 @@ export const groupsApi = createApi({
             ]
           : [{ type: "Groups", id: "LIST" }],
     }),
-    getGroupsObjects: build.query({
-      query: () => ({
-        url: `/groups/objects`,
+    getGroup: build.query({
+      query: (id) => ({
+        url: `/groups/${id}`,
         method: "GET",
         headers: {
           accept: "application/json",
         },
+      })
+    }),
+    editGroup: build.mutation({
+      query: ({id, ...rest}) => ({
+        url: `/groups/${id}`,
+        method: "PUT",
+        headers: {
+          accept: "application/json",
+        },
+        body: rest
       }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: "Groups", id })),
-              { type: "Groups", id: "LIST" },
-            ]
-          : [{ type: "Groups", id: "LIST" }],
-      keepUnusedDataFor: 0.1,
+      invalidatesTags: [{ type: "Groups", id: "LIST" }],
+    }),
+    deleteGroup: build.mutation({
+      query: (id) => ({
+        url: `/groups/${id}`,
+        method: "DELETE",
+        headers: {
+          accept: "application/json",
+        },
+      }),
+      invalidatesTags: [{ type: "Groups", id: "LIST" }],
+    }),
+    addGroup: build.mutation({
+      query: (body) => ({
+        url: "/groups/create",
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body,
+      }),
+      invalidatesTags: [{ type: "Groups", id: "LIST" }],
     }),
     getGroupIdUsers: build.query({
       query: (id) => ({
@@ -73,30 +96,8 @@ export const groupsApi = createApi({
           : [{ type: "Groups", id: "LIST" }],
       keepUnusedDataFor: 0.1,
     }),
-    getGroupIdObjects: build.query({
-      query: (id) => ({
-        url: `/groups/${id}/objects`,
-        method: "GET",
-        headers: {
-          accept: "application/json",
-        },
-      }),
-      providesTags: (result, error, id) => [{ type: "Groups", id }],
-      keepUnusedDataFor: 0.1,
-    }),
-    addGroup: build.mutation({
-      query: (body) => ({
-        url: "/groups/create",
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body,
-      }),
-      invalidatesTags: [{ type: "Groups", id: "LIST" }],
-    }),
     editGroupMembers: build.mutation({
-      query: ({ id, rest }) => ({
+      query: ({id, ...rest}) => ({
         url: `/groups/${id}/users`,
         method: "PUT",
         headers: {
@@ -106,37 +107,15 @@ export const groupsApi = createApi({
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Groups", id }],
     }),
-    editObjectsGroup: build.mutation({
-      query: ({ id, rest }) => ({
-        url: `/groups/${id}/objects`,
-        method: "PUT",
-        headers: {
-          accept: "application/json",
-        },
-        body: rest,
-      }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Groups", id }],
-    }),
-    deleteGroup: build.mutation({
-      query: (id) => ({
-        url: `/groups/${id}`,
-        method: "DELETE",
-        headers: {
-          accept: "application/json",
-        },
-      }),
-      invalidatesTags: [{ type: "Groups", id: "LIST" }],
-    }),
   }),
 });
 
 export const {
   useGetGroupsQuery,
-  useGetGroupsObjectsQuery,
+  useGetGroupQuery,
   useGetGroupIdUsersQuery,
-  useGetGroupIdObjectsQuery,
   useAddGroupMutation,
+  useEditGroupMutation,
   useEditGroupMembersMutation,
-  useEditObjectsGroupMutation,
   useDeleteGroupMutation,
 } = groupsApi;

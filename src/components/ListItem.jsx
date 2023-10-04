@@ -20,7 +20,7 @@ const ListItem = ({ item_id, primary_name, secondary_name, additional_name, butt
           </div>
         </div>
         <div className="card-actions">
-        { buttonOptions?.map((option_item, option_index) => (
+        { buttonOptions.map((option_item, option_index) => (
             <MisButton key={option_index} clickEvent={() => option_item.callback(item_id)} title={option_item.title} icon={option_item.icon} border={true} />
         )) }
         </div>

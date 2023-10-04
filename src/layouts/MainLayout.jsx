@@ -129,7 +129,7 @@ const MainLayout = () => {
               <TopBar />
               <div className="flex flex-row shadow-mis-tl-1 p-4 pb-0 h-screen overflow-hidden">
                 <div 
-                  className={`flex flex-5 flex-col flex-grow overflow-y-auto ${transitionStage}`} 
+                  className={`flex flex-5 flex-col flex-grow overflow-y-hidden ${transitionStage}`} 
                   onAnimationEnd={() => {
                     if (transitionStage === "fadeOut") {
                       setTransistionStage("fadeIn");

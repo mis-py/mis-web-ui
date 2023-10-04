@@ -35,8 +35,10 @@ const UserEdit = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
 
-    const { data: getUserId = [], isLoading: loadingGetUserId } = useGetUserIdQuery(id, {
-      skip: editMode === false,
+    const { 
+      data: getUserId = [], 
+      isLoading: loadingGetUserId } = useGetUserIdQuery(id, {
+        skip: editMode === false,
     });
 
     // fill current user with data

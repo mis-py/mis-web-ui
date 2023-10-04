@@ -32,7 +32,7 @@ export const appsApi = createApi({
               ]
               : [{ type: "Apps", id: "LIST" }],
     }),
-    cloneApp: build.mutation({
+    installAppByUrl: build.mutation({
       query: (body) => ({
         url: "/modules/install",
         method: "POST",
@@ -43,7 +43,7 @@ export const appsApi = createApi({
       }),
       invalidatesTags: [{ type: "Apps", id: "LIST" }],
     }),
-    cloneAppName: build.mutation({
+    installAppByName: build.mutation({
       query: ({ name, ...rest }) => ({
         url: `/modules/install/${name}`,
         method: "POST",
@@ -58,8 +58,8 @@ export const appsApi = createApi({
 });
 
 export const { 
-  useGetAppsQuery,
-  useGetAppByIdQuery,
-  useCloneAppMutation, 
-  useCloneAppNameMutation 
+  // useGetAppsQuery,
+  // useGetAppByIdQuery,
+  // useInstallAppByUrlMutation, 
+  // useInstallAppByNameMutation 
 } = appsApi;

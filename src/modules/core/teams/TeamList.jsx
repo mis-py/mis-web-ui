@@ -3,7 +3,7 @@ import { useGetTeamsQuery, useDeleteTeamMutation } from "redux/index";
 import ItemsList from "components/ItemsList";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify"
-import { FiEdit, FiXCircle} from "react-icons/fi";
+import { FiEdit, FiXCircle, FiPlus} from "react-icons/fi";
 import { confirmAlert } from "react-confirm-alert";
 import { useNavigate } from "react-router-dom";
 import TeamImg from "assets/img/groups.png";
@@ -17,7 +17,7 @@ const TeamList = () => {
     const {
       data: getTeams = [],
       isLoading: loadingGetTeams,
-      // error: errorGetTeams,
+      error: errorGetTeams,
     } = useGetTeamsQuery();
 
     const searchValue = useSelector((state) => "TeamList" in state.search.searchData ? state.search.searchData["TeamList"] : "");
@@ -49,30 +49,35 @@ const TeamList = () => {
             callback: (item_id) => handleDeleteTeam(item_id),
             icon: <FiXCircle />
         }
-    ]
+    ];
   
     const handleDeleteTeam = async (id) => {
-      confirmAlert({
-        title: "Delete team",
-        message: "Are you sure you want to delete this team?",
-        buttons: [
-          {
-            label: "Yes",
-            onClick: async () => {
-              await deleteTeam(id);
-              navigate("/teams");
-              toast.success("Team deleted");
-            },
-          },
-          {
-            label: "No",
-          },
-        ],
-        overlayClassName: "bg-blackSecond/70",
-      });
+        confirmAlert({
+            title: "Delete team",
+            message: "Are you sure you want to delete this team?",
+            buttons: [
+                {
+                    label: "Yes",
+                    onClick: async () => {
+                      await deleteTeam(id);
+                      navigate("/teams");
+                      toast.success("Team deleted");
+                    },
+                },
+                {
+                    label: "No",
+                },
+            ],
+            overlayClassName: "bg-blackSecond/70",
+        });
     };
 
-    const routes = ['/teams/add'];
+    const routes = [
+      {
+        route: '/teams/add',
+        icon: <FiPlus />
+      }
+    ];
 
     return (
       <>
@@ -82,12 +87,12 @@ const TeamList = () => {
           getItems={filteredTeams} 
           isLoading={loadingGetTeams} 
           buttonOptions={buttonOptions}
-          searchParams={ {
+          searchParams={{
             key: "TeamList",
             value: searchValue,
             placeholder: "Enter team name to search...",
             showSearch: false
-          } }
+          }}
         />
       {/* <TeamUsersShortList/> */}
       </>

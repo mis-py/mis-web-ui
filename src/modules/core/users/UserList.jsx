@@ -3,7 +3,7 @@ import { useGetUsersQuery, useDeleteUserMutation } from "redux/index";
 import ItemsList from "components/ItemsList";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { FiEdit, FiXCircle} from "react-icons/fi";
+import { FiEdit, FiXCircle, FiPlus} from "react-icons/fi";
 import { confirmAlert } from "react-confirm-alert";
 import { useNavigate } from "react-router-dom";
 import UserImg from "assets/img/user.png";
@@ -15,15 +15,15 @@ const UserList = () => {
 
     const {
       data: getUsers = [],
-      isLoading: loadingGetUser,
-      // error: errorGetUsers,
+      isLoading: loadingUser,
+      error: errorGetUsers,
     } = useGetUsersQuery();
 
     const searchValue = useSelector((state) => "UserList" in state.search.searchData ? state.search.searchData["UserList"] : "");
 
     React.useEffect(() => {
         dispatch(resetUser());
-      }, [loadingGetUser, searchValue]);
+      }, [loadingUser, searchValue]);
 
     const filteredUsers = getUsers.filter((el) => el.username.toLowerCase().includes(searchValue.toLowerCase().trim())).map((item)=> (
       {
@@ -71,21 +71,26 @@ const UserList = () => {
       });
     };
 
-    const routes = ['/users/add'];
+    const routes = [
+      {
+        route: '/users/add',
+        icon: <FiPlus />
+      }
+    ];
 
     return (
       <ItemsList 
         routes={routes} 
         pageHeader={["Administration", "Users"]}
         getItems={filteredUsers} 
-        isLoading={loadingGetUser} 
+        isLoading={loadingUser} 
         buttonOptions={buttonOptions}
-        searchParams={ {
+        searchParams={{
           key: "UserList",
           value: searchValue,
           placeholder: "Enter name to search...",
           showSearch: false
-        } }
+        }}
       />
     );
 };

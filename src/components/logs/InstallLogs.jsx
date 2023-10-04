@@ -1,31 +1,30 @@
 import React from "react";
 import { confirmAlert } from "react-confirm-alert";
-import { useCloneAppNameMutation,
-} from "redux/index";
+
 import { toast } from "react-toastify";
 
 import { AiOutlinePlus } from "react-icons/ai";
 
 
 const InstallLogs = () => {
-    const [installLogs] = useCloneAppNameMutation();
+    // const [installLogs] = useInstallAppByName();
 
 const handleInstallLogs = async () => {
     const installLogsHandle = async (name) => {
-        installLogs({
-            name: name,
-        }).then(res => {
-            if (res.error !== undefined || res.data === undefined) {
-                let msg = "Some error occurred";
-                if (res.error !== undefined) {
-                    msg += `: ${res.error.data.message}`;
-                }
+        // installLogs({
+        //     name: name,
+        // }).then(res => {
+        //     if (res.error !== undefined || res.data === undefined) {
+        //         let msg = "Some error occurred";
+        //         if (res.error !== undefined) {
+        //             msg += `: ${res.error.data.message}`;
+        //         }
 
-                toast.error(msg);
-            } else if (res.data.enabled === true) {
-                toast.success("Application installed successfully");
-            }
-        });
+        //         toast.error(msg);
+        //     } else if (res.data.enabled === true) {
+        //         toast.success("Application installed successfully");
+        //     }
+        // });
     };
 
     confirmAlert({
