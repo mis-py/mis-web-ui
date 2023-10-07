@@ -33,10 +33,6 @@ export const userSlice = createSlice({
       const { id, value } = action.payload;
       state.settings[id] = value;
     },
-    addUserDefaultSettings: (state, action) => {
-      const { id , default_value } = action.payload;
-      state.settings[id] = default_value
-    },
     resetUser: (state) => {
       state.username = "";
       state.password = "";
@@ -55,7 +51,6 @@ export const {
   addUserPosition,
   setUserPermission,
   setUserSetting,
-  addUserDefaultSettings,
   resetUser,
 } = userSlice.actions;
 

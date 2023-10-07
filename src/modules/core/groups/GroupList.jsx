@@ -28,9 +28,7 @@ const GroupList = () => {
     const filteredGroups = getGroups.filter((el) => el.name.toLowerCase().includes(searchValue.toLowerCase().trim())).map((item)=> (
         {
             ...item,
-            primary_name: item.name,
-            secondary_name: "",
-            additional_name: "",
+            title: item.name,
             avatar: require("assets/img/groups.png")
         }
     ));
@@ -40,12 +38,12 @@ const GroupList = () => {
     const buttonOptions = [
         {
             title: "Edit",
-            callback: (item_id) => navigate(`/groups/${ item_id }`),
+            callback: (item) => navigate(`/groups/${ item.id }`),
             icon: <FiEdit />
         },
         {
             title: "Remove",
-            callback: (item_id) => handleDeleteGroup(item_id),
+            callback: (item) => handleDeleteGroup(item.id),
             icon: <FiXCircle />
         }
     ];

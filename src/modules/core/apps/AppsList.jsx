@@ -20,9 +20,11 @@ const AppsList = () => {
     const filteredApps = getLoadedModules.filter((el) => el.name.toLowerCase().includes(searchValue.toLowerCase().trim())).map((item)=> (
         {
           ...item, 
-          primary_name: `${item.display_name} - v${item.version} - ${item.author}`, 
-          secondary_name: item.description, 
-          additional_name: "Category: " + item.category + " State: " + (item.enabled ? "ENABLED" : "DISABLED"), 
+          title: `${item.display_name} - v${item.version} - ${item.author}`, 
+          paragraphs: [
+            item.description, 
+            "Category: " + item.category + " State: " + (item.enabled ? "ENABLED" : "DISABLED")
+          ], 
           avatar: require("assets/img/app.png")
         }
       ));
@@ -30,7 +32,7 @@ const AppsList = () => {
     const buttonOptions = [
         {
             title: "Settings",
-            callback: (app_id) => navigate(`/apps/${app_id}`),
+            callback: (app) => navigate(`/apps/${app.id}`),
             icon: <FiEdit />,
         }
     ];

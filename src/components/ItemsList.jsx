@@ -30,11 +30,7 @@ const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOpt
       {getItems.map((item, index) => (
           <ListItem
             key={index}
-            item_id={item.id}
-            primary_name={item.primary_name}
-            secondary_name={item.secondary_name}
-            additional_name={item.additional_name}
-            avatar={item.avatar}
+            item={item}
             buttonOptions={buttonOptions.filter((button) => 'isDisplay' in button ? button.isDisplay(item) : true)}
           />
         ))

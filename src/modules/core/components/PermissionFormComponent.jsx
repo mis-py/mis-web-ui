@@ -7,12 +7,12 @@ import Search from "components/common/SearchComponent";
 import { setUserPermission } from "redux/slices/userSlice";
 import { useSelector } from "react-redux";
 
-const PermissionsForm = ({teamPermissionsData, allPermissionsData}) => {
+const PermissionsForm = ({itemPermissionsData, allPermissionsData}) => {
     const dispatch = useDispatch();
-    
+
     const { 
         data: {entities: teamPermissions = {}, allIds: teamPermissionsIds = []} = {}, isLoading: loadingTeamPermissions 
-    } = teamPermissionsData;
+    } = itemPermissionsData;
 
     const { 
         data: {entities: allPermissions = {}, allIds: allPermissionsIds = []} = {}, isLoading: loadingAllPermissions

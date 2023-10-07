@@ -15,7 +15,7 @@ import { notificationsApi } from "./api/notificationsApi";
 //modules
 import { webcatApi } from "./api/modulesApi/webcatApi";
 import { consumersApi } from "./api/modulesApi/consumersApi";
-import { tasksApi } from "./api/modulesApi/tasksApi";
+import { tasksApi } from "./api/tasksApi";
 import { timerApi } from "./api/modulesApi/timerApi";
 import { statabotApi } from "./api/modulesApi/statabotApi";
 import { autoAdminApi } from "./api/modulesApi/autoAdminApi";
@@ -31,6 +31,7 @@ import { startLoading, stopLoading } from './slices/loadingSlice';
 import loadingReducer from './slices/loadingSlice';
 import groupSlice from "./slices/groupSlice";
 import appSlice from "./slices/appSlice";
+import taskSlice from './slices/taskSlice';
 
 const mutationLoadingMiddleware = (params) => next => action => {
     const { dispatch } = params;
@@ -84,6 +85,7 @@ export const store = configureStore({
     search: searchReducer,
     profile: profileReducer,
     app: appSlice,
+    task: taskSlice,
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware({}).concat([

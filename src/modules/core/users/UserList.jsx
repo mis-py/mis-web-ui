@@ -28,9 +28,11 @@ const UserList = () => {
     const filteredUsers = getUsers.filter((el) => el.username.toLowerCase().includes(searchValue.toLowerCase().trim())).map((item)=> (
       {
         ...item,
-        primary_name: item.username,
-        secondary_name: item.team === null ? "Team: -" : "Team: " + item.team.name,
-        additional_name: item.position === null ? "Position: -" : "Position: " + item.position,
+        title: item.username,
+        paragraphs: [
+          item.team === null ? "Team: -" : "Team: " + item.team.name,
+          item.position === null ? "Position: -" : "Position: " + item.position
+        ],
         avatar: UserImg
       }
     ))
@@ -40,12 +42,12 @@ const UserList = () => {
     const buttonOptions = [
         {
             title: "Edit",
-            callback: (item_id) => navigate(`/users/${ item_id }`),
+            callback: (item) => navigate(`/users/${ item.id }`),
             icon: <FiEdit />
         },
         {
             title: "Remove",
-            callback: (item_id) => handleDeleteUser(item_id),
+            callback: (item) => handleDeleteUser(item.id),
             icon: <FiXCircle />
         }
     ]

@@ -158,7 +158,7 @@ const TeamEdit = () => {
         },
         {
             name: "Permissions",
-            element: <PermissionsForm teamPermissionsData={teamPermissions} allPermissionsData={allPermissions} />
+            element: <PermissionsForm itemPermissionsData={teamPermissions} allPermissionsData={allPermissions} />
         }
       ]}
     />;

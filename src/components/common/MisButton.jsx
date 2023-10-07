@@ -3,11 +3,13 @@ import React, { Children } from "react";
 
 // import { AiOutlinePlusCircle } from "react-icons/ai";
 
+// TODO pass styles for border color and text size
+
 const MisButton = ({ title, isFirst, clickEvent, icon, border }) => {
   return (
     <button
       key={title}
-      className={`btn btn-square btn-outline btn-sm ${isFirst ? 'ml-auto' : ''}`}
+      className={`btn btn-square btn-outline text-lg btn-sm ${isFirst ? 'ml-auto' : ''}`}
       onClick={clickEvent}
       title={title}
     >

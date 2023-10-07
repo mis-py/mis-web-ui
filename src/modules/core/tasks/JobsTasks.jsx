@@ -1,8 +1,8 @@
 import React from 'react';
 import { useGetJobsQuery } from 'redux/index';
-import { useJobsResumeMutation } from 'redux/index';
-import { useJobsPauseMutation } from 'redux/index';
-import { useJobsRescheduleMutation } from 'redux/index';
+import { useJobResumeMutation } from 'redux/index';
+import { useJobPauseMutation } from 'redux/index';
+import { useJobRescheduleMutation } from 'redux/index';
 import SpinnerLoader from "components/common/SpinnerLoader";
 import ListItemWrapper from 'components/common/ListItemWrapper';
 import { Cron } from 'react-js-cron';
@@ -17,9 +17,9 @@ import { CgFileDocument } from "react-icons/cg";
 const JobsTasks = () => {
     const { id } = useParams();
     const { data: getJobs, isLoading: loadingGetJobs } = useGetJobsQuery(id);
-    const [jobsPause] = useJobsPauseMutation();
-    const [jobsResume] = useJobsResumeMutation();
-    const [jobsReschedule] = useJobsRescheduleMutation();
+    const [jobsPause] = useJobPauseMutation();
+    const [jobsResume] = useJobResumeMutation();
+    const [jobsReschedule] = useJobRescheduleMutation();
 
     const PauseMutation = async (e, id) => {
         e.preventDefault();

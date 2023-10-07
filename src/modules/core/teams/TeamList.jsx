@@ -29,9 +29,7 @@ const TeamList = () => {
     const filteredTeams = getTeams.filter((el) => el.name.toLowerCase().includes(searchValue.toLowerCase().trim())).map((item)=> (
       {
         ...item, 
-        primary_name: item.name, 
-        secondary_name: "", 
-        additional_name: "", 
+        title: item.name,
         avatar: TeamImg
       }
     ));
@@ -41,12 +39,12 @@ const TeamList = () => {
     const buttonOptions = [
         {
             title: "Edit",
-            callback: (item_id) => navigate(`/teams/${ item_id }`),
+            callback: (item) => navigate(`/teams/${ item.id }`),
             icon: <FiEdit />
         },
         {
             title: "Remove",
-            callback: (item_id) => handleDeleteTeam(item_id),
+            callback: (item) => handleDeleteTeam(item.id),
             icon: <FiXCircle />
         }
     ];

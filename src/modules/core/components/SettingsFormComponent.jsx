@@ -6,7 +6,7 @@ import {
     addUserDefaultSettings,
 } from "redux/slices/userSlice";
 
-import Input from "components/common/Input";
+import InputDefault from "components/common/InputDefault";
 import Search from "components/common/SearchComponent";
 
 const SettingsForm = ({settingsData, itemSettings, isGlobal=false}) => {
@@ -40,10 +40,6 @@ const SettingsForm = ({settingsData, itemSettings, isGlobal=false}) => {
         dispatch(setUserSetting({id: item.id, value: e.target.value}));
     }
 
-    const handleChangeToDefault = async (e, item) => {
-        dispatch(addUserDefaultSettings({id: item.id, default_value: item.default_value}));
-    }
-
     return (
     <div className="form-control">
         <label className="label">
@@ -55,7 +51,7 @@ const SettingsForm = ({settingsData, itemSettings, isGlobal=false}) => {
             placeholder: "SETTING_NAME or module_name"}} 
         />
         {inputs?.map((item) =>(
-            <Input
+            <InputDefault
                 label={`${item.key} ( ${item.app.name} )`}
                 primaryLabel={item.key}
                 secondLabel={item.app.name}
@@ -70,7 +66,6 @@ const SettingsForm = ({settingsData, itemSettings, isGlobal=false}) => {
                 readOnly={false}
                 default_value={item.default_value}
                 placeholder={item.default_value}
-                setDefault={(e) => handleChangeToDefault(e, item)}
             />
         ))}
     </div>

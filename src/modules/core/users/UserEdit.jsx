@@ -159,9 +159,6 @@ const UserEdit = () => {
     const getSettingsUserId = useGetSettingsUserIdQuery(id, {skip: editMode===false});;
 
     const itemProps = {
-      settingsSection: <SettingsForm settingsData={getSettings} itemSettings={getSettingsUserId} />,
-      permissionsSection: <PermissionsForm permissionsData={getPermissions} itemPermissions={getPermissionsUserId} />,
-      formSection: <UserForm />,
       pageHeader: ["Administration", "isBack:Users", (editMode ? user.username : "New")],
       saveButtonEvent: handleSave,
       formName: "User",
@@ -176,7 +173,7 @@ const UserEdit = () => {
         },
         {
             name: "Permissions",
-            element: <PermissionsForm permissionsData={getPermissions} itemPermissions={getPermissionsUserId} />
+            element: <PermissionsForm itemPermissionsData={getPermissionsUserId} allPermissionsData={getPermissions} />
         }
       ]
     }
