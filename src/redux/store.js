@@ -1,6 +1,6 @@
 import { configureStore, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
 
-//api
+// core
 import { usersApi } from "./api/usersApi";
 import { teamsApi } from "./api/teamsApi";
 import { permissionsApi } from "./api/permissionsApi";
@@ -11,12 +11,11 @@ import { modulesApi } from "./api/modulesApi";
 import { settingsApi } from "./api/settingsApi";
 import { logsApi } from "./api/logsApi";
 import { notificationsApi } from "./api/notificationsApi";
-
-//modules
-import { webcatApi } from "./api/modulesApi/webcatApi";
-import { consumersApi } from "./api/modulesApi/consumersApi";
+import { consumersApi } from "./api/consumersApi";
 import { tasksApi } from "./api/tasksApi";
-import { timerApi } from "./api/modulesApi/timerApi";
+
+// modules
+import { webcatApi } from "./api/modulesApi/webcatApi";
 import { statabotApi } from "./api/modulesApi/statabotApi";
 import { autoAdminApi } from "./api/modulesApi/autoAdminApi";
 import { binomApi } from "./api/modulesApi/binomDomainApi";
@@ -71,7 +70,6 @@ export const store = configureStore({
     [webcatApi.reducerPath]: webcatApi.reducer,
     [consumersApi.reducerPath]: consumersApi.reducer,
     [tasksApi.reducerPath]: tasksApi.reducer,
-    [timerApi.reducerPath]: timerApi.reducer,
     [statabotApi.reducerPath]: statabotApi.reducer,
     [autoAdminApi.reducerPath]: autoAdminApi.reducer,
     [binomApi.reducerPath]: binomApi.reducer,
@@ -105,7 +103,6 @@ export const store = configureStore({
       webcatApi.middleware,
       consumersApi.middleware,
       tasksApi.middleware,
-      timerApi.middleware,
       statabotApi.middleware,
       autoAdminApi.middleware,
       binomApi.middleware,

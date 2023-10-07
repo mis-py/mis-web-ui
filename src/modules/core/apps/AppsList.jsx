@@ -32,7 +32,7 @@ const AppsList = () => {
     const buttonOptions = [
         {
             title: "Settings",
-            callback: (app) => navigate(`/apps/${app.id}`),
+            onClick: (app) => navigate(`/apps/${app.id}`),
             icon: <FiEdit />,
         }
     ];

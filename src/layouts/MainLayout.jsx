@@ -12,7 +12,7 @@ import { NavLink, Route } from "react-router-dom";
 import { useGetModulesQuery } from "redux/index";
 import { firstUppercase } from "config/functions";
 import { RiAppsLine } from "react-icons/ri";
-import { BiTask, BiUser } from "react-icons/bi";
+import { BiTask, BiUser, BiNotification } from "react-icons/bi";
 import { AiOutlineAppstore } from "react-icons/ai";
 import { MdGroups, MdTask } from "react-icons/md";
 import { useGetMyPermissionsQuery } from "redux/index";
@@ -22,6 +22,7 @@ import { groupRoutes } from "routes/groups";
 import { appRoutes } from "routes/apps";
 import { taskRoutes } from "routes/tasks";
 import { consumersRoutes } from "routes/consumers";
+import { notificationsRoutes } from 'routes/notifications';
 import { FiHome, FiCpu, FiUsers } from "react-icons/fi";
 import useModuleRoutes from "routes/modules";
 import Home from "modules/core/Home";
@@ -32,7 +33,8 @@ let adminNavs = [
   { icon: <MdGroups />, title: "Access Groups", url: "/groups" },
   { icon: <AiOutlineAppstore />, title: "Applications", url: "/apps", },
   { icon: <BiTask />, title: "Tasks and Jobs", url: "/jobs", },
-  { icon: <MdTask />, title: "Consumers", url: "/consumers", },
+  // { icon: <MdTask />, title: "Consumers", url: "/consumers", },
+  { icon: <BiNotification />, title: "Notifications", url: "/notifications" }
 ];
 
 const getNavLink = (displayName, path, icon) => <NavLink to={path}>{icon}{displayName}</NavLink>
@@ -78,7 +80,7 @@ const MainLayout = () => {
     const hasSudoPermission = myPermission.allIds?.find((id)=> myPermission.entities[id].permission.scope === 'core:sudo') !== undefined;
 
     if (hasSudoPermission){
-      let adminRoutes = [].concat(userRoutes, teamRoutes, groupRoutes, appRoutes, taskRoutes, consumersRoutes);
+      let adminRoutes = [].concat(userRoutes, teamRoutes, groupRoutes, appRoutes, taskRoutes, consumersRoutes, notificationsRoutes);
       //let menuIsOpen = adminRoutes.filter(item => item.path.includes(location.pathname)).length > 0;
       let menuIsOpen = true;
       mainNavBar.push(<li key={mainNavBar.length}>

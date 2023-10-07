@@ -38,12 +38,12 @@ const GroupList = () => {
     const buttonOptions = [
         {
             title: "Edit",
-            callback: (item) => navigate(`/groups/${ item.id }`),
+            onClick: (item) => navigate(`/groups/${ item.id }`),
             icon: <FiEdit />
         },
         {
             title: "Remove",
-            callback: (item) => handleDeleteGroup(item.id),
+            onClick: (item) => handleDeleteGroup(item.id),
             icon: <FiXCircle />
         }
     ];

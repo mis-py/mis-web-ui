@@ -1,8 +1,8 @@
-import Consumers from "modules/core/consumers"
+// import Consumers from "modules/core/consumers"
 
 export const consumersRoutes = [
-    {
-      path: "/consumers",
-      element: <Consumers />,
-    },
+    // {
+    //   path: "/consumers",
+    //   element: <Consumers />,
+    // },
 ];

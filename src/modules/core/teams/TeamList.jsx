@@ -39,12 +39,12 @@ const TeamList = () => {
     const buttonOptions = [
         {
             title: "Edit",
-            callback: (item) => navigate(`/teams/${ item.id }`),
+            onClick: (item) => navigate(`/teams/${ item.id }`),
             icon: <FiEdit />
         },
         {
             title: "Remove",
-            callback: (item) => handleDeleteTeam(item.id),
+            onClick: (item) => handleDeleteTeam(item.id),
             icon: <FiXCircle />
         }
     ];

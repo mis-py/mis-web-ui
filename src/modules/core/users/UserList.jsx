@@ -42,12 +42,12 @@ const UserList = () => {
     const buttonOptions = [
         {
             title: "Edit",
-            callback: (item) => navigate(`/users/${ item.id }`),
+            onClick: (item) => navigate(`/users/${ item.id }`),
             icon: <FiEdit />
         },
         {
             title: "Remove",
-            callback: (item) => handleDeleteUser(item.id),
+            onClick: (item) => handleDeleteUser(item.id),
             icon: <FiXCircle />
         }
     ]

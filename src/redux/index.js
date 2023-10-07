@@ -1,3 +1,4 @@
+// core
 export * from "./store";
 export * from "./api/usersApi";
 export * from "./api/teamsApi";
@@ -8,12 +9,11 @@ export * from "./api/objectsApi";
 export * from "./api/modulesApi";
 export * from "./api/settingsApi";
 export * from "./api/logsApi";
-export * from "./api/modulesApi/consumersApi";
+export * from "./api/consumersApi";
 export * from "./api/tasksApi";
-export * from "./api/modulesApi/timerApi";
 export * from "./api/notificationsApi"
 
-//modules
+// modules
 export * from "./api/modulesApi/webcatApi";
 export * from "./api/modulesApi/statabotApi";
 export * from "./api/modulesApi/autoAdminApi";

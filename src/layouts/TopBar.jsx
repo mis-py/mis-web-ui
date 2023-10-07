@@ -43,7 +43,7 @@ const TopBar = () => {
     };
 
     const ahrefs = [
-        { title: "Profile", path: `/profile/${getUserId.id}`, icon: <FiUser />},
+        // { title: "Profile", path: `/profile/${getUserId.id}`, icon: <FiUser />},
         { title: "Logout", path: "/logout", icon: <FiLogOut /> }
     ].map((item, index)=>(
         <li key={index} onClick={(e) => {

@@ -26,56 +26,44 @@ export const notificationsApi = createApi({
       }),
       providesTags: (result, error, id) => [{ type: "Notifications", id }],
     }),
-    keySubscribe: build.mutation({
-      query: (data) => ({
-            url: `/notifications/routing_keys/set-subscriptions/`,
-            method: "POST",
-            headers: {
-              accept: "application/json",
-            },
-            body: data.body,
-          }),
-          invalidatesTags: (result, error, { id }) => [{ type: "Notifications", id }],
-    })
-
-    // editNotifications: build.mutation({
-    //   query: ({ key_id }) => ({
-    //     url: `/notifications/routing_keys/${key_id}`,
-    //     method: "PUT",
-    //     headers: {
-    //       accept: "application/json",
-    //     },
-    //   }),
-    //   invalidatesTags: (result, error, { id }) => [{ type: "Notifications", id }],
-    // }),
-    // subscribeNotifications: build.mutation({
-    //   query: ({ key_id }) => ({
-    //     url: `/notifications/routing_keys/${key_id}`,
-    //     method: "POST",
-    //     headers: {
-    //       accept: "application/json",
-    //     },
-    //   }),
-    //   invalidatesTags: (result, error, { id }) => [{ type: "Notifications", id }],
-    // }),
-    // deleteNotications: build.mutation({
-    //   query: (key_id) => ({
-    //     url: `/notifications/routing_keys/${key_id}`,
-    //     method: "DELETE",
-    //     headers: {
-    //       accept: "application/json",
-    //     },
-    //   }),
-    //   invalidatesTags: [{ type: "Notifications", id: "LIST" }],
-    // }),
+    editNotifications: build.mutation({
+      query: ({ key_id, body }) => ({
+        url: `/notifications/routing_keys/${key_id}`,
+        method: "PUT",
+        headers: {
+          accept: "application/json",
+        },
+        body
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Notifications", id }],
+    }),
+    subscribeNotifications: build.mutation({
+      query: ({ key_id }) => ({
+        url: `/notifications/routing_keys/${key_id}`,
+        method: "POST",
+        headers: {
+          accept: "application/json",
+        },
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Notifications", id }],
+    }),
+    deleteNotications: build.mutation({
+      query: (key_id) => ({
+        url: `/notifications/routing_keys/${key_id}`,
+        method: "DELETE",
+        headers: {
+          accept: "application/json",
+        },
+      }),
+      invalidatesTags: [{ type: "Notifications", id: "LIST" }],
+    }),
   }),
 });
 
 export const {
   useGetNotificationsQuery,
   useGetNotificationsMyQuery,
-  useKeySubscribeMutation,
-  // useEditNotificationsMutation,
-  // useSubscribeNotificationsMutation,
-  // useDeleteNoticationsMutation,
+  useEditNotificationsMutation,
+  useSubscribeNotificationsMutation,
+  useDeleteNoticationsMutation,
 } = notificationsApi;

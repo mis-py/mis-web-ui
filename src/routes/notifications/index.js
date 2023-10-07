@@ -1,16 +1,8 @@
-import SettingsNotifications from "components/notifications/SettingsNotifications";
+import SettingsNotifications from "modules/core/notifications/NotificationsList";
 
 export const notificationsRoutes = [
   {
-    path: "/notifications/routing_keys",
+    path: "/notifications",
     element: <SettingsNotifications />,
   },
-  // {
-  //   path: "/group/members/:id",
-  //   element: <EditMembersGroup />,
-  // },
-  // {
-  //   path: "/group/objects/:id",
-  //   element: <EditObjectsGroup />,
-  // },
 ];

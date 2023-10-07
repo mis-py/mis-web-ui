@@ -26,8 +26,6 @@ const JobsList = () => {
     } = useGetJobsQuery();
 
     const searchValue = useSelector((state) => "JobsList" in state.search.searchData ? state.search.searchData["JobsList"] : "");
-    
-    console.log(getJobs);
 
     let intlDate = new Intl.DateTimeFormat('ru-RU',{ year: "numeric",
         month: "numeric",
