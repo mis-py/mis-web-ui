@@ -10,7 +10,7 @@ import React from "react";
 
 const SidebarDesktop = ({sidebarNav}) => {
   return (
-    <nav className="flex flex-col menu bg-base-100">
+    <nav className="min-h-screen flex flex-col menu bg-base-100 w-3/5">
       <ul>
         {sidebarNav}
       </ul>

@@ -24,8 +24,6 @@ const Input = ({
   inputClassName,
   // Input name
   name,
-  // Value to reset input to by 
-  default_value=null,
 
   primaryLabel,
   secondLabel,

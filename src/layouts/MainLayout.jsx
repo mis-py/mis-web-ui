@@ -1,5 +1,5 @@
 import { useEffect, useState, React } from "react";
-import { Outlet, useLocation , Navigate, Routes } from "react-router-dom";
+import { NavLink, Route, Outlet, useLocation , Navigate, Routes } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import SidebarDesktop from "layouts/Sidebar";
 import Notifications from "components/notifications/Notifications";
@@ -8,7 +8,6 @@ import { ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 import { useGetMeQuery } from "redux/index";
 // import webSocket from "../config/WebSocketConnection";
-import { NavLink, Route } from "react-router-dom";
 import { useGetModulesQuery } from "redux/index";
 import { firstUppercase } from "config/functions";
 import { RiAppsLine } from "react-icons/ri";
@@ -23,9 +22,10 @@ import { appRoutes } from "routes/apps";
 import { taskRoutes } from "routes/tasks";
 import { consumersRoutes } from "routes/consumers";
 import { notificationsRoutes } from 'routes/notifications';
-import { FiHome, FiCpu, FiUsers } from "react-icons/fi";
+import { FiHome, FiCpu, FiUsers, FiMoreVertical } from "react-icons/fi";
 import useModuleRoutes from "routes/modules";
 import Home from "modules/core/Home";
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 let adminNavs = [
   { icon: <BiUser />, title: "Users", url: "/users" },
@@ -41,7 +41,7 @@ const getNavLink = (displayName, path, icon) => <NavLink to={path}>{icon}{displa
 
 // TODO prevent reload page if location not changed
 const MainLayout = () => {
-    // const [isPopupOpen, setIsPopupOpen] = React.useState(false);
+    const [isDrawerOpened, setIsDrawerOpened] = useState(false);
     // const [notificationsCount, setNotificationsCount] = React.useState(0);
     const location = useLocation();
 
@@ -74,7 +74,7 @@ const MainLayout = () => {
       //     webSocket.send('{"subscribe": "notifications"}');
       // }
 
-    let mainNavBar = [<li key={0}>{getNavLink("Home", "/home", <FiHome/>)}</li>];
+    let mainNavBar = [<li onClick={() => setIsDrawerOpened(false)} key={0}>{getNavLink("Home", "/home", <FiHome/>)}</li>];
     let routes = [<Route index key="home" path="/home" element={<Home/>} />];
 
     const hasSudoPermission = myPermission.allIds?.find((id)=> myPermission.entities[id].permission.scope === 'core:sudo') !== undefined;
@@ -83,7 +83,7 @@ const MainLayout = () => {
       let adminRoutes = [].concat(userRoutes, teamRoutes, groupRoutes, appRoutes, taskRoutes, consumersRoutes, notificationsRoutes);
       //let menuIsOpen = adminRoutes.filter(item => item.path.includes(location.pathname)).length > 0;
       let menuIsOpen = true;
-      mainNavBar.push(<li key={mainNavBar.length}>
+      mainNavBar.push(<li onClick={() => setIsDrawerOpened(false)} key={mainNavBar.length}>
           <details open={menuIsOpen}>
             <summary><FiCpu />Administration</summary>
             <ul>{adminNavs.map((link) => (
@@ -111,27 +111,33 @@ const MainLayout = () => {
     
     if (activeModules.length){
       activeModules.forEach((item, index) =>(
-        mainNavBar.push(<li key={index+mainNavBar.length}>
+        mainNavBar.push(<li onClick={() => setIsDrawerOpened(false)} key={index+mainNavBar.length}>
           <NavLink to={`/${item.path}`}>
             <RiAppsLine />{firstUppercase(item.name)}
           </NavLink>
         </li>)
       ));
 
-      let modulesRoutes = activeModules.map((item, index) => (<Route key={`${item.path}_${index}`} path={item.path} element={item.element}/>));
+      let modulesRoutes = activeModules.map((item, index) => (<Route key={`${item.path}_${index}`} path={`${item.path}/*`} element={item.element}/>));
 
       routes = routes.concat(modulesRoutes);
     }
 
     return (
-        <>
-          <div className="flex max-h-screen flex-row overflow-hidden" data-theme={currentTheme}>
-            <SidebarDesktop sidebarNav={mainNavBar} />
-            <div className="flex flex-col flex-5 overflow-y-auto">
-              <TopBar />
+        <div className="max-h-screen overflow-hidden drawer md:drawer-open" data-theme={currentTheme}>
+          <input id="sidebar" type="checkbox" checked={isDrawerOpened} className="drawer-toggle" readOnly />
+
+          <div className="drawer-content">
+            <div className="flex flex-col overflow-y-auto">
+              <TopBar>
+                {/* <label htmlFor="sidebar" className="drawer-button md:hidden"> */}
+                  <FiMoreVertical className="md:hidden" onClick={() => setIsDrawerOpened(true)} />
+                  {/* </label> */}
+              </TopBar>
+
               <div className="flex flex-row shadow-mis-tl-1 p-4 pb-0 h-screen overflow-hidden">
                 <div 
-                  className={`flex flex-5 flex-col flex-grow overflow-y-hidden ${transitionStage}`} 
+                  className={`flex flex-col flex-grow overflow-y-hidden ${transitionStage}`} 
                   onAnimationEnd={() => {
                     if (transitionStage === "fadeOut") {
                       setTransistionStage("fadeIn");
@@ -143,9 +149,20 @@ const MainLayout = () => {
                 </div>
               </div>
             </div>
-            <ToastContainer />
           </div>
-        </>
+
+          <div className="drawer-side">
+            <label 
+              // htmlFor="sidebar" 
+              // aria-label="close sidebar" 
+              className="drawer-overlay" 
+              onClick={() => setIsDrawerOpened(false)} />
+
+            <SidebarDesktop sidebarNav={mainNavBar} />
+          </div>
+
+          <ToastContainer />
+        </div>
     );
 };
 

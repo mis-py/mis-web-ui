@@ -8,7 +8,7 @@ import { useGetMeQuery } from "redux/index";
 import USER from "assets/img/user.png";
 // import { icons } from "react-icons/lib/esm";
 
-const TopBar = () => {
+const TopBar = ({children}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -67,7 +67,12 @@ const TopBar = () => {
     return (
     <>
         <div className="flex items-center justify-between px-2 py-2">
-            <p className="text-sm">Welcome, {getUserId.username}!</p>
+
+
+            <div className="flex flex-row text-lg gap-2">
+                {children}
+                <p className="text-sm">Welcome, {getUserId.username}!</p>
+            </div>
 
             <div className="flex flex-row text-lg gap-4">
                 <div className="flex tooltip tooltip-bottom" data-tip={`Switch to ${currentTheme==='light'?'dark':'light'}`}>

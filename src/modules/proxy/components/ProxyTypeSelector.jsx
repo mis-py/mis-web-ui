@@ -4,32 +4,32 @@ import {
     useGetTeamsQuery
 } from "redux/index";
 
-const TeamSelector = ({userTeam, onTeamChange}) => {
-    const { data: teamsList = [] } = useGetTeamsQuery();
-
-    const teamOptions = teamsList?.map((item) => {
-        return {
-            value: item.id,
-            label: item.name,
-        };
-    });
-
-    const onSelectChange = (value, event) => {
-        onTeamChange(value);
+const ProxyTypeSelector = ({proxyType, onProxyTypeChange}) => {
+    const proxyList = [
+        {
+            value: 'http',
+            label: 'http'
+        },
+        {
+            value: 'socks5',
+            label: 'socks5'
+        },
+    ];
+    
+    const handleProxyTypeChange = (value) => {
+        onProxyTypeChange(value.value);
     }
     
     return (
         <div className="form-control">
             <label className="label">
-                <span className="label-text">Team</span>
+                <span className="label-text">Proxy Type</span>
             </label>
             <Select 
-                value={userTeam?.name} 
-                onChange={onSelectChange}
-                options={teamOptions}
-                isClearable
-                isSearchable
-                placeholder="Select team..."
+                value={{label: proxyType, value: proxyType}} 
+                onChange={handleProxyTypeChange}
+                options={proxyList}
+                placeholder="Select proxy type..."
                 classNames={{
                     control: (state) => (
                         'input-bordered'
@@ -111,4 +111,4 @@ const TeamSelector = ({userTeam, onTeamChange}) => {
     );
 };
 
-export default TeamSelector;
+export default ProxyTypeSelector;

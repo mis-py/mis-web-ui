@@ -130,6 +130,7 @@ const UserSelector = ({onUsersChange, getSelectedUsers, getRemainingUsers}) => {
                         option: (baseStyles, state) => ({
                             ...baseStyles,
                             backgroundColor: 'transparent',
+                            color: 'hsl(var(--bc) / var(--tw-text-opacity))',
                             ':hover': {
                                 cursor: 'pointer',
                                 backgroundColor: 'hsl(var(--bc) / 0.1)',

@@ -19,6 +19,7 @@ import { webcatApi } from "./api/modulesApi/webcatApi";
 import { statabotApi } from "./api/modulesApi/statabotApi";
 import { autoAdminApi } from "./api/modulesApi/autoAdminApi";
 import { binomApi } from "./api/modulesApi/binomDomainApi";
+import { proxyApi } from "./api/modulesApi/proxyApi";
 
 //slices
 import { authReducer } from "./slices/authSlice";
@@ -73,6 +74,7 @@ export const store = configureStore({
     [statabotApi.reducerPath]: statabotApi.reducer,
     [autoAdminApi.reducerPath]: autoAdminApi.reducer,
     [binomApi.reducerPath]: binomApi.reducer,
+    [proxyApi.reducerPath]: proxyApi.reducer,
 
     //slices
     auth: authReducer,
@@ -106,6 +108,7 @@ export const store = configureStore({
       statabotApi.middleware,
       autoAdminApi.middleware,
       binomApi.middleware,
+      proxyApi.middleware,
 
       mutationLoadingMiddleware,
     ]),
