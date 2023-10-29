@@ -27,12 +27,21 @@ export const proxyApi = createApi({
                 method: "POST",
                 body,
             }),
+            invalidatesTags: ["Proxy"],
+        }),
+        toggleStatus: build.mutation({
+            query: (proxy_id) => ({
+                url: `/proxy/proxies/change-status/${proxy_id}`,
+                method: "POST",
+            }),
+            invalidatesTags: ["Proxy"],
         }),
         proxyChangeIP: build.mutation({
             query: (proxy_id) => ({
                 url: `/proxy/proxies/change-ip/${proxy_id}`,
                 method: "POST",
             }),
+            invalidatesTags: ["Proxy"],
         }),
         getProxy: build.query({
             query: (proxy_id) => ({
@@ -69,6 +78,7 @@ export const {
     useGetProxiesQuery,
     useAddProxyMutation,
     useProxyCheckMutation,
+    useToggleStatusMutation,
     useProxyChangeIPMutation,
     useGetProxyQuery,
     useEditProxyMutation,

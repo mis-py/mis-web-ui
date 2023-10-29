@@ -50,19 +50,17 @@ const ProxyEdit = () => {
         navigate(`/proxy`);
     }
 
-    const itemProps = {
-      pageHeader: ["Proxy", (editMode ? proxy.name ?? '' : "New")],
-      saveButtonEvent: handleSave,
-      formName: "Proxy",
-      sections: [
-        {
-            name: "Proxy",
-            element: <ProxyForm proxy={proxy} onProxyChange={(proxy) => setProxy(proxy)} />
-        },
-      ]
-    }
-
-    return <EditItem {...itemProps} />;
+    return <EditItem 
+        pageHeader={["Proxy", (editMode ? proxy.name ?? '' : "New")]}
+        saveButtonEvent={handleSave}
+        formName={"Proxy"}
+        sections={[
+            {
+                name: "Proxy",
+                element: <ProxyForm proxy={proxy} onProxyChange={(proxy) => setProxy(proxy)} />
+            },
+        ]}
+    />;
   };
   
   export default ProxyEdit;

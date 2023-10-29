@@ -2,12 +2,14 @@ import React from "react";
 import { 
     useGetProxiesQuery, 
     useDeleteProxyMutation,
-    useProxyChangeIPMutation
+    useProxyChangeIPMutation,
+    useProxyCheckMutation,
+    useToggleStatusMutation
 } from "redux/api/modulesApi/proxyApi";
 import ItemsList from "components/ItemsList";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { FiEdit, FiXCircle, FiPlus, FiRotateCcw, FiCheck } from "react-icons/fi";
+import { FiEdit, FiXCircle, FiPlus, FiRotateCcw, FiHelpCircle, FiPower } from "react-icons/fi";
 import { confirmAlert } from "react-confirm-alert";
 import { useNavigate } from "react-router-dom";
 import UserImg from "assets/img/user.png";
@@ -36,24 +38,31 @@ const ProxyList = () => {
             badge: item.id,
             paragraphs: [
                 item.last_known_ip !== null ? `Last known IP: ${item.last_known_ip}` : null,
+                `Enabled: ${item.is_enabled}`,
+                `Online: ${item.is_online}`,
             ],
             // avatar: UserImg
         }
     ))
 
+    const [checkProxy, { isLoading }] = useProxyCheckMutation();
     const [deleteProxy] = useDeleteProxyMutation();
     const [changeProxyIP] = useProxyChangeIPMutation();
+    const [toggleStatus] = useToggleStatusMutation();
+    
+    const handleToggleStatus = async (id) => {
+        let response = await toggleStatus(id).unwrap();
+        toast.info(`Status changed`);
+    }
 
-    const handleChangeProxyIP = async (proxy_id) => {
-        // let response = await changeProxyIP(proxy_id).unwrap();
-        let response = {"result":{"status":200,"text":"89.209.224.243"}, "exceptions": {"ValueError":"Wrong URI","TypeError":"WrongType"}}
+    const handleChangeProxyIP = async (id) => {
+        let response = await changeProxyIP(id).unwrap();
         
-        if (response.result.status === 200){
-            toast.success(`${response.result.status}: ${response.result.text}`);
+        if (response.status === 200){
+            toast.success(`${response.status}: ${response.text}`);
         }
-        if (Object.keys(response.exceptions) > 0){
-            console.log('except');
-            Object.entries(response.exceptions).map(([key, value]) => toast.warning(`${key}: ${value}`));
+        if (Object.keys(response.exceptions).length > 0){
+            toast.warning(`Occured ${Object.keys(response.exceptions).length} exceptions! Use edit menu for detailed descriptions.`);
         }
     }
   
@@ -78,11 +87,22 @@ const ProxyList = () => {
         });
     };
 
+    const handleCheckProxy = async (id) => {
+        let response = await checkProxy({id: id}).unwrap();
+
+        toast.success(`${response.status}: ${response.text}`);
+    }
+
     const buttonOptions = [
         {
+            title: "Toggle status",
+            onClick: (item) => handleToggleStatus(item.id),
+            icon: <FiPower />
+        },
+        {
             title: "Check availablity",
-            onClick: () => {},
-            icon: <FiCheck />
+            onClick: (item) => handleCheckProxy(item.id),
+            icon: <FiHelpCircle />
         },
         {
             title: "Change IP",
@@ -101,16 +121,14 @@ const ProxyList = () => {
         }
     ]
 
-    const routes = [
-      {
-        route: '/proxy/add',
-        icon: <FiPlus />
-      }
-    ];
-
     return (
       <ItemsList 
-        routes={routes} 
+        routes={[
+            {
+              route: '/proxy/add',
+              icon: <FiPlus />
+            }
+        ]} 
         pageHeader={["Proxy"]}
         getItems={filteredProxies} 
         isLoading={loadingProxy} 
