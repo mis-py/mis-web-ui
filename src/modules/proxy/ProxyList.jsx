@@ -39,7 +39,7 @@ const ProxyList = () => {
             paragraphs: [
                 item.last_known_ip !== null ? `Last known IP: ${item.last_known_ip}` : null,
                 `Enabled: ${item.is_enabled}`,
-                `Online: ${item.is_online}`,
+                `Status: ${item.is_online ? 'UP' : 'DOWN'}`,
             ],
             // avatar: UserImg
         }

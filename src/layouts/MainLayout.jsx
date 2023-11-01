@@ -128,7 +128,7 @@ const MainLayout = () => {
           <input id="sidebar" type="checkbox" checked={isDrawerOpened} className="drawer-toggle" readOnly />
 
           <div className="drawer-content">
-            <div className="flex flex-col overflow-y-auto">
+            <div className="flex flex-col overflow-y-auto max-h-screen">
               <TopBar>
                 {/* <label htmlFor="sidebar" className="drawer-button md:hidden"> */}
                   <FiMoreVertical className="md:hidden" onClick={() => setIsDrawerOpened(true)} />
