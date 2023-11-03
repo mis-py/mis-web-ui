@@ -33,10 +33,12 @@ const useModuleRoutes = () => {
           obj.element = <StataBot/>;
         } else if (item.name === 'binom_companion') {
           obj.element = <Binom/>;
+          obj.name = "Binom Companion";
         } else if (item.name === 'auto_admin') {
           obj.element = <AutoAdmin/>;
         } else if (item.name === 'proxy') {
           obj.element = <Proxy/>;
+          obj.name = "Proxy Manager";
         }
 
         modules.push(obj);

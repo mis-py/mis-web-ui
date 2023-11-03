@@ -14,7 +14,7 @@ const EditItem = ({...props}) => {
     
     const saveButtonTitle = "Save";
     const saveButtonIcon = <FiSave />;
-    return (<>
+    return (
         <div className="flex flex-5 flex-col h-screen overflow-y-auto">
             <div className="flex items-center justify-between">
                 <PageHeader pageHeader={pageHeader} />
@@ -33,7 +33,6 @@ const EditItem = ({...props}) => {
             { sections[selectedTab]?.element }
             </div>
         </div>
-    </>
     );
 }
 

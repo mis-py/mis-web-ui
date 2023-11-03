@@ -33,6 +33,10 @@ import groupSlice from "./slices/groupSlice";
 import appSlice from "./slices/appSlice";
 import taskSlice from './slices/taskSlice';
 
+//middleware
+import Socket from 'utils/WebSocket';
+import socketMiddleware from "redux/middleware/socket";
+
 const mutationLoadingMiddleware = (params) => next => action => {
     const { dispatch } = params;
 
@@ -111,5 +115,6 @@ export const store = configureStore({
       proxyApi.middleware,
 
       mutationLoadingMiddleware,
+      socketMiddleware(new Socket())
     ]),
 });

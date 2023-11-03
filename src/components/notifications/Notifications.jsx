@@ -1,29 +1,29 @@
 import React from "react";
-import { initiateWebSocket } from "config/WebSocketConnection";
+// import { initiateWebSocket } from "utils/WebSocket";
 
 function Notifications({isPopupOpen, setIsPopupOpen, notificationsCount, setNotificationsCount}){
     const [notifications, setNotifications] = React.useState([]);
-    const webSocket = initiateWebSocket();
+    // const webSocket = initiateWebSocket();
 
-    if (webSocket !== undefined) {
-        webSocket.onmessage = function (message) {
-            const _notifications = notifications;
-            const data = JSON.parse(message.data);
+    // if (webSocket !== undefined) {
+    //     webSocket.onmessage = function (message) {
+    //         const _notifications = notifications;
+    //         const data = JSON.parse(message.data);
 
-            if (data.action !== "notifications") {
-                return
-            }
+    //         if (data.action !== "notifications") {
+    //             return
+    //         }
 
-            _notifications.push({
-                header: data.data.key_verbose || data.data.key || null,
-                body: data.data.body_verbose || JSON.stringify(data.data.message.body),
-                date: data.time,
-            });
+    //         _notifications.push({
+    //             header: data.data.key_verbose || data.data.key || null,
+    //             body: data.data.body_verbose || JSON.stringify(data.data.message.body),
+    //             date: data.time,
+    //         });
 
-            setNotifications(_notifications);
-            setNotificationsCount(_notifications.length);
-        }
-    }
+    //         setNotifications(_notifications);
+    //         setNotificationsCount(_notifications.length);
+    //     }
+    // }
 
     const handleButtonClick = () => {
         setIsPopupOpen(!isPopupOpen);
