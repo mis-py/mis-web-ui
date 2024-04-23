@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+//import { baseUrl } from "config/variables";
 
 export const webcatApi = createApi({
   reducerPath: "webcatApi",
   tagTypes: ["Webcat"],
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-  }),
+  //baseQuery: fetchBaseQuery({
+  //  baseUrl,
+  //}),
   endpoints: (build) => ({
     getWebcat: build.query({
       query: (data) => ({

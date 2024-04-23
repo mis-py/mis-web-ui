@@ -4,14 +4,15 @@ import { configureStore, isFulfilled, isPending, isRejected } from "@reduxjs/too
 import { usersApi } from "./api/usersApi";
 import { teamsApi } from "./api/teamsApi";
 import { permissionsApi } from "./api/permissionsApi";
-import { appsApi } from "./api/appsApi";
+//import { appsApi } from "./api/appsApi";
 import { groupsApi } from "./api/groupsApi";
-import { objectsApi } from "./api/objectsApi";
+import { restrictedObjectsApi } from "./api/restrictedObjectsApi";
 import { modulesApi } from "./api/modulesApi";
 import { settingsApi } from "./api/settingsApi";
 import { logsApi } from "./api/logsApi";
 import { notificationsApi } from "./api/notificationsApi";
 import { consumersApi } from "./api/consumersApi";
+import { jobsApi } from "./api/jobsApi";
 import { tasksApi } from "./api/tasksApi";
 
 // modules
@@ -37,25 +38,40 @@ import taskSlice from './slices/taskSlice';
 import Socket from 'utils/WebSocket';
 import socketMiddleware from "redux/middleware/socket";
 
-const mutationLoadingMiddleware = (params) => next => action => {
-    const { dispatch } = params;
+// const mutationLoadingMiddleware = (params) => next => action => {
+//     const { dispatch } = params;
 
-    if (~action.type.indexOf("executeMutation")
-        && (action.meta.arg === undefined || action.meta.arg.endpointName.indexOf("find") === -1)
-    ) {
-        if (isPending(action)) {
-            dispatch(startLoading());
-        }
+//     if (~action.type.indexOf("executeMutation")
+//         && (action.meta.arg === undefined || action.meta.arg.endpointName.indexOf("find") === -1)
+//     ) {
+//         if (isPending(action)) {
+//             dispatch(startLoading());
+//         }
 
-        if (isFulfilled(action) || isRejected(action)) {
-            // setTimeout(() => {
-                dispatch(stopLoading());
-            // }, 1000);
-        }
+//         if (isFulfilled(action) || isRejected(action)) {
+//             // setTimeout(() => {
+//                 dispatch(stopLoading());
+//             // }, 1000);
+//         }
+//     }
+
+//     next(action);
+// };
+const crashReporter = store => next => action => {
+    console.log(action.type, action.payload, action.meta, action.error);
+
+    if (action.payload && action.payload.status == false){
+        throw "Error"
     }
 
-    next(action);
-};
+    try {
+        return next(action)
+    } catch (err) {
+        console.error(err)
+        // Call notification here
+        throw err
+    }
+  }
 
 export const store = configureStore({
   reducer: {
@@ -63,18 +79,19 @@ export const store = configureStore({
     [usersApi.reducerPath]: usersApi.reducer,
     [teamsApi.reducerPath]: teamsApi.reducer,
     [permissionsApi.reducerPath]: permissionsApi.reducer,
-    [appsApi.reducerPath]: appsApi.reducer,
+    //[appsApi.reducerPath]: appsApi.reducer,
     [groupsApi.reducerPath]: groupsApi.reducer,
-    [objectsApi.reducerPath]: objectsApi.reducer,
+    [restrictedObjectsApi.reducerPath]: restrictedObjectsApi.reducer,
     [modulesApi.reducerPath]: modulesApi.reducer,
     [settingsApi.reducerPath]: settingsApi.reducer,
     [logsApi.reducerPath]: logsApi.reducer,
     [notificationsApi.reducerPath]: notificationsApi.reducer,
+    [tasksApi.reducerPath]: tasksApi.reducer,
+    [jobsApi.reducerPath]: jobsApi.reducer,
+    [consumersApi.reducerPath]: consumersApi.reducer,
 
     //modules
     [webcatApi.reducerPath]: webcatApi.reducer,
-    [consumersApi.reducerPath]: consumersApi.reducer,
-    [tasksApi.reducerPath]: tasksApi.reducer,
     [statabotApi.reducerPath]: statabotApi.reducer,
     [autoAdminApi.reducerPath]: autoAdminApi.reducer,
     [binomApi.reducerPath]: binomApi.reducer,
@@ -97,24 +114,26 @@ export const store = configureStore({
       usersApi.middleware,
       teamsApi.middleware,
       permissionsApi.middleware,
-      appsApi.middleware,
+      //appsApi.middleware,
       groupsApi.middleware,
-      objectsApi.middleware,
+      restrictedObjectsApi.middleware,
       modulesApi.middleware,
       settingsApi.middleware,
       logsApi.middleware,
       notificationsApi.middleware,
+      jobsApi.middleware,
+      tasksApi.middleware,
+      consumersApi.middleware,
 
       //modules
       webcatApi.middleware,
-      consumersApi.middleware,
-      tasksApi.middleware,
       statabotApi.middleware,
       autoAdminApi.middleware,
       binomApi.middleware,
       proxyApi.middleware,
 
-      mutationLoadingMiddleware,
+      //mutationLoadingMiddleware,
+      //crashReporter,
       socketMiddleware(new Socket())
     ]),
 });

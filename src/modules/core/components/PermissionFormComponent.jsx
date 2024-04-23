@@ -9,26 +9,29 @@ import { useSelector } from "react-redux";
 
 const PermissionsForm = ({itemPermissionsData, allPermissionsData}) => {
     const dispatch = useDispatch();
+    
+    let [searchValue, setSearchValue] = useState("");
 
     const { 
-        data: {entities: teamPermissions = {}, allIds: teamPermissionsIds = []} = {}, isLoading: loadingTeamPermissions 
+        data: localPermissions = [], isLoading: loadingLocalPermissions 
     } = itemPermissionsData;
 
     const { 
-        data: {entities: allPermissions = {}, allIds: allPermissionsIds = []} = {}, isLoading: loadingAllPermissions
+        data: allPermissions = [], isLoading: loadingAllPermissions
     } = allPermissionsData;
 
-    const searchValue = useSelector((state) => "PermissionsForm" in state.search.searchData ? state.search.searchData["PermissionsForm"] : "");
+    // const searchValue = useSelector((state) => "PermissionsForm" in state.search.searchData ? state.search.searchData["PermissionsForm"] : "");
     
-    let labels = allPermissionsIds.map((key)=> {
+    let labels = allPermissions.map((permission)=> {
+            let localPermission = localPermissions.find(granted => granted.permission.id === permission.id);
             return {
-                ...allPermissions[key],
-                checked: key in teamPermissions
+                ...permission,
+                // ...localPermission,
+                checked: localPermission !== undefined,
             }
         })
-        // filter settings by searchValue
         .filter((item) => {
-            return item.name.toLocaleLowerCase().includes(searchValue.toLowerCase().trim()) ||
+            return item.app.name.toLocaleLowerCase().includes(searchValue.toLowerCase().trim()) ||
                 item.scope.toLocaleLowerCase().includes(searchValue.toLowerCase().trim())
             
         });
@@ -45,14 +48,16 @@ const PermissionsForm = ({itemPermissionsData, allPermissionsData}) => {
             <Search searchParams={{
                 key:"PermissionsForm", 
                 value: searchValue, 
-                placeholder: "module:scope"}} 
+                placeholder: "module:scope",
+                onSearch: setSearchValue
+            }} 
             />
             <div className="grid grid-cols-2 gap-4">
                 {labels.map((item) => (
                     <PermissionBox
                         key={item.id}
                         name={item.scope}
-                        display_name={item.name + " - " + item.scope}
+                        display_name={item.app.name + " - " + item.scope}
                         initialChecked={item.checked}
                         onBoxChange={ (e, state) => handleChangePermission(e, item, state) }
                     />

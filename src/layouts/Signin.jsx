@@ -2,11 +2,12 @@ import React from "react";
 import { Navigate, useLocation, redirect } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAuth } from "redux/slices/authSlice";
+import { userLogin } from "redux/slices/authSlice";
 import { toast } from "react-toastify";
 import PetushokImg from 'assets/img/petushok.png';
 // import TeamImg from "assets/img/groups.png";
 import { AiOutlineEye } from "react-icons/ai";
+import { ToastContainer } from "react-toastify";
 
 const Signin = () => {
   const dispatch = useDispatch();
@@ -22,20 +23,19 @@ const Signin = () => {
   const [showPassword, setShowPassword] = React.useState("password");
 
   if (isAuthenticated) {
-    return <Navigate to='/home'/>
+    return <Navigate to='/'/>
   }
 
   let params = new URLSearchParams(location.search);
   let from = params.get("from") || "/";
 
   const onSubmit = async (data) => {
-    const values = await dispatch(fetchAuth(data));
+    const values = await dispatch(userLogin(data)).unwrap()
+      .catch((rejected) => {
+        return toast.error(`${rejected}`);
+      })
 
-    if (!values.payload) {
-      return toast.error("Incorrect login or password!");
-    }
-
-    return redirect(data.redirectTo || "/home");
+    return redirect(data.redirectTo || "/");
   };
 
   const toggleShowPassword = (e) => {
@@ -119,7 +119,7 @@ const Signin = () => {
             alt="Your Company"
           />
           <h2 className="mt-2 text-center text-2xl font-bold leading-9 tracking-tight">
-            Sign in to your Petushok CRM account
+            Sign in to your Petushok MIS account
           </h2>
         </div>
 
@@ -180,6 +180,8 @@ const Signin = () => {
             </a>
           </p>
         </div>
+              
+      <ToastContainer />
       </div>
   );
 };

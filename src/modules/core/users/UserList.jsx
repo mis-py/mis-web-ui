@@ -1,32 +1,43 @@
-import React from "react";
-import { useGetUsersQuery, useDeleteUserMutation } from "redux/index";
+import React, { useMemo, useState } from "react";
+import { useGetUsersQuery, useRemoveUserMutation, filterUsersByStringSelector } from "redux/api/usersApi";
 import ItemsList from "components/ItemsList";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { FiEdit, FiXCircle, FiPlus} from "react-icons/fi";
 import { confirmAlert } from "react-confirm-alert";
 import { useNavigate } from "react-router-dom";
 import UserImg from "assets/img/user.png";
 import { resetUser } from "redux/slices/userSlice";
+import ListItem from "components/ListItem";
 
 const UserList = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [searchValue, setSearchValue] = useState("");
+
+    const [deleteUser] = useRemoveUserMutation();
+
+    const usersSearchRresult = useMemo(filterUsersByStringSelector, []);
 
     const {
-      data: getUsers = [],
-      isLoading: loadingUser,
-      error: errorGetUsers,
-    } = useGetUsersQuery();
-
-    const searchValue = useSelector((state) => "UserList" in state.search.searchData ? state.search.searchData["UserList"] : "");
+      data,
+      isLoading,
+      isSuccess,
+      error,
+      searchFiltered,
+    } = useGetUsersQuery(undefined, {
+      selectFromResult: (result) => ({
+        ...result,
+        searchFiltered: usersSearchRresult(result, searchValue)
+      })
+    });
 
     React.useEffect(() => {
-        dispatch(resetUser());
-      }, [loadingUser, searchValue]);
+      dispatch(resetUser());
+    }, [isLoading, searchValue]);
 
-    const filteredUsers = getUsers.filter((el) => el.username.toLowerCase().includes(searchValue.toLowerCase().trim())).map((item)=> (
-      {
+    let users = searchFiltered.map((item)=> {
+      return {
         ...item,
         title: item.username,
         paragraphs: [
@@ -35,22 +46,7 @@ const UserList = () => {
         ],
         avatar: UserImg
       }
-    ))
-
-    const [deleteUser] = useDeleteUserMutation();
-
-    const buttonOptions = [
-        {
-            title: "Edit",
-            onClick: (item) => navigate(`/users/${ item.id }`),
-            icon: <FiEdit />
-        },
-        {
-            title: "Remove",
-            onClick: (item) => handleDeleteUser(item.id),
-            icon: <FiXCircle />
-        }
-    ]
+    });
   
     const handleDeleteUser = async (id) => {
       confirmAlert({
@@ -73,26 +69,47 @@ const UserList = () => {
       });
     };
 
-    const routes = [
-      {
-        route: '/users/add',
-        icon: <FiPlus />
-      }
-    ];
-
     return (
       <ItemsList 
-        routes={routes} 
+        routes={[]} 
         pageHeader={["Administration", "Users"]}
-        getItems={filteredUsers} 
-        isLoading={loadingUser} 
-        buttonOptions={buttonOptions}
+        getItems={users} 
+        isLoading={isLoading} 
+        buttonOptions={[]}
         searchParams={{
           key: "UserList",
           value: searchValue,
-          placeholder: "Enter name to search...",
-          showSearch: false
+          placeholder: "Username...",
+          showSearch: false,
+          onSearch: setSearchValue
         }}
+        headerButtons={[
+          {
+            title: "Add user",
+            route: '/users/add',
+            icon: <FiPlus />
+          }
+        ]}
+        items={
+          users.map((item, index) => (
+            <ListItem
+              key={index}
+              item={item}
+              buttonOptions={[
+                {
+                    title: "Edit",
+                    onClick: (item) => navigate(`/users/${ item.id }`),
+                    icon: <FiEdit />
+                },
+                {
+                    title: "Remove",
+                    onClick: (item) => handleDeleteUser(item.id),
+                    icon: <FiXCircle />
+                }
+              ]}
+            />
+          ))
+        }
       />
     );
 };

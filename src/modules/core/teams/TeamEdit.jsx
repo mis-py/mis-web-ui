@@ -4,14 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { toast } from "react-toastify";
 import {
-    useEditTeamPermissionMutation, 
-    useSettingsTeamSetMutation,
     useAddTeamMutation,
 
     useGetPermissionsQuery,
-    useGetPermissionsTeamIdQuery,
-    useGetSettingsQuery,
-    useGetSettingsTeamIdQuery
+    useGetTeamPermissionsQuery,
+    useEditTeamPermissionsMutation,
+    
+    useGetGlobalVariablesQuery,
+    useGetLocalVariablesQuery,
+    useEditLocalVariablesMutation,
 } from "redux/index";
 
 import EditItem from "modules/core/components/EditItemComponent";
@@ -19,7 +20,7 @@ import TeamForm from "modules/core/components/TeamFormComponent";
 import SettingsForm from "modules/core/components/SettingsFormComponent";
 import PermissionsForm from "modules/core/components/PermissionFormComponent";
 
-import { useEditTeamMutation, useGetTeamIdQuery } from "redux/index";
+import { useEditTeamMutation, useGetTeamQuery } from "redux/index";
 import { addTeamId, addTeamName, setTeamMembers } from "redux/slices/teamSlice";
 
 const TeamEdit = () => {
@@ -33,7 +34,7 @@ const TeamEdit = () => {
     const { 
       data: getTeamId = [], 
       isLoading: loadingTeamId 
-    } = useGetTeamIdQuery(id, {
+    } = useGetTeamQuery({team_id: id}, {
       skip: editMode === false,
     });
 
@@ -66,10 +67,9 @@ const TeamEdit = () => {
     const [editTeam] = useEditTeamMutation();
     const [addTeam] = useAddTeamMutation();
 
-
     // this is for update settings
-    const [editTeamSettingsSet] = useSettingsTeamSetMutation();
-    const [editTeamPermission] = useEditTeamPermissionMutation();
+    const [editTeamVariables] = useEditLocalVariablesMutation();
+    const [editTeamPermission] = useEditTeamPermissionsMutation();
 
     // what is this for?
     // const { refetch: refetchUsers } = useGetUsersQuery();
@@ -112,7 +112,7 @@ const TeamEdit = () => {
         new_value: item[1]
       }));
       
-      await editTeamSettingsSet({
+      await editTeamVariables({
         id: team_id,
         body: dataSettings,
       }).then((data) => {
@@ -138,12 +138,12 @@ const TeamEdit = () => {
 
     const allPermissions = useGetPermissionsQuery();
     
-    const teamPermissions = useGetPermissionsTeamIdQuery(id, {skip: editMode===false});
+    const teamPermissions = useGetTeamPermissionsQuery({team_id: id}, {skip: editMode===false});
 
-    const getSettings = useGetSettingsQuery();
+    const getSettings = useGetGlobalVariablesQuery();
 
-    const getSettingsTeamId = useGetSettingsTeamIdQuery(id, {skip: editMode===false});
-
+    const getSettingsTeamId = useGetLocalVariablesQuery({team_id: id}, {skip: editMode===false});
+    console.log(team);
     return <EditItem
       pageHeader={["Administration", "isBack:Teams", (editMode ? team.name : "New team")]}
       saveButtonEvent={handleSave}

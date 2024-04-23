@@ -1,123 +1,135 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import RtkDefaultQuery from "config/RtkDefaultQuery";
+import { misAPI } from "./misAPI";
+import {
+  createEntityAdapter,
+  createSelector
+} from '@reduxjs/toolkit';
 
-export const permissionsApi = createApi({
-  reducerPath: "permissionsApi",
-  tagTypes: ["Permissions"],
-  baseQuery: RtkDefaultQuery,
+export const permissionsApi = misAPI.injectEndpoints({
   endpoints: (build) => ({
     getPermissions: build.query({
-      query: () => ({
-        url: `/permissions/`,
-        method: "GET",
-        headers: {
-          accept: "application/json"
-        },
-      }),
-      providesTags: ["Permissions"],
-      transformResponse: (response) => {
-        let newResponse = response.reduce((acc, item) => {
-          return {[item.id]: item, ...acc}
-        }, {});
-        
-        return { entities: newResponse, allIds:Object.keys(newResponse) }
-      }
-    }),
-    getPermissionsUserId: build.query({
-      query: (id) => ({
-        url: `/permissions/user/${id}`,
-        method: "GET",
-      }),
-      providesTags: (result, error, id) => [{ type: "Permissions", id }],      
-      transformResponse: (response) => {
-        let newResponse = response.reduce((acc, item) => {
-          return {[item.permission.id]: item, ...acc}
-        }, {});
+      query: (params = {}) => {
+        let { page = 1, size = 50 } = params;
 
-        return { entities: newResponse, allIds:Object.keys(newResponse) }
-      }
+        return {
+          url: "/permissions",
+          method: "GET",
+          params: { page, size }
+        }
+      },
+      providesTags: (result, error, id) => [{ type: "Permissions", id }],
+      transformResponse: response => response.items
+      // transformResponse: (response) => {
+      //   let newResponse = response.reduce((acc, item) => {
+      //     return {[item.id]: item, ...acc}
+      //   }, {});
+        
+      //   return { entities: newResponse, allIds:Object.keys(newResponse) }
+      // }
+    }),
+
+    getUserPermissions: build.query({
+      query: (params) => {
+        let { user_id } = params;
+        return {
+          url: "/permissions/get/user",
+          method: "GET",
+          params: { user_id }
+        }
+      },
+      providesTags: (result, error, id) => [{ type: "Permissions", id }],      
+      // transformResponse: (response) => {
+      //   let newResponse = response.reduce((acc, item) => {
+      //     return {[item.permission.id]: item, ...acc}
+      //   }, {});
+
+      //   return { entities: newResponse, allIds:Object.keys(newResponse) }
+      // }
+      transformResponse: response => response.items,
+    }),
+
+    editUserPermission: build.mutation({
+      query: (params) => {
+        let { user_id, scopesList } = params;
+        return {
+          url: "/permissions/edit/user",
+          method: "PUT",
+          credentials: "include",
+          params: { user_id },
+          body: scopesList,
+      }},
+      invalidatesTags: (result, error, { id }) => [{ type: "Permissions", id }],
     }),
 
     getMyPermissions: build.query({
-      query: () => ({
-        url: "/permissions/my",
-        method: "GET",
-      }),
-      providesTags: () => [{ type: "Permissions" }],
-      transformResponse: (response)=> {
-        let newResponse = response.reduce((acc, item) => {
-          return {[item.id]: item, ...acc}
-        }, {});
-
-        return { entities: newResponse, allIds:Object.keys(newResponse) }
-      }
-    }),
-    getPermissionsTeamId: build.query({
-      query: (id) => ({
-        url: `/permissions/team/${id}`,
-        method: "GET",
-      }),
-      providesTags: (result, error, id) => [{ type: "Permissions", id }],
-    }),
-    editUserPermission: build.mutation({
-      // pass all permissions that must user has access
-      query: ({ id, scopesList }) => ({
-        url: `/permissions/user/${id}`,
-        method: "PUT",
-        credentials: "include",
-        headers: {
-        },
-      }),
-    }),
-    
-    getPermissionsTeamId: build.query({
-      query: (id) => ({
-        url: `/permissions/team/${id}`,
-        method: "GET",
-      }),
-      providesTags: (result, error, id) => [{ type: "Permissions", id }],
-      transformResponse: (response) => {
-        let newResponse = response.reduce((acc, item) => {
-          return { [item.permission.id]: item, ...acc };
-        }, {});
-  
-        return { entities: newResponse, allIds: Object.keys(newResponse) };
+      query: () => {
+        return {
+          url: "/permissions/my",
+          method: "GET",
+        }
       },
+      providesTags: () => [{ type: "Permissions" }],
+      transformResponse: response => response.items,
+      // transformResponse: (response)=> {
+      //   let newResponse = response.items.reduce((acc, item) => {
+      //     return {[item.id]: item, ...acc}
+      //   }, {});
+
+      //   return { entities: newResponse, allIds:Object.keys(newResponse) }
+      // }
+    }),
+    // response.reduce((acc, curr) => {
+    //   acc[curr.id] = curr
+    //   return acc
+    // }, {})
+    getTeamPermissions: build.query({
+      query: (params) => {
+        let { team_id } = params;
+        return {
+          url: "/permissions/get/team",
+          method: "GET",
+          params: { team_id }
+        }
+      },
+      providesTags: (result, error, id) => [{ type: "Permissions", id }],
+      transformResponse: response => response.items,
+      // transformResponse: (response) => {
+      //   let newResponse = response.reduce((acc, item) => {
+      //     return { [item.permission.id]: item, ...acc };
+      //   }, {});
+  
+      //   return { entities: newResponse, allIds: Object.keys(newResponse) };
+      // },
     }),
     
-    editUserPermission: build.mutation({
-      query: ({ id, scopesList }) => ({
-        url: `/permissions/user/${id}`,
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          accept: "application/json",
-        },
-        body: scopesList,
-      }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Permissions", id }],
-    }),
-    
-    editTeamPermission: build.mutation({
-      query: ({ teamId, scopesList }) => ({
-        url: `/permissions/team/${teamId}`,
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          accept: "application/json",
-        },
-        body: scopesList,
-      }),
+    editTeamPermissions: build.mutation({
+      query: (params) => {
+        let { team_id, scopesList } = params;
+        return {
+          url: "/permissions/edit/team",
+          method: "PUT",
+          params: { team_id },
+          body: scopesList,
+        }
+      },
       invalidatesTags: (result, error, { teamId }) => [{ type: "Permissions", id: teamId }],
     }),
   }),
 });
 
+export const filterHasCoreSudoSelector = () => {
+  const emptyArray = [];
+  return createSelector(
+    items => items.data,
+    (items) => items?.filter(item => item.permission.scope === 'core:sudo') ?? emptyArray
+    
+  ) 
+}
+
 export const {
   useGetPermissionsQuery,
-  useGetPermissionsUserIdQuery,
-  useGetMyPermissionsQuery,
-  useGetPermissionsTeamIdQuery,
+  useGetUserPermissionsQuery,
   useEditUserPermissionMutation,
-  useEditTeamPermissionMutation,
+  useGetMyPermissionsQuery,
+  useGetTeamPermissionsQuery,
+  useEditTeamPermissionsMutation,
 } = permissionsApi;

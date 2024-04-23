@@ -19,13 +19,15 @@ const Search = ({searchParams = {}}) => {
         key = "default", 
         value = "", 
         placeholder = "Type smth to search...", 
-        showSearch = false
+        showSearch = false,
+        onSearch
     } = searchParams;
     const dispatch = useDispatch();
 
     const onChange = (e) => {
         setSearchValue(e.target.value);
         dispatch(setSearchValue({key: key, value: e.target.value}));
+        onSearch(e.target.value);
     }
 
     return (

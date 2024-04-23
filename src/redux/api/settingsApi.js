@@ -1,127 +1,92 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import RtkDefaultQuery from "config/RtkDefaultQuery";
+import { misAPI } from "./misAPI";
 
-export const settingsApi = createApi({
-  reducerPath: "settingsApi",
-  tagTypes: ["Settings"],
-  baseQuery: RtkDefaultQuery,
+export const settingsApi = misAPI.injectEndpoints({
   endpoints: (build) => ({
-    getSettings: build.query({
-      query: () => ({
-        url: `/settings/`,
-        method: "GET",
-        headers: {
-          accept: "application/json",
-        },
-      }),
-      providesTags: (result) => [{ type: "Settings" }],
-      // normalize response
-      transformResponse: (response) => {
-        let newResponse = response.reduce((acc, item) => {
-          return {[item.id]: item, ...acc}
-        }, {});
 
-        return { entities: newResponse, allIds: Object.keys(newResponse)}
-      }
+    getGlobalVariables: build.query({
+      query: (params = {}) => {
+        let { module_id = null, page=1, size=50 } = params;
+
+        return {
+          url: "/variables/global",
+          method: "GET",
+          params: { module_id, page, size }
+        }},
+      providesTags: (result) => [{ type: "Variables" }],
+      transformResponse: response => response.items
     }),
-    getSettingsAppId: build.query({
-      query: (id) => ({
-        url: `/settings/app/${id}`,
-        method: "GET",
-        headers: {
-          accept: "application/json",
-        },
-      }),
-      providesTags: (result, error, id) => [{ type: "Settings", id }],
-      transformResponse: (response) => {
-        let newResponse = response.reduce((acc, item) => {
-          return { [item.id]: item, ...acc };
-        }, {});
-  
-        return { entities: newResponse, allIds: Object.keys(newResponse) };
+
+    getLocalVariables: build.query({
+      query: (params = {}) => {
+        let { team_id = null, user_id = null, page=1, size=50 } = params;
+        return {
+          url: "/variables/local",
+          method: "GET",
+          params: { team_id, user_id, page, size }
+        }
       },
+      providesTags: (result) => [{ type: "Variables" }],
+      transformResponse: response => response.items
     }),
   
-    getSettingsUserId: build.query({
-      query: (id) => ({
-        url: `/settings/user/${id}`,
-        method: "GET",
-        headers: {
-          accept: "application/json",
-        },
-      }),
-      providesTags: (result, error, id) => [{ type: "Settings", id }],
-      transformResponse: (response) => {
-        let newResponse = response.reduce((acc, item) => {
-          return { [item.setting.id]: item, ...acc };
-        }, {});
-  
-        return { entities: newResponse, allIds: Object.keys(newResponse) };
+    getMyVariables: build.query({
+      query: (params) => {
+        let { page=1, size=50 } = params;
+        return {
+          url: "/variables/my",
+          method: "GET",
+          params: { page, size }
+        }
       },
+      providesTags: (result) => [{ type: "Variables" }],
+      transformResponse: response => response.items
     }),
   
-    getSettingsTeamId: build.query({
-      query: (id) => ({
-        url: `/settings/team/${id}`,
-        method: "GET",
-        headers: {
-          accept: "application/json",
-        },
-      }),
-      providesTags: (result, error, id) => [{ type: "Settings", id }],
-      transformResponse: (response) => {
-        let newResponse = response.reduce((acc, item) => {
-          return { [item.id]: item, ...acc };
-        }, {});
-  
-        return { entities: newResponse, allIds: Object.keys(newResponse) };
+    editGlobalVariables: build.mutation({
+      query: (params) => {
+        let { module_id, variables } = params;
+        return {
+          url: "/variables/global",
+          method: "PUT",
+          params: { module_id },
+          body: variables,
+        }
       },
+      invalidatesTags: [{ type: "Variables" }],
     }),
   
-    settingAppSet: build.mutation({
-      query: (data) => ({
-        url: `/settings/app/${data.id}`,
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: data.body,
-      }),
-      invalidatesTags: [{ type: "Settings" }],
+    editLocalVariables: build.mutation({
+      query: (params) => {
+        let { team_id=null, user_id=null, variables } = params;
+        return {
+          url: "/variables/local",
+          method: "PUT",
+          params: { team_id, user_id },
+          body: variables,
+        }
+      },
+      invalidatesTags: [{ type: "Variables" }],
     }),
   
-    settingUserSet: build.mutation({
-      query: (data) => ({
-        url: `/settings/user/${data.id}`,
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: data.body,
-      }),
-      invalidatesTags: [{ type: "Settings" }],
-    }),
-  
-    settingsTeamSet: build.mutation({
-      query: (data) => ({
-        url: `/settings/team/${data.id}`,
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: data.settings,
-      }),
-      invalidatesTags: [{ type: "Settings" }],
+    editMyVariables: build.mutation({
+      query: (params) => {
+        let { variables } = params;
+        return {
+          url: "/variables/my",
+          method: "PUT",
+          body: variables,
+        }
+      },
+      invalidatesTags: [{ type: "Variables" }],
     }),
   }),
 });
 
 export const {
-  useGetSettingsQuery,
-  useGetSettingsAppIdQuery,
-  useGetSettingsUserIdQuery,
-  useGetSettingsTeamIdQuery,
-  useSettingAppSetMutation,
-  useSettingUserSetMutation,
-  useSettingsTeamSetMutation,
+  useGetGlobalVariablesQuery,
+  useGetLocalVariablesQuery,
+  useGetMyVariablesQuery,
+  useEditGlobalVariablesMutation,
+  useEditLocalVariablesMutation,
+  useEditMyVariablesMutation,
 } = settingsApi;

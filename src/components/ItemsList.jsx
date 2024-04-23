@@ -1,17 +1,18 @@
 import React from "react";
 import SpinnerLoader from "components/common/SpinnerLoader";
-import ListItem from "./ListItem";
+
 import PageHeader from "components/common/PageHeader";
 import { Link } from "react-router-dom";
 import Search from "components/common/SearchComponent";
 
-const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOptions, ...props }) => {
+const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOptions, headerButtons, itemButtons, items, ...props }) => {
 
-  const links = routes?.map((item, index) => (
+  const links = headerButtons?.map((item, index) => (
     <Link
             key={index}
             to={item.route}
             className="btn btn-outline btn-square btn-sm"
+            title={item.title}
         >
         {item.icon}
     </Link>
@@ -27,14 +28,7 @@ const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOpt
       </div>
 
       <div className="flex flex-col gap-4 p-2 overflow-y-auto h-screen">
-      {getItems.map((item, index) => (
-          <ListItem
-            key={index}
-            item={item}
-            buttonOptions={buttonOptions.filter((button) => 'isDisplay' in button ? button.isDisplay(item) : true)}
-          />
-        ))
-      }
+        {items}
       </div>
     </>
 };

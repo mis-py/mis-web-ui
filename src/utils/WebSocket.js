@@ -1,4 +1,4 @@
-import { baseUrl } from "../config/variables";
+//import { baseUrl } from "../config/variables";
 
 // let webSocket;
 
@@ -14,7 +14,7 @@ class Socket {
             console.error("WebSocket: No token provided!");
         }
         if (!this.socket) {
-            this.socket = new WebSocket(baseUrl.replace("http", "wss") + `/ws/?token=${token}`);
+            //this.socket = new WebSocket(baseUrl.replace("http", "wss") + `/ws/?token=${token}`);
         }
     }
 

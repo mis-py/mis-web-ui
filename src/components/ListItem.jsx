@@ -21,9 +21,11 @@ const ListItem = ({ item, buttonOptions }) => {
           </div>
         </div>
         <div className="card-actions">
-        { buttonOptions.map((option_item, index) => (
-            <MisButton key={index} clickEvent={() => option_item.onClick(item)} title={option_item.title} icon={option_item.icon} border={true} />
-        )) }
+          { 
+            buttonOptions.map((option_item, index) => (
+              <MisButton key={index} clickEvent={() => option_item.onClick(item)} title={option_item.title} icon={option_item.icon} border={true} />
+            )) 
+          }
         </div>
       </div>
 

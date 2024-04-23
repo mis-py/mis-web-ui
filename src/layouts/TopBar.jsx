@@ -4,7 +4,7 @@ import { FiUser, FiLogOut, FiSun, FiMoon } from "react-icons/fi";
 // import MisButton from "components/common/MisButton";
 import { useDispatch, useSelector } from "react-redux";
 import { setTheme } from 'redux/slices/profileSlice';
-import { useGetMeQuery } from "redux/index";
+import { useGetUserMyQuery } from "redux/index";
 import USER from "assets/img/user.png";
 // import { icons } from "react-icons/lib/esm";
 
@@ -12,11 +12,8 @@ const TopBar = ({children}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const {
-        data: getUserId = [],
-        isLoading: loadingUserId,
-        refetch: refetchProfileData,
-      } = useGetMeQuery();
+
+    const {data, error, isLoading, refetch} = useGetUserMyQuery();
 
     const currentTheme = useSelector((state) => state.profile.theme);
 
@@ -71,7 +68,7 @@ const TopBar = ({children}) => {
 
             <div className="flex flex-row text-lg gap-2">
                 {children}
-                <p className="text-sm">Welcome, {getUserId.username}!</p>
+                <p className="text-sm">Welcome, {data?.username}!</p>
             </div>
 
             <div className="flex flex-row text-lg gap-4">

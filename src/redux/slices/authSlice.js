@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-// import qs from "qs";
 
-import { baseUrl } from "config/variables";
+import { baseUrl, api_token } from "redux/api/RtkDefaultQuery";
 
-export const fetchAuth = createAsyncThunk(
-  "auth/fetchAuth", 
-  async (params) => {
+export const userLogin = createAsyncThunk(
+  "auth/login", 
+  async ({username, password}, { rejectWithValue }) => {
+
     let config = { 
       headers: { "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
     }
@@ -14,23 +14,24 @@ export const fetchAuth = createAsyncThunk(
     try {
       const { data } = await axios.post(
         `${baseUrl}/auth/token`,
-        { username: params.username, password: params.password },
+        { username, password },
         config
       );
-      
-      localStorage.setItem('token', data.access_token);
-      localStorage.setItem("user_id", data.user_id);
-      localStorage.setItem("username", data.username);
 
+      if (data.status == false){
+        return rejectWithValue(data.result);
+      }
+    
+      localStorage.setItem(api_token, data.result.access_token);
       return data;
     } catch (error){
-      console.error(error);
+      rejectWithValue(error);
     }
   }
 );
 
-const userToken = localStorage.getItem('token')
-  ? localStorage.getItem('token')
+const userToken = localStorage.getItem(api_token)
+  ? localStorage.getItem(api_token)
   : null
 
 const isAuthenticated = userToken !== null;
@@ -50,9 +51,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state, action) => {
-      localStorage.removeItem('token');
-      localStorage.removeItem("user_id");
-      localStorage.removeItem("username");
+      localStorage.removeItem(api_token);
       state.data = null;
       state.loading = false;
       state.userInfo = null;
@@ -63,13 +62,13 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(fetchAuth.pending, (state) => {
+    .addCase(userLogin.pending, (state) => {
       state.status = "loading";
       state.loading = true;
       state.error = null;
       state.data = null;
     })
-    .addCase(fetchAuth.fulfilled, (state, { payload }) => {
+    .addCase(userLogin.fulfilled, (state, { payload }) => {
       state.status = "loaded";
       state.loading = false;
       state.data = payload;
@@ -77,7 +76,7 @@ const authSlice = createSlice({
       state.userToken = payload.access_token;
       state.isAuthenticated = true;
     })
-    .addCase(fetchAuth.rejected, (state, { payload }) => {
+    .addCase(userLogin.rejected, (state, { payload }) => {
       state.status = "error";
       state.loading = false;
       state.error = payload;

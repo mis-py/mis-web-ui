@@ -1,12 +1,11 @@
-import { useEffect, useState, React } from "react";
+import { useEffect, useState, React, useMemo } from "react";
 import { NavLink, Route, Outlet, useLocation , Navigate, Routes } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import SidebarDesktop from "layouts/Sidebar";
 import Notifications from "components/notifications/Notifications";
-import TopBar from "layouts/TopBar";
 import { ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
-import { useGetMeQuery } from "redux/index";
+//import { useGetMeQuery } from "redux/index";
 // import webSocket from "../config/WebSocketConnection";
 import { useGetModulesQuery } from "redux/index";
 import { firstUppercase } from "config/functions";
@@ -14,7 +13,7 @@ import { RiAppsLine } from "react-icons/ri";
 import { BiTask, BiUser, BiNotification } from "react-icons/bi";
 import { AiOutlineAppstore } from "react-icons/ai";
 import { MdGroups, MdTask } from "react-icons/md";
-import { useGetMyPermissionsQuery } from "redux/index";
+import { useGetMyPermissionsQuery, filterHasCoreSudoSelector } from "redux/api/permissionsApi";
 import { userRoutes } from "routes/users";
 import { teamRoutes } from "routes/teams";
 import { groupRoutes } from "routes/groups";
@@ -26,15 +25,16 @@ import { FiHome, FiCpu, FiUsers, FiMoreVertical } from "react-icons/fi";
 import useModuleRoutes from "routes/modules";
 import Home from "modules/core/Home";
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import TopBar from "layouts/TopBar";
 
 let adminNavs = [
   { icon: <BiUser />, title: "Users", url: "/users" },
   { icon: <FiUsers />, title: "Teams", url: "/teams" },
-  { icon: <MdGroups />, title: "Access Groups", url: "/groups" },
-  { icon: <AiOutlineAppstore />, title: "Applications", url: "/apps", },
-  { icon: <BiTask />, title: "Tasks and Jobs", url: "/jobs", },
+  // { icon: <MdGroups />, title: "Access Groups", url: "/groups" },
+  // { icon: <AiOutlineAppstore />, title: "Applications", url: "/apps" },
+  // { icon: <BiTask />, title: "Tasks and Jobs", url: "/jobs" },
   // { icon: <MdTask />, title: "Consumers", url: "/consumers", },
-  { icon: <BiNotification />, title: "Notifications", url: "/notifications" }
+  // { icon: <BiNotification />, title: "Notifications", url: "/notifications" }
 ];
 
 const getNavLink = (displayName, path, icon) => <NavLink to={path}>{icon}{displayName}</NavLink>
@@ -51,16 +51,17 @@ const MainLayout = () => {
 
     const { isAuthenticated } = useSelector((state) => state.auth);
     const { theme: currentTheme } = useSelector((state) => state.profile);
-    // load user information
-    // const {
-    //   data: getUserId = [],
-    //   isLoading: loadingUserId,
-    //   refetch: refetchProfileData,
-    // } = useGetMeQuery({skip: !isAuthenticated});
 
     const modules = useModuleRoutes();
 
-    const { data: myPermission = {}, isLoading } = useGetMyPermissionsQuery({skip: !isAuthenticated});
+    const userHasCoreSudoPermissions = useMemo(filterHasCoreSudoSelector, []);
+
+    const { data: myPermission = {}, isLoading, isSuccess, error, hasCoreSudo } = useGetMyPermissionsQuery({skip: !isAuthenticated}, {
+      selectFromResult: (result) => ({
+        ...result,
+        hasCoreSudo: userHasCoreSudoPermissions(result)
+      })
+    });
 
     useEffect(() => {
       if (location !== displayLocation) setTransistionStage("fadeOut");
@@ -77,9 +78,7 @@ const MainLayout = () => {
     let mainNavBar = [<li onClick={() => setIsDrawerOpened(false)} key={0}>{getNavLink("Home", "/home", <FiHome/>)}</li>];
     let routes = [<Route index key="home" path="/home" element={<Home/>} />];
 
-    const hasSudoPermission = myPermission.allIds?.find((id)=> myPermission.entities[id].permission.scope === 'core:sudo') !== undefined;
-
-    if (hasSudoPermission){
+    if (hasCoreSudo){
       let adminRoutes = [].concat(userRoutes, teamRoutes, groupRoutes, appRoutes, taskRoutes, consumersRoutes, notificationsRoutes);
       //let menuIsOpen = adminRoutes.filter(item => item.path.includes(location.pathname)).length > 0;
       let menuIsOpen = true;

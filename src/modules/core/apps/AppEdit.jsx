@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { toast } from "react-toastify";
 import {
-    useGetAppByIdQuery,
-    useStartAppMutation,
-    useStopAppMutation,
-    useLoadAppMutation,
-    useUnloadAppMutation,
-    useGetSettingsAppIdQuery
+    useGetModulesQuery,
+    useStartModuleMutation,
+    useStopModuleMutation,
+    useInitModuleMutation,
+    useShutdownModuleMutation,
+
+    useGetGlobalVariablesQuery,
 } from "redux/index";
 
 import { setAppData } from 'redux/slices/appSlice';
@@ -27,9 +28,9 @@ const AppEdit = () => {
     const { 
       data: getApp = null, 
       isLoading: loadingApp
-    } = useGetAppByIdQuery(id);
+    } = useGetModulesQuery({app_id: id});
 
-    const getSettingsAppId = useGetSettingsAppIdQuery(id);
+    const getSettingsAppId = useGetGlobalVariablesQuery({module_id: id});
 
     // fill current user with data
     useEffect(() => {
@@ -39,10 +40,10 @@ const AppEdit = () => {
 
     }, [loadingApp]);
 
-    const [startApp] = useStartAppMutation();
-    const [stopApp] = useStopAppMutation();
-    const [loadApp] = useLoadAppMutation();
-    const [unloadApp] = useUnloadAppMutation();
+    const [startApp] = useStartModuleMutation();
+    const [stopApp] = useStopModuleMutation();
+    const [loadApp] = useInitModuleMutation();
+    const [unloadApp] = useShutdownModuleMutation();
   
     // const { data: getPermissionsUserId = [] } = useGetPermissionsUserIdQuery(id);
     // const [editTeam] = useEditTeamMutation();

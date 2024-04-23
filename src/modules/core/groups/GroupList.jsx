@@ -5,7 +5,7 @@ import { FiEdit, FiXCircle, FiPlus} from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
 import ItemsList from "components/ItemsList";
-import { useDeleteGroupMutation } from "redux/index";
+import { useRemoveGroupMutation } from "redux/index";
 import { useNavigate } from "react-router-dom";
 import { resetGroup } from "redux/slices/groupSlice";
 
@@ -33,7 +33,7 @@ const GroupList = () => {
         }
     ));
 
-    const [deleteGroup] = useDeleteGroupMutation();
+    const [deleteGroup] = useRemoveGroupMutation();
 
     const buttonOptions = [
         {

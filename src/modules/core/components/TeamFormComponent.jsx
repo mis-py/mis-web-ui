@@ -9,29 +9,29 @@ const TeamForm = ({teamId}) => {
     const team = useSelector((state) => state.team);
     const dispatch = useDispatch();
 
-    const { data: usersList = [], isLoading: loadingUsers } = useGetUsersQuery();
+    // const { data: usersList = [], isLoading: loadingUsers } = useGetUsersQuery();
 
     const [ usersData, setUsersData ] = useState({
         selectedUsers: [],
         remainingUsers: []
     });
     
-    useEffect(() => {
-        let mappedUserList = usersList
-            ?.map((item) => {
-            return {
-                value: item.id,
-                label: item.username,
-                teamID: item.team !== null ? item.team.id : null
-            };
-        });
+    // useEffect(() => {
+    //     let mappedUserList = usersList
+    //         ?.map((item) => {
+    //         return {
+    //             value: item.id,
+    //             label: item.username,
+    //             teamID: item.team !== null ? item.team.id : null
+    //         };
+    //     });
 
-        setUsersData({
-            selectedUsers: mappedUserList?.filter((item) => item.teamID == teamId),
-            remainingUsers: mappedUserList?.filter((item) => item.teamID != teamId && item.teamID == null)
-        })
+    //     setUsersData({
+    //         selectedUsers: mappedUserList?.filter((item) => item.teamID == teamId),
+    //         remainingUsers: mappedUserList?.filter((item) => item.teamID != teamId && item.teamID == null)
+    //     })
 
-    }, [loadingUsers]);
+    // }, [loadingUsers]);
 
     return (<>
         <Input

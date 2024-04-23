@@ -3,8 +3,8 @@ import MainLayout from "layouts/MainLayout";
 import Signin from "layouts/Signin";
 import NotFound from "layouts/NotFound";
 import { useDispatch } from "react-redux";
-import { profileRoutes } from "routes/profile";
-import { notificationsRoutes } from "routes/notifications";
+//import { profileRoutes } from "routes/profile";
+//import { notificationsRoutes } from "routes/notifications";
 
 // import { useSelector } from 'react-redux';
 // import LoadingOverlay from "./components/common/LoadingOverlay";

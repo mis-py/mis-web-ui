@@ -1,22 +1,22 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "config/variables";
+//import { baseUrl } from "config/variables";
 
 export const consumersApi = createApi({
     reducerPath: "consumersApi",
     tagTypes: ["Consumers"],
-    baseQuery: fetchBaseQuery({
-        baseUrl,
-    }),
+    //baseQuery: fetchBaseQuery({
+    //    baseUrl,
+    //}),
     endpoints: (build) => ({
         getConsumers: build.query({
-            query: () => ({
-                url: `/consumers/`,
+            query: () => {
+                return {
+                url: "/consumers",
                 method: "GET",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
-            }),
+            }},
             providesTags: (result, error, id) => [{ type: "Consumers", id }],
         }),
         consumersPause: build.mutation({
@@ -25,7 +25,6 @@ export const consumersApi = createApi({
                 method: "POST",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             invalidatesTags: [{ type: "Consumers", id: "LIST" }],  
@@ -36,7 +35,6 @@ export const consumersApi = createApi({
                 method: "POST",
                 headers: {
                     accept: "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             }),
             invalidatesTags: [{ type: "Consumers", id: "LIST" }], 

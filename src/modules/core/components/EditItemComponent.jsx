@@ -9,7 +9,7 @@ const EditItem = ({...props}) => {
         saveButtonEvent,
         sections,
     } = props;
-
+    
     const [selectedTab, selectTab] = useState(0)
     
     const saveButtonTitle = "Save";

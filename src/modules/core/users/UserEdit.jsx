@@ -5,15 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
   useEditUserMutation,
-  useGetUserIdQuery,
+  useGetUserQuery,
   useAddUserMutation,
-  useSettingUserSetMutation,
-  useEditUserPermissionMutation,
+
+  useGetGlobalVariablesQuery,
+  useGetLocalVariablesQuery,
+  useEditLocalVariablesMutation,
 
   useGetPermissionsQuery,
-  useGetPermissionsUserIdQuery,
-  useGetSettingsQuery,
-  useGetSettingsUserIdQuery,
+  useGetUserPermissionsQuery,
+  useEditUserPermissionMutation,
 } from "redux/index";
 
 import {
@@ -37,7 +38,7 @@ const UserEdit = () => {
 
     const { 
       data: getUserId = [], 
-      isLoading: loadingGetUserId } = useGetUserIdQuery(id, {
+      isLoading: loadingGetUserId } = useGetUserQuery({ user_id: id }, {
         skip: editMode === false,
     });
 
@@ -61,7 +62,7 @@ const UserEdit = () => {
 
 
     // this is for update settings
-    const [editUserSettingsSet] = useSettingUserSetMutation();
+    const [editUserVariables] = useEditLocalVariablesMutation();
     const [editUserPermission] = useEditUserPermissionMutation();
 
     // what is this for?
@@ -126,7 +127,7 @@ const UserEdit = () => {
         new_value: item[1]
       }));
       
-      await editUserSettingsSet({
+      await editUserVariables({
         id: user_id,
         body: dataSettings,
       }).then((data) => {
@@ -152,11 +153,11 @@ const UserEdit = () => {
 
     const getPermissions = useGetPermissionsQuery();
 
-    const getPermissionsUserId = useGetPermissionsUserIdQuery(id, {skip: editMode===false});
+    const getPermissionsUserId = useGetUserPermissionsQuery({ user_id: id }, {skip: editMode===false});
 
-    const getSettings = useGetSettingsQuery();
+    const getSettings = useGetGlobalVariablesQuery();
 
-    const getSettingsUserId = useGetSettingsUserIdQuery(id, {skip: editMode===false});;
+    const getSettingsUserId = useGetLocalVariablesQuery({ user_id: id }, {skip: editMode===false});;
 
     const itemProps = {
       pageHeader: ["Administration", "isBack:Users", (editMode ? user.username : "New")],

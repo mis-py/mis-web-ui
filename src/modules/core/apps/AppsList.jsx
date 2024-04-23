@@ -2,7 +2,7 @@ import React from "react";
 import ItemsList from "components/ItemsList";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetLoadedModulesQuery } from "redux/index";
+import { useGetModulesQuery } from "redux/index";
 import { FiEdit, FiXCircle, FiPlus} from "react-icons/fi";
 
 const AppsList = () => {
@@ -13,7 +13,7 @@ const AppsList = () => {
         data: getLoadedModules = [],
         isLoading: loadingModules,
         error: errorModules,
-    } = useGetLoadedModulesQuery();
+    } = useGetModulesQuery();
 
     const searchValue = useSelector((state) => "AppsList" in state.search.searchData ? state.search.searchData["AppsList"] : "");
 

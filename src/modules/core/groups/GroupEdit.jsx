@@ -6,10 +6,10 @@ import {
   useAddGroupMutation, 
   useEditGroupMutation,
   useGetGroupQuery,
-  useEditGroupMembersMutation,
+  // useEditGroupMembersMutation,
   useGetRestrictedObjectsQuery,
   useGetGroupAllowedObjectsQuery,
-  useEditGroupAllowedObjectsMutation
+  // useEditGroupAllowedObjectsMutation
 } from "redux/index";
 
 import { addGroupData } from "redux/slices/groupSlice";
@@ -63,7 +63,7 @@ const GroupEdit = () => {
     //   isLoading: isGroupIdUsersLoading 
     // } = useGetGroupIdUsersQuery(id);
 
-    const [editGroupMembers] = useEditGroupMembersMutation();
+    // const [editGroupMembers] = useEditGroupMembersMutation();
 
     const [editGroup] = useEditGroupMutation();
     const [addGroup] = useAddGroupMutation();
@@ -115,18 +115,18 @@ const GroupEdit = () => {
           id: group_id,
           users_ids: group.members
         }
-
-        await editGroupMembers(params).then((data) => {
-          if (data.error !== undefined && data.error.data.message !== undefined) {
-            toast.error(`Members were not saved: ${data.error.data.message}`);
-          } else {
-            toast.success(`Members saved for group ${group.name}`);
-          }
-          // refetchMembers().then(() => {
-          //   navigate("/groups");
-          //   toast.success("Group members updating");
-          // });
-        });
+        toast.success("NEEDTO IMPLEMENT");
+        // await editGroupMembers(params).then((data) => {
+        //   if (data.error !== undefined && data.error.data.message !== undefined) {
+        //     toast.error(`Members were not saved: ${data.error.data.message}`);
+        //   } else {
+        //     toast.success(`Members saved for group ${group.name}`);
+        //   }
+        //   // refetchMembers().then(() => {
+        //   //   navigate("/groups");
+        //   //   toast.success("Group members updating");
+        //   // });
+        // });
 
     };
 

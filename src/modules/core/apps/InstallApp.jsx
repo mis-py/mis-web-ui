@@ -15,22 +15,22 @@ const InstallApp = () => {
     name: "",
   });
 
-  const [installAppByName] = useInstallAppByNameMutation();
-  const [installAppByUrl] = useInstallAppByUrlMutation();
+  // const [installAppByName] = useInstallAppByNameMutation();
+  // const [installAppByUrl] = useInstallAppByUrlMutation();
 
   const handleCloneApp = async (e) => {
     e.preventDefault();
     // TODO add some popup with progress here
 
     if (formValue.url !== "") {
-      await installAppByUrl({
-        ...formValue,
-      }).unwrap();
+      // await installAppByUrl({
+      //   ...formValue,
+      // }).unwrap();
 
     } else if (formValue.path !== ""){
-      await installAppByName({
-        ...formValue,
-      }).unwrap();
+      // await installAppByName({
+      //   ...formValue,
+      // }).unwrap();
     }
 
     navigate("/apps");

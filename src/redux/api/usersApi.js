@@ -1,129 +1,186 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import RtkDefaultQuery from "config/RtkDefaultQuery";
+import { misAPI } from "./misAPI";
+import {
+  createEntityAdapter,
+  createSelector
+} from '@reduxjs/toolkit'
 
-export const usersApi = createApi({
-  reducerPath: "usersApi",
-  tagTypes: ["Users"],
-  baseQuery: RtkDefaultQuery,
+export const usersApi = misAPI.injectEndpoints({
   endpoints: (build) => ({
     getUsers: build.query({
-      query: (params) => {
-        let url = `/users/`;
-        let queryParams = [];
-
-        if (params !== undefined) {
-          if (params.team_id !== undefined && params.team_id !== null) {
-            queryParams.push(`team_id=${params.team_id}`);
-          }
-        }
-
-        if (queryParams.length) {
-          url += `?${queryParams.join("&")}`;
-        }
-
+      query: (params = {}) => {
+        let { team_id, page = 1, size=50 } = params;
         return {
-          url: url,
+          url: "/users",
+          method: "GET",
+          params: { team_id, page, size }
+        };
+      },
+      providesTags: (result, error, id) => [{ type: "Users", id }],
+      transformResponse: response => response.items
+      // transformResponse: (response)=> {
+        // let newResponse = response.items.reduce((acc, item) => {
+        //   return {[item.id]: item, ...acc}
+        // }, {});
+
+        // return { entities: newResponse, allIds:Object.keys(newResponse) }
+      // }
+    }),
+
+    getUserMy: build.query({
+      query: () => {
+        return {
+          url: "/users/my",
           method: "GET",
         };
       },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: "Users", id })),
-              { type: "Users", id: "LIST" },
-            ]
-          : [{ type: "Users", id: "LIST" }],
-      keepUnusedDataFor: 0.1,
-    }),
-    getUserId: build.query({
-      query: (id) => ({
-        url: `/users/${id}`,
-        method: "GET",
-      }),
       providesTags: (result, error, id) => [{ type: "Users", id }],
-      keepUnusedDataFor: 0.1,
     }),
-    getMe: build.query({
-      query: () => ({
-        url: `/users/me`,
-        method: "GET",
-      }),
-      providesTags: () => [{ type: "Users" }],
-    }),
-    addUser: build.mutation({
-      query: (body) => ({
-        url: "/users/create",
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body,
-      }),
-      invalidatesTags: [{ type: "Users", id: "LIST" }],
-    }),
-    editUser: build.mutation({
-      query: ({ id, ...rest }) => ({
-        url: `/users/${id}`,
-        method: "PUT",
-        headers: {
-          accept: "application/json",
-        },
-        body: rest,
-      }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Users", id }, { type: "Users", id: "LIST" }],
-    }),
-    deleteUser: build.mutation({
-      query: (id) => ({
-        url: `/users/${id}`,
-        method: "DELETE",
-        headers: {
-          accept: "application/json",
-        },
-      }),
-      invalidatesTags: [{ type: "Users", id: "LIST" }],
-    }),
-    saveUserPhoto: build.mutation({
-      query: ({ userId, formData }) => {
+
+    editUserMy: build.mutation({
+      query: (params) => {
+        let { username } = params;
         return {
-          url: `/users/${userId}/photo`,
+          url: "/users/my",
+          method: "PUT",
+          body: { username }
+        }
+      },
+      invalidatesTags: (result, error, { id }) => [{ type: "Users", id }],
+    }),
+
+    addUser: build.mutation({
+      query: (params) => {
+        let { username, password, team_id, settings, position, permissions } = params;
+        return {
+          url: "/users/add",
           method: "POST",
-          body: formData,
+          body: {
+            username,
+            password,
+            team_id,
+            settings,
+            position,
+            permissions
+          }
+        }
+      },
+      providesTags: (result, error, { id }) => [{ type: "Users", id }],
+    }),
+
+    getUser: build.query({
+      query: (params) => {
+        let { user_id } = params;
+        return {
+          url: "/users/get",
+          method: "GET",
+          params: { user_id }
         };
       },
-      invalidatesTags: (result, error, id) => [{ type: "Users", id: "LIST" }, { type: "Users", id }],
+      providesTags: (result, error, id) => [{ type: "Users", id }],
     }),
-    userLogout: build.mutation({
-      query: () => ({
-        url: "/auth/logout",
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-      }),
-      invalidatesTags: [{ type: "Users", id: "LIST" }],
+
+    editUser: build.mutation({
+      query: (params) => {
+        let { user_id, username, team_id, new_password, disabled, position } = params;
+        return {
+          url: "/users/edit",
+          method: "PUT",
+          params: { user_id },
+          body: {
+            username,
+            team_id,
+            new_password,
+            disabled,
+            position
+          }
+        };
+      },
+      invalidatesTags: (result, error, { id }) => [{ type: "Users", id }],
     }),
-    userResetPassword: build.mutation({
-      query: (data) => ({
-        url: "/auth/change_password",
-        method: "POST",
-        body: data,
-        headers: {
-          "content-type": "application/json",
-        },
-      }),
-      invalidatesTags: [{ type: "Users", id: "LIST" }],
+
+    removeUser: build.mutation({
+      query: (params) => {
+        let { user_id } = params;
+        return {
+          url: "/users/remove",
+          method: "DELETE",
+          params: { user_id }
+        };
+      },
+      invalidatesTags: (result, error, { id }) => [{ type: "Users", id }],
     }),
+
+    // saveUserPhoto: build.mutation({
+    //   query: ({ userId, formData }) => {
+    //     return {
+    //       url: `/users/${userId}/photo`,
+    //       method: "POST",
+    //       body: formData,
+    //     };
+    //   },
+    //   invalidatesTags: (result, error, id) => [{ type: "Users", id: "LIST" }, { type: "Users", id }],
+    // }),
+    // userLogout: build.mutation({
+    //   query: () => ({
+    //     url: "/auth/logout",
+    //     method: "POST",
+    //     headers: {
+    //       "content-type": "application/json",
+    //     },
+    //   }),
+    //   invalidatesTags: [{ type: "Users", id: "LIST" }],
+    // }),
+    // userResetPassword: build.mutation({
+    //   query: (data) => ({
+    //     url: "/auth/change_password",
+    //     method: "POST",
+    //     body: data,
+    //     headers: {
+    //       "content-type": "application/json",
+    //     },
+    //   }),
+    //   invalidatesTags: [{ type: "Users", id: "LIST" }],
+    // }),
   }),
 });
 
+// Initial selector
+// export const selectUsersResult = usersApi.endpoints.getUsers.select();
+
+// const emptyUsers = [];
+
+// export const selectAllUsers = createSelector(
+//   selectUsersResult,
+//   usersResult => {
+//     console.log(usersResult);
+//     return usersResult?.items ?? emptyUsers;
+//   }
+// )
+
+// export const selectUserById = createSelector(
+//   selectAllUsers,
+//   (state, userId) => userId,
+//   (users, userId) => users.find(user => user.id === userId)
+// )
+
+export const filterUsersByStringSelector = () => {
+  const emptyArray = [];
+  return createSelector(
+    items => items.data,
+    (items, val) => val.toLowerCase().trim(),
+    (items, val) => items?.filter(user => user.username.toLowerCase().includes(val)) ?? emptyArray
+  ) 
+}
+
 export const {
   useGetUsersQuery,
-  useGetMeQuery,
-  useGetUserIdQuery,
+  useGetUserMyQuery,
+  useEditUserMyMutation,
   useAddUserMutation,
+  useGetUserQuery,
   useEditUserMutation,
-  useDeleteUserMutation,
-  useSaveUserPhotoMutation,
-  useUserLogoutMutation,
-  useUserResetPasswordMutation
+  useRemoveUserMutation,
+  // useSaveUserPhotoMutation,
+  // useUserLogoutMutation,
+  // useUserResetPasswordMutation
 } = usersApi;

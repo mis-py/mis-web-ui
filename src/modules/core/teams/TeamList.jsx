@@ -1,7 +1,7 @@
-import React from "react";
-import { useGetTeamsQuery, useDeleteTeamMutation } from "redux/index";
+import React, { useMemo, useState } from "react";
+import { useGetTeamsQuery, useRemoveTeamMutation, filterTeamsByStringSelector } from "redux/index";
 import ItemsList from "components/ItemsList";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify"
 import { FiEdit, FiXCircle, FiPlus} from "react-icons/fi";
 import { confirmAlert } from "react-confirm-alert";
@@ -9,45 +9,41 @@ import { useNavigate } from "react-router-dom";
 import TeamImg from "assets/img/groups.png";
 // import TeamUsersShortList from "components/teams/TeamUsersShortList"
 import { resetTeam } from "redux/slices/teamSlice";
+import ListItem from "components/ListItem";
 
 const TeamList = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [searchValue, setSearchValue] = useState("");
+
+    const [deleteTeam] = useRemoveTeamMutation();
+
+    const teamsSearchRresult = useMemo(filterTeamsByStringSelector, []);
 
     const {
-      data: getTeams = [],
-      isLoading: loadingGetTeams,
-      error: errorGetTeams,
-    } = useGetTeamsQuery();
-
-    const searchValue = useSelector((state) => "TeamList" in state.search.searchData ? state.search.searchData["TeamList"] : "");
+      data,
+      isLoading,
+      isSuccess,
+      error,
+      searchFiltered,
+    } = useGetTeamsQuery(undefined, {
+      selectFromResult: (result) => ({
+        ...result,
+        searchFiltered: teamsSearchRresult(result, searchValue)
+      })
+    });
 
     React.useEffect(() => {
       dispatch(resetTeam());
-    }, [loadingGetTeams, searchValue]);
-
-    const filteredTeams = getTeams.filter((el) => el.name.toLowerCase().includes(searchValue.toLowerCase().trim())).map((item)=> (
-      {
+    }, [isLoading, searchValue]);
+    
+    let teams = searchFiltered.map((item)=> {
+      return {
         ...item, 
         title: item.name,
         avatar: TeamImg
       }
-    ));
-
-    const [deleteTeam] = useDeleteTeamMutation();
-
-    const buttonOptions = [
-        {
-            title: "Edit",
-            onClick: (item) => navigate(`/teams/${ item.id }`),
-            icon: <FiEdit />
-        },
-        {
-            title: "Remove",
-            onClick: (item) => handleDeleteTeam(item.id),
-            icon: <FiXCircle />
-        }
-    ];
+    });
   
     const handleDeleteTeam = async (id) => {
         confirmAlert({
@@ -70,27 +66,50 @@ const TeamList = () => {
         });
     };
 
-    const routes = [
-      {
-        route: '/teams/add',
-        icon: <FiPlus />
-      }
-    ];
-
     return (
       <>
         <ItemsList 
-          routes={routes} 
+          routes={[]} 
           pageHeader={["Administration", "Teams"]} 
-          getItems={filteredTeams} 
-          isLoading={loadingGetTeams} 
-          buttonOptions={buttonOptions}
+          getItems={[]} 
+          isLoading={isLoading} 
+          buttonOptions={[]}
           searchParams={{
             key: "TeamList",
             value: searchValue,
-            placeholder: "Enter team name to search...",
-            showSearch: false
+            placeholder: "Team name...",
+            showSearch: false,
+            onSearch: setSearchValue
           }}
+          headerButtons={
+            [
+              {
+                title: "Add Team",
+                route: '/teams/add',
+                icon: <FiPlus />
+              }
+            ]
+          }
+          items={
+            teams.map((item, index) => (
+              <ListItem
+                key={index}
+                item={item}
+                buttonOptions={[
+                  {
+                      title: "Edit",
+                      onClick: (item) => navigate(`/teams/${ item.id }`),
+                      icon: <FiEdit />
+                  },
+                  {
+                      title: "Remove",
+                      onClick: (item) => handleDeleteTeam(item.id),
+                      icon: <FiXCircle />
+                  }
+              ]}
+              />
+            ))
+          }
         />
       {/* <TeamUsersShortList/> */}
       </>

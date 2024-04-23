@@ -1,88 +1,121 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import RtkDefaultQuery from "config/RtkDefaultQuery";
+import { misAPI } from "./misAPI";
+import {
+  createEntityAdapter,
+  createSelector
+} from '@reduxjs/toolkit'
 
-export const teamsApi = createApi({
-  reducerPath: "teamsApi",
-  tagTypes: ["Teams"],
-  baseQuery: RtkDefaultQuery,
+export const teamsApi = misAPI.injectEndpoints({
   endpoints: (build) => ({
+
     getTeams: build.query({
-      query: () => ({
-        url: `/teams/`,
-        method: "GET",
-      }),
-      providesTags: (result) => {
-        if (result) {
-          const tags = result.map(({ id }) => ({ type: "Teams", id }));
-          tags.push({ type: "Teams", id: "LIST" });
-          return tags;
-        }
-        return [{ type: "Teams", id: "LIST" }];
+      query: (params = {}) => {
+        let { page = 1, size=50 } = params;
+        return {
+          url: "/teams",
+          method: "GET",
+          params: { page, size }
+        };
       },
-      keepUnusedDataFor: 0.1,
+      providesTags: (result, error, id) =>  [{ type: "Teams", id }],
+      transformResponse: response => response.items
+      // transformResponse: (response)=> {
+      //   let newResponse = response.items.reduce((acc, item) => {
+      //     return {[item.id]: item, ...acc}
+      //   }, {});
+
+      //   return { entities: newResponse, allIds:Object.keys(newResponse) }
+      // }
     }),
-    getTeamId: build.query({
-      query: (id) => ({
-        url: `/teams/${id}`,
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-        },
-      }),
+
+    getTeam: build.query({
+      query: (params) => {
+        let { team_id } = params;
+        return {
+          url: "/teams/get",
+          method: "GET",
+          params: { team_id }
+        }
+      },
       providesTags: (result, error, id) => [{ type: "Teams", id }],
-      keepUnusedDataFor: 0.1,
     }),
+
     addTeam: build.mutation({
-      query: (body) => ({
-        url: "/teams/create",
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body,
-      }),
-      invalidatesTags: [{ type: "Teams", id: "LIST" }],
-    }),
-    editTeam: build.mutation({
-      query: ({ id, ...rest }) => ({
-        url: `/teams/${id}`,
-        method: "PUT",
-        headers: {
-          accept: "application/json",
-        },
-        body: rest,
-      }),
+      query: (params) => {
+        let { name, permissions, user_ids, settings } = params; 
+        return {
+          url: "/teams/add",
+          method: "POST",
+          body: {
+            name,
+            permissions,
+            user_ids,
+            settings
+          },
+        }
+      },
       invalidatesTags: (result, error, { id }) => [{ type: "Teams", id }],
     }),
-    deleteTeam: build.mutation({
-      query: (id) => ({
-        url: `/teams/${id}`,
-        method: "DELETE",
-        headers: {
-          accept: "application/json",
-        },
-      }),
-      invalidatesTags: [{ type: "Teams", id: "LIST" }],
+
+    editTeam: build.mutation({
+      query: (params) => {
+        let { team_id, name, permissions, user_ids, settings } = params; 
+
+        return {
+          url: "/teams/edit",
+          method: "PUT",
+          params: { team_id },
+          body: {
+            name,
+            permissions,
+            user_ids,
+            settings
+          },
+        };
+      },
+      invalidatesTags: (result, error, { id }) => [{ type: "Teams", id }],
     }),
+
+    removeTeam: build.mutation({
+      query: (params) => {
+        let { team_id } = params;
+        return {
+          url: "/teams/remove",
+          method: "DELETE",
+          params: { team_id: team_id }
+        }
+      },
+      invalidatesTags: (result, error, { id }) => [{ type: "Teams", id }],
+    }),
+
     editTeamMembers: build.mutation({
-      query: ({ id, members }) => ({
-        url: `/teams/${id}/users`,
-        method: "PUT",
-        headers: {
-          accept: "application/json",
-        },
-        body: members,
-      }),
+      query: (params) => {
+        let { team_id, user_ids } = params;
+        return {
+          url: "/teams/edit/users",
+          method: "PUT",
+          params: { team_id },
+          body: user_ids,
+        }},
       invalidatesTags: (result, error, { id }) => [{ type: "Teams", id }],
     }),
   }),
 });
 
+
+export const filterTeamsByStringSelector = () => {
+  const emptyArray = [];
+  return createSelector(
+    items => items.data,
+    (items, val) => val.toLowerCase().trim(),
+    (items, val) => items?.filter(team => team.name.toLowerCase().includes(val)) ?? emptyArray
+  ) 
+}
+
 export const {
   useGetTeamsQuery,
-  useGetTeamIdQuery,
+  useGetTeamQuery,
   useAddTeamMutation,
   useEditTeamMutation,
-  useDeleteTeamMutation,
+  useRemoveTeamMutation,
   useEditTeamMembersMutation,
 } = teamsApi;
