@@ -41,6 +41,10 @@ const AppForm = ({app, onAppStateChange, onAppLoadStateChange}) => {
     const handleUnloadApp = () => {onAppLoadStateChange(false)}
 
     return (<>
+        <p>{app.manifest.display_name} {app.manifest.version}</p>
+        <p>{app.manifest.description}</p>
+        <p>Enabled: {app.enabled.toString()}</p>
+        <p>State: {app.state}</p>
         <div className="form-control">
             <label className="label">
                 <span className="label-text">Enable app</span>
@@ -49,7 +53,8 @@ const AppForm = ({app, onAppStateChange, onAppLoadStateChange}) => {
                 type="checkbox" 
                 className="toggle toggle-success" 
                 checked={checked}
-                onChange={onChange} 
+                onChange={onChange}
+                value={checked}
             />
         </div>
         
@@ -61,17 +66,42 @@ const AppForm = ({app, onAppStateChange, onAppLoadStateChange}) => {
             value={name}
             readOnly={true}
         />
+        <Input
+            label="Author"
+            type="text"
+            id="author"
+            autoComplete="off"
+            value={app.manifest.author}
+            readOnly={true}
+        />
+        <Input
+            label="Category"
+            type="text"
+            id="category"
+            autoComplete="off"
+            value={app.manifest.category}
+            readOnly={true}
+        />
+        <Input
+            label="Dependencies"
+            type="text"
+            id="dependencies"
+            autoComplete="off"
+            value={app.manifest.dependencies.join(', ')}
+            readOnly={true}
+        />
+
 
         <div className="flex-row form-control pt-4 gap-2">
           <button
             onClick={handleLoadApp}
             className="btn btn-outline btn-sm flex-1"
-          >Load</button>
+          >Init</button>
 
         <button
             onClick={handleUnloadApp}
             className="btn btn-outline btn-sm flex-1"
-          >Unload</button>
+          >Shutdown</button>
         </div>
     </>
     );

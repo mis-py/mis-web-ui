@@ -60,7 +60,7 @@ export const usersApi = misAPI.injectEndpoints({
             team_id,
             settings,
             position,
-            permissions
+            permissions,
           }
         }
       },

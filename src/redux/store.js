@@ -5,22 +5,22 @@ import { usersApi } from "./api/usersApi";
 import { teamsApi } from "./api/teamsApi";
 import { permissionsApi } from "./api/permissionsApi";
 //import { appsApi } from "./api/appsApi";
-import { groupsApi } from "./api/groupsApi";
-import { restrictedObjectsApi } from "./api/restrictedObjectsApi";
+// import { groupsApi } from "./api/groupsApi";
+// import { restrictedObjectsApi } from "./api/restrictedObjectsApi";
 import { modulesApi } from "./api/modulesApi";
-import { settingsApi } from "./api/settingsApi";
-import { logsApi } from "./api/logsApi";
-import { notificationsApi } from "./api/notificationsApi";
-import { consumersApi } from "./api/consumersApi";
-import { jobsApi } from "./api/jobsApi";
-import { tasksApi } from "./api/tasksApi";
+import { settingsApi } from "./api/variablesApi";
+// import { logsApi } from "./api/logsApi";
+// import { notificationsApi } from "./api/notificationsApi";
+// import { consumersApi } from "./api/consumersApi";
+// import { jobsApi } from "./api/jobsApi";
+// import { tasksApi } from "./api/tasksApi";
 
 // modules
-import { webcatApi } from "./api/modulesApi/webcatApi";
-import { statabotApi } from "./api/modulesApi/statabotApi";
-import { autoAdminApi } from "./api/modulesApi/autoAdminApi";
-import { binomApi } from "./api/modulesApi/binomDomainApi";
-import { proxyApi } from "./api/modulesApi/proxyApi";
+// import { webcatApi } from "./api/modulesApi/webcatApi";
+// import { statabotApi } from "./api/modulesApi/statabotApi";
+// import { autoAdminApi } from "./api/modulesApi/autoAdminApi";
+// import { binomApi } from "./api/modulesApi/binomDomainApi";
+// import { proxyApi } from "./api/modulesApi/proxyApi";
 
 //slices
 import { authReducer } from "./slices/authSlice";
@@ -57,21 +57,6 @@ import socketMiddleware from "redux/middleware/socket";
 
 //     next(action);
 // };
-const crashReporter = store => next => action => {
-    console.log(action.type, action.payload, action.meta, action.error);
-
-    if (action.payload && action.payload.status == false){
-        throw "Error"
-    }
-
-    try {
-        return next(action)
-    } catch (err) {
-        console.error(err)
-        // Call notification here
-        throw err
-    }
-  }
 
 export const store = configureStore({
   reducer: {
@@ -80,22 +65,22 @@ export const store = configureStore({
     [teamsApi.reducerPath]: teamsApi.reducer,
     [permissionsApi.reducerPath]: permissionsApi.reducer,
     //[appsApi.reducerPath]: appsApi.reducer,
-    [groupsApi.reducerPath]: groupsApi.reducer,
-    [restrictedObjectsApi.reducerPath]: restrictedObjectsApi.reducer,
+    // [groupsApi.reducerPath]: groupsApi.reducer,
+    // [restrictedObjectsApi.reducerPath]: restrictedObjectsApi.reducer,
     [modulesApi.reducerPath]: modulesApi.reducer,
     [settingsApi.reducerPath]: settingsApi.reducer,
-    [logsApi.reducerPath]: logsApi.reducer,
-    [notificationsApi.reducerPath]: notificationsApi.reducer,
-    [tasksApi.reducerPath]: tasksApi.reducer,
-    [jobsApi.reducerPath]: jobsApi.reducer,
-    [consumersApi.reducerPath]: consumersApi.reducer,
+    // [logsApi.reducerPath]: logsApi.reducer,
+    // [notificationsApi.reducerPath]: notificationsApi.reducer,
+    // [tasksApi.reducerPath]: tasksApi.reducer,
+    // [jobsApi.reducerPath]: jobsApi.reducer,
+    // [consumersApi.reducerPath]: consumersApi.reducer,
 
     //modules
-    [webcatApi.reducerPath]: webcatApi.reducer,
-    [statabotApi.reducerPath]: statabotApi.reducer,
-    [autoAdminApi.reducerPath]: autoAdminApi.reducer,
-    [binomApi.reducerPath]: binomApi.reducer,
-    [proxyApi.reducerPath]: proxyApi.reducer,
+    // [webcatApi.reducerPath]: webcatApi.reducer,
+    // [statabotApi.reducerPath]: statabotApi.reducer,
+    // [autoAdminApi.reducerPath]: autoAdminApi.reducer,
+    // [binomApi.reducerPath]: binomApi.reducer,
+    // [proxyApi.reducerPath]: proxyApi.reducer,
 
     //slices
     auth: authReducer,
@@ -115,22 +100,22 @@ export const store = configureStore({
       teamsApi.middleware,
       permissionsApi.middleware,
       //appsApi.middleware,
-      groupsApi.middleware,
-      restrictedObjectsApi.middleware,
+      // groupsApi.middleware,
+      // restrictedObjectsApi.middleware,
       modulesApi.middleware,
       settingsApi.middleware,
-      logsApi.middleware,
-      notificationsApi.middleware,
-      jobsApi.middleware,
-      tasksApi.middleware,
-      consumersApi.middleware,
+      // logsApi.middleware,
+      // notificationsApi.middleware,
+      // jobsApi.middleware,
+      // tasksApi.middleware,
+      // consumersApi.middleware,
 
       //modules
-      webcatApi.middleware,
-      statabotApi.middleware,
-      autoAdminApi.middleware,
-      binomApi.middleware,
-      proxyApi.middleware,
+      // webcatApi.middleware,
+      // statabotApi.middleware,
+      // autoAdminApi.middleware,
+      // binomApi.middleware,
+      // proxyApi.middleware,
 
       //mutationLoadingMiddleware,
       //crashReporter,

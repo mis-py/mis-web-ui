@@ -3,7 +3,7 @@ import RtkDefaultQuery from "redux/api/RtkDefaultQuery";
 
 export const misAPI = createApi({
   reducerPath: "misAPI",
-  tagTypes: ["Users", "Permissions", "Teams", "Variables"],
+  tagTypes: ["Users", "Permissions", "Teams", "Variables", "Modules"],
   baseQuery: RtkDefaultQuery,
   endpoints: () => ({})
 });

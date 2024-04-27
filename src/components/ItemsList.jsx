@@ -5,7 +5,7 @@ import PageHeader from "components/common/PageHeader";
 import { Link } from "react-router-dom";
 import Search from "components/common/SearchComponent";
 
-const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOptions, headerButtons, itemButtons, items, ...props }) => {
+const ItemsList = ({ pageHeader, headerButtons, items, searchParams }) => {
 
   const links = headerButtons?.map((item, index) => (
     <Link
@@ -17,7 +17,7 @@ const ItemsList = ({ routes, pageHeader, getItems, isLoading, hasDots, buttonOpt
         {item.icon}
     </Link>
   ));
-  const searchElement = props.searchParams !== undefined && <Search searchParams={props.searchParams} />;
+  const searchElement = searchParams !== undefined && <Search searchParams={searchParams} />;
 
   return <>
       <div className="flex items-center justify-between">

@@ -1,5 +1,5 @@
 // import Apps from "modules/core/apps";
-import InstallApp from "modules/core/apps/InstallApp";
+// import InstallApp from "modules/core/apps/InstallApp";
 // import LogsApp from "modules/core/apps/LogsApp";
 // import SettingsApp from "modules/core/apps/SettingsApp";
 // import ManageGroupApp from "modules/core/apps/ManageGroupApp";
@@ -10,17 +10,17 @@ import AppEdit from "modules/core/apps/AppEdit";
 
 export const appRoutes = [
   {
-    path: "/apps",
+    path: "/modules",
     element: <AppsList />
   },
   {
-    path: "/apps/:id",
+    path: "/modules/:id",
     element: <AppEdit />,
   },
-  {
-    path: "/apps/install",
-    element: <InstallApp />,
-  },
+  // {
+  //   path: "/modules/install",
+  //   element: <InstallApp />,
+  // },
   // {
   //   path: "/apps/logs/:id",
   //   element: <LogsApp />,

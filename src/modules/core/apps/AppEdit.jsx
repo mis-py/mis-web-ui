@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,36 +9,46 @@ import {
     useStopModuleMutation,
     useInitModuleMutation,
     useShutdownModuleMutation,
-
+  
     useGetGlobalVariablesQuery,
 } from "redux/index";
+
+import { selectFirstSelector } from 'redux/api/modulesApi';
 
 import { setAppData } from 'redux/slices/appSlice';
 
 import EditItem from "modules/core/components/EditItemComponent";
 import AppForm from "modules/core/components/AppFormComponent";
-import SettingsForm from "modules/core/components/SettingsFormComponent";
+import SettingsForm from "modules/core/components/VariablesFormComponent";
 
 const AppEdit = () => {
     const { id } = useParams();
 
     const dispatch = useDispatch();
-    const app = useSelector((state) => state.app);
+
+    const modulesGetRresult = useMemo(selectFirstSelector, []);
 
     const { 
-      data: getApp = null, 
-      isLoading: loadingApp
-    } = useGetModulesQuery({app_id: id});
-
-    const getSettingsAppId = useGetGlobalVariablesQuery({module_id: id});
+      data: getApp,
+      isLoading,
+      isSuccess,
+      error,
+    } = useGetModulesQuery({module_id: id}, {
+      selectFromResult: (result) => ({
+        ...result,
+        data: modulesGetRresult(result)
+      })
+    });
+    
+    const manifest = getApp?.manifest;
 
     // fill current user with data
-    useEffect(() => {
-        if (!loadingApp) {
-            dispatch(setAppData(getApp));
-        }
+    // useEffect(() => {
+    //     if (!loadingApp) {
+    //         dispatch(setAppData(getApp[0]));
+    //     }
 
-    }, [loadingApp]);
+    // }, [loadingApp]);
 
     const [startApp] = useStartModuleMutation();
     const [stopApp] = useStopModuleMutation();
@@ -62,17 +72,17 @@ const AppEdit = () => {
 
     const handleSave = async (e) => {
         e.preventDefault();
-        toast.success(`Saved app ${app.name}`);
+        toast.success(`Saved app ${getApp.name}`);
     }
 
     const handleAppStateChange = async (e) => {
         let callMethod = e ? startApp : stopApp;
 
-        await callMethod(app.id).then((data) => {
+        await callMethod({module_id: getApp.id}).then((data) => {
             if (data.error !== undefined && data.error.data.message !== undefined) {
-                toast.error(`Error during change app ${app.name} state`);
+                toast.error(`Error during change app ${getApp.name} state`);
               } else {
-                toast.success(`App ${app.name} ${e ? 'started' : 'stopped'}`);
+                toast.success(`App ${getApp.name} ${e ? 'started' : 'stopped'}`);
               }
         });
     }
@@ -80,29 +90,35 @@ const AppEdit = () => {
     const handleAppLoadStateChange = async (load) => {
       let callMethod = load ? loadApp : unloadApp;
       
-      await callMethod(app.id).then((data) => {
+      await callMethod({module_id: getApp.id}).then((data) => {
         if (data.error !== undefined && data.error.data.message !== undefined) {
-            toast.error(`Error during change app ${app.name} loading state`);
+            toast.error(`Error during change app ${getApp.name} loading state`);
           } else {
-            toast.success(`App ${app.name} ${load ? 'loaded' : 'unloaded'}`);
+            toast.success(`App ${getApp.name} ${load ? 'loaded' : 'unloaded'}`);
           }
       });
     }
 
-    return <EditItem
-      pageHeader={["Administration", "isBack:Apps", app.name]}
-      saveButtonEvent={handleSave}
-      sections={[
-        {
-            name: "App",
-            element: <AppForm app={getApp} onAppStateChange={handleAppStateChange} onAppLoadStateChange={handleAppLoadStateChange} /> 
-        },
-        {
-            name: "Settings",
-            element: <SettingsForm isGlobal={true} settingsData={getSettingsAppId} itemSettings={getSettingsAppId} />
-        }
-      ]}
-    />;
+    return (
+        isSuccess ? (
+          <EditItem
+          pageHeader={["Administration", {name: "Modules", path: "/modules"}, manifest?.display_name ?? ""]}
+          saveButtonEvent={handleSave}
+          sections={[
+            {
+                name: "App",
+                element: <AppForm app={getApp} onAppStateChange={handleAppStateChange} onAppLoadStateChange={handleAppLoadStateChange} /> 
+            },
+            {
+                name: "Settings",
+                element: <SettingsForm module_id={id} />
+            }
+          ]}
+          />
+        ) : (
+          <div>Loading...</div>
+        )
+    )
   };
   
   export default AppEdit;

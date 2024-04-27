@@ -18,103 +18,56 @@ export const permissionsApi = misAPI.injectEndpoints({
       },
       providesTags: (result, error, id) => [{ type: "Permissions", id }],
       transformResponse: response => response.items
-      // transformResponse: (response) => {
-      //   let newResponse = response.reduce((acc, item) => {
-      //     return {[item.id]: item, ...acc}
-      //   }, {});
-        
-      //   return { entities: newResponse, allIds:Object.keys(newResponse) }
-      // }
     }),
 
-    getUserPermissions: build.query({
+    getGrantedPermissions: build.query({
       query: (params) => {
-        let { user_id } = params;
+        let { user_id=null, team_id=null } = params;
         return {
-          url: "/permissions/get/user",
+          url: "/permissions/granted",
           method: "GET",
-          params: { user_id }
+          params: { user_id, team_id }
         }
       },
       providesTags: (result, error, id) => [{ type: "Permissions", id }],      
-      // transformResponse: (response) => {
-      //   let newResponse = response.reduce((acc, item) => {
-      //     return {[item.permission.id]: item, ...acc}
-      //   }, {});
-
-      //   return { entities: newResponse, allIds:Object.keys(newResponse) }
-      // }
       transformResponse: response => response.items,
     }),
 
-    editUserPermission: build.mutation({
+    editGrantedPermission: build.mutation({
       query: (params) => {
-        let { user_id, scopesList } = params;
+        let { user_id=null, team_id=null, scopesList } = params;
         return {
-          url: "/permissions/edit/user",
+          url: "/permissions/granted",
           method: "PUT",
-          credentials: "include",
-          params: { user_id },
+          params: { user_id, team_id },
           body: scopesList,
       }},
-      invalidatesTags: (result, error, { id }) => [{ type: "Permissions", id }],
+      invalidatesTags: (result, error, id ) => [{ type: "Permissions", id }],
     }),
 
-    getMyPermissions: build.query({
+    getMyGrantedPermissions: build.query({
       query: () => {
         return {
-          url: "/permissions/my",
+          url: "/permissions/granted/my",
           method: "GET",
         }
       },
       providesTags: () => [{ type: "Permissions" }],
       transformResponse: response => response.items,
-      // transformResponse: (response)=> {
-      //   let newResponse = response.items.reduce((acc, item) => {
-      //     return {[item.id]: item, ...acc}
-      //   }, {});
-
-      //   return { entities: newResponse, allIds:Object.keys(newResponse) }
-      // }
-    }),
-    // response.reduce((acc, curr) => {
-    //   acc[curr.id] = curr
-    //   return acc
-    // }, {})
-    getTeamPermissions: build.query({
-      query: (params) => {
-        let { team_id } = params;
-        return {
-          url: "/permissions/get/team",
-          method: "GET",
-          params: { team_id }
-        }
-      },
-      providesTags: (result, error, id) => [{ type: "Permissions", id }],
-      transformResponse: response => response.items,
-      // transformResponse: (response) => {
-      //   let newResponse = response.reduce((acc, item) => {
-      //     return { [item.permission.id]: item, ...acc };
-      //   }, {});
-  
-      //   return { entities: newResponse, allIds: Object.keys(newResponse) };
-      // },
-    }),
-    
-    editTeamPermissions: build.mutation({
-      query: (params) => {
-        let { team_id, scopesList } = params;
-        return {
-          url: "/permissions/edit/team",
-          method: "PUT",
-          params: { team_id },
-          body: scopesList,
-        }
-      },
-      invalidatesTags: (result, error, { teamId }) => [{ type: "Permissions", id: teamId }],
     }),
   }),
 });
+
+export const filterPermissionByStringSelector = () => {
+  const emptyArray = [];
+  return createSelector(
+    items => items.data,
+    (items, val) => val.toLowerCase().trim(),
+    (items, val) => items?.filter(permission => permission.app.name.toLocaleLowerCase().includes(val) || permission.scope.toLocaleLowerCase().includes(val)) ?? emptyArray
+  ) 
+}
+
+
 
 export const filterHasCoreSudoSelector = () => {
   const emptyArray = [];
@@ -127,9 +80,7 @@ export const filterHasCoreSudoSelector = () => {
 
 export const {
   useGetPermissionsQuery,
-  useGetUserPermissionsQuery,
-  useEditUserPermissionMutation,
-  useGetMyPermissionsQuery,
-  useGetTeamPermissionsQuery,
-  useEditTeamPermissionsMutation,
+  useGetGrantedPermissionsQuery,
+  useEditGrantedPermissionMutation,
+  useGetMyGrantedPermissionsQuery,
 } = permissionsApi;

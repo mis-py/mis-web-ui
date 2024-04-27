@@ -7,7 +7,7 @@ export * from "./api/permissionsApi";
 export * from "./api/groupsApi";
 export * from "./api/restrictedObjectsApi";
 export * from "./api/modulesApi";
-export * from "./api/settingsApi";
+export * from "./api/variablesApi";
 export * from "./api/logsApi";
 export * from "./api/consumersApi";
 export * from "./api/jobsApi";

@@ -1,181 +1,124 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { toast } from "react-toastify";
 import {
   useEditUserMutation,
-  useGetUserQuery,
   useAddUserMutation,
 
-  useGetGlobalVariablesQuery,
-  useGetLocalVariablesQuery,
   useEditLocalVariablesMutation,
-
-  useGetPermissionsQuery,
-  useGetUserPermissionsQuery,
-  useEditUserPermissionMutation,
+  useEditGrantedPermissionMutation,
 } from "redux/index";
-
-import {
-  addUserName,
-  addUserTeam,
-  addUserPosition,
-} from "redux/slices/userSlice";
 
 import EditItem from "modules/core/components/EditItemComponent";
 import UserForm from "modules/core/components/UserFormComponent";
-import SettingsForm from "modules/core/components/SettingsFormComponent";
+import VariablesForm from "modules/core/components/VariablesFormComponent";
 import PermissionsForm from "modules/core/components/PermissionFormComponent";
 
 const UserEdit = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
 
     const editMode = id !== undefined;
 
-    const dispatch = useDispatch();
-    const user = useSelector((state) => state.user);
+    const [user, setUser] = useState({});
 
-    const { 
-      data: getUserId = [], 
-      isLoading: loadingGetUserId } = useGetUserQuery({ user_id: id }, {
-        skip: editMode === false,
-    });
-
-    // fill current user with data
-    useEffect(() => {
-        if (!loadingGetUserId && editMode) {
-            dispatch(addUserName(getUserId.username));
-            dispatch(addUserTeam(
-                getUserId.team === null
-                ? null
-                : { value: getUserId.team.id, label: getUserId.team.name }
-            )
-            );
-            dispatch(addUserPosition(getUserId.position));
-        }
-    }, [loadingGetUserId]);
-  
-    // const { data: getPermissionsUserId = [] } = useGetPermissionsUserIdQuery(id);
     const [editUser] = useEditUserMutation();
     const [addUser] = useAddUserMutation();
 
-
-    // this is for update settings
     const [editUserVariables] = useEditLocalVariablesMutation();
-    const [editUserPermission] = useEditUserPermissionMutation();
+    const [editUserPermission] = useEditGrantedPermissionMutation();
 
-    // what is this for?
-    // const { refetch: refetchUsers } = useGetUsersQuery();
-
-    // handle save all data
     const handleSave = async (e) => {
       e.preventDefault();
 
-      if (editMode) {
-        await handleEditUser();
-      } else {
-        await handleAddUser();
-      }
-
-      // refetchUsers();
-      //navigate(`/users/${id}`);
-    }
-
-    const handleAddUser = async () => {
-      let response = await addUser({
+      let params = {
+        user_id: id,
         username: user.username,
         password: user.password,
-        team_id: user.team === null ? null : user.team.value,
         position: user.position,
-      }).unwrap();
-      toast.success(`Added new user: ${user.username}`);
 
-      if (Object.keys(user.settings).length !== 0){
-        await handleSaveSettings(response.id);
+        ...(user.team ? {team_id: user.team.value} : {})
       }
-
-      if (Object.keys(user.permissions).length !== 0){
-        await handleSavePermissions(response.id);
-      }
-    
-    }
-
-    const handleEditUser = async () => {
-      await editUser({
-        id,
-        username: user.username,
-        team_id: user.team === null ? null : user.team.value,
-        new_password: user.password ? user.password : "",
-        position: user.position,
-      }).unwrap();
-
-      toast.success(`Updated user: ${user.username}`);
-
-      if (Object.keys(user.settings).length !== 0){
-        await handleSaveSettings(id);
-      }
-
-      if (Object.keys(user.permissions).length !== 0){
-        await handleSavePermissions(id);
-      }
-    }
-
-    const handleSaveSettings = async (user_id) => {
-      let dataSettings = Object.entries(user.settings).map((item) => ({
-        setting_id: item[0],
-        new_value: item[1]
-      }));
       
-      await editUserVariables({
-        id: user_id,
-        body: dataSettings,
-      }).then((data) => {
-        if (data.error !== undefined && data.error.data.message !== undefined) {
-          toast.error(`Settings were not saved: ${data.error.data.message}`);
+      let callMethod = editMode ? editUser : addUser;
+
+      await callMethod(params).then(async ({ data, error}) => {
+        if (error){
+          toast.error(`Error during ${editMode ? 'edit' : 'creating'} user: ${error}`);
         } else {
-          toast.success(`Saved settings for user ${user.username}`);
+          toast.success(`${editMode ? 'Edited' : 'Added new'} user`);
+
+          if (user.variables?.length > 0){
+            await handleSaveVariables(data.id);
+          }
+    
+          if (user.permissions?.length > 0){
+            await handleSavePermissions(data.id);
+          }
+
+          navigate(`/users/${data.id}`);
+        }
+      });
+    }
+
+    const handleSaveVariables = async (user_id) => {
+      let variables = user.variables?.filter(item=>item);
+
+      await editUserVariables({ user_id, variables}, {skip: !variables}).then(({data, error}) => {
+        if (error) {
+          toast.error(`Variables were not saved: ${error}`);
+        } else {
+          toast.success(`Variables saved`);
         }
       });
     }
 
     const handleSavePermissions = async (user_id) => {
-      let dataPermissions = Object.entries(user.permissions).map((item) => ({
-        permission_id: item[0],
-        granted: item[1]
-      }));
-      await editUserPermission({ 
-        id: user_id, 
-        scopesList: dataPermissions 
-      }).unwrap();
-      toast.success(`Saved permissions for user ${user.username}`);
+      let scopesList = user.permissions?.filter(item => item);
+
+      await editUserPermission({ user_id, scopesList }, {skip: !scopesList}).then(({data, error}) => {
+        if (error) {
+          toast.error(`Permissions were not saved: ${error}`);
+        } else {
+          toast.success(`Permissions saved`);
+        }
+      });
     }
 
-    const getPermissions = useGetPermissionsQuery();
+    const onVariableChange = async (id, value) => {
+      let variables = user.variables ?? [];
+      variables[id] = {setting_id: id, new_value: value};
+      setUser({...user, variables});
+    }
 
-    const getPermissionsUserId = useGetUserPermissionsQuery({ user_id: id }, {skip: editMode===false});
+    const onPermissionChange = async (id, value) => {
+      let permissions = user.permissions ?? [];
+      permissions[id] = {permission_id: id, granted: value};
+      setUser({...user, permissions});
+    }
 
-    const getSettings = useGetGlobalVariablesQuery();
-
-    const getSettingsUserId = useGetLocalVariablesQuery({ user_id: id }, {skip: editMode===false});;
+    const onUserChange = async (field, value) => {
+      setUser({...user, [field]: value});
+    }
 
     const itemProps = {
-      pageHeader: ["Administration", "isBack:Users", (editMode ? user.username : "New")],
+      pageHeader: ["Administration", {name: "Users", path: "/users"}, (editMode ? "Edit" : "New")],
       saveButtonEvent: handleSave,
       formName: "User",
       sections: [
         {
             name: "User",
-            element: <UserForm />
-        },
-        {
-            name: "Settings",
-            element: <SettingsForm settingsData={getSettings} itemSettings={getSettingsUserId} />
+            element: <UserForm user_id={id} onChange={onUserChange} />,
         },
         {
             name: "Permissions",
-            element: <PermissionsForm itemPermissionsData={getPermissionsUserId} allPermissionsData={getPermissions} />
-        }
+            element: <PermissionsForm user_id={id} onChange={onPermissionChange} />
+        },
+        {
+            name: "Variables",
+            element: <VariablesForm user_id={id} onChange={onVariableChange} />
+        },
       ]
     }
 

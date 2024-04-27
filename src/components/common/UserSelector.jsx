@@ -1,19 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import Select from "react-select";
+import { addTeamName, setTeamMembers } from "redux/slices/teamSlice";
+import { useDispatch, useSelector } from "react-redux";
+import Input from "components/common/Input";
+import { useGetUsersQuery } from "redux/index";
+import { useGetTeamQuery } from "redux/index";
 
-const UserSelector = ({onUsersChange, getSelectedUsers, getRemainingUsers}) => {
-
+const UserSelector = ({users, onUsersChange }) => {
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [remainingUsers, setRemainingUsers] = useState([]);
 
-    // initial fill up state data
+    const { data: usersList = [] } = useGetUsersQuery();
+
     useEffect(() => {
-        setSelectedUsers(getSelectedUsers);
-        setRemainingUsers(getRemainingUsers);
-    }, [getSelectedUsers, getRemainingUsers]);
+        setSelectedUsers(users ? users.map(item => {
+            return {
+                value: item.id,
+                label: item.username,
+            }
+        }) : []);
+    }, [users]);
+
+    useEffect(() => {
+        let newRemainig = usersList.filter(item=>item.team == null).map(item => {
+            return {
+                value: item.id,
+                label: item.username,
+            }
+        });
+        setRemainingUsers(newRemainig);
+    }, [usersList]);
 
     const onSelectChange = (value, event) => {
-        console.log(value, event);
+        // console.log(value, event);
         let newSelected = [], newRemaining = [];
 
         switch (event.action){
@@ -46,11 +65,12 @@ const UserSelector = ({onUsersChange, getSelectedUsers, getRemainingUsers}) => {
             </label>
                 <Select
                     value={selectedUsers}
+                    onChange={onSelectChange}
+                    options={remainingUsers}
                     isClearable
                     isMulti
-                    options={remainingUsers}
+                    isSearchable
                     placeholder="Select users..."
-                    onChange={onSelectChange}
                     closeMenuOnSelect={false}
                     classNames={{
                         control: (state) => (

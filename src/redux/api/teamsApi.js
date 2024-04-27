@@ -18,13 +18,6 @@ export const teamsApi = misAPI.injectEndpoints({
       },
       providesTags: (result, error, id) =>  [{ type: "Teams", id }],
       transformResponse: response => response.items
-      // transformResponse: (response)=> {
-      //   let newResponse = response.items.reduce((acc, item) => {
-      //     return {[item.id]: item, ...acc}
-      //   }, {});
-
-      //   return { entities: newResponse, allIds:Object.keys(newResponse) }
-      // }
     }),
 
     getTeam: build.query({
@@ -41,25 +34,25 @@ export const teamsApi = misAPI.injectEndpoints({
 
     addTeam: build.mutation({
       query: (params) => {
-        let { name, permissions, user_ids, settings } = params; 
+        let { name, permissions, users_ids, variables } = params; 
         return {
           url: "/teams/add",
           method: "POST",
           body: {
             name,
             permissions,
-            user_ids,
-            settings
+            users_ids,
+            variables
           },
         }
       },
       invalidatesTags: (result, error, { id }) => [{ type: "Teams", id }],
     }),
-
+    // TODO invalidate users(all) also becoz after user changed team it is still cached
     editTeam: build.mutation({
       query: (params) => {
-        let { team_id, name, permissions, user_ids, settings } = params; 
-
+        let { team_id, name, permissions, users_ids, variables } = params; 
+        console.log(params);
         return {
           url: "/teams/edit",
           method: "PUT",
@@ -67,8 +60,8 @@ export const teamsApi = misAPI.injectEndpoints({
           body: {
             name,
             permissions,
-            user_ids,
-            settings
+            users_ids,
+            variables
           },
         };
       },
@@ -89,12 +82,12 @@ export const teamsApi = misAPI.injectEndpoints({
 
     editTeamMembers: build.mutation({
       query: (params) => {
-        let { team_id, user_ids } = params;
+        let { team_id, users_ids } = params;
         return {
           url: "/teams/edit/users",
           method: "PUT",
           params: { team_id },
-          body: user_ids,
+          body: users_ids,
         }},
       invalidatesTags: (result, error, { id }) => [{ type: "Teams", id }],
     }),

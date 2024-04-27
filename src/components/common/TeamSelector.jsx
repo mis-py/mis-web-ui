@@ -1,30 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from "react-select";
 import {
     useGetTeamsQuery
 } from "redux/index";
 
-const TeamSelector = ({userTeam, onTeamChange}) => {
+const TeamSelector = ({team, onTeamChange}) => {
+    const [selectedTeam, setSelectedTeam] = useState({});
+
     const { data: teamsList = [] } = useGetTeamsQuery();
 
-    const teamOptions = teamsList?.map((item) => {
+    useEffect(()=>{
+        setSelectedTeam(team ? {value: team.id, label: team.name} : {});
+    }, [team])
+
+    const teamOptions = teamsList.map((item) => {
         return {
             value: item.id,
             label: item.name,
         };
     });
 
-    const onSelectChange = (value, event) => {
-        onTeamChange(value);
+    const onSelectChange = (choice) => {
+        setSelectedTeam(choice);
+        onTeamChange(choice);
     }
-    
+
     return (
         <div className="form-control">
             <label className="label">
                 <span className="label-text">Team</span>
             </label>
-            <Select 
-                value={userTeam?.name} 
+            <Select
+                value={selectedTeam ?? {}} 
                 onChange={onSelectChange}
                 options={teamOptions}
                 isClearable

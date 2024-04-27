@@ -9,9 +9,9 @@ const AutoAdmin = React.lazy(() => import("modules/auto_admin/index.jsx"));
 
 const Proxy = React.lazy(() => import("modules/proxy/Proxy"));
 
-const useModuleRoutes = () => {
-  const { data: getModules = [], isLoading } = useGetModulesQuery(null, {
-        // skip: window.localStorage.getItem("token") === null,
+const useModuleRoutes = (isAuthenticated) => {
+  const { data: getModules = [], isLoading } = useGetModulesQuery(undefined, {
+        skip: !isAuthenticated,
       });
   const [moduleRouteList, setModuleRouteList] = React.useState([]);
 

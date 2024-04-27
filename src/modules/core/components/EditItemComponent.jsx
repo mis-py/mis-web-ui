@@ -30,7 +30,9 @@ const EditItem = ({...props}) => {
                 })}
             </div>
             <div className="flex flex-col h-screen overflow-y-auto p-2">
-            { sections[selectedTab]?.element }
+            {sections.map((item, index)=>{
+                return <div key={item.name} hidden={index != selectedTab}>{item.element}</div>;
+            })}
             </div>
         </div>
     );

@@ -3,9 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   id: 0,
   name: "",
-  permissions: [],
+  permissions: {},
   members: [],
-  settings: [],
+  variables: {},
 };
 
 export const teamSlice = createSlice({
@@ -19,7 +19,12 @@ export const teamSlice = createSlice({
       state.name = action.payload;
     },
     addTeamPermissions: (state, action) => {
-      state.permissions = action.payload;
+      const { id, value } = action.payload;
+      state.permissions[id] = value;
+    },
+    addTeamVariables: (state, action) => {
+      const { id, value } = action.payload;
+      state.variables[id] = value;
     },
     addTeamMembers: (state, action) => {
       state.members.push(action.payload);
@@ -51,6 +56,7 @@ export const {
   deleteTeamMembers,
   resetTeam,
   setTeamMembers,
+  addTeamVariables
 } = teamSlice.actions;
 
 export default teamSlice.reducer;

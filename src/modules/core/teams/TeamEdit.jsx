@@ -1,167 +1,122 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
     useAddTeamMutation,
-
-    useGetPermissionsQuery,
-    useGetTeamPermissionsQuery,
-    useEditTeamPermissionsMutation,
-    
-    useGetGlobalVariablesQuery,
-    useGetLocalVariablesQuery,
+    useEditGrantedPermissionMutation,
     useEditLocalVariablesMutation,
 } from "redux/index";
-
 import EditItem from "modules/core/components/EditItemComponent";
 import TeamForm from "modules/core/components/TeamFormComponent";
-import SettingsForm from "modules/core/components/SettingsFormComponent";
+import VariablesForm from "modules/core/components/VariablesFormComponent";
 import PermissionsForm from "modules/core/components/PermissionFormComponent";
-
-import { useEditTeamMutation, useGetTeamQuery } from "redux/index";
-import { addTeamId, addTeamName, setTeamMembers } from "redux/slices/teamSlice";
+import { useEditTeamMutation } from "redux/index";
 
 const TeamEdit = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
 
     const editMode = id !== undefined;
 
-    const dispatch = useDispatch();
-    const team = useSelector((state) => state.team);
+    const [team, setTeam] = useState({});
 
-    const { 
-      data: getTeamId = [], 
-      isLoading: loadingTeamId 
-    } = useGetTeamQuery({team_id: id}, {
-      skip: editMode === false,
-    });
-
-    // fill current user with data
-    useEffect(() => {
-        let userIds = [];
-
-        if (!loadingTeamId && editMode) {
-
-            if (!(
-                getTeamId === undefined ||
-                getTeamId.users === undefined ||
-                getTeamId.users.length === 0)
-            ) {
-                userIds = getTeamId.users.map((user) => user.id);
-            }
-            dispatch(addTeamId(getTeamId.id));
-            dispatch(addTeamName(getTeamId.name));
-            dispatch(setTeamMembers(userIds));
-
-            if (userIds.length === 0) {
-                return;
-            }
-
-        }
-
-    }, [loadingTeamId]);
-  
-    // const { data: getPermissionsUserId = [] } = useGetPermissionsUserIdQuery(id);
     const [editTeam] = useEditTeamMutation();
     const [addTeam] = useAddTeamMutation();
 
-    // this is for update settings
     const [editTeamVariables] = useEditLocalVariablesMutation();
-    const [editTeamPermission] = useEditTeamPermissionsMutation();
+    const [editTeamPermission] = useEditGrantedPermissionMutation();
 
-    // what is this for?
-    // const { refetch: refetchUsers } = useGetUsersQuery();
-
-    // handle save all data
     const handleSave = async (e) => {
         e.preventDefault();
 
         let params = {
-            id,
+            team_id: id,
             name: team.name,
-            permissions: team.permissions,
-            users_ids: team.members,
-            settings: team.settings,
+            users_ids: team.users_ids,
         }
 
         let callMethod = editMode ? editTeam : addTeam;
 
-        let response = await callMethod(params).unwrap();
+        await callMethod(params).then(async ({data, error}) => {
+          if (error){
+            toast.error(`Error during ${editMode ? 'edit' : 'creating'} team: ${error}`);
+          } else {
+            toast.success(`${editMode ? 'Edited' : 'Added new'} team`);
+            
+            if (team.variables?.length > 0){
+              await handleSaveVariables(data.id);
+            }
+    
+            if (team.permissions?.length > 0){
+                await handleSavePermissions(data.id);
+            }
 
-        toast.success(`${editMode ? 'Edited' : 'Added new'} team ${team.name}`);
-
-        if (Object.keys(team.settings).length !== 0){
-            await handleSaveSettings(response.id);
-        }
-
-        if (Object.keys(team.permissions).length !== 0){
-            await handleSavePermissions(response.id);
-        }
-
-
-      // TODO sometimes users not updated so call it manually
-      // refetchUsers();
-      //navigate(`/users/${id}`);
+            navigate(`/teams/${data.id}`);
+          }
+        });
     }
 
-    const handleSaveSettings = async (team_id) => {
-      let dataSettings = Object.entries(team.settings).map((item) => ({
-        setting_id: item[0],
-        new_value: item[1]
-      }));
+    const handleSaveVariables = async (team_id) => {
+      let variables = team.variables?.filter(item=>item);
       
-      await editTeamVariables({
-        id: team_id,
-        body: dataSettings,
-      }).then((data) => {
-        if (data.error !== undefined && data.error.data.message !== undefined) {
-          toast.error(`Settings were not saved: ${data.error.data.message}`);
+      await editTeamVariables({team_id, variables}, {skip: !variables}).then(({data, error}) => {
+        if (error) {
+          toast.error(`Variables were not saved: ${error}`);
         } else {
-          toast.success(`Saved settings for team ${team.name}`);
+          toast.success(`Variables saved`);
         }
       });
     }
 
     const handleSavePermissions = async (team_id) => {
-      let dataPermissions = Object.entries(team.permissions).map((item) => ({
-        permission_id: item[0],
-        granted: item[1]
-      }));
-      await editTeamPermission({ 
-        id: team_id, 
-        scopesList: dataPermissions 
-      }).unwrap();
-      toast.success(`Saved permissions for team ${team.name}`);
+      let scopesList = team.permissions?.filter(item => item);
+
+      await editTeamPermission({ team_id, scopesList }, {skip: !scopesList}).then(({data, error})=>{
+        if (error) {
+          toast.error(`Permissions were not saved: ${error}`);
+        } else {
+          toast.success(`Permissions saved`);
+        }
+      });
     }
 
-    const allPermissions = useGetPermissionsQuery();
-    
-    const teamPermissions = useGetTeamPermissionsQuery({team_id: id}, {skip: editMode===false});
+    const onVariableChange = async (id, value) => {
+      let variables = team.variables ?? [];
+      variables[id] = {setting_id: id, new_value: value};
+      setTeam({...team, variables});
+    }
 
-    const getSettings = useGetGlobalVariablesQuery();
+    const onPermissionChange = async (id, value) => {
+      let permissions = team.permissions ?? [];
+      permissions[id] = {permission_id: id, granted: value};
+      setTeam({...team, permissions});
+    }
 
-    const getSettingsTeamId = useGetLocalVariablesQuery({team_id: id}, {skip: editMode===false});
-    console.log(team);
-    return <EditItem
-      pageHeader={["Administration", "isBack:Teams", (editMode ? team.name : "New team")]}
-      saveButtonEvent={handleSave}
-      sections={[
+    const onTeamChange = async (field, value) => {
+      setTeam({...team, [field]: value});
+    }
+
+    const itemProps = {
+      pageHeader: ["Administration", { name: "Teams", path: '/teams' }, (editMode ? "Edit" : "New")],
+      saveButtonEvent: handleSave,
+      formName: "Team",
+      sections: [
         {
             name: "Team",
-            element: <TeamForm teamId={id} />
-        },
-        {
-            name: "Settings",
-            element: <SettingsForm settingsData={getSettings} itemSettings={getSettingsTeamId} />
+            element: <TeamForm team_id={id} onChange={onTeamChange} />
         },
         {
             name: "Permissions",
-            element: <PermissionsForm itemPermissionsData={teamPermissions} allPermissionsData={allPermissions} />
+            element: <PermissionsForm team_id={id} onChange={onPermissionChange} />
+        },
+        {
+            name: "Variables",
+            element: <VariablesForm team_id={id} onChange={onVariableChange} />
         }
-      ]}
-    />;
+      ]
+    }
+
+    return <EditItem {...itemProps}/>;
   };
   
   export default TeamEdit;

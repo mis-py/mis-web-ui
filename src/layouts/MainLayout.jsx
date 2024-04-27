@@ -13,7 +13,7 @@ import { RiAppsLine } from "react-icons/ri";
 import { BiTask, BiUser, BiNotification } from "react-icons/bi";
 import { AiOutlineAppstore } from "react-icons/ai";
 import { MdGroups, MdTask } from "react-icons/md";
-import { useGetMyPermissionsQuery, filterHasCoreSudoSelector } from "redux/api/permissionsApi";
+import { useGetMyGrantedPermissionsQuery, filterHasCoreSudoSelector } from "redux/api/permissionsApi";
 import { userRoutes } from "routes/users";
 import { teamRoutes } from "routes/teams";
 import { groupRoutes } from "routes/groups";
@@ -31,7 +31,7 @@ let adminNavs = [
   { icon: <BiUser />, title: "Users", url: "/users" },
   { icon: <FiUsers />, title: "Teams", url: "/teams" },
   // { icon: <MdGroups />, title: "Access Groups", url: "/groups" },
-  // { icon: <AiOutlineAppstore />, title: "Applications", url: "/apps" },
+  { icon: <AiOutlineAppstore />, title: "Applications", url: "/modules" },
   // { icon: <BiTask />, title: "Tasks and Jobs", url: "/jobs" },
   // { icon: <MdTask />, title: "Consumers", url: "/consumers", },
   // { icon: <BiNotification />, title: "Notifications", url: "/notifications" }
@@ -52,11 +52,11 @@ const MainLayout = () => {
     const { isAuthenticated } = useSelector((state) => state.auth);
     const { theme: currentTheme } = useSelector((state) => state.profile);
 
-    const modules = useModuleRoutes();
+    const modules = useModuleRoutes(isAuthenticated);
 
     const userHasCoreSudoPermissions = useMemo(filterHasCoreSudoSelector, []);
 
-    const { data: myPermission = {}, isLoading, isSuccess, error, hasCoreSudo } = useGetMyPermissionsQuery({skip: !isAuthenticated}, {
+    const { data: myPermission = {}, isLoading, isSuccess, error, hasCoreSudo } = useGetMyGrantedPermissionsQuery({skip: !isAuthenticated}, {
       selectFromResult: (result) => ({
         ...result,
         hasCoreSudo: userHasCoreSudoPermissions(result)

@@ -26,6 +26,8 @@ const InputDefault = ({
         name,
         // Value to reset input to by 
         default_value=null,
+        // Is button to do reset is accesible
+        default_pressable=true,
 
 }) => {
 
@@ -36,13 +38,14 @@ const InputDefault = ({
     }, [value]);
 
     
-    const onSetDefault = () => {
+    const onSetDefault = (e) => {
         setInputValue(default_value);
+        onInputChange(default_value);
     }
 
     const rightButtons=[
         {
-            onClick: onSetDefault,
+            onClick: (e) => onSetDefault(e),
             icon: <BiRotateLeft/>
         }
     ];
@@ -51,11 +54,11 @@ const InputDefault = ({
   
     const onChange = (e) => {
       setInputValue(e.target.value);
-      onInputChange(e, e.target.value);
+      onInputChange(e.target.value);
     }
   
     const rightButtonsGroup = rightButtons.map((item, index) => {
-      return <button key={index} className="btn btn-square btn-outline btn-sm join-item rounded" onClick={() => item.onClick(setInputValue)}>
+      return <button key={index} disabled={default_pressable} className="btn btn-square btn-outline btn-sm join-item rounded" onClick={(e) => item.onClick(e)}>
               {item.icon}
             </button>
     })
