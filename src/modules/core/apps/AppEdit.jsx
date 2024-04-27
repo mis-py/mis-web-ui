@@ -78,9 +78,9 @@ const AppEdit = () => {
     const handleAppStateChange = async (e) => {
         let callMethod = e ? startApp : stopApp;
 
-        await callMethod({module_id: getApp.id}).then((data) => {
-            if (data.error !== undefined && data.error.data.message !== undefined) {
-                toast.error(`Error during change app ${getApp.name} state`);
+        await callMethod({module_id: getApp.id}).then(({data, error}) => {
+            if (error) {
+                toast.error(`Error during change app ${getApp.name} state: ${error}`);
               } else {
                 toast.success(`App ${getApp.name} ${e ? 'started' : 'stopped'}`);
               }
@@ -90,9 +90,9 @@ const AppEdit = () => {
     const handleAppLoadStateChange = async (load) => {
       let callMethod = load ? loadApp : unloadApp;
       
-      await callMethod({module_id: getApp.id}).then((data) => {
-        if (data.error !== undefined && data.error.data.message !== undefined) {
-            toast.error(`Error during change app ${getApp.name} loading state`);
+      await callMethod({module_id: getApp.id}).then(({data, error}) => {
+        if (error) {
+            toast.error(`Error during change app ${getApp.name} loading state: ${error}`);
           } else {
             toast.success(`App ${getApp.name} ${load ? 'loaded' : 'unloaded'}`);
           }

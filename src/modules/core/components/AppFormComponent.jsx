@@ -24,7 +24,6 @@ const AppForm = ({app, onAppStateChange, onAppLoadStateChange}) => {
                 {
                     label: "Yes",
                     onClick: async () => {
-                        setChecked(enable);
                         onAppStateChange(enable);
                     },
                 },
