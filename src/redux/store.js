@@ -1,19 +1,16 @@
 import { configureStore, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
-
 // core
 import { usersApi } from "./api/usersApi";
 import { teamsApi } from "./api/teamsApi";
 import { permissionsApi } from "./api/permissionsApi";
-//import { appsApi } from "./api/appsApi";
-// import { groupsApi } from "./api/groupsApi";
-// import { restrictedObjectsApi } from "./api/restrictedObjectsApi";
-import { modulesApi } from "./api/modulesApi";
 import { settingsApi } from "./api/variablesApi";
+import { modulesApi } from "./api/modulesApi";
+import { jobsApi } from "./api/jobsApi";
+import { tasksApi } from "./api/tasksApi";
+
 // import { logsApi } from "./api/logsApi";
 // import { notificationsApi } from "./api/notificationsApi";
 // import { consumersApi } from "./api/consumersApi";
-// import { jobsApi } from "./api/jobsApi";
-// import { tasksApi } from "./api/tasksApi";
 
 // modules
 // import { webcatApi } from "./api/modulesApi/webcatApi";
@@ -28,7 +25,7 @@ import { searchReducer } from './slices/searchSlice';
 import { profileReducer } from "./slices/profileSlice";
 import { userReducer } from "./slices/userSlice";
 import teamSlice from "./slices/teamSlice";
-import { startLoading, stopLoading } from './slices/loadingSlice';
+// import { startLoading, stopLoading } from './slices/loadingSlice';
 import loadingReducer from './slices/loadingSlice';
 import groupSlice from "./slices/groupSlice";
 import appSlice from "./slices/appSlice";
@@ -64,15 +61,12 @@ export const store = configureStore({
     [usersApi.reducerPath]: usersApi.reducer,
     [teamsApi.reducerPath]: teamsApi.reducer,
     [permissionsApi.reducerPath]: permissionsApi.reducer,
-    //[appsApi.reducerPath]: appsApi.reducer,
-    // [groupsApi.reducerPath]: groupsApi.reducer,
-    // [restrictedObjectsApi.reducerPath]: restrictedObjectsApi.reducer,
     [modulesApi.reducerPath]: modulesApi.reducer,
     [settingsApi.reducerPath]: settingsApi.reducer,
     // [logsApi.reducerPath]: logsApi.reducer,
     // [notificationsApi.reducerPath]: notificationsApi.reducer,
-    // [tasksApi.reducerPath]: tasksApi.reducer,
-    // [jobsApi.reducerPath]: jobsApi.reducer,
+    [tasksApi.reducerPath]: tasksApi.reducer,
+    [jobsApi.reducerPath]: jobsApi.reducer,
     // [consumersApi.reducerPath]: consumersApi.reducer,
 
     //modules
@@ -99,15 +93,12 @@ export const store = configureStore({
       usersApi.middleware,
       teamsApi.middleware,
       permissionsApi.middleware,
-      //appsApi.middleware,
-      // groupsApi.middleware,
-      // restrictedObjectsApi.middleware,
       modulesApi.middleware,
       settingsApi.middleware,
       // logsApi.middleware,
       // notificationsApi.middleware,
-      // jobsApi.middleware,
-      // tasksApi.middleware,
+      jobsApi.middleware,
+      tasksApi.middleware,
       // consumersApi.middleware,
 
       //modules

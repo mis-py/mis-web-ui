@@ -14,15 +14,21 @@ const TeamListItem = ({item}) => {
 
     const handleDeleteTeam = async (id) => {
         confirmAlert({
-            title: "Delete team",
-            message: "Are you sure you want to delete this team?",
+            title: "Remove team",
+            message: "Are you sure you want to remove this team?",
             buttons: [
                 {
                     label: "Yes",
                     onClick: async () => {
-                      await deleteTeam(id);
-                      navigate("/teams");
-                      toast.success("Team deleted");
+                      await deleteTeam(id).then(({data, error}) => {
+                        if (error) {
+                            toast.error(`Error while remove team: ${error}`)
+                        } else {
+                            toast.success("Team deleted");
+                            navigate("/teams");
+                        }
+                      });
+
                     },
                 },
                 {

@@ -2,7 +2,7 @@ import { misAPI } from "./misAPI";
 import {
   createEntityAdapter,
   createSelector
-} from '@reduxjs/toolkit'
+} from '@reduxjs/toolkit';
 
 export const teamsApi = misAPI.injectEndpoints({
   endpoints: (build) => ({

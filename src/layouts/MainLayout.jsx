@@ -31,8 +31,8 @@ let adminNavs = [
   { icon: <BiUser />, title: "Users", url: "/users" },
   { icon: <FiUsers />, title: "Teams", url: "/teams" },
   // { icon: <MdGroups />, title: "Access Groups", url: "/groups" },
-  { icon: <AiOutlineAppstore />, title: "Applications", url: "/modules" },
-  // { icon: <BiTask />, title: "Tasks and Jobs", url: "/jobs" },
+  { icon: <AiOutlineAppstore />, title: "Modules", url: "/modules" },
+  { icon: <BiTask />, title: "Jobs", url: "/jobs" },
   // { icon: <MdTask />, title: "Consumers", url: "/consumers", },
   // { icon: <BiNotification />, title: "Notifications", url: "/notifications" }
 ];
