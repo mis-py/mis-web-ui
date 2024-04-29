@@ -26,6 +26,7 @@ export const jobsApi = misAPI.injectEndpoints({
             },
             invalidatesTags: ["Jobs"],
         }),
+        // TODO https://stackoverflow.com/questions/69260346/redux-toolkit-query-reduce-state-from-mutation-response
         jobPause: build.mutation({
             query: ({ job_id }) => {
                 return {

@@ -19,7 +19,7 @@ const JobListItem = ({item}) => {
     const [jobRemove] = useJobRemoveMutation();
 
     const PauseJob = async (job) => {
-        await jobPause(job.id).then(({data, error}) => {
+        await jobPause({job_id: job.job_id}).then(({data, error}) => {
             if (error) {
                 toast.error(`Error while pause job: ${error}`)
             } else {
@@ -28,7 +28,7 @@ const JobListItem = ({item}) => {
         });
     };
     const ResumeJob = async (job) => {
-        await jobResume(job.id).then(({data, error}) => {
+        await jobResume({job_id: job.job_id}).then(({data, error}) => {
             if (error) {
                 toast.error(`Error while resume job: ${error}`)
             } else {
@@ -44,7 +44,7 @@ const JobListItem = ({item}) => {
                 {
                     label: "Yes",
                     onClick: async () => {
-                        await jobRemove(job.id).then(({data, error}) => {
+                        await jobRemove({job_id: job.job_id}).then(({data, error}) => {
                             if (error) {
                                 toast.error(`Error while remove job: ${error}`)
                             } else {

@@ -18,13 +18,24 @@ export const tasksApi = misAPI.injectEndpoints({
     }),
 });
 
+export const selectFirstTaskSelector = () => {
+    const emptyArray = [];
+    return createSelector(
+      items => items.data,
+      (items) => {
+        const [first] = items ?? [];
+        return first ?? emptyArray
+      }
+    ) 
+  }
+
 
 export const filterTasksByStringSelector = () => {
     const emptyArray = [];
     return createSelector(
       items => items.data,
       (items, val) => val.toLowerCase().trim(),
-      (items, val) => items?.filter(task => task.module.toLowerCase().includes(val) || task.name.toLowerCase().includes(val)) ?? emptyArray
+      (items, val) => items?.filter(task => task.id.toLowerCase().includes(val) || task.name.toLowerCase().includes(val)) ?? emptyArray
     ) 
 }
 

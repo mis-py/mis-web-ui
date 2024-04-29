@@ -19,12 +19,12 @@ const TasksList = () => {
         let itemProps = {
           ...item, 
           title: item.name, 
-          // paragraphs: [
+          paragraphs: [
           //   `Module: ${item.module}`,
-          //   (item.trigger !== null ? `Default trigger: ${item.trigger.type == 'interval' ? 'Every ' + item.trigger.value + ' seconds' : 'Unknown or not set' }` : 'Default trigger: Unknown or not set'),
-          //   (item.extra_typed != null && Object.keys(item.extra_typed).length > 0 ? (`Extra Params: ${Object.keys(item.extra_typed)}`) : ''), 
-          //   `Type: ${item.type} Available: ${(item.is_available_add_job ? "Yes" : "No")}`, 
-          // ],
+          `Trigger: ${item.trigger ?? 'Not set'}`,
+          (item.extra_typed != null && Object.keys(item.extra_typed).length > 0 ? (`Extra Params: ${Object.keys(item.extra_typed)}`) : ''), 
+          `Type: ${item.type}`// Available: ${(item.is_available_add_job ? "Yes" : "No")}`, 
+          ],
         }
         return <TaskListItem key={index} item={itemProps} />
       });

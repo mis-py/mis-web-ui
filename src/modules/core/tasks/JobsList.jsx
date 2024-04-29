@@ -36,11 +36,12 @@ const JobsList = () => {
     let items = searchFiltered.map((item, index)=> {
         let itemProps = {
           ...item,
-          badge: item.status,
-          title: item.id,
-        //   paragraphs:[
-        //     item.next_run_time ? ("Started running at: " + (intlDate.format(new Date(item.next_run_time)))) : '',
-        //   ]
+          badge: item.job_id,
+          title: item.name,
+          paragraphs:[
+            //item.next_run_time ? ("Started running at: " + (intlDate.format(new Date(item.next_run_time)))) : '',
+            `Status: ${item.status}`
+          ]
         }
         return <JobListItem key={index} item={itemProps} />;
     });
