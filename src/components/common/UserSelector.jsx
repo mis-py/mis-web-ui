@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Select from "react-select";
-import { addTeamName, setTeamMembers } from "redux/slices/teamSlice";
-import { useDispatch, useSelector } from "react-redux";
-import Input from "components/common/Input";
-import { useGetUsersQuery } from "redux/index";
-import { useGetTeamQuery } from "redux/index";
+import { useGetUsersQuery } from "redux/api/usersApi";
 
 const UserSelector = ({users, onUsersChange }) => {
     const [selectedUsers, setSelectedUsers] = useState([]);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from "react-router-dom";
-import { useAddJobMutation } from "redux/index";
+import { useAddJobMutation } from "redux/api/jobsApi";
 import { toast } from "react-toastify";
 import 'react-js-cron/dist/styles.css';
 import EditItem from "modules/core/components/EditItemComponent";
@@ -24,7 +24,7 @@ const JobEdit = () => {
 
     const handleSave = async () => {
         await addJob({
-            task_id: task_id,
+            task_name: task_id,
             extra: job.extra,
             trigger: job.trigger
         }).then(({data, error}) => {

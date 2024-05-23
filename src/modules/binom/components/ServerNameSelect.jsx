@@ -1,42 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import Select from "react-select";
-import {
-    useGetTeamsQuery
-} from "redux/api/teamsApi";
+import React, { useState } from 'react';
+import CreatableSelect from "react-select/creatable";
+import { useGetServerNamesQuery } from "redux/api/modules/binom_companion";
 
-const TeamSelector = ({team, onTeamChange}) => {
-    const [selectedTeam, setSelectedTeam] = useState({});
+const ServerNameSelect = ({onServerNameChange}) => {
+    const [selectedName, setSelectedName] = useState();
 
-    const { data: teamsList = [] } = useGetTeamsQuery();
+    const { 
+        data: { server_names = [] } = {}, 
+        error, 
+        isSuccess, 
+        isError, 
+        isFetching, 
+        isLoading 
+    } = useGetServerNamesQuery();
 
-    useEffect(()=>{
-        setSelectedTeam(team ? {value: team.id, label: team.name} : {});
-    }, [team])
-
-    const teamOptions = teamsList.map((item) => {
-        return {
-            value: item.id,
-            label: item.name,
-        };
-    });
+    const server_name_options = server_names.map(item => ({
+        value: item,
+        label: item,
+    }));
 
     const onSelectChange = (choice) => {
-        setSelectedTeam(choice);
-        onTeamChange(choice);
+        setSelectedName(choice);
+        onServerNameChange(choice?.value);
     }
 
     return (
         <div className="form-control">
             <label className="label">
-                <span className="label-text">Team</span>
+                <span className="label-text">Server name</span>
             </label>
-            <Select
-                value={selectedTeam ?? {}} 
+            <CreatableSelect 
+                value={selectedName}
                 onChange={onSelectChange}
-                options={teamOptions}
+                options={server_name_options}
                 isClearable
                 isSearchable
-                placeholder="Select team..."
+                placeholder="Select server..."
                 classNames={{
                     control: (state) => (
                         'input-bordered'
@@ -113,9 +112,8 @@ const TeamSelector = ({team, onTeamChange}) => {
                     })
                 }}
             />
-
         </div>
     );
 };
 
-export default TeamSelector;
+export default ServerNameSelect;

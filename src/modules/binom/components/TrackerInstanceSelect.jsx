@@ -1,42 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import Select from "react-select";
-import {
-    useGetTeamsQuery
-} from "redux/api/teamsApi";
+import React, { useState } from 'react';
+import CreatableSelect from "react-select/creatable";
+import { useGetTrackerInstancesQuery } from "redux/api/modules/binom_companion";
 
-const TeamSelector = ({team, onTeamChange}) => {
-    const [selectedTeam, setSelectedTeam] = useState({});
+const TrackerInstanceSelect = ({onTrackerInstanceChange}) => {
+    const [selectedTracker, setSelectedTracker] = useState();
 
-    const { data: teamsList = [] } = useGetTeamsQuery();
+    const { 
+        data = [], 
+        error, 
+        isSuccess, 
+        isError, 
+        isFetching, 
+        isLoading 
+    } = useGetTrackerInstancesQuery();
 
-    useEffect(()=>{
-        setSelectedTeam(team ? {value: team.id, label: team.name} : {});
-    }, [team])
-
-    const teamOptions = teamsList.map((item) => {
-        return {
-            value: item.id,
-            label: item.name,
-        };
-    });
+    const tracker_instance_option = data.map(item => ({
+        value: item.id,
+        label: item.name,
+    }));
 
     const onSelectChange = (choice) => {
-        setSelectedTeam(choice);
-        onTeamChange(choice);
+        setSelectedTracker(choice);
+        let new_choice = choice ? {id: choice.value, name: choice.label} : {};
+        onTrackerInstanceChange(new_choice);
     }
 
     return (
         <div className="form-control">
             <label className="label">
-                <span className="label-text">Team</span>
+                <span className="label-text">Tracker instance</span>
             </label>
-            <Select
-                value={selectedTeam ?? {}} 
+            <CreatableSelect 
+                value={selectedTracker}
                 onChange={onSelectChange}
-                options={teamOptions}
+                options={tracker_instance_option}
                 isClearable
                 isSearchable
-                placeholder="Select team..."
+                placeholder="Select tracker instance..."
                 classNames={{
                     control: (state) => (
                         'input-bordered'
@@ -113,9 +113,8 @@ const TeamSelector = ({team, onTeamChange}) => {
                     })
                 }}
             />
-
         </div>
     );
 };
 
-export default TeamSelector;
+export default TrackerInstanceSelect;

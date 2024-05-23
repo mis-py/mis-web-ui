@@ -7,7 +7,7 @@ import {
     useGetProxyQuery,
     useEditProxyMutation,
     useAddProxyMutation,
- } from "redux/api/modulesApi/proxyApi";
+ } from "redux/api/modules/proxyApi";
 
 import EditItem from "modules/core/components/EditItemComponent";
 import ProxyForm from "modules/proxy/components/ProxyForm";

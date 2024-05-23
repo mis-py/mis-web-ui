@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { 
     useProxyCheckMutation,
-} from "redux/api/modulesApi/proxyApi";
+} from "redux/api/modules/proxyApi";
 import {confirmAlert} from "react-confirm-alert";
 
 const ProxyCheck = ({address}) => {

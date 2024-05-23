@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ListItem from "components/ListItem";
-import { useRemoveTeamMutation } from "redux/index";
+import { useRemoveTeamMutation } from "redux/api/teamsApi";
 import { toast } from "react-toastify";
 import { FiEdit, FiXCircle } from "react-icons/fi";
 import { confirmAlert } from "react-confirm-alert";

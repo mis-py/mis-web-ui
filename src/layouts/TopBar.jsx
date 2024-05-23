@@ -4,7 +4,7 @@ import { FiUser, FiLogOut, FiSun, FiMoon } from "react-icons/fi";
 // import MisButton from "components/common/MisButton";
 import { useDispatch, useSelector } from "react-redux";
 import { setTheme } from 'redux/slices/profileSlice';
-import { useGetUserMyQuery } from "redux/index";
+import { useGetUserMyQuery } from "redux/api/usersApi";
 import USER from "assets/img/user.png";
 // import { icons } from "react-icons/lib/esm";
 

@@ -16,7 +16,7 @@ import { tasksApi } from "./api/tasksApi";
 // import { webcatApi } from "./api/modulesApi/webcatApi";
 // import { statabotApi } from "./api/modulesApi/statabotApi";
 // import { autoAdminApi } from "./api/modulesApi/autoAdminApi";
-// import { binomApi } from "./api/modulesApi/binomDomainApi";
+import { binomApi } from "./api/modules/binom_companion";
 // import { proxyApi } from "./api/modulesApi/proxyApi";
 
 //slices
@@ -73,7 +73,7 @@ export const store = configureStore({
     // [webcatApi.reducerPath]: webcatApi.reducer,
     // [statabotApi.reducerPath]: statabotApi.reducer,
     // [autoAdminApi.reducerPath]: autoAdminApi.reducer,
-    // [binomApi.reducerPath]: binomApi.reducer,
+    [binomApi.reducerPath]: binomApi.reducer,
     // [proxyApi.reducerPath]: proxyApi.reducer,
 
     //slices
@@ -105,7 +105,7 @@ export const store = configureStore({
       // webcatApi.middleware,
       // statabotApi.middleware,
       // autoAdminApi.middleware,
-      // binomApi.middleware,
+      binomApi.middleware,
       // proxyApi.middleware,
 
       //mutationLoadingMiddleware,

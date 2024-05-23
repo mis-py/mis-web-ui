@@ -26,7 +26,7 @@ const VariablesForm = ({module_id=null, team_id=null, user_id=null, onChange}) =
     const { data: getVariables} = useGetLocalVariablesQuery({team_id, user_id});
 
     const variables = allSearchFiltered?.map((variable) => {
-        let localVarialbe = getVariables?.find((item) => item.setting_id == variable.id);
+        let localVarialbe = getVariables?.find((item) => item.variable_id == variable.id);
         return {
             ...variable,
             value: localVarialbe?.value || undefined

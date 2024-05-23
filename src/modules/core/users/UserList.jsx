@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useGetUsersQuery, filterUsersByStringSelector } from "redux/api/usersApi";
 import ItemsList from "components/ItemsList";
-import { FiPlus} from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 import UserListItem from "./UserListItem";
 
 const UserList = () => {

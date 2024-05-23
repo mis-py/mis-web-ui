@@ -2,40 +2,24 @@ import { useEffect, useState, React, useMemo } from "react";
 import { NavLink, Route, Outlet, useLocation , Navigate, Routes } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import SidebarDesktop from "layouts/Sidebar";
-import Notifications from "components/notifications/Notifications";
+// import Notifications from "components/notifications/Notifications";
 import { ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 //import { useGetMeQuery } from "redux/index";
 // import webSocket from "../config/WebSocketConnection";
-import { useGetModulesQuery } from "redux/index";
-import { firstUppercase } from "config/functions";
+// import { useGetModulesQuery } from "redux/api/modulesApi";
+// import { firstUppercase } from "config/functions";
 import { RiAppsLine } from "react-icons/ri";
-import { BiTask, BiUser, BiNotification } from "react-icons/bi";
-import { AiOutlineAppstore } from "react-icons/ai";
-import { MdGroups, MdTask } from "react-icons/md";
+// import { AiOutlineAppstore } from "react-icons/ai";
+// import { MdGroups, MdTask } from "react-icons/md";
 import { useGetMyGrantedPermissionsQuery, filterHasCoreSudoSelector } from "redux/api/permissionsApi";
-import { userRoutes } from "routes/users";
-import { teamRoutes } from "routes/teams";
-import { groupRoutes } from "routes/groups";
-import { appRoutes } from "routes/apps";
-import { taskRoutes } from "routes/tasks";
-import { consumersRoutes } from "routes/consumers";
-import { notificationsRoutes } from 'routes/notifications';
-import { FiHome, FiCpu, FiUsers, FiMoreVertical } from "react-icons/fi";
+
+import { FiHome, FiCpu, FiMoreVertical } from "react-icons/fi";
 import useModuleRoutes from "routes/modules";
 import Home from "modules/core/Home";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import TopBar from "layouts/TopBar";
-
-let adminNavs = [
-  { icon: <BiUser />, title: "Users", url: "/users" },
-  { icon: <FiUsers />, title: "Teams", url: "/teams" },
-  // { icon: <MdGroups />, title: "Access Groups", url: "/groups" },
-  { icon: <AiOutlineAppstore />, title: "Modules", url: "/modules" },
-  { icon: <BiTask />, title: "Jobs", url: "/jobs" },
-  // { icon: <MdTask />, title: "Consumers", url: "/consumers", },
-  // { icon: <BiNotification />, title: "Notifications", url: "/notifications" }
-];
+import { adminNavLinks, adminRoutes } from "modules/core/routes";
 
 const getNavLink = (displayName, path, icon) => <NavLink to={path}>{icon}{displayName}</NavLink>
 
@@ -79,13 +63,13 @@ const MainLayout = () => {
     let routes = [<Route index key="home" path="/home" element={<Home/>} />];
 
     if (hasCoreSudo){
-      let adminRoutes = [].concat(userRoutes, teamRoutes, groupRoutes, appRoutes, taskRoutes, consumersRoutes, notificationsRoutes);
+
       //let menuIsOpen = adminRoutes.filter(item => item.path.includes(location.pathname)).length > 0;
       let menuIsOpen = true;
       mainNavBar.push(<li onClick={() => setIsDrawerOpened(false)} key={mainNavBar.length}>
           <details open={menuIsOpen}>
             <summary><FiCpu />Administration</summary>
-            <ul>{adminNavs.map((link) => (
+            <ul>{adminNavLinks.map((link) => (
               <li key={link.title}>
                 <NavLink 
                   to={link.url}
@@ -101,25 +85,58 @@ const MainLayout = () => {
         </li>
       );
 
-      adminRoutes = adminRoutes.map((item, index) => (<Route key={`${item.path}_${index}`} path={item.path} element={item.element}/>));
+      let newAdminRoutes = adminRoutes.map((item, index) => (<Route key={`${item.path}_${index}`} path={item.path} element={item.element}/>));
 
-      routes = routes.concat(adminRoutes);
+      routes = routes.concat(newAdminRoutes);
     }
 
-    const activeModules = modules?.filter((item) => item.enabled && item.id != 1);
+    const activeModules = modules?.filter((item) => item.enabled && item.id != 1) || [];
     
     if (activeModules.length){
-      activeModules.forEach((item, index) =>(
-        mainNavBar.push(<li onClick={() => setIsDrawerOpened(false)} key={index+mainNavBar.length}>
-          <NavLink to={`/${item.path}`}>
-            <RiAppsLine />{firstUppercase(item.name)}
-          </NavLink>
-        </li>)
-      ));
+      for(let i = 0; i < activeModules.length; i++){
+        let module_obj = activeModules[i];
+        let module_routes = module_obj.routes;
+        let module_navs = module_obj.navs;
+        
+        let binomNavLinks = [];
+        for (let n = 0; n < module_navs.length; n++){
+          let navlink = module_navs[n];
 
-      let modulesRoutes = activeModules.map((item, index) => (<Route key={`${item.path}_${index}`} path={`${item.path}/*`} element={item.element}/>));
+          binomNavLinks.push(
+            <li key={navlink.title}>
+              <NavLink 
+                to={navlink.url}
+                className={({ isActive, isPending }) =>
+                  isPending ? "pending" : isActive ? "active" : "disabled"
+                }  
+              >
+                {navlink.icon}{navlink.title}
+              </NavLink>
+            </li>
+          );
+        }
 
-      routes = routes.concat(modulesRoutes);
+        mainNavBar.push(
+          <li onClick={() => setIsDrawerOpened(false)} key={mainNavBar.length}>
+            <details open={true}>
+              <summary><RiAppsLine />{module_obj.name}</summary>
+              <ul>{binomNavLinks}</ul>
+            </details>
+          </li>
+        );
+
+        for (let r = 0; r < module_routes.length; r++){
+          let route = module_routes[r];
+
+          routes.push(<Route key={`${route.path}_${r}`} path={route.path} element={route.element}/>);
+        }
+
+      // let modulesRoutes = activeModules.map((item, index) => (
+      //   <Route key={`${item.path}_${index}`} path={`${item.path}/*`} element={item.element}/>
+      // ));
+
+      // routes = routes.concat(modulesRoutes);
+      }
     }
 
     return (

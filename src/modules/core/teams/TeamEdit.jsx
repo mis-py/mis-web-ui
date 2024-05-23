@@ -3,14 +3,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
     useAddTeamMutation,
-    useEditGrantedPermissionMutation,
-    useEditLocalVariablesMutation,
-} from "redux/index";
+    useEditTeamMutation,
+} from "redux/api/teamsApi";
+import { useEditGrantedPermissionMutation } from "redux/api/permissionsApi";
+import { useEditLocalVariablesMutation } from "redux/api/variablesApi";
+
 import EditItem from "modules/core/components/EditItemComponent";
 import TeamForm from "modules/core/components/TeamFormComponent";
 import VariablesForm from "modules/core/components/VariablesFormComponent";
 import PermissionsForm from "modules/core/components/PermissionFormComponent";
-import { useEditTeamMutation } from "redux/index";
+
 
 const TeamEdit = () => {
     const navigate = useNavigate();
@@ -82,7 +84,7 @@ const TeamEdit = () => {
 
     const onVariableChange = async (id, value) => {
       let variables = team.variables ?? [];
-      variables[id] = {setting_id: id, new_value: value};
+      variables[id] = {variable_id: id, new_value: value};
       setTeam({...team, variables});
     }
 

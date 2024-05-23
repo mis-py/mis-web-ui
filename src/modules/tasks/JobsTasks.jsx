@@ -5,7 +5,7 @@ import  {useGetJobsQuery,
           useJobsPauseMutation,
           useJobsResumeMutation 
         }
-from 'redux/index';
+from 'redux/api/jobsApi';
 import { useNavigate } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import SpinnerLoader from "../../components/common/SpinnerLoader";

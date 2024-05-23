@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { useGetTeamsQuery, filterTeamsByStringSelector } from "redux/index";
+import { useGetTeamsQuery, filterTeamsByStringSelector } from "redux/api/teamsApi";
 import ItemsList from "components/ItemsList";
 import { FiPlus} from "react-icons/fi";
 import TeamListItem from "./TeamListItem";

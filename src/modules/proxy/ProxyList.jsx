@@ -5,7 +5,7 @@ import {
     useProxyChangeIPMutation,
     useProxyCheckMutation,
     useToggleStatusMutation
-} from "redux/api/modulesApi/proxyApi";
+} from "redux/api/modules/proxyApi";
 import ItemsList from "components/ItemsList";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";

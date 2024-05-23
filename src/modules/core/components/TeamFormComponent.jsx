@@ -1,7 +1,7 @@
 import React from "react";
 import Input from "components/common/Input";
 import UserSelector from "components/common/UserSelector";
-import { useGetTeamQuery } from "redux/index";
+import { useGetTeamQuery } from "redux/api/teamsApi";
 
 const TeamForm = ({team_id=null, onChange}) => {
     const { 

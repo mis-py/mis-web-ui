@@ -9,13 +9,11 @@ import {
     useStopModuleMutation,
     useInitModuleMutation,
     useShutdownModuleMutation,
-  
-    useGetGlobalVariablesQuery,
-} from "redux/index";
+    selectFirstSelector,
+    // useGetGlobalVariablesQuery,
+} from "redux/api/modulesApi";
 
-import { selectFirstSelector } from 'redux/api/modulesApi';
-
-import { setAppData } from 'redux/slices/appSlice';
+// import { setAppData } from 'redux/slices/appSlice';
 
 import EditItem from "modules/core/components/EditItemComponent";
 import AppForm from "modules/core/components/AppFormComponent";

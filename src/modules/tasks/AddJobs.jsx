@@ -1,10 +1,9 @@
 import React from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import PageHeader from "../../components/common/PageHeader";
-import {
-    useGetTaskByIdQuery,
-    useTasksJobsAddMutation,
-} from "redux/index";
+import { useGetTaskByIdQuery } from "redux/api/tasksApi";
+import { useTasksJobsAddMutation } from "redux/api/jobsApi";
+
 import SpinnerLoader from "../../components/common/SpinnerLoader";
 import Input from "../../components/Input";
 import { toast } from "react-toastify";

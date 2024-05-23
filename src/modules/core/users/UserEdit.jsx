@@ -5,10 +5,11 @@ import { toast } from "react-toastify";
 import {
   useEditUserMutation,
   useAddUserMutation,
+} from "redux/api/usersApi";
 
-  useEditLocalVariablesMutation,
-  useEditGrantedPermissionMutation,
-} from "redux/index";
+import { useEditLocalVariablesMutation } from "redux/api/variablesApi";
+
+import { useEditGrantedPermissionMutation } from "redux/api/permissionsApi";
 
 import EditItem from "modules/core/components/EditItemComponent";
 import UserForm from "modules/core/components/UserFormComponent";
@@ -88,7 +89,7 @@ const UserEdit = () => {
 
     const onVariableChange = async (id, value) => {
       let variables = user.variables ?? [];
-      variables[id] = {setting_id: id, new_value: value};
+      variables[id] = {variable_id: id, new_value: value};
       setUser({...user, variables});
     }
 

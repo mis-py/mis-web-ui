@@ -3,7 +3,7 @@ import { setGroupName, setGroupMembers } from "redux/slices/groupSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "components/common/Input";
 import UserSelector from "components/common/UserSelector";
-import { useGetUsersQuery } from "redux/index";
+// import { useGetUsersQuery } from "redux/index";
 // import { useGetGroupIdUsersQuery } from "redux/index";
 
 const GroupForm = ({groupId}) => {

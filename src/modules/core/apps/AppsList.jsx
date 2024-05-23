@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import ItemsList from "components/ItemsList";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetModulesQuery, filterModulesByStringSelector } from "redux/index";
+import { useGetModulesQuery, filterModulesByStringSelector } from "redux/api/modulesApi";
 import { FiEdit, FiXCircle, FiPlus} from "react-icons/fi";
 import ListItem from 'components/ListItem';
 
