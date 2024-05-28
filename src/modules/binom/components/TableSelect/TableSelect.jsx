@@ -6,7 +6,7 @@ import { useSortableTable } from "../../hooks/useSortableTable";
 
 // https://blog.logrocket.com/creating-react-sortable-table/
 
-const TableSelect = ({columns, tableItems, caption=null, is_body_horizontal=true}) => {
+const TableSelect = ({columns, tableItems, onSelect, caption=null, is_body_horizontal=true}) => {
     
     const [tableData, handleSorting] = useSortableTable(tableItems, columns);
 
@@ -22,7 +22,7 @@ const TableSelect = ({columns, tableItems, caption=null, is_body_horizontal=true
             {
                 is_body_horizontal ? 
                 <TableBody columns={columns_with_select} tableData={tableData} /> : 
-                <TableBodyVerticalCheckbox columns={columns_with_select} tableData={tableData} allSelected={allSelected} />
+                <TableBodyVerticalCheckbox columns={columns_with_select} tableData={tableData} allSelected={allSelected} onSelect={onSelect} />
             }
         </table>
     );

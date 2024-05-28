@@ -2,17 +2,17 @@ import { useState, useEffect } from "react";
 
 // swipe select - https://jsfiddle.net/ebStc/7/
 
-const TableBodyVerticalInput = ({ tableData, columns, allSelected }) => {
+const TableBodyVerticalInput = ({ tableData, columns, allSelected, onSelect }) => {
     const [selectedIds, setSelectedIds] = useState([]);
 
     const [mouseDownOn, setMouseDownOn] = useState({id: null, state: null});
 
     const handleCheckboxChange = (checked, checkedId) => {
-        if(checked){
-            setSelectedIds([...selectedIds, checkedId]);
-        } else {
-            setSelectedIds(selectedIds.filter(id=>id !== checkedId));
-        }
+        let newSelected = checked ? [...selectedIds, checkedId] : selectedIds.filter(id=>id !== checkedId);
+        let deduplicated = [...new Set(newSelected)];
+
+        setSelectedIds(deduplicated);
+        onSelect(deduplicated);
     }
 
     const onMouseDown = (event, checkedId) => {
@@ -32,11 +32,10 @@ const TableBodyVerticalInput = ({ tableData, columns, allSelected }) => {
     }
 
     useEffect(()=>{
-        if (allSelected){
-            setSelectedIds(tableData.map((item)=>item.id));
-        } else {
-            setSelectedIds([]);
-        }
+        let newSelected = allSelected ? tableData.map((item)=>item.id) : [];
+
+        setSelectedIds(newSelected);
+        onSelect(newSelected);
 
     },[allSelected]);
 
@@ -47,7 +46,7 @@ const TableBodyVerticalInput = ({ tableData, columns, allSelected }) => {
             return is_checkbox ?
                 <tr key={item.id} title={title_accessor ? item[title_accessor] : null }
                     onMouseEnter={(event) => { onMouseEnter(event, item.id) }}
-                    style={{"userDrag": "none"}}
+                    style={{userDrag: "none"}}
                     ><td style={{"padding": "0.625rem 1rem"}}>
                     <label className="flex">
                         <input 

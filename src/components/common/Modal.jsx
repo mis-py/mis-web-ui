@@ -4,10 +4,6 @@ import React, { useCallback, useRef, useMemo, useEffect } from 'react';
 
 const Modal = ({open, onClose, id, header, body, buttons, container_styles = 'w-11/12 max-w-5xl'}) => {
 
-    const labels = buttons?.map((item, index) => (
-        <button className="btn btn-success btn-sm w-20" key={index} onClick={item.onClick}>{item.label}</button>
-    ));
-
     const modalRef = useRef(null);
 
     // const dialogClasses = useMemo(() => {
@@ -43,6 +39,10 @@ const Modal = ({open, onClose, id, header, body, buttons, container_styles = 'w-
         if (open) el.showModal();
       }, [open]);
 
+    const labels = buttons?.map((item, index) => (
+        <button className="btn btn-success btn-sm w-20" key={index} onClick={item.onClick}>{item.label}</button>
+    ));
+
     // document.getElementById(`history_modal_${item.id}`).showModal()
     return (
         <dialog 
@@ -57,9 +57,10 @@ const Modal = ({open, onClose, id, header, body, buttons, container_styles = 'w-
             <div className={`modal-box ${container_styles}`}>
                 <h3 className="font-bold text-lg">{header}</h3>
                 {body}
-
                 <div className="modal-action justify-between">
-                    {labels}
+                    <form method="dialog">
+                        {labels}
+                    </form>
                     <form method="dialog">
                         <button className="btn w-20 btn-sm">Close</button>
                     </form>

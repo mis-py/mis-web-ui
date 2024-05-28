@@ -20,12 +20,12 @@ const TeamListItem = ({item}) => {
                 {
                     label: "Yes",
                     onClick: async () => {
-                      await deleteTeam(id).then(({data, error}) => {
+                      await deleteTeam({ team_id: id }).then(({data, error}) => {
                         if (error) {
                             toast.error(`Error while remove team: ${error}`)
                         } else {
                             toast.success("Team deleted");
-                            navigate("/teams");
+                            // navigate("/teams");
                         }
                       });
 

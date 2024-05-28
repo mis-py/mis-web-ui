@@ -74,7 +74,7 @@ export const teamsApi = misAPI.injectEndpoints({
         return {
           url: "/teams/remove",
           method: "DELETE",
-          params: { team_id: team_id }
+          params: { team_id }
         }
       },
       invalidatesTags: (result, error, { id }) => [{ type: "Teams", id }],

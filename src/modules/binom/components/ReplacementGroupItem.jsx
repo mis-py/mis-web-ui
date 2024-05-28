@@ -6,10 +6,11 @@ import {
 import { toast } from 'react-toastify';
 import { ReplacementHistoryTable } from './ReplacementHistoryTable';
 import Modal from 'components/common/Modal';
-
+import { useNavigate } from 'react-router-dom';
 import baker from 'assets/img/baker.png';
 
 export const ReplacementGroupItem = ({item}) => {
+    const navigate = useNavigate();
     const [isHistoryOpen, setHistoryIsOpen] = useState(false);
     const [isChangeOpen, setChangeIsOpen] = useState(false);
 
@@ -62,7 +63,7 @@ export const ReplacementGroupItem = ({item}) => {
                             </tr>
                             <tr>
                                 <td>Domains available</td>
-                                <td>{data?.length}</td>
+                                <td>{data?.length < 15 ? <span className='text-red-700'>{data?.length}</span> : <span className='text-green-700'>{data?.length}</span>}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -79,21 +80,29 @@ export const ReplacementGroupItem = ({item}) => {
                 header={<><span className="badge badge-outline">{item.id}</span> {item.name} change domain</>} 
                 body={
                     <>
-                        <p className="py-4">Are you sure want to change domain for group: <b>{item.name}</b>?</p>
-                        <img src={baker} alt="baker" />
+                        <p className="pt-4">Are you sure want to change domain for group: <b>{item.name}</b>?</p>
+                        {data?.length < 15 ? <p className='text-red-700 text-lg font-bold pb-4'>Warning! {data?.length} domains left, change with caution!</p> : null}
+                        {/* <img src={baker} alt="baker" /> */}
                     </>
                 } 
                 buttons={[
                     {
                         label: "Yes",
                         onClick: async () => {
-                            await changeDomain([item.id]).then(({data, error}) => {
+                            await changeDomain({replacement_group_ids: [item.id]}).then(({data, error}) => {
                                 if (error){
                                     toast.error(error);
                                 } else {
-                                    toast.success("Domain changed!");
+                                    for (let i = 0; i < data.replacement_groups.length; i++){
+                                        if (data.replacement_groups[i].offer_ids.length || data.replacement_groups[i].landing_ids.length){
+                                            toast.success(`Domain changed for group ${item.name}!`);
+                                        } else {
+                                            toast.info(`Domain not changed for group ${item.name}! No offers or landings selected.`)
+                                        }
+                                    }
                                 }
                             });
+                            // navigate("/control");
                         }
                     }
                 ]}

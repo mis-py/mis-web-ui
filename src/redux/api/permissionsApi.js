@@ -30,7 +30,6 @@ export const permissionsApi = misAPI.injectEndpoints({
         }
       },
       providesTags: (result, error, id) => [{ type: "Permissions", id }],      
-      transformResponse: response => response.items,
     }),
 
     editGrantedPermission: build.mutation({

@@ -4,7 +4,7 @@ import {
     useGetGlobalVariablesQuery,
     filterVariableByStringSelector,
     useGetLocalVariablesQuery,
-} from "redux/index";
+} from "redux/api/variablesApi";
 
 import InputDefault from "components/common/InputDefault";
 import Search from "components/common/SearchComponent";

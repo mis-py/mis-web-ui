@@ -19,7 +19,7 @@ export const binomApi = misAPI.enhanceEndpoints({addTagTypes: ["TrackerInstance"
         }),
 
         getReplacementGroups: build.query({
-            query: ({ page=1, size=50, history_limit=10, is_active=true } = {}) => ({
+            query: ({ page=1, size=50, history_limit=20, is_active=true } = {}) => ({
                 url: "/binom_companion/replacement_group",
                 method: "GET",
                 params: { page, size, history_limit, is_active }
@@ -47,6 +47,15 @@ export const binomApi = misAPI.enhanceEndpoints({addTagTypes: ["TrackerInstance"
             invalidatesTags: ["ProxyDomain"]
         }),
 
+        editBulkProxyDomains: build.mutation({
+            query: ({ proxy_domains }) => ({
+                url: "/binom_companion/proxy_domains/edit_bulk",
+                method: "PUT",
+                body: { proxy_domains }
+            }),
+            invalidatesTags: ["ProxyDomain"]
+        }),
+
         getServerNames: build.query({
             query: () => ({
                 url: "/binom_companion/proxy_domains/get_server_names",
@@ -69,7 +78,7 @@ export const binomApi = misAPI.enhanceEndpoints({addTagTypes: ["TrackerInstance"
                 method: "POST",
                 body: { replacement_group_ids }
             }),
-            invalidatesTags: ({id}) => ["ReplacementHistory"]
+            invalidatesTags: ({id}) => [{type: "ReplacementHistory"}, {type: "ReplacementGroup"}, {type: "ProxyDomain"}]
         })
     }),
 });
@@ -92,6 +101,7 @@ export const {
     useGetReplacementGroupsQuery,
     useGetProxyDomainsQuery,
     useAddBulkProxyDomainsMutation,
+    useEditBulkProxyDomainsMutation,
     useGetServerNamesQuery,
     useGetAvailableProxyDomainsForGroupsQuery,
     useChangeProxyDomainMutation

@@ -15,14 +15,14 @@ const PermissionsForm = ({team_id=null, user_id=null, onChange}) => {
 
     const permissionSearchResult = useMemo(filterPermissionByStringSelector, []);
 
-    const { allSearchFiltered =[] } = useGetPermissionsQuery(undefined,{
+    const { allSearchFiltered = [] } = useGetPermissionsQuery(undefined,{
         selectFromResult: (result) => ({
             ...result,
             allSearchFiltered: permissionSearchResult(result, searchValue)
           })
     });
     
-    const {data: getPermissions = []} = useGetGrantedPermissionsQuery({team_id, user_id}, {skip: [team_id, user_id].every(item=>item==null)});
+    const { data: getPermissions = [] } = useGetGrantedPermissionsQuery({team_id, user_id}, {skip: [team_id, user_id].every(item=>item==null)});
     
     const permissions = allSearchFiltered.map((permission)=> {
         let localPermission = getPermissions.find(granted => granted.permission.id === permission.id);

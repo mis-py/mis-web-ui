@@ -20,8 +20,8 @@ const UserListItem = ({item}) => {
             {
               label: "Yes",
               onClick: async () => {
-                await deleteUser(id);
-                navigate("/users");
+                await deleteUser({ user_id: id });
+                // navigate("/users");
                 toast.success("User deleted");
               },
             },
