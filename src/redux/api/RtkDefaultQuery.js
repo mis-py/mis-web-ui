@@ -1,14 +1,13 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Navigate } from "react-router-dom";
-import React from "react";
-
 export const api_token = "_api_token";
 
-export const baseUrl = `${
-    process.env.NODE_ENV === "development" ? "http://10.10.102.3:8000" : "/api"
+//export const baseUrl = `${
+//    process.env.NODE_ENV === "development" ? "http://10.10.102.3:8000" : "/api"
     //process.env.NODE_ENV === "development" ? "http://localhost:8000/" : "/api"
     // "http://dev.ng.lan/api"
-  }`;
+//  }`;
+
+export const baseUrl = `${window.location.origin}/api`;
 
 const baseQuery = fetchBaseQuery({
     baseUrl,

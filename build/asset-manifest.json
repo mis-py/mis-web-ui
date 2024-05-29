@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.css",
+    "main.js": "/static/js/main.js",
+    "static/media/app.png": "/static/media/app.png",
+    "static/media/petushok.png": "/static/media/petushok.png",
+    "static/media/user.png": "/static/media/user.png",
+    "index.html": "/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.css",
+    "static/js/main.js"
+  ]
+}
