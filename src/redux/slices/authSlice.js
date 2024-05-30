@@ -22,7 +22,7 @@ export const userLogin = createAsyncThunk(
         return rejectWithValue(data.result);
       }
     
-      localStorage.setItem(api_token, data.result.access_token);
+      localStorage.setItem(api_token, data.access_token);
       return data;
     } catch (error){
       rejectWithValue(error);
