@@ -2,6 +2,7 @@ import { React, useEffect, useState, useMemo } from "react";
 import { confirmAlert } from "react-confirm-alert";
 import { useSelector, useDispatch } from 'react-redux';
 import Input from "components/common/Input";
+import InputDefault from "components/common/InputDefault";
 import { FiX } from "react-icons/fi";
 import 'react-js-cron/dist/styles.css';
 import { setTrigger, setExtraParams } from 'redux/slices/taskSlice';
@@ -87,19 +88,23 @@ const JobFormTrigger = ({onChange}) => {
     }
 
     let crontabsForm = (<>
-        {cronValues.map((cronItemValue, index) => 
-        <Input
-            key={index}
-            label={`Cron ${index+1}`}
-            type="text"
-            placeholder="* * * * *"
-            value={cronItemValue}
-            onInputChange={(e) => setCronItemValue(e.target.value, index)}
-            default_value={"* * * * *"}
-            setDefault={() => removeCronValue(index)}
-            default_button_icon={<FiX />}
-        />)}
         <div className="flex flex-row pt-4"><button className="btn btn-sm" onClick={() => addCronValue()}>Add cron</button></div>
+        {
+        cronValues.map((cronItemValue, index) => 
+            <><InputDefault
+                key={index}
+                label={`Cron ${index+1}`}
+                type="text"
+                placeholder="* * * * *"
+                value={cronItemValue}
+                onInputChange={(e) => setCronItemValue(e.target.value, index)}
+                default_value={"* * * * *"}
+                // setDefault={() => removeCronValue(index)}
+                default_pressable={true}
+            />
+            <div className="flex flex-row pt-4"><button className="btn btn-sm" onClick={() => removeCronValue(index)}>Remove cron</button></div></>
+            )
+        }
     </>);
 
     let interval = (<Input 
@@ -111,7 +116,6 @@ const JobFormTrigger = ({onChange}) => {
 
     return (<>
         <div className="form-control">
-            <p>{task?.id}</p>
             <label className="label">
                 <span className="label-text">Use Interval</span>
             </label>

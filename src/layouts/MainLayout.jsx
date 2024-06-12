@@ -151,7 +151,7 @@ const MainLayout = () => {
                   {/* </label> */}
               </TopBar>
 
-              <div className="flex flex-row shadow-mis-tl-1 p-4 pb-0 h-screen overflow-hidden">
+              <div className="flex flex-row shadow-mis-tl-1 p-2 h-screen overflow-hidden">
                 <div 
                   className={`flex flex-col flex-grow overflow-y-hidden ${transitionStage}`} 
                   onAnimationEnd={() => {

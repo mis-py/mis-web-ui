@@ -58,7 +58,7 @@ const InputDefault = ({
     }
   
     const rightButtonsGroup = rightButtons.map((item, index) => {
-      return <button key={index} disabled={default_pressable} className="btn btn-square btn-outline btn-sm join-item rounded" onClick={(e) => item.onClick(e)}>
+      return <button key={index} disabled={!default_pressable} className="btn btn-square btn-outline btn-sm join-item rounded" onClick={(e) => item.onClick(e)}>
               {item.icon}
             </button>
     })

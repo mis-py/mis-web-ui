@@ -24,8 +24,9 @@ const ControlPanel = () => {
 
     return (
         <>
-            <PageHeader pageHeader={["Control panel"]} />
-
+            <div className="flex flex-col pl-4 pr-4 md:p-0">
+                <PageHeader pageHeader={["Control panel"]} />
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4 overflow-y-auto max-h-screen p-2">
                 {items}
             </div>

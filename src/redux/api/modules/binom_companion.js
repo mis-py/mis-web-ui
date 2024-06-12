@@ -87,12 +87,28 @@ export const filterProxyByStringSelector = () => {
     const emptyArray = [];
     return createSelector(
         items => items.data,
-        (items, val) => val.toLowerCase().trim(),
-        (items, val) => items?.filter(proxy => 
-            proxy.name.toLowerCase().includes(val) ||
-            proxy.server_name.toLowerCase().includes(val) ||
-            proxy.tracker_instance.name.toLowerCase().includes(val)
-        ) ?? emptyArray
+        (items, searchValue) => searchValue.toLowerCase().trim(),
+        (items, searchValue, serverNameValue) => serverNameValue.toLowerCase().trim(),
+        (items, searchValue, serverNameValue, trackerInstanceValue) => trackerInstanceValue.toLowerCase().trim(),
+        (items, searchValue, serverNameValue, trackerInstanceValue, allReady) => allReady,
+        (items, searchValue, serverNameValue, trackerInstanceValue, allReady, allInvalid) => allInvalid,
+        (items, searchValue, serverNameValue, trackerInstanceValue, allReady, allInvalid) => {
+            let filters = [
+                (item) => item.server_name.toLowerCase().includes(serverNameValue),
+                (item) => item.tracker_instance.name.toLowerCase().includes(trackerInstanceValue),
+                (item) => item.name.toLowerCase().includes(searchValue),
+            ];
+            if (allInvalid != undefined){
+                filters = filters.concat([(item) => item.is_invalid == allInvalid])
+            }
+            if (allReady != undefined){
+                filters = filters.concat([(item) => item.is_ready == allReady])
+            }
+
+            let result = items?.filter(proxy => filters.every(f => f(proxy)));
+
+            return result ?? emptyArray;
+        }
     ) 
 }
 

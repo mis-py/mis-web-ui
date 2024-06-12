@@ -9,7 +9,7 @@ const MisButton = ({ title, isFirst, clickEvent, icon, border }) => {
   return (
     <button
       key={title}
-      className={`btn btn-square btn-outline text-lg btn-sm ${isFirst ? 'ml-auto' : ''}`}
+      className={`btn btn-square btn-outline text-sm md:text-md btn-sm ${isFirst ? 'ml-auto' : ''}`}
       onClick={clickEvent}
       title={title}
     >

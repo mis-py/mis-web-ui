@@ -20,11 +20,13 @@ const ItemsList = ({ pageHeader, headerButtons, items, searchParams }) => {
   const searchElement = searchParams !== undefined && <Search searchParams={searchParams} />;
 
   return <>
-      <div className="flex items-center justify-between">
-        <PageHeader pageHeader={pageHeader} />
-        <div className="flex flex-row text-lg gap-1">
-          {links} {searchElement}
-        </div>
+      <div className="flex pl-4 pr-4 md:p-0 items-center justify-between">
+        {/* <div className="flex flex-col md:flex-row"> */}
+          <PageHeader pageHeader={pageHeader} />
+          <div className="flex flex-row text-lg gap-1">
+            {links} {searchElement}
+          </div>
+        {/* </div> */}
       </div>
 
       <div className="flex flex-col gap-4 p-2 overflow-y-auto h-screen">

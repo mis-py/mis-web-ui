@@ -56,7 +56,7 @@ const JobFormExtraParams = ({onChange}) => {
     };
 
     return (
-        <div className="form-control">
+        <div className="form-control pt-2">
             <p>Extra params</p>
             {
                 extra_params.map((item, index) => 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import CreatableSelect from "react-select/creatable";
 import { useGetTrackerInstancesQuery } from "redux/api/modules/binom_companion";
 
-const TrackerInstanceSelect = ({onTrackerInstanceChange}) => {
+const TrackerInstanceSelect = ({onTrackerInstanceChange, showTitle=true, placeholder="Select tracker instance..."}) => {
     const [selectedTracker, setSelectedTracker] = useState();
 
     const { 
@@ -27,16 +27,16 @@ const TrackerInstanceSelect = ({onTrackerInstanceChange}) => {
 
     return (
         <div className="form-control">
-            <label className="label">
+            {showTitle==true ? <label className="label">
                 <span className="label-text">Tracker instance</span>
-            </label>
+            </label>: null}
             <CreatableSelect 
                 value={selectedTracker}
                 onChange={onSelectChange}
                 options={tracker_instance_option}
                 isClearable
                 isSearchable
-                placeholder="Select tracker instance..."
+                placeholder={placeholder}
                 classNames={{
                     control: (state) => (
                         'input-bordered'

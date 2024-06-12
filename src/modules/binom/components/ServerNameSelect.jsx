@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import CreatableSelect from "react-select/creatable";
 import { useGetServerNamesQuery } from "redux/api/modules/binom_companion";
 
-const ServerNameSelect = ({onServerNameChange}) => {
+const ServerNameSelect = ({onServerNameChange, showTitle=true, placeholder="Select server..."}) => {
     const [selectedName, setSelectedName] = useState();
 
     const { 
@@ -26,16 +26,16 @@ const ServerNameSelect = ({onServerNameChange}) => {
 
     return (
         <div className="form-control">
-            <label className="label">
+            {showTitle==true ? <label className="label">
                 <span className="label-text">Server name</span>
-            </label>
+            </label> : null}
             <CreatableSelect 
                 value={selectedName}
                 onChange={onSelectChange}
                 options={server_name_options}
                 isClearable
                 isSearchable
-                placeholder="Select server..."
+                placeholder={placeholder}
                 classNames={{
                     control: (state) => (
                         'input-bordered'

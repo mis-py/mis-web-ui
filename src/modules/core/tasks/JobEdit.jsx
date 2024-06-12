@@ -4,8 +4,7 @@ import { useAddJobMutation } from "redux/api/jobsApi";
 import { toast } from "react-toastify";
 import 'react-js-cron/dist/styles.css';
 import EditItem from "modules/core/components/EditItemComponent";
-import JobFormTrigger from 'modules/core/components/JobFormTriggerComponent';
-import JobFormExtraParams from 'modules/core/components/JobFormExtraParamsComponent';
+import JobForm from 'modules/core/components/JobForm';
 import { useNavigate } from 'react-router-dom';
 import { useSearchParams } from "react-router-dom";
 
@@ -43,17 +42,13 @@ const JobEdit = () => {
     }
 
     const intemProps = {
-        pageHeader: ["Administration", {name: "Tasks", path: "/tasks"}, (editMode ? "Edit" : "New")],
+        pageHeader: ["Administration", {name: "Tasks", path: "/tasks"}, (editMode ? "Edit" : task_id)],
         saveButtonEvent: handleSave,
         formName: "Job",
         sections: [
             {
-                name: "Triggers",
-                element: <JobFormTrigger onChange={onJobChange} />
-            },
-            {
-                name: "Params",
-                element: <JobFormExtraParams onChange={onJobChange} />
+                name: "New Job",
+                element: <JobForm onChange={onJobChange} />
             }
         ]
     }
