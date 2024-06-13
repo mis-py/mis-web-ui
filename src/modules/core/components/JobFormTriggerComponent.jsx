@@ -23,7 +23,7 @@ const JobFormTrigger = ({onChange}) => {
         })
     });
 
-    const [cronValues, setCronValues] = useState(['* * * * *']);
+    const [cronValues, setCronValues] = useState([]);
     const [intervalValue, setIntervalValue] = useState();
     const [useInterval, setUseInterval] = useState(false);
 
@@ -32,6 +32,10 @@ const JobFormTrigger = ({onChange}) => {
             handleSetTriggerValue(task.trigger);
         }
     }, [task]);
+
+    useEffect(()=>{
+        addCronValue();
+    }, []);
 
     const handleSetTriggerValue = (value) => {
         if (parseInt(Number(value)) === value){
@@ -91,18 +95,19 @@ const JobFormTrigger = ({onChange}) => {
         <div className="flex flex-row pt-4"><button className="btn btn-sm" onClick={() => addCronValue()}>Add cron</button></div>
         {
         cronValues.map((cronItemValue, index) => 
-            <><InputDefault
-                key={index}
-                label={`Cron ${index+1}`}
-                type="text"
-                placeholder="* * * * *"
-                value={cronItemValue}
-                onInputChange={(e) => setCronItemValue(e.target.value, index)}
-                default_value={"* * * * *"}
-                // setDefault={() => removeCronValue(index)}
-                default_pressable={true}
-            />
-            <div className="flex flex-row pt-4"><button className="btn btn-sm" onClick={() => removeCronValue(index)}>Remove cron</button></div></>
+            <div key={index}>
+                <InputDefault
+                    label={`Cron ${index+1}`}
+                    type="text"
+                    placeholder="* * * * *"
+                    value={cronItemValue}
+                    onInputChange={(e) => setCronItemValue(e.target.value, index)}
+                    default_value={"* * * * *"}
+                    // setDefault={() => removeCronValue(index)}
+                    default_pressable={true}
+                />
+                <div className="flex flex-row pt-4"><button className="btn btn-sm" onClick={() => removeCronValue(index)}>Remove cron</button></div>
+            </div>
             )
         }
     </>);

@@ -25,7 +25,8 @@ const JobEdit = () => {
         await addJob({
             task_name: task_id,
             extra: job.extra,
-            trigger: job.trigger
+            trigger: job.trigger,
+            name: job.name
         }).then(({data, error}) => {
             if (error) {
                 toast.error(`Error during create job: ${error}`);

@@ -17,11 +17,11 @@ export const jobsApi = misAPI.injectEndpoints({
             providesTags: ["Jobs"],
         }),
         addJob: build.mutation({
-            query: ({task_name, trigger, extra={}, type="user"}) => {
+            query: ({name, task_name, trigger, extra={}, type="user"}) => {
                 return {
                     url: "/jobs/add",
                     method: "POST",
-                    body: { trigger, task_name, extra, type},
+                    body: { name, trigger, task_name, extra, type},
                 }
             },
             invalidatesTags: ["Jobs"],

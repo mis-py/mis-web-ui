@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import PetushokImg from 'assets/img/petushok.png';
 // import TeamImg from "assets/img/groups.png";
 import { AiOutlineEye } from "react-icons/ai";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Slide } from "react-toastify";
 
 const Signin = () => {
   const dispatch = useDispatch();
@@ -181,7 +181,20 @@ const Signin = () => {
           </p>
         </div>
               
-      <ToastContainer />
+      <ToastContainer 
+        stacked 
+        closeOnClick 
+        position="bottom-right"
+        autoClose={1200}
+        hideProgressBar
+        newestOnTop
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme="light"
+        transition={Slide}
+      />
       </div>
   );
 };

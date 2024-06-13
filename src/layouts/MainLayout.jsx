@@ -3,7 +3,7 @@ import { NavLink, Route, Outlet, useLocation , Navigate, Routes } from "react-ro
 import { useSelector } from 'react-redux';
 import SidebarDesktop from "layouts/Sidebar";
 // import Notifications from "components/notifications/Notifications";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Slide } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 //import { useGetMeQuery } from "redux/index";
 // import webSocket from "../config/WebSocketConnection";
@@ -177,7 +177,20 @@ const MainLayout = () => {
             <SidebarDesktop sidebarNav={mainNavBar} />
           </div>
 
-          <ToastContainer />
+          <ToastContainer
+            stacked 
+            closeOnClick 
+            position="bottom-right"
+            autoClose={1200}
+            hideProgressBar
+            newestOnTop
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable={false}
+            pauseOnHover={false}
+            theme="light"
+            transition={Slide}
+            />
         </div>
     );
 };

@@ -16,7 +16,7 @@ const EditItem = ({...props}) => {
     const saveButtonIcon = <FiSave />;
     return (
         <div className="flex flex-5 flex-col h-screen overflow-y-auto">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col justify-between pb-2">
                 <PageHeader pageHeader={pageHeader} />
                 <div className="flex flex-row text-lg gap-1">
                     <MisButton clickEvent={(e) => saveButtonEvent(e)} title={saveButtonTitle} icon={saveButtonIcon} />
