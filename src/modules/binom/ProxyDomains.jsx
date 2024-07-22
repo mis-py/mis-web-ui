@@ -62,7 +62,7 @@ const ProxyDomains = () => {
         date: new Date(item.date_added).toLocaleString(),
         minutes: `${Math.round(Math.abs((new Date().getTime() - new Date(item.date_added).getTime()) / 1000) / 60)}m ago`,
         date_title: new Date(item.date_added).toString(),
-        tracker_name: item.tracker_instance.name
+        tracker_name: item.tracker_instances.map(elem => elem.id).join(', ')
     }));
 
     const links = [

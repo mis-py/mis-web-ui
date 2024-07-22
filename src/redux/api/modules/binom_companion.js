@@ -95,7 +95,7 @@ export const filterProxyByStringSelector = () => {
         (items, searchValue, serverNameValue, trackerInstanceValue, allReady, allInvalid) => {
             let filters = [
                 (item) => item.server_name.toLowerCase().includes(serverNameValue),
-                (item) => item.tracker_instance.name.toLowerCase().includes(trackerInstanceValue),
+                (item) => item.tracker_instances.some(tracker_instance => tracker_instance.name.toLowerCase().includes(trackerInstanceValue)),
                 (item) => item.name.toLowerCase().includes(searchValue),
             ];
             if (allInvalid != undefined){
