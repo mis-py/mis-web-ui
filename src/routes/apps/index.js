@@ -7,6 +7,7 @@
 
 import AppsList from "modules/core/apps/AppsList";
 import AppEdit from "modules/core/apps/AppEdit";
+import DomainChecker from "modules/domain_checker";
 
 export const appRoutes = [
   {
@@ -16,6 +17,10 @@ export const appRoutes = [
   {
     path: "/modules/:id",
     element: <AppEdit />,
+  },
+  {
+    path: "domain_checker",
+    element: <DomainChecker />,
   },
   // {
   //   path: "/modules/install",

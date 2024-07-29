@@ -1,4 +1,9 @@
-import { configureStore, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
+import {
+  configureStore,
+  isFulfilled,
+  isPending,
+  isRejected,
+} from "@reduxjs/toolkit";
 // core
 import { usersApi } from "./api/usersApi";
 import { teamsApi } from "./api/teamsApi";
@@ -21,18 +26,19 @@ import { binomApi } from "./api/modules/binom_companion";
 
 //slices
 import { authReducer } from "./slices/authSlice";
-import { searchReducer } from './slices/searchSlice';
+import { searchReducer } from "./slices/searchSlice";
 import { profileReducer } from "./slices/profileSlice";
 import { userReducer } from "./slices/userSlice";
+import { domainCheckerReducer } from "./slices/domainCheckerSlice";
 import teamSlice from "./slices/teamSlice";
 // import { startLoading, stopLoading } from './slices/loadingSlice';
-import loadingReducer from './slices/loadingSlice';
+import loadingReducer from "./slices/loadingSlice";
 import groupSlice from "./slices/groupSlice";
 import appSlice from "./slices/appSlice";
-import taskSlice from './slices/taskSlice';
+import taskSlice from "./slices/taskSlice";
 
 //middleware
-import Socket from 'utils/WebSocket';
+import Socket from "utils/WebSocket";
 import socketMiddleware from "redux/middleware/socket";
 
 // const mutationLoadingMiddleware = (params) => next => action => {
@@ -86,6 +92,7 @@ export const store = configureStore({
     profile: profileReducer,
     app: appSlice,
     task: taskSlice,
+    domain: domainCheckerReducer,
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware({}).concat([
@@ -110,6 +117,6 @@ export const store = configureStore({
 
       //mutationLoadingMiddleware,
       //crashReporter,
-      socketMiddleware(new Socket())
+      socketMiddleware(new Socket()),
     ]),
 });

@@ -8,8 +8,8 @@ export const api_token = "_api_token";
 //  }`;
 
 // export const baseUrl = `http://localhost:9000`;
-export const baseUrl = `${window.location.origin}/api`;
-//export const baseUrl = `http://mis.ng.lan/api`;
+// export const baseUrl = `${window.location.origin}/api`;
+export const baseUrl = `http://mis.ng.lan/api`;
 
 const baseQuery = fetchBaseQuery({
     baseUrl,
